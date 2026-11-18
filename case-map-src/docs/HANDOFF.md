@@ -480,6 +480,77 @@ These came in over one session and all of them are done unless noted.
    rounds stale. The current handoff is this file, `case-map-src/docs/HANDOFF.md`, and there should
    never again be two.
 
+## The probable ceiling: what share of each loan type is attainable, and in how many rounds
+
+**Run `python3 case-map-src/ceiling.py` rather than copying the table below.** Every number in it is
+either measured from this repo or a named assumption in the script's own constants, and the measured
+ones move as rounds change them. The table goes stale; the script does not. It failed its own check
+on first run — the aid row read 17 against the page's 35, because it tested `lk: "fdn"` instead of
+`kindsOf()`'s own test with `MK_GRANT_MORE` folded in, which is the identical omission that broke the
+first coverage chart. **Check a computed row against the rendered page before believing it.**
+
+| Row | Now | Probably attainable | Ceiling share | Rounds | What the limit is |
+| --- | --- | --- | --- | --- | --- |
+| World Bank, all years | 435 (2.8%) | 503-594 | **3.2%-3.8%** | 7-8 | the register: ICIJ counted only 2004-2013, so the other decades have no list |
+| IMF arrangements | 160 (9.5%) | 160-165 | 9.5%-9.7% | 1-2 | no register of harm for programmes anywhere |
+| Chinese state loans | 97 (0.46%) | 106-115 | 0.51%-0.55% | 3-4 | register worked out: what is left records a protest and nothing that happened to anybody |
+| Foreign company projects | 9 (0.04%) | 13-18 | 0.06%-0.09% | 6-8 | **the denominator**, not the work — see below |
+| Treaty lawsuits | 4 (0.30%) | 4 | 0.30% | 0 | not a coverage measure: every one of the 1,332 is a company suing a country |
+| Aid activities | 35 (1 in 42,857) | 35-37 | 1 in 42,857 | 0-1 | no register of harm for aid anywhere |
+
+**The measured rates behind those numbers**, so a later round can correct them rather than inherit
+them: ICIJ confirmed-displacement rows convert to cases at **44%** (rounds 31 and 32: 179 rows, 79
+cases). AidData financings converted at **12%** (rounds 37 and 38: 111 financings, 13 cases). A wide
+document round carries **90 rows** (round 31, six writers and six checkers). An outside-sourcing
+round promotes at **14%** (rounds 40 and 41: 28 cases worked, 4 promoted).
+
+**The assumptions, stated as assumptions:** the 546 ICIJ possible-displacement rows convert at 10-25%,
+below the confirmed table because ICIJ selected the confirmed table for recording displacement and
+did not select these; the 178 AidData financings left convert at 5-10%, below their own measured 12%
+because what is left carries only a protest or a pollution flag; OECD Watch's complaints convert at
+30-60%.
+
+### The foreign-company row is a year window, not a gap in the work
+
+**The map already holds 305 foreign-company cases. That row shows 9.** The difference is that the row
+divides by UNCTAD's count of projects *announced in 2021-2023* and counts only cases whose harm began
+in those three years. Of the map's 305, nine do. The spread of the rest: 113 begin in the 2010s, 112
+in the 2000s, 40 in the 1990s.
+
+So **working the one unworked register that exists for foreign companies would move the map a great
+deal and that row almost not at all.** OECD Watch publishes **503 complaints** against companies under
+the OECD Guidelines (counted on its database page, 17 Nov 2026, and it serves over plain `curl`). At
+30-60% those are **151-302 cases** — the largest single addition available to this map from any
+register, larger than the whole ICIJ possible-displacement table. **Four to nine of them would fall in
+the window that row counts.** Anyone who judges that work by the row will conclude it failed.
+
+The honest fix is on the page rather than in the work: either the row should say what window it
+counts, or the panel should carry a second foreign-company row over all years with the map's own 305
+against a denominator that covers the same span. The Business & Human Rights Resource Centre's
+transition-minerals tracker is a second such register and also serves.
+
+### The documented share
+
+**674 of 1,182 cases are `documented`, 57%.** Of the 508 `contested`:
+
+- **200 rest half or more of their own sources on a lender's host.** Thin sourcing, and fixable.
+- **308 already carry sources outside the lender**, and **81 of those record an actual dispute** by
+  the lender or another source in their `confidence_note`. A dispute is not a sourcing problem and no
+  amount of work resolves it — those cases are `contested` because the record is contested, which is
+  the field working as intended.
+- That leaves **427 fixable** cases. At the measured 14% promotion rate, **735 documented, 62%**; at
+  twice that rate, if the press-and-audit route beats the judgment-index route it replaces, **796,
+  67%**.
+
+**Rounds: 29 would work all 427 at fifteen a round, and nobody should run 29.** The early rounds take
+the cases with a reachable record and the rate falls after. Five rounds reach about 60%; ten reach
+about 61%. **The ceiling on this measure is somewhere in the low sixties, not the nineties**, and
+saying so on the page is better than implying the rest is pending.
+
+### The whole map
+
+**1,182 cases now; 1,438-1,721 probably attainable.** Almost the entire spread is OECD Watch. Every
+other register is either worked out or has no list to work.
 ## READ THIS FIRST: round 42 — the suspected patterns are sorted, and the owner's reading was right
 
 **The owner's finding, 17 Nov 2026: the map mixes potential patterns with actual ones, and some of
