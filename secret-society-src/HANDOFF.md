@@ -4354,3 +4354,87 @@ not what this map holds, and the panel says so.**
 
 `build.py` now inserts its own directory into `sys.path`, because it is sometimes run with `-I`,
 which drops it and broke the `source` import.
+
+## THE LEAD FLAGGER IS NOW A REPO SCRIPT: `flagleads.py`, RUN AFTER EVERY MERGE
+
+Four rebuilds in two rounds taught the design, and the script's own docstring carries the reasons
+so nobody rebuilds it a fifth time from scratch.
+
+**R13-B measured 0 of 25 records from the lead bank**, and found the precise defect: **seven of
+eight Italian health leads flagged `none` or `check` were already on the map.** The flags fired at
+0.25 to 0.35 title overlap because *the lead titles paraphrase the held titles* — ASL Bari, the
+33m-euro Calabrian tenders, Damiani's 600m Sicilian tenders, Romeo/Cardarelli, Operation Aspide,
+ASL Caserta. Its sentence is the rule: **"a `none` flag on an Italian health lead means nothing;
+the body name is the tell, not the title."**
+
+So the flagger now matches on **three signals, each weighted by how rare it is on the map**:
+
+| signal | why it needs weighting |
+|---|---|
+| a shared figure | **10,000 appears in 77 held records**, 50,000 in 59; a figure in one or two is strong |
+| a shared **named body** | **"ministry of defence" appears in 17**, "ministry of state security" 15; **"ASP Trapani" identifies one case** |
+| an identical single-case locator | one DNA release or OSP case profile is one prosecution |
+
+A first attempt at body matching upgraded 20 leads on bodies like "ministry interior" and "ministry
+agriculture" — every Libya record names the interior ministry. Rarity-weighting fixed it.
+
+**And the removed-record count was honest only after tightening.** A loose proper-noun rule had
+flagged 43 leads as matching a removed record; most were false (an AFC/M23 lead matched against a
+Ugandan army chief). With a rare figure, a 0.50 title overlap, or a specific body plus some title
+overlap, it is **5** — and all five are exact: Gatwech's Port Sudan deal, the Trinidad police
+officer, Puntland's 52 Iranian trawlers, the Houthi interior-ministry personnel chief, and Marset's
+Uruguayan passport.
+
+That squares with what two agents found independently: **their removed-list collisions came from
+discovery, not from the bank.** So the bank really does hold only a handful, and **the removed list
+is a specification to read, not a blocklist to match** — about 75 removed cases sit in
+`crime`+`legis`/`court` alone and define the line most new candidates fail.
+
+Final distribution: **324 `none`, 61 `check`, 30 `high`, 5 `REMOVED`, 6 `internal`.** The script
+also writes the 28 per-cell lead files, so it is one command after a merge.
+
+## R13-B's SOURCE FINDINGS, AND ONE THAT OPENS A NEW VEIN
+
+25 records (12 `corp → company`, 13 of 15 `corp → security`), **Romania held to 48 per cent under
+the cap** — spread across Romania 12, United States 8, Italy 3, Kuwait 1, Afghanistan 1.
+
+**The DNA cross-link harvest, which is the round's best mechanical find.** Every DNA conviction
+notice carries an `href` to the id of **its own indictment release**. Harvesting those from 2,000
+crawled pages gave **993 further ids across 2007–2019, all below any range anyone has crawled**,
+in one pass. **Five of its nine Romanian records came from them**, and it is how an outcome-only
+notice becomes a writable record:
+`grep -oE 'comunicat\.xhtml\?id=[0-9]+'` over the crawled pages reaches ids 159–4,900.
+
+**A correction to the id filter:** the `ECLI` test alone misses judgments. Of 2,000 ids, 1,318 were
+press releases, 80 carried `ECLI`, and **602 were "other" — mostly unflagged court judgments and
+English translations.** Add a `CURTEA DE APEL … DECIZIA PENALĂ` test.
+
+**The monthly `BULETIN DE PRESĂ` digests are the densest page type for `corp → security`** — 90 in
+the corpus, filtered to 36 numbered items, 16 in-cell candidates, 5 records, at no marginal fetch
+cost. Every Romanian `security` record it wrote came from a digest.
+
+**The `Actualizare` check earned its place immediately**, killing or downgrading three candidates: a
+Ploiești hospital manager acquitted with two payers time-barred, a Poșta Română payer acquitted in
+2025, and a Suceava police case acquitted in 2019.
+
+**`justice.gov` for `corp → security` was its best source: 25 title queries, 8 records.** The
+productive families are **inspectorates and military contracting, not police** — `Inspector
+Bribery`, `Buildings Inspector`, `Army Contracting`, `Defense Contractor Bribery`, `Tow Truck`,
+`Afghan Companies`. **`Customs Officer` and `Border Patrol Agent` gave zero across 100 titles**:
+those are assault and smuggling cases, not company bribery. Also zero: `Health Inspector`, `Mine
+Safety`, `Food Safety`, `Transit Authority`, `Water Authority`, `Weights and Measures`, `Elevator
+Inspector`, `Hospital Administrator Bribery`.
+
+**An unopened family worth a round:** `Hospital Bribery` is only 4 titles but gave **2
+`corp → company` records** — US public-hospital vendor kickbacks, VA medical centres and Jackson
+Health System.
+
+**Under ruling 17 the cleanest remaining `corp → security` shape** is Romania's county labour
+inspectorate (ITM), the National Environmental Guard and the regional Consumer Protection
+commissariats: all three recur in the DNA digests with a named company as payer and a named
+penalty as the decision.
+
+**Why `corp → company` came 8 short:** the Italian provincial-health vein that ruling 12 makes this
+cell's richest non-Romanian source **was already mined by rounds 9 and 10.** Sixteen queries across
+four Italian hosts gave three writable cases after duplicates. Filling the gap would have meant
+opening a new country family or breaking the Romania cap, so it stopped.
