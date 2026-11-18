@@ -7218,7 +7218,14 @@ function openGov(i){
   const names=a=>a.map(x=>esc(x)).join(' &middot; ');
   let h='';
   if(r.u) h+=fld('Website','<a href="'+esc(r.u)+'" target="_blank" rel="noopener">'+esc(r.u)+'</a>');
-  if(r.e) h+=fld(asList(r.e).length>1?'Email addresses':'Email', mails(asList(r.e)));
+  if(r.e) h+=fld(asList(r.e).length>1?'Email addresses':'Email', mails(asList(r.e))+
+    /* Round fifteen's rule: a row that got in on a name says so, so a
+       reader checking an address can see what ties it to the place. */
+    (r.j==='name'
+      ? '<div class="staleq">This is the address the national directory '+
+        'publishes for the council of this name in this province. It is '+
+        'matched to this place on that name, because the country publishes '+
+        'no reference number the two registers share.</div>' : ''));
   if(r.c) h+=fld('Certified email', mails(asList(r.c))+
     '<div class="staleq">A certified address refuses mail sent from an ordinary '+
     'account, so it is not somewhere to write to from a normal inbox. It is here '+
@@ -7243,9 +7250,15 @@ function openGov(i){
   $('#mbody').innerHTML =
     (LEAF?trail():'<button type="button" class="lpback" onclick="backToDiagram()">‹ Back</button>')+
     '<div class="note">These are the details '+esc(st.label)+'’s own government '+
-    'publishes about itself, from '+esc(regName())+', matched to this place on a '+
-    'reference number both sides publish. Nothing here is composed: every line is '+
-    'a field the register holds. '+
+    'publishes about itself, from '+esc(regName())+', '+
+    /* Spain is the one country here matched on a name rather than on a
+       code both registers publish, so the sentence cannot claim a
+       reference number for it. */
+    (r.j==='name'
+      ? 'matched to this place on its official name inside its province, '+
+        'because the two registers publish no reference number in common. '
+      : 'matched to this place on a reference number both sides publish. ')+
+    'Nothing here is composed: every line is a field the register holds. '+
     (cn.length? 'The names come from the same file, and a seat can change before it '+
                 'is next rebuilt. No register here publishes an address for an '+
                 'individual member, so the council itself is the route and its own '+

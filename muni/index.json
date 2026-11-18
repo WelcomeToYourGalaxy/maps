@@ -3,10 +3,12 @@
  "shards": 512,
  "countries": [
   "CAN",
+  "ESP",
   "ITA"
  ],
  "registers": {
   "ITA": "IPA",
+  "ESP": "DIR3 and the Registro de Entidades Locales",
   "CAN": "Répertoire des municipalités du Québec"
  },
  "counts": {
@@ -22,6 +24,18 @@
     "a": 7889,
     "src": 7889,
     "e": 5463
+   }
+  },
+  "ESP": {
+   "shipped": 6891,
+   "refused_code_maps_to_two_items": 5,
+   "refused_item_claimed_twice": 0,
+   "no_shared_code": 2,
+   "register_publishes_no_contact": 1107,
+   "fields": {
+    "e": 6891,
+    "j": 6891,
+    "src": 6891
    }
   },
   "CAN": {

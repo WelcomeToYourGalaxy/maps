@@ -9,13 +9,13 @@ buildings in 2° cells, §11), and `tools/completeness.py` and
 (§0).
 
 `muni/` (the municipal register shards, 513 files) and `tools/build_muni.py`,
-which builds them, are now here and deployed — **two registers of the eight
+which builds them, are now here and deployed — **three registers of the eight
 rounds four to twenty-one describe**. Nothing of that earlier work survived:
 the page had no reference to `muni/` and `muni/index.json` 404ed on the live
 site, so the shards, the builder and the loader were all written again from
-the register endpoints and join keys this file records. Italy and Quebec are
-rebuilt and shipping; France, Spain, Norway, the Netherlands, Finland and
-Brazil are not, and each is one entry in `COUNTRIES` away (§0a).
+the register endpoints and join keys this file records. Italy, Spain and Quebec are
+rebuilt and shipping; France, Norway, the Netherlands, Finland and Brazil
+are not, and each is one entry in `COUNTRIES` away (§0b).
 
 The map answers one question: who can a member of the public contact to make a
 law, where they live, at every level of government above them — and what can
@@ -48,10 +48,19 @@ now does.
 3. **Ship something.** Nine of twenty-one rounds shipped records; five
    shipped nothing at all but a sharper account of what was blocked. A
    survey is not a round.
-4. **Audit, then chart.** Open the eight standing places (§6), read every
-   level of every chain, and re-run step 1. The audit found four real
-   faults the last time it was done as a round of its own; as a step it
-   costs twenty minutes.
+4. **Audit, then chart, then record the round.** Open the eight standing
+   places (§6), read every level of every chain, and finish with
+   `python3 -I tools/completeness.py --record <N>`. That appends the
+   round's figures to `tools/rounds.json` and prints the ledger below.
+   The audit found four real faults the last time it was done as a round
+   of its own; as a step it costs twenty minutes.
+
+   **The ledger is not bookkeeping.** A single round's chart says where the
+   map stands; only the ledger says whether a round moved it. Rounds five
+   to eleven added no municipal records at all — the count went 42,870,
+   42,866, 42,866 across six of them — and nothing written at the time
+   said so, because each round reported what it had found rather than what
+   the map now held. Paste the history table into the round's section.
 
 ### Maximising what a round returns
 
@@ -181,7 +190,90 @@ no email still moves a column nobody else is filling.
 
 ---
 
-## 0a. Round twenty-two: the register layer, rebuilt and actually deployed
+## 0a. Round twenty-three: Spain, and the ledger
+
+**15,886 municipal records**, up from 8,995. Spain is 6,891 of them: an
+email address for six and a half thousand councils that carry none anywhere
+else, because Wikidata holds an email for 0% of Spanish municipalities and
+a telephone number for 2%.
+
+### Spain is the one country here joined on a name
+
+Everything else in `COUNTRIES` joins on a code both sides publish. Spain
+cannot: the contacts and the authority list are two registers kept by the
+same ministry and they share no reference number.
+
+- **REL**, the Registro de Entidades Locales, is the authority list. Its
+  export is at `/REL/frontend/export_data/file_export/export_excel/
+  municipios/all/all` — found by reading the export link out of the results
+  page rather than guessing, which is what every earlier attempt did — and
+  it is a legacy `.xls`, converted with LibreOffice. 8,134 municipalities,
+  each with its official name and, inside `NUMERO_INSCRIPCION`, the INE
+  code: `01`, the five-digit code, a check digit. Abánades is `01190019`
+  against INE 19001. **The conversion drops the leading zero**, because it
+  reads the column as a number, so the value is zero-padded to eight before
+  the digits are cut out of it.
+- **DIR3** holds the contacts. `Listado Unidades EELL.xlsx`, found through
+  the downloads page at `/ctt/dir3/descargas`: 26,606 rows, of which 8,123
+  are top-level `AY` units whose name begins "Ayuntamiento" — the file
+  carries a regional IT company at that level too — and 7,026 of those
+  publish a contact. It has a two-digit province, a tax number and an
+  email, and no INE code at all.
+- **The join is the official name inside the province**, exact, one-to-one.
+  8,000 matched; 3 names claimed twice in REL and 1 in DIR3 were refused;
+  128 REL municipalities are not in DIR3 under that name, which is recent
+  renames and the same place written in the other official language.
+
+**The gate is the part to keep.** The tax number is useless as a key and
+useful as a check, because the join never touches it: a local-authority CIF
+embeds five digits that are REL's own sequence, and both that sequence and
+the INE code number a province's municipalities alphabetically from
+different epochs. So they slip against each other — joining on them gives
+59% of Spain a neighbouring town's address — but they still **order** a
+province the same way. Of 821,908 pairs of municipalities within a
+province, the two orderings agree for **98.32%**. A scrambled match would
+sit near half. `CONCORD_FLOOR` is 0.95 and it is computed on every build.
+
+**One class filter is load-bearing.** `P772` is the Instituto Nacional de
+Estadística id and Spain puts it on twelve thousand other things —
+districts, census areas, entities below the municipality. Asking for
+Spanish items carrying it returned 37,317, which would have let a
+non-municipality win a five-digit code. Scoped to `P31/P279* Q2074737` it
+is 8,205, which is what round fifteen counted.
+
+Measured end to end in the browser: Sorbas opens with
+`al086reg@dipalme.org` — on the provincial council's mail service, with
+Sorbas's own INE number 04086 in the local part, which is the pattern round
+fifteen noted and is itself a confirmation of the match.
+
+**Every row that got in this way says so.** The record carries `j: "name"`,
+and both places the page draws a register record change their wording for
+it: the note at the top says the match was on the official name inside the
+province rather than on a reference number, and a line under the address
+says it is what the national directory publishes for the council of this
+name in this province. A reader checking an address can see what ties it to
+the place.
+
+### The ledger, one row per round
+
+`tools/completeness.py --record <N>` keeps it in `tools/rounds.json`.
+
+| Round | Date | Registers | Records in the shards | Municipal website | email | telephone | street |
+| ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 22 | 2026-11-17 | 2 | 8,995 | 54% | 25% | 20% | 2% |
+| 23 | 2026-11-17 | 3 | 15,886 | 54% | 25% | 20% | 2% |
+
+It starts at 22 and not at 1 on purpose. The figures rounds four to
+twenty-one report are a record of work whose output did not survive, so
+there is nothing to put in those rows that could be checked; §0b is the
+account of that. The four percentage columns are Wikidata alone and move
+only when somebody bulk-imports a register into it, which is why they are
+flat here — **the shard count is what a round adds**, and the last column
+of any use is the one that changed.
+
+---
+
+## 0b. Round twenty-two: the register layer, rebuilt and actually deployed
 
 **8,995 municipal records are on the live page.** Italy 7,889 and Quebec
 1,106, from the two registers' own files, joined to Wikidata on codes both
@@ -291,9 +383,7 @@ Four steps, and nothing in `how_to_reach_them.html` changes:
    the month and commits what changed.
 
 The order to work in, by what each would add that Wikidata does not already
-serve live: **Spain 6,965** (REL on the INE code, DIR3 for the contacts,
-name join inside a province with the tax-number concordance as its gate),
-**Brazil 5,568** street addresses and 3,007 switchboards (IBGE code → CNPJ
+serve live: Spain is done in §0a, so next is **Brazil 5,568** street addresses and 3,007 switchboards (IBGE code → CNPJ
 through SICONFI, then the Receita mirror), **the Netherlands 341**,
 **Norway 354**, **Finland 230**. France is last, not first: its register is
 the largest but Wikidata already carries an email for 95% of French
@@ -302,7 +392,7 @@ All five endpoints answered when probed this round.
 
 ---
 
-## 0b. The round of twelve fixes to what a reader sees
+## 0c. The round of twelve fixes to what a reader sees
 
 Nothing about the data changed in this round. What changed is what the
 page does when a marker is clicked, what the camera does while the panel
@@ -449,7 +539,7 @@ takes ten seconds.
 
 ---
 
-## 0c. Read this before editing
+## 0d. Read this before editing
 
 `how_to_reach_them.html` **is the source.** An older note said it was assembled
 from parts (`n1.html`, `offices.js`, `routes.json`, `nassemble2.py`…). Those
