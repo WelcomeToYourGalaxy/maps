@@ -498,11 +498,35 @@ section has been mis-labelled at scale.
 documented core under a title that overreaches, which is the shape the owner spotted: the entry is
 not wrong, its label is. Four restate patterns already on the page.
 
-**A separate checker is testing the six promotions, the four duplicates and a sample of the
-overclaimed before anything moves on the page**, under this file's own rule that every batch is
-checked by a separate agent. **Nothing in `window.HYPS` or `window.PATS` has been changed.** The
-verdicts are in `rounds/r42_{a,b,c}.json` with reports beside them; the check will be
-`rounds/r42_checked.json`.
+**A separate checker tested the six promotions, the four duplicates, the five suspected and four of
+the overclaimed — nineteen of the thirty-one — and agreed with every verdict it tested.**
+`rounds/r42_checked.json` and `rounds/r42_check_log.md`. The other twelve overclaimed verdicts are
+recorded as `not_tested`: they stand unchecked, not endorsed. **Nothing in `window.HYPS` or
+`window.PATS` has been changed.**
+
+**Its conclusion is the one to act on: nothing should move without an edit.** Readiness, in order:
+`secret-loans-banks-traders` is closest, once "routine" comes out of its conviction line and the
+banks-and-traders claim stops leaning on the hidden-debt box alone, which names an arranger type only
+for Congo. `companies-pay-armed-groups` is safe once "routinely" goes and the Chiquita paragraph says
+the payments were demanded under threat — and **its strongest leg is missing from its own sources**:
+the disclosure runs through nine consecutive annual filings. `rankings-bent-for-money` is safe once
+the story carries all four countries, the Jordan instruction, and the Saudi motive as a "likely"
+finding among several — **as written it presents a four-country, two-motive investigation as a
+two-country money story.** `ratings-that-punish-relief` is the weakest of the six: no agency's own
+notice has been opened by anyone, and the counter-evidence on bilateral-only relief is missing from
+the entry. `private-equity-with-development-money` passes the test but asserts a channel nobody
+disputes, so promoting it as written puts a dry pattern on the page — better retitled around
+something contested. And the checker names a seventh candidate the reviewers did not:
+**`bribes-built-into-financed-contracts` is the clearest graduation on the page**, under its narrower
+title, because that narrower claim is itself documented.
+
+**The four duplicates are merges, not promotions**, and two carry conditions: nobody has yet opened a
+document stating the $12.9 billion and the single private creditor behind the `who-owns-the-debt`
+merge, because both of the lender's relevant pages load their figures by script; and the IFC count
+behind the tax-haven merge **is not documented on anything opened** — it must be attributed to the
+NGO that made it, not presented as established. `private-courts-for-investors` has no open part left
+in its title; if anything survives as a suspicion it has to be retitled around the arbitrator
+concentration or the regulatory chill, which are the only contested parts.
 
 ### The six that came back documented, and what settles each
 
@@ -562,10 +586,14 @@ reading the tea leaves), `pension-funds-buy-up-farmland`, and the two that turn 
 
 Each is an error on the page now, found by a reviewer reading the entry's own sources:
 
-1. **`lending-to-known-thieves`**: the memo's "50 to 80 per cent" for land and resettlement money
-   could not be verified on any reachable copy; the mirror that opened carries 20-30% instead. And
-   the story says the report leaked from Zaire where its source says Brussels, while two sources on
-   the card give the debt as $5bn and $4.1bn without the card saying they disagree.
+1. **`lending-to-known-thieves`** — **and the first half of this one was refuted by the check, which
+   is why a check exists.** The "50 to 80 per cent" figure is verifiable and sits in a source already
+   in the entry's own list: the 19 August 1998 newspaper piece, on the mirror that opens, says the
+   report cited numerous reports of diversion of 50% to 80% of funds budgeted for project land
+   acquisition and resettlement, and the same page carries the 20-to-30 per cent estimate separately.
+   No page fix needed. What stands: the story says the report leaked from Zaire where its source says
+   Brussels, and two sources on the card give the debt as $5bn and $4.1bn without the card saying
+   they disagree.
 2. **`water-handed-to-companies`** quotes half a sentence. The 1998 Jakarta completion report calls
    the privatisation "parallel to but facilitated by the Project" and, in the same sentence, says it
    was **not envisaged** by the government or the Bank at appraisal, adding that such a proposal
@@ -590,10 +618,15 @@ Each is an error on the page now, found by a reviewer reading the entry's own so
    it at 2017.
 
 **Four entries carry an empty `case_ids`** — the spying, tax-haven, looted-money and debt-for-nature
-entries — so they are not tied to the map at all, against this file's rule 5. And **`r42_b_report.md`
-was written while `r42_a` and `r42_c` reports exist; one reviewer handed back without one**, the
-third time in three rounds that a required report or log has been missing. Say in the dispatch that
-the report is part of the deliverable.
+entries — so they are not tied to the map at all, against this file's rule 5. Two were classified
+**with no document opened at all** (`pension-funds-buy-up-farmland` and
+`bondholders-block-debt-relief`), which the check recorded rather than hid. And
+`aid-cover-for-spies` still rests on Wikipedia for a paragraph where a Congressional Record source
+sits in its own source list — **a defect first reported on 15 November 2026 and still unfixed.**
+
+One correction to this section's own first draft: it said a reviewer had handed back without its
+report. **That was wrong** — all three reports exist, and the check said so. The missing-report
+problem is real in rounds 40 and 41, not here.
 
 ### What to do with this, in order
 
