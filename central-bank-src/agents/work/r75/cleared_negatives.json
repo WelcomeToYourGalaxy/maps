@@ -1,7 +1,9 @@
 {
   "gold_unavailable": {
     "USA": "Treasury's 'Status Report of U.S. Government Gold Reserve' is no longer served at fiscal.treasury.gov/reports-statements/gold-report/<YY-MM>.html (all month paths 302-redirect to a generic Reports index) and the fiscaldata.treasury.gov API endpoint for the gold_reserve dataset timed out and then returned a 503 error page twice. The dataset landing page is https://fiscaldata.treasury.gov/datasets/status-report-government-gold-reserve/u-s-treasury-owned-gold - needs a hand check. Not filed from memory: the depository-by-depository figures (Fort Knox, West Point, Denver, FRBNY) must come from that document.",
-    "KAZ": "National Bank of Kazakhstan: recorded in BullionStar's survey as not replying to a storage-location request; no institution found this round (country-level statement already read in an earlier round)."
+    "KAZ": "National Bank of Kazakhstan: recorded in BullionStar's survey as not replying to a storage-location request; no institution found this round (country-level statement already read in an earlier round).",
+    "HND": "Banco Central de Honduras: search returned only opaque portalunico.iaip.gob.hn/ver_archivo/<base64> links with no titles, so the BCH financial statements could not be identified. Not reached this round."
   },
-  "why": "Cleared at round 75 because each place now holds a filed gold custody record. audit_data.py check 'no country both holds a record and is listed in gold_unavailable' caught both; kept here so the superseded wording is not simply lost."
+  "why": "Cleared at round 75 because each place now holds a filed gold custody record. audit_data.py check 'no country both holds a record and is listed in gold_unavailable' caught both; kept here so the superseded wording is not simply lost.",
+  "hnd_note": "Cleared at round 75: Nota 5 'Oro Monetario' of the Banco Central de Honduras's 2024 audited statements names BNP Paribas and gives 22,373.658 troy ounces on a six-month deposit at 0.11 per cent. Read three times in all — twice by the researching agent with differently worded prompts and once by the curator with a transcription-only prompt — because the host refuses scripted requests and the sandbox declined a browser user-agent against it."
 }
