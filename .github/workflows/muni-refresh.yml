@@ -1,0 +1,49 @@
+name: municipal registers
+
+# The shards are rebuilt, not maintained. Adding a country means adding one
+# entry to COUNTRIES in tools/build_muni.py and nothing else: the page reads
+# muni/index.json for which countries have a register at all, so no change to
+# how_to_reach_them.html is involved.
+
+on:
+  schedule:
+    - cron: "17 4 1 * *"        # the 1st of the month
+  workflow_dispatch:
+  push:
+    paths:
+      - "tools/build_muni.py"
+      - "tools/check_muni_build.py"
+      - ".github/workflows/muni-refresh.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: muni-refresh
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install openpyxl
+      - name: build the shards
+        run: python3 -I tools/build_muni.py
+      - name: refuse a build that lost records
+        run: python3 -I tools/check_muni_build.py
+      - name: the chart, in the run log
+        run: python3 -I tools/completeness.py --quick
+      - name: commit the shards
+        run: |
+          git config user.name  "muni-bot"
+          git config user.email "muni-bot@users.noreply.github.com"
+          git add muni
+          git diff --staged --quiet || git commit -m "municipal registers rebuilt: $(date -u +%Y-%m-%d)"
+          git push

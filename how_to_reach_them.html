@@ -417,7 +417,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   font-size:11px;color:var(--faint);min-height:18px}
 .ptrail .pcrs{display:flex;align-items:center;flex-wrap:wrap;gap:2px 0;min-width:0}
 .ptrail .pself{flex:none;display:flex;align-items:center;gap:7px;font-size:11px;color:var(--faint)}
-.ptrail .pself a{color:var(--accent-hi);text-decoration:none}
+.ptrail .pself a{color:var(--accent-hi);text-decoration:none;cursor:pointer}
 .ptrail .pself a:hover{text-decoration:underline}
 .ptrail .pcr{background:none;border:0;padding:1px 5px;font:inherit;font-size:11px;
   color:var(--accent-hi);cursor:pointer;border-radius:4px}
@@ -5115,12 +5115,33 @@ function render(){
   const sites=new Set(),emails=new Set(),phones=new Set();
   selfRows.forEach(r=>{ if(r.site)sites.add(r.site.value); if(r.email)emails.add(r.email.value); if(r.phone)phones.add(r.phone.value); });
   SELFCH=[];
+  /* Then the register, where one covers this place. It is the government's
+     own record of itself, so it wins on a field it carries and is silent on
+     a field it does not: an absent field in a register is not a statement
+     that there is no email. */
+  const mi=muniLevel(), mr=mi>=0?muniAt(mi):null;
+  if(mr){
+    if(mr.u) sites.clear(), sites.add(mr.u);
+    if(mr.e){ emails.clear(); asList(mr.e).forEach(x=>emails.add(x)); }
+    if(mr.p){ phones.clear(); phones.add(mr.p); }
+  }
   /* the site goes beside the place name instead of in this row */
   SELFSITE=[...sites][0]||null; paintSiteLink();
   [...emails].forEach(x=>{ const a=bareMail(x);
     if(a) SELFCH.push(['<a href="mailto:'+esc(a)+'">'+esc(a)+'</a>']); });
   [...phones].forEach(x=>{ const t=bareTel(x);
     if(t) SELFCH.push(['<span>'+esc(t)+'</span>']); });
+  /* and the way to everything else the register holds for it, which is a
+     page of its own rather than four more chips on this line */
+  if(mr){
+    const extra=[];
+    if(mr.m) extra.push('the mayor');
+    if(asList(mr.cn).length) extra.push(asList(mr.cn).length+' councillors');
+    if(mr.a||mr.o) extra.push('an address to post to');
+    SELFCH.push(['<a onclick="openGov('+mi+')">'+
+      esc(STACK[mi].label)+'\u2019s own office'+
+      (extra.length?' \u2014 '+esc(extra.join(', ')):'')+'</a>']);
+  }
   /* the answers so far decide what the map still shows */
   recomputeScope();
   setPins();
@@ -7035,6 +7056,11 @@ async function fitToLevel(upTo){
 async function loadChainPins(){
   const levels = STACK.map((s,i)=>({q:s.q, i:i})).filter(x=>x.q).reverse();
   const gen=++CHAIN_GEN;
+  /* The registers first, and for every level of the chain rather than
+     inside the loop below. Hung off the office query they never ran for a
+     level whose offices were already cached or whose chain had been
+     superseded, and they depend on nothing but the id. */
+  levels.forEach(lv=>{ loadMuni(lv.q).catch(e=>console.warn('register:', e&&e.message)); });
   for(const lv of levels){
     if(gen!==CHAIN_GEN) return;              /* the reader searched again */
     if(CHAIN_DONE[lv.q]) { setPins(); continue; }
@@ -7088,6 +7114,148 @@ async function loadChainPins(){
   }
 }
 let CHAIN_DONE={}, CHAIN_CLAIMED={}, CHAIN_GEN=0;
+/* ====================================================================
+   THE MUNICIPAL REGISTERS
+
+   Wikidata is thin at municipal level, and some governments publish every
+   one of their own municipalities with its address, email and telephone
+   number as a single machine-readable file. Those files are joined to
+   Wikidata on a code both sides publish and written to `muni/` by
+   `tools/build_muni.py`, sharded by the id the panel has already resolved
+   for a level, so opening a comune costs one fetch of about eight
+   kilobytes rather than a three-megabyte file.
+
+   Three things to know before touching this. Each of them produced the
+   same visible result — a municipality showing Wikidata's details and
+   none of the register's — and none of them threw:
+
+   - `muniIdx` caches the **promise**, not the answer. Assign an empty
+     placeholder before its own fetch returns and, of the four levels
+     asking at once, three read the placeholder and conclude the country
+     has no register. The symptom is exactly one shard fetched per visit.
+   - The want flag is claimed only **after** the country is known to have a
+     register. A chain is built a level at a time and the first call can
+     arrive before `STACK[0].iso3` is filled, which reads as "no register
+     here" and leaves the flag set, so the call that came with the country
+     in hand does nothing.
+   - `index.json` lists the countries that have a register at all and is
+     read before anything else is fetched, so a click in a country with no
+     register costs one cached read rather than a 404 per visit.
+
+   Where the register and Wikidata disagree the register wins: it is the
+   government's own record of itself. An **absent** field in a register is
+   not a statement that there is none, so a field a register does not carry
+   leaves Wikidata's value standing. */
+const MUNI={}, MUNI_WANT={}, MUNI_SHARDS={};
+let MUNI_IDX=null, MUNI_REG=null;
+function muniIdx(){
+  if(!MUNI_IDX){
+    MUNI_IDX = fetch('muni/index.json')
+      .then(r=> r.ok ? r.json() : null).catch(()=>null);
+  }
+  return MUNI_IDX;
+}
+function muniShard(k){
+  if(!MUNI_SHARDS[k]){
+    MUNI_SHARDS[k] = fetch('muni/'+k+'.json')
+      .then(r=> r.ok ? r.json() : {}).catch(()=>({}));
+  }
+  return MUNI_SHARDS[k];
+}
+async function loadMuni(q){
+  if(!q || !isQ(q) || MUNI[q]!==undefined) return MUNI[q]||null;
+  const idx=await muniIdx();
+  if(!idx || !idx.countries) return null;
+  MUNI_REG=idx;
+  const iso=(STACK[0]&&STACK[0].iso3)||null;
+  if(!iso || idx.countries.indexOf(iso)<0) return null;   /* no register here */
+  if(MUNI_WANT[q]) return null;
+  MUNI_WANT[q]=1;
+  const k=parseInt(q.slice(1),10)%(idx.shards||512);
+  const sh=await muniShard(k);
+  MUNI[q]=sh[q]||null;
+  /* A record arriving repaints the panel so the place's own line can carry
+     it — but only when the walkthrough is what is on screen. `render` sets
+     `jrn-on` on the body and the two bespoke pages (`openGov`, `openLocal`)
+     clear it, so that class is the test for whether a repaint would wipe a
+     page the reader asked for. Measured on Sherbrooke, where the register
+     landed after the government page was open and replaced it with the
+     opening question. */
+  if(MUNI[q]){
+    try{
+      const b=$('#mbody');
+      if(CUR && b && b.classList.contains('jrn-on')) render();
+    }catch(e){}
+  }
+  return MUNI[q];
+}
+/* the deepest level of the chain a register has a record for */
+function muniLevel(){
+  for(let i=STACK.length-1;i>=0;i--){
+    const q=STACK[i]&&STACK[i].q;
+    if(q && MUNI[q]) return i;
+  }
+  return -1;
+}
+function muniAt(i){ const q=STACK[i]&&STACK[i].q; return (q&&MUNI[q])||null; }
+const asList=v=> v==null ? [] : (Array.isArray(v)?v:[v]);
+function regName(){
+  const iso=(STACK[0]&&STACK[0].iso3)||'';
+  return (MUNI_REG&&MUNI_REG.registers&&MUNI_REG.registers[iso]) || 'its national register';
+}
+
+/* The place's own government, everything its register publishes about it,
+   on a page of its own. It is not folded into Who to Contact: section 1
+   measured that screen as having no vertical slack left, and a council of
+   sixty-four names would push the list of offices off the window. */
+function openGov(i){
+  const r=muniAt(i); if(!r) return;
+  const st=STACK[i];
+  openModal(st.label);
+  SELFSITE=null; paintSiteLink();
+  const fld=(t,inner)=> inner ? '<div class="fld"><dt>'+t+'</dt><dd>'+inner+'</dd></div>' : '';
+  const mails=a=>a.map(x=>'<a href="mailto:'+esc(bareMail(x))+'">'+esc(bareMail(x))+'</a>').join('<br>');
+  const names=a=>a.map(x=>esc(x)).join(' &middot; ');
+  let h='';
+  if(r.u) h+=fld('Website','<a href="'+esc(r.u)+'" target="_blank" rel="noopener">'+esc(r.u)+'</a>');
+  if(r.e) h+=fld(asList(r.e).length>1?'Email addresses':'Email', mails(asList(r.e)));
+  if(r.c) h+=fld('Certified email', mails(asList(r.c))+
+    '<div class="staleq">A certified address refuses mail sent from an ordinary '+
+    'account, so it is not somewhere to write to from a normal inbox. It is here '+
+    'because for some of these governments it is the only address published.</div>');
+  if(r.p) h+=fld('Telephone', esc(bareTel(r.p)));
+  if(r.o) h+=fld('Postal address', esc(r.o));
+  if(r.a) h+=fld('Street address', esc(r.a)+', '+esc(st.label));
+  if(r.m) h+=fld('Mayor','<b>'+esc(r.m)+'</b>');
+  const cn=asList(r.cn);
+  if(cn.length){
+    /* Above eight the names fold: nothing in this panel is meant to scroll
+       and the median council in the registers here is six. */
+    h+= cn.length>8
+      ? fld('The council','<details><summary>'+cn.length+' seats on the council in '+
+            esc(st.label)+'</summary><div style="margin-top:6px">'+names(cn)+'</div></details>')
+      : fld('The council', names(cn));
+  }
+  const of=asList(r.of).filter(x=>Array.isArray(x)&&x[1]);
+  if(of.length) h+=fld('Other posts the register names',
+      of.map(x=>esc(x[0])+': <b>'+esc(x[1])+'</b>').join('<br>'));
+  $('#mbody').className='';
+  $('#mbody').innerHTML =
+    (LEAF?trail():'<button type="button" class="lpback" onclick="backToDiagram()">‹ Back</button>')+
+    '<div class="note">These are the details '+esc(st.label)+'’s own government '+
+    'publishes about itself, from '+esc(regName())+', matched to this place on a '+
+    'reference number both sides publish. Nothing here is composed: every line is '+
+    'a field the register holds. '+
+    (cn.length? 'The names come from the same file, and a seat can change before it '+
+                'is next rebuilt. No register here publishes an address for an '+
+                'individual member, so the council itself is the route and its own '+
+                'address is above. ':'')+
+    '</div><div class="off">'+h+
+    '<div class="meta">Rebuilt monthly from the register'+
+    (MUNI_REG&&MUNI_REG.built?' — this build '+esc(MUNI_REG.built):'')+'</div></div>';
+  $('#mback').style.display='none';
+}
+
 
 /* Frame the contacts rather than the boundary.
 

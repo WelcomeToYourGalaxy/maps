@@ -1,0 +1,59 @@
+{
+ "built": "2026-11-17",
+ "shards": 512,
+ "countries": [
+  "CAN",
+  "ITA"
+ ],
+ "registers": {
+  "ITA": "IPA",
+  "CAN": "Répertoire des municipalités du Québec"
+ },
+ "counts": {
+  "ITA": {
+   "shipped": 7889,
+   "refused_code_maps_to_two_items": 4,
+   "refused_item_claimed_twice": 1,
+   "no_shared_code": 0,
+   "register_publishes_no_contact": 0,
+   "fields": {
+    "u": 7875,
+    "c": 7889,
+    "a": 7889,
+    "src": 7889,
+    "e": 5463
+   }
+  },
+  "CAN": {
+   "shipped": 1106,
+   "refused_code_maps_to_two_items": 0,
+   "refused_item_claimed_twice": 0,
+   "no_shared_code": 32,
+   "register_publishes_no_contact": 143,
+   "fields": {
+    "u": 1082,
+    "e": 1096,
+    "p": 1105,
+    "o": 1106,
+    "m": 1103,
+    "cn": 1104,
+    "of": 1103,
+    "src": 1106
+   }
+  }
+ },
+ "fields": {
+  "u": "the government's own website, as the register publishes it",
+  "e": "public email addresses, every one the register holds",
+  "c": "certified email (Italy's PEC): refuses mail from an ordinary account",
+  "p": "switchboard",
+  "a": "street address as printed, with the place's name added at render time",
+  "o": "full postal address",
+  "m": "the mayor, by name",
+  "cn": "the councillors, by name",
+  "of": "other named post-holders, as [title, name]",
+  "j": "how the row was joined, where it was not a shared code",
+  "src": "which register the record came from"
+ },
+ "note": "Keyed by Wikidata id. shard = int(qid[1:]) % 512. A record states what its register publishes; nothing here is derived from a name or a pattern."
+}
