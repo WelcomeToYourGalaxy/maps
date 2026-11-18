@@ -206,5 +206,53 @@ def about(data):
                       'They count as not shown until a replacement is matched.</p>'
                       % (len(r['stale']), '; '.join(H.escape(s) for s in r['stale'])))
         a('<p>Nothing here will reach 100 per cent, and no version of this map should report that it has. These arrangements are built so that no register can be compiled. What is on the map is what surfaced — through a raid, a parliament that ordered the files handed over, a government that fell and opened the archive, an accountant who turned witness, a leak that landed at a newsroom — and was then written down somewhere a reader can check.</p>')
+
+    # ------------------------------------------------- where infiltration comes from
+    sm = data.get('srcmeta') or {}
+    er = data.get('entrank') or []
+    if sm and er:
+        a('<h2>Where it comes from: the two origin layers</h2>')
+        a('<p>The three shadings above answer how open a country\'s own officials are. These two '
+          'answer the opposite question — whose organisations are doing the reaching — and they are '
+          'built from this map\'s own records rather than from an outside index.</p>')
+        a('<p><b>What they can and cannot say.</b> Every case on this map records where an '
+          'infiltration <i>landed</i>. The only origin in the data is the home country recorded for a '
+          'named organisation, so these layers cover the %d records that name one, out of %d. They '
+          'measure what has been documented here, not the world. Heavy domestic coverage reads as a '
+          'low score: Italy has more records than any other country and reaches eight others, while '
+          'the United States has fewer records and reaches fifty-one. A country near the top is a '
+          'country whose networks operate abroad <i>and</i> get written about.</p>'
+          % (sm.get('attributed', 0), sm.get('total', 0)))
+        fixed = sm.get('fixed') or {}
+        noo = sm.get('noorigin') or []
+        if fixed or noo:
+            a('<p class="mute">Five organisation circles on this map are aggregators — one circle '
+              'standing for many cases that share no single organisation — and their country is where '
+              'the circle was placed, not where anything originates. Left uncorrected they put Andorra '
+              'among the ten countries reaching into the most others, on the strength of a circle for '
+              '"state influence networks (several states)" pinned to Andorra la Vella. '
+              '%s%s</p>'
+              % ('Corrected here: %s. ' % '; '.join('%s counted as %s' % (H.escape(k), H.escape(v))
+                                                    for k, v in sorted(fixed.items())) if fixed else '',
+                 'Left unattributed because they have no single origin: %s.'
+                 % ', '.join(H.escape(k) for k in noo) if noo else ''))
+        a('<h3>The organisations that reach furthest</h3>')
+        a('<p>The same question one level down, for companies, intelligence services, crime networks, '
+          'lodges and orders. Ranked by how many countries a documented case puts them inside, then by '
+          'how many cases. A circle on the map sits at each one\'s headquarters; click it for the cases.</p>')
+        top = [e for e in er if e['nc'] >= 2][:40]
+        a('<table class="cov"><thead><tr><th>Organisation</th><th>Kind</th><th>Based</th>'
+          '<th>Countries</th><th>Cases</th><th>Span</th></tr></thead><tbody>')
+        for e in top:
+            yr = ('%d–%d' % (e['yr'][0], e['yr'][1])) if e.get('yr') and e['yr'][1] else ''
+            a('<tr><td>%s</td><td>%s</td><td>%s</td><td>%d</td><td>%d</td><td>%s</td></tr>'
+              % (H.escape(e['n']), H.escape(str(e.get('ty') or '')),
+                 H.escape(e.get('home') or '—'), e['nc'], e['recs'], yr))
+        a('</tbody></table>')
+        a('<p class="mute">%d organisations in all have a documented case; %d of them have cases in '
+          'two or more countries. An organisation based in one country and reaching many is what the '
+          'two shadings separate: the first counts only the countries reached beyond its own, the '
+          'second counts every case it is behind.</p>'
+          % (len(er), sum(1 for e in er if e['nc'] >= 2)))
     a('<h2>Sources</h2><p>Conditions: Global Organized Crime Index 2025, Global Initiative Against Transnational Organized Crime. Boundaries: a shared boundary file. Capitals: countryinfo. Basemaps: five shared basemaps (Esri World Imagery, NASA Black Marble, Mapterhorn and AWS terrain tiles, OpenMapTiles, CARTO labels) and a painted Atlas plate. Case, organisation and pattern sources are on each card. Research covered court judgments, parliamentary and official inquiries (the Anselmi Commission, the Belgian and Swiss stay-behind inquiries, the US Church Committee, the Fraser subcommittee, the Kerry–Brown BCCI report, the UK Home Affairs Committee, Canada\'s Hogue inquiry), the organisations\' own published lists, Carroll Quigley\'s two books, the Council on Foreign Relations\' centennial history, and major newspapers.</p>')
     return '\n'.join(p)

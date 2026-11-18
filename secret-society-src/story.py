@@ -19,6 +19,56 @@ def story(data):
     p = []
     a = p.append
     a('<h2>About this map</h2>')
+    # --------------------------------------------------- what to watch now
+    # Computed from the current records so the figures move with the map.
+    now = [c for c in cases if c.get('rel') == 'now']
+    rec = [c for c in now if isinstance(c.get('y'), int) and c['y'] >= 2023]
+    def pc(sel, pool):
+        t = len(pool) or 1
+        return round(100.0 * sum(1 for c in pool if sel(c)) / t)
+    corp_pc = pc(lambda c: c.get('inf') == 'corp', now)
+    crime_pc = pc(lambda c: c.get('inf') == 'crime', now)
+    state_pc = pc(lambda c: c.get('inf') == 'state', now)
+    sec_pc = pc(lambda c: c.get('bk') == 'security', now)
+    co_pc = pc(lambda c: c.get('bk') == 'company', now)
+    exec_pc = pc(lambda c: c.get('bk') == 'exec', now)
+    a('<h2>What to watch now</h2>')
+    a('<p class="big">The most widespread infiltration today is not a secret order taking over the '
+      'world. It is the opposite shape: ordinary companies and local criminal groups buying the '
+      'people who already staff the state — police, customs and border posts, prison wings, '
+      'procurement desks and state-owned companies — one office at a time, in their own countries.</p>')
+    a('<p>That is what this map\'s %d current cases show. Companies are behind %d per cent of them '
+      'and criminal groups %d per cent, while a foreign state is behind %d per cent. The bodies '
+      'reached are police and border services (%d per cent) and state-owned companies and public '
+      'health authorities (%d per cent); a head of state or government appears in %d per cent. The '
+      'Global Organized Crime Index, which scores all 193 UN member states on the same questions '
+      'rather than on what has surfaced, reaches the same conclusion from the other direction: '
+      'people inside the state working for outside interests are the most widespread kind of '
+      'criminal actor in the world, and severe in 80 countries.</p>'
+      % (len(now), corp_pc, crime_pc, state_pc, sec_pc, co_pc, exec_pc))
+    a('<p><b>Why it matters more than the conspiracy version.</b> A customs officer paid to wave a '
+      'container through, a procurement officer who writes a tender around one supplier, a prison '
+      'officer carrying phones, a health authority buying a disinfection robot at three times its '
+      'price — each is small, and together they decide what crosses borders, what public money buys '
+      'and whether a hospital, a water utility or a road is built to standard. It is the layer of '
+      'the state that people actually meet.</p>')
+    xb = {}
+    for c in rec:
+        k = c.get('org')
+        if k:
+            xb.setdefault(k, set()).add(c['c'])
+    a('<p><b>The genuinely cross-border part is narrow, and worth watching on its own terms.</b> '
+      'Where this map does record one organisation inside several countries at once in the last few '
+      'years, it is a short list: a handful of state intelligence services working through people '
+      'in other countries\' institutions, a cocaine-trafficking complex that has to own customs and '
+      'ports to function, and state-run labour and procurement schemes. That is real and it is '
+      'documented here — but it is a different and much smaller thing than a single network running '
+      'many governments, and nothing on this map supports the second.</p>')
+    a('<p class="mute">Both of those claims can be checked against the map rather than taken on '
+      'trust. Shade the countries by "Infiltration originating in this country" to see where '
+      'documented cases are organised from, and by "Infiltration reaching out of this country" to '
+      'see whose organisations operate abroad; the About page lists every organisation with cases '
+      'in two or more countries, and says what those two layers cannot tell you.</p>')
     a('<p>This map shows where people working for an outside group hold jobs inside governments, international bodies and companies, or where an outside group pays the people who do. The outside group can be another country\'s government or spy service, a drug cartel or mafia, a company, a bank, a lodge, a church, a policy club, an armed movement or a lender. The international bodies include Interpol, the World Health Organization, FIFA and the European Parliament.</p>')
     a('<p>Most of these arrangements are kept secret, so they become known in a few ways. Police find a membership list or a ledger in a raid. A court convicts someone and the evidence is read out. A parliament orders an organisation to hand over its members. A government admits what it had denied. A newsroom obtains leaked documents. In 1981 Italian police searching a businessman\'s factory near Arezzo found a list of 962 members of a Masonic lodge called P2. It included the heads of Italy\'s three intelligence services, three serving ministers and 44 members of parliament. In 2023 a New York jury convicted Genaro García Luna, who had run Mexico\'s federal police and then its public security ministry, of taking bribes from the Sinaloa Cartel while he held those posts.</p>')
     a('<p>Each diamond on the map is one such case. There are %d, in %d countries. By who was paying or placing people: %s.</p>' % (n_cases, n_cty, kinds))
