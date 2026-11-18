@@ -4133,3 +4133,106 @@ convention cost nothing to apply.
 this round and 6 of 8 last. `crime → security` took 13 Italian records of 26. The shape metric
 ignores country entirely, so none of this costs a point — but it is the blind spot already logged
 as an open owner decision, and it is getting more pronounced each round rather than less.
+
+## R12-D: THE DNA VEIN MAPPED PROPERLY, AND THREE CORRECTIONS TO THIS DOCUMENT'S DNA GUIDANCE
+
+34 records (20 `corp → company`, 14 of 15 `corp → security`) from **4,162 DNA ids fetched with
+`xargs -P 12` at zero search cost** — about **one record per 130 ids across both cells**, roughly
+twenty times the round-11 rate, because it worked both cells off one crawl and filtered on role
+plus payer plus conduct instead of reading pages.
+
+| id range | ids | records |
+|---|---|---|
+| **6500–7599 (2015–mid 2016)** | 1,099 | **12** |
+| 9700–10399 (2020–Apr 2021) | 700 | 8 |
+| 10400–11499 (2021–mid 2022) | 1,100 | 4 |
+| 7600–8699 (late 2016–2018) | 1,100 | 2 |
+| 12480–12640 (2024) | 161 | 1 |
+
+1. **"About half of all ids are empty 211-byte shells" is wrong for these ranges** — 4,133 of
+   4,162 returned content. The real split is press release against **anonymised ECLI court
+   judgment**, and the judgment share swings by range: ids 10400–11499 are 47 per cent releases,
+   7600–8699 are 83 per cent. **Filter on the first 400 characters for `COMUNICAT` or
+   `BULETIN DE PRESĂ` and the absence of `ECLI`.**
+2. **The best range is the oldest, 6500–7599, not anything above 11500.** Still untouched: below
+   6500, and 8700–9699.
+3. **The DNA appends an `Actualizare` block to the original release when a case ends. This is the
+   cheapest outcome check on the map.** Of 33 releases checked, **nine carried updates**, which
+   killed four candidates outright — two definitive acquittals, a prosecution waiver and a death
+   before judgment — and moved five more to time-barred or acquitted. **The absence of an
+   `Actualizare` on a page fetched today is positive evidence that no final decision is
+   published.** Every future round working Romania should check it.
+
+### The mechanism behind the sweep's "related-link headline" fault
+
+R12-D found it: **fetching a `livesicilia.it` article's HTML and stripping tags returns the
+related-links sidebar, not the article body.** Use `?slug=<slug>&_fields=content` instead.
+
+That is almost certainly the cause of the fault four separate sweep agents reported — a denial
+"found" in a sidebar headline, sometimes about a different person or a different allegation. It is
+not a reading error; it is a text-extraction artefact, and it has a one-line fix.
+
+### `livesicilia.it` has thinned by an order of magnitude
+
+0.67 records per search in `corp → company` against round 11's measured 8 records from 2 queries.
+The obvious Sicilian health strands are worked out. `reports.nabu.gov.ua/investigations/` is now
+fully exhausted for these cells — both of its in-cell items are already held.
+
+### 32 of its 34 records are Romanian
+
+A real property of where the density is, not a shortcut. But `corp → company` now holds 34 held
+Romanian records plus 18 new ones. The agent's own recommendation: rest the DNA vein and leave the
+sub-6500 ranges for a round that needs volume rather than spread.
+
+## THE DUPLICATE FLAGGER, REBUILT A THIRD TIME — AND THIS TIME ON EVIDENCE
+
+R12-D disproved the calibration I had sent to four agents mid-run. **Two of its ten `high` flags
+were wrong, and they were the two most valuable leads in its file** — Apele Romane's deputy
+director general and Baia Mare's hospital manager, both flagged purely on a round figure (100,000
+and 10,000). Both became records.
+
+Measured across the whole map, those figures carry no information at all:
+
+| figure | held records containing it |
+|---|---|
+| 10,000 | **77** |
+| 50,000 | 59 |
+| 100,000 | 53 |
+| 200,000 | 39 |
+
+So the figure rule was rebuilt on **document frequency** — but a flat rarity cut-off of two then
+demoted genuine duplicates (the Slovakia counter-intelligence pair, ASL Bari, SBU Poltava), because
+a real duplicate can share a common amount.
+
+**Independent thresholds were the wrong design.** The flagger now **scores** each lead against
+every held record in the same country — an identical single-case locator worth 1.0, title overlap
+worth its Jaccard value, a shared figure weighted by how often it appears (0.6 if in two records or
+fewer, 0.25 up to eight, 0.05 above) — and **always names the closest held record with the score
+and the reason**, so the agent has something specific to compare against rather than a bare
+verdict. `high` above 0.85, `check` from 0.40, `none` below.
+
+Distribution: **19 high, 60 check, 304 none, 43 REMOVED.** Saved into the repo as
+`data/candidates_flagged.json` so the next round does not rebuild it.
+
+**The honest summary of three attempts: a flag that claims a verdict will be wrong often enough to
+cost records, and a flag that names the closest record and shows its reasoning is useful even when
+its score is wrong.** Every agent that used these flags well did so by reading the named record.
+
+### Also from R12-D, worth keeping
+
+- It checked all 34 records against `removed_records.json` by name *and* by figure — clean — and
+  caught one genuine loss from the regenerated cell file: a Bucharest Sector 1 local-police record
+  whose held twin **anonymises every name**, so its string searches had missed it. Dropped before
+  submission.
+- Correctly declined a near-duplicate rather than assert it: DNA 598/VIII/3 charges the Brașov
+  local heating director with 270,710.19 lei of goods over 2018–2023, where the map already holds
+  a record against the same man for an overlapping period. Filed as a lead.
+- **Colectiv Club / ISU București** rejected on limb 2, and the reasoning is worth recording: two
+  fire-safety officers let the club trade with no fire-safety authorisation, securing it 62,298 lei
+  of profit up to the disaster of 30 October 2015. **Dereliction, not infiltration** — nothing of
+  the club's got inside the inspectorate.
+- Two of the largest figures seen all round — €1,100,000 and €200,000 — were **demands only, with
+  nothing shown received**, so limb 3 fails.
+- Five unworked in-cell leads banked with their update-block warnings (Odorheiu Secuiesc hospital,
+  Institutul Clinic Fundeni, Neamț county hospital's operating block, Nicolae Malaxa hospital, the
+  Brașov second indictment) so a later round starts from them rather than re-crawling.
