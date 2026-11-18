@@ -3295,3 +3295,198 @@ worth a named warning.
 Every agent volunteered a calibration — how many of its own confirmations it would stake the map
 on — without being asked twice: 21 of 32, 28 of 31, 28 of 34, 24 of 26, 19 of 35, 27 of 30. **That
 is 147 of 188 staked without reservation**, and the gap is almost entirely the citation class.
+# Round 12 findings
+
+## THE SWEEP'S FIX PROPOSALS HAVE THEIR OWN ERROR RATE, AND IT IS HIGH
+
+FIX-1 applied 16 of the sweep's corrections and found **5 of the 16 proposed fixes wrong — 31 per
+cent.** The brief told it to verify rather than paste, because round 10 caught two bad checker
+suggestions. That instruction has now paid for itself five times in one batch.
+
+**This changes how the sweep's own numbers should be read.** The 47 content defects are an
+**upper bound**, not a count: some were not defects, and some corrections would have introduced a
+new fault. The sweep remains worth having — the defects it found are real and several were
+serious — but "19 per cent of records misdescribe their source" should be stated as "up to 19 per
+cent", pending the applying pass.
+
+### The catch that matters most: a fabrication the fix would have preserved
+
+**idx 845, Kurulkar.** The checker said keep the sentence and re-cite it to Wikipedia's "DRDO
+espionage case", which reads "He has denied the charges, claiming that he was honey-trapped by the
+Pakistani operative." FIX-1 followed Wikipedia's **own footnote** for that sentence — The Hindu, 16
+May 2023 — and opened it. **No denial by Kurulkar anywhere on it, and the honeytrap description is
+the ATS's.** So the Wikipedia sentence is itself unsourced, and citing it would have breached
+BRIEF5 rule 9 while leaving the original fabrication in place behind a respectable-looking
+citation.
+
+What went in instead, from PTI copy on The Hitavada, 16 April 2026: investigators, not Kurulkar,
+describe the contact as a honey trap, and at his bail hearing he argued the information was already
+in the public domain.
+
+**The lesson is a method, not a record: follow a secondary source's own footnote to the primary.**
+Four records in this sweep had a denial "found" in a related-link headline; this one had a denial
+found in an encyclopedia sentence with nothing behind it.
+
+### A record that was not defective at all
+
+**idx 350, Paladin.** The checker marked it overstated because the former CEO said he "was not
+aware of" any improper payment. **Two paragraphs below on the same page he says: "We paid nothing
+to any official and got nothing from them."** That is a flat denial. The record was right;
+narrowing it would have weakened a true sentence. FIX-1 kept the denial and made it specific.
+
+### A correction correctly declined
+
+**idx 253, Novartis.** The checker wanted "the Greek Judicial Council nonetheless ruled that the
+scandal was real" added as established fact. On the cited page that rests on a single footnote to a
+**capital.gr headline quoting a Syriza MP** — a politician's characterisation of a decision, not a
+report of one. capital.gr returns HTTP 500 and no other outlet carrying the ruling was found, so it
+was left out. **If that ruling can be sourced it is a real counterweight to the ministers' denials
+and belongs in the record** — worth the owner's attention.
+
+### A fix right on the facts but resting on the wrong sentence
+
+**idx 1377, Lesotho.** The proposed fix asserted Kabi "publicly pledged his support to the Terene
+faction" while quoting a Sowetan line that says only that he would see the famo gangs "taken care
+of in all spheres of their lives". FIX-1 opened the page: the Terene detail **is** there, in its
+own words — "has thrown his weight behind the Terene faction". The claim stands, but only because
+it was checked. It also corrected the record's cite from City Press, 18 September 2022 to Sowetan,
+30 August 2022, and dated the twelve-group ban to June 2024 from the TRC report.
+
+## THE ROUND-9 DAMAGE DID NOT RECUR
+
+Four of the proposed fixes (583, 1001, 1349, 1377) **ended with a note addressed to the owner** —
+"the source read does not record how they answered the charges", "no denial by the party appears in
+the cited sources". FIX-1 wrote none of them into the records. That is precisely the round-9 failure
+the brief describes, where a mechanical pass left checkers' notes in descriptions as visible prose,
+and it was avoided by the reader-not-script rule.
+
+## TWO ITEMS NEEDING AN OWNER DECISION
+
+- **idx 583, Rodriguez: `status: "acquitted"` looks wrong.** The cited page says only that in 2012
+  the sentence was revoked amid accusations of prosecutor misconduct — not that he was acquitted.
+  `d` now says an appeals court set the sentence aside, and `inside` was aligned so the two do not
+  contradict, but the status field was left alone. **BRIEF5 has an `annulled` status that may fit
+  better.** A sentence set aside for prosecutorial misconduct is not an acquittal, and the map
+  currently says it is.
+- **Three records are now over the 130-word cap on purpose**: idx 165 at 136 (the extra is a
+  denial plus the paper's rebuttal of it), 1377 at 132, and 1117 at 131 — though 1117 is now
+  *shorter* than as published, because the judges' conviction moved to `undone`. idx 1570 came
+  down from 165 to 121. The standing rule is that accuracy beats the cap; these are candidates for
+  the over-cap-on-purpose list alongside the existing six.
+
+## A DEAD CITATION REPAIRED, AND A MECHANICAL TRAP WORTH KNOWING
+
+**idx 1260's stored url 404s.** Repointed to the live AP reprint at ktvz.com, with `cite` set to
+"AP, 24 July 2023 (via KTVZ); Kurir, 30 January 2024". This is the fourth confirmation that **AP
+wire copy survives on local-TV sites** when the original 404s.
+
+A near-miss worth recording for anyone parsing HTML: FIX-1's first pass at the Wikipedia page
+appeared to show no denial because its own ref-stripping script **swallowed the sentence on a
+self-closing `<ref name="Hindu"/>` tag.** It caught this by verifying against the page's footnoted
+source rather than trusting its own extraction. A text-extraction bug can manufacture a "no denial
+in source" finding.
+
+New hosts that refused: `malaymail.com` (403 — would have corroborated the arrest of a Wilmar
+employee two days after the company's statement; the claim was left out rather than asserted),
+`capital.gr` (500), `freepressjournal.in` REST API (403, though its article pages load fine),
+`theedgemalaysia.com/node/751428` (404).
+
+Cost for 16 applied corrections: about 33 curls and 3 searches.
+
+## THE SECOND FIX BATCH CONFIRMS THE RATE, AND NAMES THE SYSTEMATIC ERROR IN THE FIXES
+
+FIX-3 found **5 of 15 proposed fixes wrong — 33 per cent**, against FIX-1's 31. Two independent
+measurements, the same rate.
+
+And the errors have one shape. **The sweep found real citation faults and then proposed deletion
+where the right remedy was re-citation.** In four of FIX-3's five catches the denial was true,
+published and findable — the checker had only established that the *stored* page did not carry it:
+
+- **idx 89, Bystron** — the fix said drop the denial for want of a source. AFP via Courthouse
+  News, 16 May 2024, carries Munich prosecutors confirming a preliminary investigation against **a
+  member of the German Bundestag** on suspicion of bribery of elected officials and money
+  laundering, the search of his Bundestag offices, and his own words: he "had not accepted any
+  money to advocate pro-Russian positions." The fix also called him an MEP; he was a Bundestag MP
+  at the time and became an MEP only in June 2024.
+- **idx 1076, Mexican banks** — the fix would have deleted Mexico's finance ministry statement as
+  unsourced. El CEO, 25 June 2025, has the SHCP saying it asked the US Treasury for evidence its
+  financial intelligence unit or banking regulator could verify, and received none.
+- **idx 1240, Scorpene** — the fix implied the Thales, DCNI and Baginda statements should go. All
+  three are carried by **the record's own later cites**: Thales "strongly contests these
+  allegations" (AFP via Free Malaysia Today), a Thales representative "categorically denied", a
+  DCNI spokesperson "strongly denies any wrongdoing in connection with the Malaysian contract",
+  and Baginda "categorically denied all allegations of wrongdoing" (The Vibes citing Bloomberg).
+- **idx 1474, Moagi** — the fix proposed an unverifiable claim about his lawyer. Mmegi's report of
+  the acquittal quotes him directly: he has always maintained his innocence on every matter
+  levelled against him.
+
+**Deleting a true published fact is a worse error than leaving a miscited one**, and the fix
+proposals leaned that way. This is the same failure mode as the Cite Soleil patch and the
+Cardamone removal: a repair pass that only reads one page concludes a fact is unsupported when it
+is merely cited to the wrong page.
+
+So the right remedy for most of the sweep's findings is **re-citation, not excision** — which is
+cheaper, safer and leaves the map saying more rather than less.
+
+Also corrected: **idx 648, Očistec** — the record hedged "five or six counts"; Noviny.sk (TASR), 21
+October 2026, gives six, broken down (two against Bödör, one against Gašpar, four against Krajmer,
+one covering two men). The fix had left both the hedge and the prosecutor's own waiver out. Added
+from the 26 October report: the defendants waived their right to complain and asked the court to
+hear the time-barred counts, on which it may rule on guilt but impose no sentence.
+
+## BOTH CROSS-AGENT CONFLICTS RESOLVED, AND IN BOTH CASES THE REMOVAL WOULD HAVE BEEN WRONG
+
+**(a) Cardamone: Agrigento stays.** The LiveSicilia page of 18 April 2026 says it in its first
+body line — the 70-year-old Giuliano Gerardo Cardamone, former head of the prison police at Catania
+Bicocca, definitively sentenced to ten years for corruption and external mafia complicity, **"non è
+al sicuro nell'istituto penitenziario di Agrigento dove è detenuto per scontare la pena"**, with
+lawyer Giuseppe Lipera's application to Nordio, Piantedosi and the DAP for transfer to the military
+prison at Santa Maria Capua Vetere.
+
+The first agent was right. **The second agent's removal would have deleted a sourced fact** — and
+its reasoning was also correct on its own evidence, because the La Sicilia reprint and the 3 May
+LiveSicilia piece genuinely do not carry it. Two careful agents, two correct readings of different
+pages, one wrong conclusion. The flight, arrest, Agrigento detention and transfer request now sit
+in `undone`; that record's `d` came down from 156 words to 131.
+
+**(b) Cite Soleil: both sources cited, the denial split by source.** Verified on both sides.
+S/2026/714 para. 51: "The Panel contacted Mr. Antoine, who denied his connections to gangs, in an
+email." Para. 59: "The Panel wrote to Mr. Cassy ... but had received no response at the time of
+drafting." And AP via WLRN, 8 October 2026: Cassy told the Associated Press by phone "I am a
+pacifist", and called on the experts to retract his name, saying the report was "incorrect and
+unfounded".
+
+So the citation upgrade was taken — url now the UN PDF, paras. 37, 43, 48-51, 52-59 and 62 in
+`cite` — **and the AP/WLRN cite kept with the denial attached to it.** Applied as the patch was
+written, the upgrade would have manufactured a false denial.
+
+Two further corrections fell out of it: the record called the document "94-page" and "released in
+October 2026". **It is 91 pages, dated 8 September 2026 and reissued 12 October.** The 94 was AP's
+count, repeated as if it were the document's.
+
+## THE CITATION-GAP CLASS, NOW VISIBLE FROM THE OTHER SIDE
+
+FIX-3 reports that in its batch of 15, the stored urls for **idx 89 (Moscow Times, 27 March 2024),
+idx 273 (the Wikipedia Thales Group page) and idx 1342 (El Litoral) do not carry the denials those
+records attribute to them**, and idx 1375's stored Lesotho Tribune page carries neither the forgery
+claim nor a response. Four of fifteen, found while doing something else.
+
+That is the same rate the sweep measured from the other direction, and it is now confirmed by an
+agent that had the sources open. **It wants a dedicated re-citation pass, not another sweep** — the
+facts are mostly fine; the links are wrong.
+
+## OVER THE CAP, DELIBERATELY
+
+- **idx 302 (Cite Soleil): 159 words**, up from 124. Carrying both halves of a two-person denial
+  with the source each belongs to does not fit, and the alternative was dropping the
+  Latortue/Victor Artibonite finding.
+- **idx 337 (Rwanda/M23): 148 words**, unchanged — the Kagame correction went into `undone`.
+- **idx 1152 (TÜGVA): 132**, up from 130, because "said the papers were forged" became "officials
+  denied that the documents were authentic".
+
+Four corrections sit in `undone` rather than `d` (337, 648, 1240, 1474) because that is where the
+published sentence already was, and moving them into `d` would have pushed those records far over
+cap. `build.py` renders `undone` as a visible "What happened next:" block, so nothing is hidden.
+
+Cost for 17 applied corrections: 27 curls and 6 searches, nothing defeated. One mechanical note:
+`noviny.sk` 404s on a bare numeric path and needs the full slug.
