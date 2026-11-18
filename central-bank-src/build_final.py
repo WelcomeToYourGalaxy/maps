@@ -148,6 +148,13 @@ for r in EG["gold"]["rows"]:
     k = r.get("iso3")
     if k in P:
         P[k]["gold"] = {"t": r["tonnes"], "pct": r.get("pct_of_reserves"), "as": r.get("as_of")}
+# The third custody state, added at round 75: the bank's own audited accounts say the gold is
+# abroad and name no institution. Without this the box shows a tonnage and nothing else, and a
+# reader cannot tell "nobody has looked" from "the bank says it will not say" -- which on this row
+# is the more telling of the two.
+for k, v in (load("gaps.json", {}).get("gold_abroad_undisclosed") or {}).items():
+    if k in P:
+        P[k]["gabs"] = {"q": v.get("quote"), "d": v.get("document")}
 # ---------- corruption, secrecy, money laundering, bank rescues ----------
 XT = json.load(open("/root/cb/out/extra.json"))
 for k, v in XT.items():

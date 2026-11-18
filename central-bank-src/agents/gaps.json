@@ -2616,5 +2616,107 @@
   "TKM": "ALSO_FILED: this country holds a counted record on this row; the blank is about a different vein, not the place. r72: [blank] Turkmenistan's one record is the January 2014 dismissal. Tried the official route for a second: the Turkmen MFA's own news feed (Embassy of Turkmenistan in Kabul). Page /en/news/19607, 'The President of Turkmenistan severely reprimands a number of officials', read in full - the five officials severely reprimanded are the Minister and a Deputy Minister of Agriculture and Water Industry, the Chairman of the State Customs Service, the Chairman of the Turkmenhimiya State Concern and the Dashoguz velayat hyakim; the Central Bank chairman is not among them, and the page prints only '12 Oct' with no year. Page /en/news/82584, 'OFFICIAL NEWS' (9 Jul), read in full - it records the appointment of Central Bank chairman Gadyrgeldi Mushshikov as managing director for the IMF and the Asian Development Bank, which is an appointment, not an action against the bank. Trend.az article 2466746, 'Heads of Central Bank, commodity exchange reprimanded in Turkmenistan', was not opened for want of budget and is the single best next lead for this country.",
   "IRQ": "ALSO_FILED: this country holds a counted record on this row; the blank is about a different vein, not the place. r72: [blank] Candidate: US restrictions on dollar flows through the Central Bank of Iraq. A search returned The National, 20 July 2023, 'US bars 14 Iraqi banks from dollar transactions', and related Middle East Policy Council and Iraqi Economists Network pieces. Not filed and not opened: in every description the subject of the action is fourteen commercial banks and the Central Bank of Iraq is the channel and supervisor, which under the round 72 rule makes the bank the counterparty rather than the subject. The narrower candidate worth one fetch next round is the New York Fed's imposition of transfer controls on the CBI's own dollar account in November 2022, which would be an action on the bank itself.",
   "GUY": "ALSO_FILED: this country holds a counted record on this row; the blank is about a different vein, not the place. r72: [blank] Searched for a second Guyanese episode ('Bank of Guyana governor sent on leave government 2020'). Every result is an appointment or a routine supervisory story: centralbanking's 2014 appointment of Gobind Ganga, Stabroek News of 3 December 2014 confirming him, the Bank of Guyana's own governor profile page, Guyana Chronicle on new governor and deputy governor appointments, and the Bank of Guyana half-year report 2020. No source reports a removal, a suspension or pressure on the bank. Guyana's one record stays the 1998 statutory arrangement over exchange-rate policy."
+ },
+ "gold_abroad_undisclosed_note": "A THIRD STATE ON THE GOLD ROW, added at round 75 on the owner's decision. The custody row has two states that render: a named external custodian, and gold kept in the bank's own vault. A place that discloses NEITHER reads as blank, which is right when nothing is known and wrong when the bank's own audited accounts say the gold is outside the country and decline to say with whom. That is a fact about custody and it is arguably the most telling one on this row: the country does not control its own reserves and will not name who does. These entries carry it. Each is quoted from the bank's own statements and names no institution, because none is named; inferring one from a counterparty table elsewhere in the same document is the error this row forbids, and it was refused on Albania where the temptation was real. Counted separately from the custody ties in coverage.py, never merged into them.",
+ "gold_abroad_undisclosed": {
+  "KGZ": {
+   "quote": "Золото на счетах в иностранных банках и в слитках",
+   "says": "The National Bank of the Kyrgyz Republic's Note 7 line reads 'gold in accounts at foreign banks and in bullion', and a concentration disclosure adds that gold on deposit at foreign banks rated A+ by Fitch exceeds 10 per cent of own capital. The note names no institution.",
+   "document": "NBKR consolidated financial statements, Note 7",
+   "found": "r75 gold slice A"
+  },
+  "UKR": {
+   "quote": "Gold in foreign banks generating interest",
+   "says": "The National Bank of Ukraine's accounting policy says gold is held in foreign banks generating interest, plural and unnamed; Note 6 gives UAH 9,951 million of gold deposits with no counterparty, and the consolidated statements carry no gold note at all. The geographic concentration table in Note 23 expressly excludes monetary gold.",
+   "document": "NBU consolidated financial statements 2024, policy note and Note 6",
+   "found": "r75 gold slice A"
+  },
+  "ALB": {
+   "quote": "in current accounts with foreign correspondent banks",
+   "says": "The Bank of Albania's Note 10 places the ENTIRE holding in current accounts with foreign correspondent banks and names none of them. 'BIS Basel' does appear elsewhere in the Bank's counterparty tables, but those columns cover deposits, tradeable assets, IMF accounts and other assets, and monetary gold is a separate line appearing in none of them — so inferring the BIS from them would be exactly the inference this row forbids, and it was refused.",
+   "document": "Bank of Albania financial statements, Note 10",
+   "found": "r75 gold slice B"
+  },
+  "MOZ": {
+   "quote": "No estrangeiro",
+   "says": "The Banco de Moçambique's NOTA 8 carries the whole holding on a row reading 'No estrangeiro' — abroad — and names no institution.",
+   "document": "Banco de Moçambique financial statements, NOTA 8",
+   "found": "r75 gold slice B"
+  }
+ },
+ "reserve_managers_denominator": {
+  "what_this_is": "The denominator for the outside-reserve-managers row, established at round 76. The row had been reported as a percentage of all 192 places, which is wrong in the same way the named-shareholders row's 5% was wrong: roughly a quarter of central banks use no external manager at all, so 192 cannot be this row's universe.",
+  "verdict": "This row can have an ESTIMATED POPULATION denominator and never a roster. No authoritative source enumerates which central banks use external managers, and the body best placed to publish one states in terms that it does not.",
+  "no_roster_because": {
+   "quote": "Survey results are presented in an aggregate format to preserve anonymity.",
+   "source": "World Bank Treasury RAMP, Reserve Management Survey Report 2025, fifth edition, introduction; the identical sentence appears in the 2023 fourth edition's survey background and methodology appendix",
+   "read_how": "pdftotext of the publisher's own file, not a fetch summary"
+  },
+  "population_estimate": {
+   "share_of_central_banks_using_an_external_manager": "about three quarters, stable since 2019",
+   "editions": [
+    {
+     "year": 2025,
+     "figure": "almost three-quarters",
+     "respondents": 136,
+     "quote": "Almost three-quarters of central banks employ external managers, primarily for knowledge transfer and capacity building.",
+     "note": "the report adds the share has held within plus or minus 2 points since 2019"
+    },
+    {
+     "year": 2023,
+     "figure": "77 per cent",
+     "respondents": 125,
+     "quote": "We observe that 77 percent of respondents use external managers, 73 percent of which have fewer than five external managers"
+    },
+    {
+     "year": 2021,
+     "figure": "75 per cent",
+     "respondents": 119
+    },
+    {
+     "year": 2019,
+     "figure": "72 per cent of the 94 who answered",
+     "respondents": 99
+    }
+   ],
+   "implied_universe": "about 140 to 148 of the world's central banks",
+   "row_against_it": "80 places filed, so roughly 54 to 57 per cent"
+  },
+  "a_second_and_lower_ceiling": {
+   "quote": "Fewer than a quarter of central banks disclosed their investment policies, guidelines, risk metrics, or characteristics of external management programs.",
+   "source": "RAMP Reserve Management Survey Report 2023, 125 participants",
+   "also": "The 2019 inaugural edition says it of external managers specifically: 'A majority of institutions do not provide information on institutional regulation, risk metrics, benchmarks, external managers and investment horizon.'",
+   "what_it_means": "From the central bank's own side, under a quarter disclose anything about an external management programme — under about 48 of 192. The row stands at 80 places only because most of it rests on the MANAGER's disclosure rather than the bank's: Norges Bank Investment Management's published mandate list, RAMP press releases, and three currency-union statements that expand to their members. So the places still absent are mostly ones where no document will ever name a manager, and this row's remaining headroom is small."
+  },
+  "norway_is_half_the_row": {
+   "figures": "103 of the 207 links on this relation are Norway, 49.8 per cent, and 103 of the 142 distinct firms on it are Norway's — all of them from a single page, nbim.no/en/investments/external-mandates/. Verified directly at round 76, not taken on report. Everything else is 104 links, 40 firms, 60 places.",
+   "the_substantive_problem": "Those 103 are external managers of the Government Pension Fund Global, a SOVEREIGN WEALTH FUND, not of foreign exchange reserves — unlike every other block on this row. So the row as it stands conflates two different things, and half of it is one fund's mandate list.",
+   "and_it_is_a_disclosure_artefact": "A central bank with equally many external managers that publishes nothing scores zero here. The row measures disclosure at least as much as it measures outside management.",
+   "what_to_do": "Count PLACES, not ties — the completeness chart already does. If a tie count is ever shown, show it as '233 ties, of which 103 are one fund's published manager list'. Whether to move the Norway block to a separate sovereign-wealth-fund relation is an open decision for the owner; it would make both rows mean one thing each."
+  },
+  "closed_veins": "RAMP's Global Network page no longer lists members, serving events text only, and its 2024 one-pager gives only 'over 70 members worldwide' including bodies that are not central banks. So the manager's side of the roster is closed too. The IMF Guidelines' accompanying document and case studies and two BIS candidates are recorded as NOT REACHED rather than as absences."
+ },
+ "swap_lines_denominator": {
+  "what_this_is": "The denominator for the swap-lines row, established at round 76. The row had been reported as a percentage of all 192 places. A swap line needs a willing PROVIDER, and the providers are few, so 192 was never this row's universe — the third row this project has found measured against the wrong denominator, after named shareholders (9, not 192) and outside reserve managers (about 144, not 192).",
+  "how_it_was_bounded_without_circularity": "Counting the places the map already holds and calling that the universe would be the numerator restated. The bound comes instead from the SUPPLY side: the providers publish their own complete lists, so enumerating the providers bounds the set of possible counterparties independently of what the map holds. Three of the largest were enumerated at round 76 and are now EXHAUSTED against the map.",
+  "providers_enumerated_and_exhausted": [
+   {
+    "provider": "People's Bank of China",
+    "evidence": "Its own table, 'Status of Bilateral Local Currency Swap Agreements Signed by PBoC (As of September 30, 2025)', lists 32 counterparties and every one was already filed.",
+    "also_tells_us": "Twelve filed counterparties are NO LONGER on that table — Albania, Armenia, Belarus, Georgia, Kazakhstan, Morocco, Nepal, Serbia, Suriname, Tajikistan, Ukraine, Uzbekistan — which is good evidence those lines lapsed. They were not re-filed as lapsed, since that would duplicate; a later round should update `status` in place. Caveat: the filed Serbia row is dated 2026-05-28 and post-dates the table."
+   },
+   {
+    "provider": "Federal Reserve",
+    "evidence": "The New York Fed's page and its archive name no counterparty beyond the five standing arrangements, NAFA and FIMA, all filed. The historical 1962-1998 reciprocal currency network was enumerated in full from NBER working paper 20755, read as pdftotext: the nine set up by end-1962, the five added by August 1971, Mexico's separate 1967 line and the two BIS lines — 16 records, all lapsed, the FOMC having eliminated every standing swap facility on 17 November 1998."
+   },
+   {
+    "provider": "European Central Bank",
+    "evidence": "Its own published list of swap and repo lines with non-euro-area central banks. Two were missing and are now filed, both lapsed: Bulgaria and Croatia, EUR 2bn each, April 2020."
+   }
+  ],
+  "supply_side_still_unenumerated": "The Bank of Korea, Japan's Chiang Mai Initiative Multilateralisation network, and the Swiss National Bank. Those are where any further places would come from, and they are the next round's work on this row. Smaller bilateral providers may exist beyond them.",
+  "the_euro_area_question_is_the_owners": "The map keys the ECB's lines to the union and expands union records to every member, which is its established convention for all relations, and the box says 'through the European Central Bank'. On that convention all twenty euro-area members have a swap line. But only NINE of the twenty are shown by a source to have ever held a line of their OWN: Austria, Belgium, France, Germany, Italy and the Netherlands through the Fed's 1962-1998 network, Estonia and Latvia through the Riksbank, and Croatia through the ECB's 2020 line. For Spain, Portugal, Ireland, Greece, Finland, Luxembourg, Slovenia, Slovakia, Lithuania, Cyprus and Malta no line of their own was found. Whether a euro member 'has a swap line' is therefore an editorial call and not something a source settles. The map's own convention answers yes and that is what the figures reflect.",
+  "refused_on_scope": "The Arab Monetary Fund does not belong on this row: its 2025 annual report has no membership roster and describes its lending as going to governments and finance ministries — 'signed with the Government of the Hashemite Kingdom of Jordan' — not as swap or repo lines with member central banks. Filing 22 Arab states on AMF membership would have invented the instrument type, so nothing was filed. The Asian Clearing Union was refused by the same test and is held in agents/work/r76/held_r76.json: it settles trade between member countries rather than lending between central banks, and its host cannot be read by anything but the fetch tool.",
+  "what_the_percentage_now_means": "The row holds every counterparty on the three largest providers' own published lists. The honest statement is not a percentage of 192 but that the supply side is enumerated and exhausted for those three, with Korea, the CMIM and the SNB outstanding. A reader wanting one number should be given places-with-a-line against places-evidenced-to-have-had-one, and told that the second figure is bounded by who was willing to provide, not by how many central banks exist."
  }
 }

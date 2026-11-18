@@ -175,6 +175,16 @@ print(f"  {len(_gdp & GOLDP)} of the {len(GOLDP)} places with a holding above ze
       f"{100*len(_gdp & GOLDP)/len(GOLDP):.0f}%")
 print(f"  {len(_gdp & LISTED)} of the {len(LISTED)} places the World Gold Council lists at all "
       f"({len(LISTED - GOLDP)} of them at zero tonnes) = {100*len(_gdp & LISTED)/len(LISTED):.0f}%")
+# The third state, added at round 75: the bank's own accounts say the gold is abroad and name
+# nobody. Not a custody tie, because there is no party to tie to, and never merged into the tie
+# count -- it is a different claim and the honest figure keeps them apart. But it IS part of "do we
+# know where this gold is, or know that we are not being told", which is what a reader wants.
+_abroad = set((gaps.get('gold_abroad_undisclosed') or {}).keys()) & places
+_known = (_gdp & GOLDP) | (_abroad & GOLDP)
+print(f"\n  {len(_abroad)} further places say in their own audited accounts that the gold is "
+      f"ABROAD and name no institution: {' '.join(sorted(_abroad))}")
+print(f"  counting those, {len(_known)} of the {len(GOLDP)} places that hold gold either name a "
+      f"custodian or state that they will not = {100*len(_known)/len(GOLDP):.0f}%")
 print(f"  {len(_gdp - LISTED)} further places have a custodian but no gold holding of their own "
       f"(the BCEAO members, whose gold is pooled at the union rather than apportioned)")
 
@@ -294,9 +304,14 @@ NOCB = set(_nocb.get('places') or {}) if isinstance(_nocb, dict) else set(_nocb)
 UNION_CODES = set(UNION) | {'EMU'}
 print("\nPlaces with no record of this kind")
 print("  (union codes and the ten places with no central bank are listed separately)\n")
+# Swap lines and named shareholders were missing from this loop, so neither printed an absent
+# list and anything wanting one had to re-derive it. to80.py did exactly that for swaps, got 142
+# where the row's own place count implies 108, and reported a ceiling of 118 per cent -- a parser
+# matching nothing and returning a plausible-looking wrong answer. The rule this project keeps
+# relearning: print the list from the place that owns the figure.
 for k in ('External auditors', 'Banknote printers', 'Gold custodians',
           'Outside reserve managers', 'Governor removals and pressure',
-          'Corruption cases', 'Revolving door'):
+          'Corruption cases', 'Revolving door', 'Swap lines', 'Named shareholders'):
     s_, _n = cats[k]
     ab = sorted(places - (s_ & places))
     real = [c for c in ab if c not in UNION_CODES and c not in NOCB]
@@ -308,6 +323,26 @@ for k in ('External auditors', 'Banknote printers', 'Gold custodians',
     # double. Round 72 found it by subtracting the negatives from the absent list and getting one
     # country, Palestine, which turns out to be absent from the World Gold Council table entirely.
     # These are separated out the same way the ten places with no central bank already are.
+    # Named shareholders has a denominator of NINE, established at round 75 and recorded in
+    # owners.json['eligible'] with its sources. Printing "183 to go" for it would hand the next
+    # round a target list of places that cannot hold a record at all -- the very figure this
+    # project spent a round disproving. So the row prints its real state instead.
+    if k == 'Named shareholders':
+        _el = (own.get('eligible') or {})
+        _ec = _el.get('count')
+        if _ec:
+            _ep = set(_el.get('places') or [])
+            _missing = sorted(_ep - (s_ & places))
+            print(f"  {k} — {len(_missing)} to go, of the {_ec} central banks that have any "
+                  f"non-state shareholder at all")
+            print("    " + (" ".join(_missing) if _missing
+                            else "none: every eligible bank is on the map"))
+            print(f"    not targets, wholly state-owned or without share capital, so they can hold "
+                  f"no record here ({len(real) - len(_missing)})")
+        else:
+            print(f"  {k} — denominator not established; see owners.json['eligible']")
+        continue
+
     nogold = []
     if k == 'Gold custodians':
         nogold = [c for c in real if c not in GOLDP]

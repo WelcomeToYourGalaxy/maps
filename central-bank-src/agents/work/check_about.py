@@ -114,7 +114,7 @@ def main():
          len(load('gaps.json').get('auditors') or []) + rel('audits its accounts'),
          r'(\d+) records covering \d+ of the 206 places'),
         ('swap lines', len(load('swaps.json')),
-         r'(\d+) lines, \d+ of them in force'),
+         r'(\d+) lines, \d+ of them recorded as in force'),
         ('reserve-manager ties', rel('manages its reserves or programmes'),
          r'(\d+) ties at \d+ banks'),
     ]

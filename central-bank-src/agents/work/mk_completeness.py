@@ -50,6 +50,10 @@ def main():
     gold_have, gold_den = int(m.group(1)), int(m.group(2))
     m2 = re.search(r"hold no gold at all so can hold none in custody \((\d+)\)", out)
     gold_none = int(m2.group(1)) if m2 else N - gold_den
+    m4 = re.search(r"counting those, (\d+) of the \d+ places that hold gold", out)
+    gold_known = int(m4.group(1)) if m4 else gold_have
+    m5 = re.search(r"(\d+) further places say in their own audited accounts", out)
+    gold_abroad = int(m5.group(1)) if m5 else 0
 
     cc = snap["Corruption cases"]
     m3 = re.search(r"(\d+) of those are coloured on the case layer", out)
@@ -62,6 +66,15 @@ def main():
     # holds the list and its sources. Use it when it is there, and say so when it is not, rather
     # than silently falling back to a figure that measures nothing.
     elig = (own.get("eligible") or {}).get("count")
+    # The outside-reserve-managers row got a denominator at round 76. It is an ESTIMATED
+    # POPULATION, not a roster: the World Bank RAMP survey is the only global census of reserve
+    # management practice and is anonymised by design, so no list of which banks use external
+    # managers exists or can. About three quarters of central banks use one, stable across four
+    # survey editions since 2019, which puts the universe near 144 rather than 192.
+    gaps_all = json.load(open(os.path.join(CB, "agents", "gaps.json"), encoding="utf-8"))
+    mgr_den = None
+    if (gaps_all.get("reserve_managers_denominator") or {}).get("population_estimate"):
+        mgr_den = 144
 
     # (label, recorded, denominator, denominator wording, what is out of reach and why)
     rows = [
@@ -87,24 +100,47 @@ def main():
        "of the 192 places with a central bank",
        "A place that prints its own notes is recorded as doing so. The remainder are banks that "
        "name no printer in any document found."),
-      ("Gold custodians", gold_have, gold_den,
+      ("Gold custodians", gold_known, gold_den,
        "of the %d places that hold any gold" % gold_den,
-       "This row is NOT measured against every place, and the headline figure elsewhere that does "
-       "so understates it. %d places hold no gold at all and so can hold none in custody. Custodian "
-       "identity has to come from the depositor's own audited accounts: the Bank of England, the "
-       "Banque de France and the New York Fed all decline to name their central bank customers."
-       % gold_none),
+       ("This row is NOT measured against every place: %d places hold no gold at all and so can "
+        "hold none in custody. The figure shown answers 'do we know where this gold is, or know "
+        "that we are not being told' — %d places name a custodian or say the gold is in their own "
+        "vault, and %d more state in their own audited accounts that it is abroad and name no "
+        "institution. Custodian identity has to come from the depositor's accounts: the Bank of "
+        "England, the Banque de France and the New York Fed all decline to name their central bank "
+        "customers. Of the places still absent, about two thirds had their statements read and "
+        "those statements disclose no location at all, so this row is near the ceiling of what the "
+        "audited-accounts method can reach."
+        % (gold_none, gold_have, gold_abroad))),
       ("Swap lines", snap["Swap lines"]["places"], N,
-       "of the 192 places with a central bank",
-       "A swap line needs a willing counterparty, so a blank here may mean none was sought, none "
-       "was offered, or none is published. The large networks are published by the lender — the "
-       "Federal Reserve, the ECB, the People's Bank of China — which is where most of these come "
-       "from."),
-      ("Outside reserve managers", snap["Outside reserve managers"]["places"], N,
        "of the 192, but see the note",
-       "THIS ROW HAS NO HONEST DENOMINATOR. No list exists anywhere of which central banks hire "
-       "outside managers, so the percentage cannot be read as coverage of a known universe. More "
-       "than half the ties on it belong to one fund, Norway's."),
+       "COUNT THE PROVIDERS, NOT THE PLACES. A swap line needs a willing provider and the "
+       "providers are few: of the records here, 85 are the People's Bank of China, 86 the Federal "
+       "Reserve, 70 Japan, 16 the ECB and 14 the Bank of Korea. So 192 is not this row's universe "
+       "any more than it was the shareholders' row's. The honest measure is whether the providers' "
+       "own published lists have been exhausted, and for the three largest they now have been: the "
+       "PBoC's current table of 32 counterparties is entirely filed, the Federal Reserve's "
+       "standing, NAFA and FIMA arrangements and its whole 1962-1998 reciprocal network are "
+       "filed, and so is the ECB's published list. The Bank of Korea, Japan's Chiang Mai network "
+       "and the Swiss National Bank are the supply side still to enumerate. Lapsed lines are kept "
+       "and marked, because when a line ended is as telling as that it existed."),
+      ("Outside reserve managers", snap["Outside reserve managers"]["places"], mgr_den or N,
+       ("of an estimated %d central banks that use an external manager" % mgr_den) if mgr_den
+       else "of the 192, but see the note",
+       ("THE DENOMINATOR HERE IS AN ESTIMATE, NOT A ROSTER, and that is as good as this row gets. "
+        "The World Bank's RAMP survey is the only global census of reserve-management practice and "
+        "is anonymised by design — 'Survey results are presented in an aggregate format to "
+        "preserve anonymity' — so no list of which banks use external managers exists or can. What "
+        "it does give is the share, stable across four editions since 2019: almost three-quarters "
+        "of central banks employ external managers, which puts the universe near 144 rather than "
+        "192. Two cautions. From the banks' own side fewer than a quarter disclose anything about "
+        "an external management programme, so most places still absent are ones no document will "
+        "name. And half this row is one country: 103 of its 207 ties are Norway's, from a single "
+        "published mandate list, and they manage a sovereign wealth fund rather than foreign "
+        "exchange reserves."
+        ) if mgr_den else
+       ("THIS ROW HAS NO HONEST DENOMINATOR. No list exists anywhere of which central banks hire "
+        "outside managers, so the percentage cannot be read as coverage of a known universe.")),
       ("Named shareholders", sh_places, elig or N,
        ("of the %d central banks that have any non-state shareholder" % elig) if elig
        else "of the 192, but see the note",
