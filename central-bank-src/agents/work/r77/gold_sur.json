@@ -1,0 +1,20 @@
+{
+ "records": [
+  {
+   "cb_iso3": "SUR",
+   "entity": "Royal Canadian Mint",
+   "name_as_stated": "Royal Canadian Mint",
+   "entity_type": "state mint",
+   "entity_hq_city": null,
+   "entity_hq_iso3": "CAN",
+   "relation": "holds its gold reserves in custody",
+   "source_url": "https://gov.sr/wp-content/uploads/2024/08/Centrale-Bank-van-Suriname-CBvS-Jaarrekening-2020.pdf",
+   "summary": "The Centrale Bank van Suriname's own audited 2020 annual accounts state in one sentence that its entire stock of monetary gold sits at the Royal Canadian Mint.",
+   "detail": "In the Centrale Bank van Suriname's Jaarverslag 2020, the note to the balance sheet on reserve assets, section 4.1(c) 'Monetair goud', opens: 'De voorraad ‘Monetair goud’ bevindt zich bij Royal Canadian Mint.' ('The stock of monetary gold is located at the Royal Canadian Mint.') The note then gives the movement for the year: an opening balance of SRD 598,449,842, sales of SRD 74,889,645, a revaluation of SRD 720,511,150 and a closing balance of SRD 1,244,071,347 at 31 December 2020. No second holder and no other location are named anywhere in the accounts. The volume carries the independent auditor's report; the auditor is BDO Assurance N.V., appointed external auditor of the Bank in 2021, and its report on the 2020 accounts withholds an opinion, the pages of the report setting out why. The entity's head-office city is not stated in the document, so it is left null; the name itself states Canada.",
+   "quote": "De voorraad ‘Monetair goud’ bevindt zich bij Royal Canadian Mint.",
+   "year": 2020,
+   "evidence_note": "Raw PDF text, obtained by curl with a browser user-agent and read with pdftotext (15,982,877 bytes, 594,239 characters of text), so the quote is copied from the file rather than from a fetch summary. The quoted sentence appears once in the document. The same note heading was looked for in the newer Jaarverslag 2023 on the Bank's own host (https://www.cbvs.sr/images/content/annual-reports/Jaarverslag_2023_Secured.pdf), which returned HTTP 403, so whether the custodian has changed since 2020 is untested.",
+   "weak_source": false
+  }
+ ]
+}

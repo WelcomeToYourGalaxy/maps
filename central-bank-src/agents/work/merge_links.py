@@ -58,7 +58,9 @@ W = lambda n, d: json.dump(d, open(os.path.join(A, n), 'w'), indent=1, ensure_as
 
 RELATIONS = {'audits its accounts', 'bribery or misconduct with the bank',
              'holds its gold reserves in custody', 'makes its banknote paper',
-             'manages its reserves or programmes', 'member of the same forum', 'other',
+             'manages its reserves or programmes',
+             'manages its sovereign wealth fund',
+             'member of the same forum', 'other',
              'prints its banknotes', 'prints some of its banknotes', 'sits on the board',
              'supplies its banknote substrate'}
 ENTITY_TYPES = {'bank', 'central bank', 'central bank subsidiary', "central bank's own vault",

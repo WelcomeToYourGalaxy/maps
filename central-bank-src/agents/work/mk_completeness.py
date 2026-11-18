@@ -99,7 +99,11 @@ def main():
       ("Banknote printers", snap["Banknote printers"]["places"], N,
        "of the 192 places with a central bank",
        "A place that prints its own notes is recorded as doing so. The remainder are banks that "
-       "name no printer in any document found."),
+       "name no printer in any document found. In the euro area the gap has one shape: the ECB "
+       "publishes which national bank commissions which denomination but never who prints it, and "
+       "the banks' own reports say only that they take part in production at Eurosystem level. The "
+       "EU procurement journal does name winners, and across the whole euro area it yields exactly "
+       "one banknote award with named printers, the Dutch one, filed at round 77."),
       ("Gold custodians", gold_known, gold_den,
        "of the %d places that hold any gold" % gold_den,
        ("This row is NOT measured against every place: %d places hold no gold at all and so can "
@@ -110,7 +114,9 @@ def main():
         "England, the Banque de France and the New York Fed all decline to name their central bank "
         "customers. Of the places still absent, about two thirds had their statements read and "
         "those statements disclose no location at all, so this row is near the ceiling of what the "
-        "audited-accounts method can reach."
+        "audited-accounts method can reach. Two of the six were added at round 77, one of them by "
+        "reclassifying a place whose statements had already been read line by line: they itemise "
+        "gold at foreign refineries and in accounts at foreign banks and name neither."
         % (gold_none, gold_have, gold_abroad))),
       ("Swap lines", snap["Swap lines"]["places"], N,
        "of the 192, but see the note",
@@ -118,12 +124,16 @@ def main():
        "providers are few: of the records here, 85 are the People's Bank of China, 86 the Federal "
        "Reserve, 70 Japan, 16 the ECB and 14 the Bank of Korea. So 192 is not this row's universe "
        "any more than it was the shareholders' row's. The honest measure is whether the providers' "
-       "own published lists have been exhausted, and for the three largest they now have been: the "
+       "own published lists have been exhausted, and for five of them they now have been: the "
        "PBoC's current table of 32 counterparties is entirely filed, the Federal Reserve's "
        "standing, NAFA and FIMA arrangements and its whole 1962-1998 reciprocal network are "
-       "filed, and so is the ECB's published list. The Bank of Korea, Japan's Chiang Mai network "
-       "and the Swiss National Bank are the supply side still to enumerate. Lapsed lines are kept "
-       "and marked, because when a line ended is as telling as that it existed."),
+       "filed, and so are the ECB's published list, the Bank of Korea's own table of nine "
+       "bilateral counterparties, and the Swiss National Bank's. The Bank of England and the "
+       "Reserve Bank of Australia are the supply side still to enumerate. Lapsed lines are kept "
+       "and marked, because when a line ended is as telling as that it existed: the PBoC table is "
+       "dated, so eleven counterparties absent from it are now marked lapsed rather than left at "
+       "an unknown status, and Serbia, also absent, was checked separately and stays active "
+       "because the re-signing of its line post-dates the table."),
       ("Outside reserve managers", snap["Outside reserve managers"]["places"], mgr_den or N,
        ("of an estimated %d central banks that use an external manager" % mgr_den) if mgr_den
        else "of the 192, but see the note",
@@ -135,9 +145,10 @@ def main():
         "of central banks employ external managers, which puts the universe near 144 rather than "
         "192. Two cautions. From the banks' own side fewer than a quarter disclose anything about "
         "an external management programme, so most places still absent are ones no document will "
-        "name. And half this row is one country: 103 of its 207 ties are Norway's, from a single "
-        "published mandate list, and they manage a sovereign wealth fund rather than foreign "
-        "exchange reserves."
+        "name. Round 77 also took Norway's 103 external managers of the Government Pension Fund "
+        "Global off this row and onto a relation of their own: they were half of it, all from one "
+        "published mandate list, and a sovereign wealth fund is not foreign exchange reserves. "
+        "What is left here is 104 ties at 40 firms, and the row now means one thing."
         ) if mgr_den else
        ("THIS ROW HAS NO HONEST DENOMINATOR. No list exists anywhere of which central banks hire "
         "outside managers, so the percentage cannot be read as coverage of a known universe.")),

@@ -1,0 +1,131 @@
+{
+  "records": [
+    {
+      "entity": "Bank for International Settlements",
+      "name_as_stated": "BIS",
+      "entity_type": "international body",
+      "entity_hq_city": "Basel",
+      "entity_hq_iso3": "CHE",
+      "cb_iso3": "BRA",
+      "relation": "manages its reserves or programmes",
+      "summary": "Banco Central do Brasil's audited accounts carry a balance-sheet line for reserves under external administration, and the BIS runs the larger named part of it.",
+      "detail": "Banco Central do Brasil's audited financial statements for 2023 carry a balance-sheet item 'Recursos sob Administracao Externa' (funds under external administration) split into 'Fundos administrados pelo BIS' of R$23,088 million at 31 December 2023 (R$22,016 million at 31 December 2022) and ETF funds of R$38,731 million. Note 6.1 states the BIS-administered funds are investments in the BIS Investment Pools (BISIP), in the BISIP CNY (Domestic Chinese Sovereign Fixed Income Fund) and BISIP Green in dollars and euros, funds reserved for central banks' international reserves; the note adds that unit values are published by the administrator itself and that the BIS judges and provides liquidity on redemption requests.",
+      "quote": "Os fundos administrados pelo BIS referem-se a investimentos alocados nos BIS Investment Pools (BISIP)",
+      "as_of": "2023-12-31",
+      "source_title": "Banco Central do Brasil, Demonstracoes Financeiras 2023, Note 6 'Recursos sob Administracao Externa' and Note 6.1 'Fundo administrado pelo BIS'",
+      "source_url": "https://www.bcb.gov.br/content/acessoinformacao/balanceteslai/Demonstra%C3%A7%C3%B5es%20Financeiras%20BCB%202023.pdf"
+    },
+    {
+      "entity": "World Bank Treasury Reserve Advisory and Management Partnership (RAMP)",
+      "name_as_stated": "Reserves Advisory and Management Program (RAMP) managed by the World Bank",
+      "entity_type": "international body",
+      "entity_hq_city": "Washington",
+      "entity_hq_iso3": "USA",
+      "cb_iso3": "LKA",
+      "relation": "manages its reserves or programmes",
+      "summary": "The Central Bank of Sri Lanka's audited accounts state that part of its foreign securities portfolio is money it has placed in the World Bank's RAMP programme.",
+      "detail": "Note 9.1 to the Central Bank of Sri Lanka's financial statements for the year ended 31 December 2025, in the Bank's 'Financial Statements and Operations' publication, states that investment in foreign securities classified at fair value through profit or loss includes the investments the Bank has made in the Reserves Advisory and Management Program (RAMP) managed by the World Bank. The note is a disclosure about the composition of the Bank's own foreign securities holdings and gives no separate figure for the RAMP portion.",
+      "quote": "includes the investments made by the Bank in the Reserves Advisory and Management Program (RAMP) managed by the World Bank",
+      "as_of": "2025-12-31",
+      "source_title": "Central Bank of Sri Lanka, Financial Statements for the year ended 31 December 2025, Note 9.1 to the Notes to the Financial Statements",
+      "source_url": "https://www.cbsl.gov.lk/sites/default/files/cbslweb_documents/publications/fsor/2025/en/32_Financial_Statements.pdf"
+    },
+    {
+      "entity": "World Bank Treasury Reserve Advisory and Management Partnership (RAMP)",
+      "name_as_stated": "RAMP / World Bank Reserves Management Advisory Program",
+      "entity_type": "international body",
+      "entity_hq_city": "Washington",
+      "entity_hq_iso3": "USA",
+      "cb_iso3": "MKD",
+      "relation": "manages its reserves or programmes",
+      "summary": "North Macedonia's central bank says in its own vice-governor's remarks that it joined the World Bank's RAMP in the second half of 2014 and uses it to build its investment management framework.",
+      "detail": "Opening remarks by Maja Kadievska-Vojnovik, Vice-Governor of the National Bank of the Republic of Macedonia, at a RAMP workshop on settlement and custodian relations in Skopje, published by the BIS with 'Date delivered 19 October 2015' and describing the event as held on 7 September 2015. She says the NBRM joined the RAMP 'family' in the second half of 2014, that the workshop was organised by the World Bank as part of that year's RAMP agenda, and that the NBRM sees the World Bank Reserves Management Advisory Program as a chance to enhance its investment management framework and operations. The remarks describe membership of a World Bank reserve-management programme; they do not state that a tranche of the reserves is managed by the World Bank, and the arrangement's current status is not stated on the page.",
+      "quote": "our institution joined the RAMP \"family\" very recently, in second half of 2014",
+      "as_of": "2015-10-19",
+      "source_title": "BIS central bankers' speeches: Maja Kadievska-Vojnovik, 'Macedonia's central bank reserve management strategy'",
+      "source_url": "https://www.bis.org/review/r151019a.htm"
+    }
+  ],
+  "blanks": [
+    {
+      "cb_iso3": "MUS",
+      "kind": "confirmed blank",
+      "note": "Round 76's strongest named lead was opened and it names no firm. Bank of Mauritius Annual Report for the year ended 30 June 2018 (annual_report_june_2018.pdf, 500,000 characters as served) read through WebFetch at offsets 0, 200000, 300000 and 400000, which covers the overview and the financial-statement notes. The mechanism is confirmed twice and no manager is named: the overview says 'the Bank externalized a portion of the foreign exchange reserves to top-tier external fund managers'; Note 7 says 'Foreign Investments include funds entrusted to Fund Managers and comprise long term deposits'; Note 22 attributes a change to 'onboarding of new external fund managers with effect from August 2017'. The only firm named anywhere near the subject is The State Insurance Company of Mauritius Ltd, which is the actuary and administrator of the staff pension plan (Notes 3(f) and 17(a)) and not a reserve manager. Host note, now diagnosed rather than guessed: www.bom.mu and bom.mu serve only the leaf certificate, with no Sectigo intermediate ('Sectigo Public Server Authentication CA EV R36'), so every curl fails with 'unable to get local issuer certificate'; crt.sectigo.com and crt.sh both refused to serve the intermediate here and web.archive.org resets the connection, so WebFetch is the only route to this host and raw text cannot be grepped. Quotes above are therefore WebFetch-reported excerpts, not copy-paste from raw text, which is why no record was filed off them."
+    },
+    {
+      "cb_iso3": "ISL",
+      "kind": "confirmed blank",
+      "note": "The rafhladan.is mirror reset the connection, but the route round 76 did not try worked: www.cb.is/library serves PDFs to curl with a browser user-agent. Central Bank of Iceland Annual Report 2022 (Annual%20Report%202022_03.01.24_vefur.pdf, 3.4 MB, 235,931 characters of extracted text) downloaded and grepped end to end for 'external manag', 'externally manag', 'outsourc', 'mandate', 'custodian', 'RAMP', 'World Bank Treasury', 'asset manager', 'BlackRock', 'Amundi', 'UBS', 'Goldman', 'Pictet', 'Schroder'. Note 35 'International reserves' says the reserves are managed under rules of procedure on reserve maintenance updated in October 2021 and that 'The investment mandate, which is set on the basis of the rules, stipulates how reserve management shall be carried out' - an internal mandate, no outside manager. Note 36 itemises the reserves by issuer and counterparty only. Note 13 'Service expenses' carries a line 'Expense due to custodial fees' of ISK 33,243 thousand with no custodian named, which is the custody row and not this one. The only outsourcing named in the document is the audit: 'The Icelandic National Audit Office outsources the audit of the Central Bank of Iceland's annual accounts to KPMG ehf.' (Note 12), with KPMG ehf. and Deloitte ehf. fees given - that is the auditor row."
+    },
+    {
+      "cb_iso3": "ARE",
+      "kind": "confirmed blank",
+      "note": "Mechanism confirmed in the bank's own words, no firm named. CBUAE 'Reserve Management' page (centralbank.ae/en/our-operations/reserve-management/) read through WebFetch; the host answers 403 to curl even with a browser user-agent, so this is a fetch-tool reading and not raw text. The page describes an External Management & Analytics team that selects and oversees external fund managers, says 'We award mandates to highly reputable asset managers who have proven experience and expertise in the area of our interest', has the Monetary and Reserve Management Committee oversee selection by RFP and due diligence, and says reserves are invested under an Investment Policy and an External Fund Manager Policy approved by the Board. No manager, bullion bank or custodian is named. The one firm named, Mercer, supplies the database the CBUAE uses to evaluate the universe of external fund managers - a data vendor, not a manager, so nothing was filed."
+    },
+    {
+      "cb_iso3": "IND",
+      "kind": "confirmed blank",
+      "note": "Confirmed and unnamed, with figures, on a route that works where the PDFs do not. website.rbi.org.in serves a 152 KB HTML page in place of the half-yearly report PDFs, but www.rbi.org.in/Scripts/PublicationsView.aspx?id=13157 serves the full HTML text of the Half Yearly Report on Management of Foreign Exchange Reserves (position as on 30 September 2010) to curl with a browser user-agent, 30,951 characters, read in full. It states that of US$265.2 billion of foreign currency assets, US$146.4 billion was in securities, US$113.6 billion deposited with other central banks, the BIS and the IMF, and US$5.2 billion 'placed with the External Asset Managers (EAMs)', and that 'A small portion of the reserves has been assigned to the EAMs with the main objective of gaining access to and deriving benefits from their expertise and market research'. No EAM is named anywhere in the report; the BIS and IMF appear as deposit-taking counterparties, which is a deposit and not a management mandate. Also read: the RBI Department of External Investments and Operations functions note (rbidocs.rbi.org.in/rdocs/Publications/PDFs/norms%20deio.pdf, 2 pages, downloaded and read in full), which lists the permitted investment categories and names no manager. The IMF 2005 case study for India adds the sentence 'BIS provides both custodial and investment services' in its custodial-risk paragraph, which would be a record for the BIS if raw text could be had, but it is only available here as a fetch-tool excerpt - see leads_not_opened."
+    },
+    {
+      "cb_iso3": "FJI",
+      "kind": "confirmed blank",
+      "note": "Reserve Bank of Fiji Annual Report August 2023 - July 2024, the copy tabled in Parliament (parliament.gov.fj, 6.2 MB, 342,184 characters of extracted text including the audited financial statements), downloaded and grepped end to end for 'external manag', 'externally manag', 'fund manager', 'investment manager', 'portfolio manager', 'custodian', 'outsourc', 'entrust', 'managed on behalf', 'RAMP', 'World Bank Treasury', 'BISIP', 'BlackRock', 'Amundi', 'UBS', 'Crown Agents'. Not one hit relates to reserve management: the only outsourcing stated is internal audit ('The Bank has outsourced the function to handle internal audits'), with no firm named, and 'entrusted' appears only in the statutory description of the monetary-policy mandate. The report names no outside manager of Fiji's reserves and no custodian."
+    },
+    {
+      "cb_iso3": "CAN",
+      "kind": "vein closed",
+      "note": "Historic confirmation, still unnamed. The IMF's 'Guidelines for Foreign Exchange Reserve Management: Accompanying Document and Case Studies' (2005), Part II country case studies, Canada section paragraph 317, states that the government uses external securities lending managers, that formal agreements are signed between Canada and the external managers, that the managers must follow government policies and guidelines and report monthly, and that 'Currently, there are two external managers'. The case study names neither manager, and the arrangement is from 2003-05 and may have ended. Taken together with round 69's reading of the Department of Finance 'Report on the Management of Canada's Official International Reserves' and the Exchange Fund Account route, the published Canadian documents confirm external managers in the securities lending programme and name none."
+    },
+    {
+      "cb_iso3": "OMN",
+      "kind": "vein closed",
+      "note": "IMF 'Guidelines for Foreign Exchange Reserve Management: Accompanying Document and Case Studies' (2005), Part II, Oman section paragraph 919: 'The Central Bank has a policy of engaging external managers for discretionary management of a small segment' and 'External managers can hold debt securities with remaining maturity up to and including 30 years.' No manager is named, and the statement is a 2003-05 one that may no longer hold. The Central Bank of Oman's own annual report was not opened this round."
+    },
+    {
+      "cb_iso3": "BRA",
+      "kind": "confirmed blank",
+      "note": "This is the blank that sits beside the BIS record above, and it matters because the two are different programmes. Brazil's own external asset management programme is confirmed and unnamed in three documents read in full this round: the IMF 2005 case study (Brazil, paragraph 266 and footnote 18) says 'Six external asset managers manage a small part of the reserves, about 3 percent' and that 'The External Asset Management Program was implemented in October of 2000', naming none of the six; and the BCB's own Relatorio de Gestao das Reservas Internacionais for 2011 (53,852 characters), 2019 (69,959) and March 2026 (79,702), all downloaded and grepped for 'gestor', 'administrador externo', 'BlackRock', 'PIMCO', 'Amundi', 'UBS', 'Goldman', 'Western Asset', 'Wellington', 'State Street', 'JPMorgan', 'Banco Mundial', name no manager either; the 2011 report refers only to a 'programa de gerenciamento externo' used as a data source for returns, and the 2026 report adds ETF holdings with no fund or manager named. So Brazil has a named BIS mandate and an unnamed multi-manager programme, and the firms in the second are not published."
+    },
+    {
+      "cb_iso3": null,
+      "kind": "vein closed",
+      "note": "The BIS lead from round 76, opened: https://www.bis.org/banking/finserv.htm, 'Banking products & services', fetched with curl and read in full. It sets out exactly two third-party asset management products - 'dedicated mandates tailored to clients' individual requirements' and 'open-ended fund structures - BIS Investment Pools (BISIPs) - that allow groups of BIS customers to invest in a common pool of reserve assets' - plus ancillary reserve-management advice and knowledge-sharing events. It names no client central bank anywhere, and the BIS publishes no customer list, so the BIS side of this row cannot produce country records: every BIS mandate on the map has to come from the client central bank's own accounts, as Brazil's did this round. Treat the BIS as a confirmed manager with an unpublished client list rather than as an unopened lead."
+    },
+    {
+      "cb_iso3": null,
+      "kind": "vein closed",
+      "note": "The World Bank RAMP press-release vein is exhausted for countries in this assignment. Two searches returned the full run of RAMP membership announcements - Bosnia and Herzegovina (April 2024), Armenia (January 2024), Cabo Verde (April 2024), Liberia (April 2025), Zimbabwe (April 2025), Kosovo (October 2023 and April 2026), Ecuador (April 2026), plus the Pension Agency of Georgia, which is not a central bank - and every one of those central banks is already filed in have_mgr.json. No RAMP announcement was found for any country in the open target list. The two RAMP records filed this round therefore came from elsewhere: a client central bank's own audited note (Sri Lanka) and a client central bank's own speech (North Macedonia), which is the route that still works."
+    },
+    {
+      "cb_iso3": "GMB",
+      "kind": "not reached",
+      "note": "Central Bank of The Gambia: a search for the annual report returned nineteen cbg.gm/downloads-file/<uuid> links whose titles are the UUIDs themselves, so there is no way to tell an annual report from a monetary-policy release without spending a fetch per file. Nothing was opened, so the Gambia is untested. Next step for a later round: fetch the cbg.gm publications index page itself to map UUIDs to titles before downloading anything."
+    }
+  ],
+  "checked_not_in_assignment": [
+    {
+      "cb_iso3": "CZE",
+      "note": "Already in have_mgr.json (BNP Paribas Asset Management), so not filed, but the finding is worth passing on because it is the same firm under its old name: the IMF 2005 case study, Czech Republic paragraphs 477-483, says 'The CNB has had quite a long experience with external managers', that the experience 'has been expensive and rather negative', that 'All managers ranked among the biggest firms and, except for one (FFTW), all managers were chosen by tender', and that 'These externally managed portfolios constitute approximately 2.3 percent of the reserves'. FFTW is Fischer Francis Trees & Watts, which became part of BNP Paribas Asset Management, so the existing Czech record has a 2003-05 antecedent in an IMF document."
+    },
+    {
+      "cb_iso3": "SYC",
+      "note": "The Central Bank of Seychelles 'International Reserves Management Report 2025' tabled in the National Assembly came up as the best single naming document found by a Crown Agents search, and have_mgr.json already carries RAMP, Crown Agents Investment Management and UBS Asset Management for Seychelles off that exact URL. No further work spent."
+    },
+    {
+      "cb_iso3": null,
+      "note": "Other IMF 2005 case-study countries whose sections were read and which are not in this assignment: Botswana (paragraphs 199-230, external fund managers since 1981, specialist equity managers, an unnamed offshore investment consulting firm), Chile (327, 344, 362-367), Colombia (379-440, the Stable Liquidity Bucket delegated almost entirely to external managers, plus Deloitte & Touche as auditor and Wilshire Associates Inc. as the performance-measurement software vendor - neither a manager), Hong Kong SAR (519-532, external managers and master custodians, none named), Hungary (596, external portfolio managers in the late 1980s and early 1990s and currently only for securities lending), Korea (703-716, a trust tranche outsourced to internationally recognised asset management companies, none named; Lehman Brothers and J.P. Morgan appear only as benchmark index providers), Latvia (727, 740), Mexico (758-762), New Zealand (807-809, which states it does NOT use external fund managers), Norway (857-867, external managers permitted and used for the long-term portfolio). None of these names a firm except the Czech FFTW above."
+    },
+    {
+      "cb_iso3": "MYS",
+      "note": "One name found in the Bank of Mauritius 2018 annual report and deliberately not filed: 'The Council approved the appointment of Bank Negara Malaysia (BNM) as the IFSB's fund manager.' That is a central bank acting as fund manager for the Islamic Financial Services Board, not an outside firm managing a central bank's reserves, so it belongs to neither direction of this row."
+    }
+  ],
+  "leads_not_opened": [
+    "The Turkey and United Kingdom case studies in the IMF's 'Guidelines for Foreign Exchange Reserve Management: Accompanying Document and Case Studies' (2005), Part II. The document was reached this round, but only through WebFetch at offsets 0 to 500000, and the fetch tool reports the page as exactly 500,000 characters, which is its cap: the readings ran Australia through Oman and stopped before Tunisia, Turkey and the United Kingdom. Raw text could not be had: www.imf.org answers 403 to curl with any user-agent (Akamai 'Access Denied', 440 bytes), and the library mirror 0-www-imf-org.library.svsu.edu relays the same 403 to curl while serving the file to WebFetch. Next step: find a copy of part2.pdf on a host that serves curl, then grep it - which would also let the India sentence 'BIS provides both custodial and investment services' be quoted from raw text and filed as a BIS record for India.",
+    "Bank of Mauritius annual reports for 2010 to 2014, which round 69 flagged as the editions where the fund-manager note sometimes listed firms. Not opened; and note that bom.mu can only be read through WebFetch for the certificate reason set out in the Mauritius blank, so a grep is not possible and any firm name found there will rest on a fetch-tool excerpt.",
+    "Central Bank of Iceland annual reports other than 2022. The working route is now known - www.cb.is/library/Skraarsafn---EN/Annual-Report/<file>.pdf serves to curl with a browser user-agent - so the library index for that folder is the cheap next fetch, and rafhladan.is (which resets the connection here) is not needed.",
+    "The open targets not touched at all this round, with no document opened and therefore untested: CHN (SAFE confirmed externally managed reserves and named nobody in 2022 and 2023; the untried document is the PBoC annual report), JPN (the Ministry of Finance registration of candidate managers for Foreign Exchange Fund Special Account assets under the 2014 amendment - the question nobody has yet answered is whether MOF publishes the register of registered managers, which would be a list of firms), ZAF, TUR, TWN, IDN (the audited LKTBI, not the LKBI), SAU, SGP, HKG, RUS, DEU, FRA, GBR, PAK, PER, PHL, POL, SRB, ZMB and the Pacific and Caribbean open places. ZAF, TUR and TWN have nothing filed for this row in searched.json at all, so they are the cheapest untested large holders.",
+    "Bank of Zambia: one search returned only Zambian commercial-bank annual reports and IMF country documents, no Bank of Zambia report. The institution's own publications index on boz.zm was not fetched, which per the common brief is the move when a country-name search returns commercial banks."
+  ]
+}

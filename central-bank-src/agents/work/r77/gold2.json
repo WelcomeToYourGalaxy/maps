@@ -1,0 +1,211 @@
+{
+  "records": [
+    {
+      "cb_iso3": "SLV",
+      "entity": "Bank for International Settlements",
+      "name_as_stated": "Bank for International Settlements",
+      "entity_type": "international body",
+      "entity_hq_city": null,
+      "entity_hq_iso3": null,
+      "relation": "holds its gold reserves in custody",
+      "source_url": "https://transparencia.gob.sv/institutions/bcr/documents/593967/download",
+      "summary": "The Banco Central de Reserva de El Salvador's audited 2023 financial statements put the whole of its physical gold with the Bank for International Settlements, which is the only institution the gold note names.",
+      "detail": "Note 4, 'Oro', of the Banco Central de Reserva de El Salvador's 2023 annual financial statements lists the holding under the heading 'Depositos en Oro Fisico' against one institution, the Bank for International Settlements, and adds that the gold deposits are free of lien or pledge. The statements carry an independent auditor's report by PricewaterhouseCoopers, Ltda. de C.V., engagement partner Wilfredo Peralta, dated 28 February 2024. A second PwC-audited El Salvador document opened separately in this round, the 'Estado de los activos que respaldan la reserva de liquidez' at 31 December 2023 (https://transparencia.gob.sv/institutions/bcr/documents/593992/download), carries the same fact in its own Note 7 'Depositos de oro': a single line, 'Bank For International Settlements $90,964,193.72', against physical gold holdings of 44,105.998 troy ounces. The two documents agree with each other and with an earlier round's independent reading of the same note.",
+      "year": 2023,
+      "evidence_note": "Both El Salvador documents are served to the WebFetch tool but 404 to curl on this host, with and without a browser user-agent, so no raw PDF text was obtained and the quoted strings above reach me through the fetch tool's reader rather than from a grep of the file. The quote field is therefore left out, per the common brief. The finding rests on two separate documents fetched separately, whose figures and institution name match, and on round 75's note recording the same Note 4 reading at 44,105.998 troy ounces. Both URLs are reopenable through WebFetch.",
+      "verbatim_unverified": true
+    },
+    {
+      "cb_iso3": "SUR",
+      "entity": "Royal Canadian Mint",
+      "name_as_stated": "Royal Canadian Mint",
+      "entity_type": "state mint",
+      "entity_hq_city": null,
+      "entity_hq_iso3": "CAN",
+      "relation": "holds its gold reserves in custody",
+      "source_url": "https://gov.sr/wp-content/uploads/2024/08/Centrale-Bank-van-Suriname-CBvS-Jaarrekening-2020.pdf",
+      "summary": "The Centrale Bank van Suriname's own audited 2020 annual accounts state in one sentence that its entire stock of monetary gold sits at the Royal Canadian Mint.",
+      "detail": "In the Centrale Bank van Suriname's Jaarverslag 2020, the note to the balance sheet on reserve assets, section 4.1(c) 'Monetair goud', opens: 'De voorraad ‘Monetair goud’ bevindt zich bij Royal Canadian Mint.' ('The stock of monetary gold is located at the Royal Canadian Mint.') The note then gives the movement for the year: an opening balance of SRD 598,449,842, sales of SRD 74,889,645, a revaluation of SRD 720,511,150 and a closing balance of SRD 1,244,071,347 at 31 December 2020. No second holder and no other location are named anywhere in the accounts. The volume carries the independent auditor's report; the auditor is BDO Assurance N.V., appointed external auditor of the Bank in 2021, and its report on the 2020 accounts withholds an opinion, the pages of the report setting out why. The entity's head-office city is not stated in the document, so it is left null; the name itself states Canada.",
+      "quote": "De voorraad ‘Monetair goud’ bevindt zich bij Royal Canadian Mint.",
+      "year": 2020,
+      "evidence_note": "Raw PDF text, obtained by curl with a browser user-agent and read with pdftotext (15,982,877 bytes, 594,239 characters of text), so the quote is copied from the file rather than from a fetch summary. The quoted sentence appears once in the document. The same note heading was looked for in the newer Jaarverslag 2023 on the Bank's own host (https://www.cbvs.sr/images/content/annual-reports/Jaarverslag_2023_Secured.pdf), which returned HTTP 403, so whether the custodian has changed since 2020 is untested.",
+      "weak_source": false
+    }
+  ],
+  "abroad_undisclosed": [
+    {
+      "iso3": "MAR",
+      "document": "Bank Al-Maghrib, Rapport annuel 2025, section 3.2.9 'Commentaires sur les postes du bilan', Note 1 'Avoirs et placements en or'",
+      "note_number": "Note 1",
+      "source_url": "https://www.bkam.ma/content/download/847720/9164323/RAPPORT%20FR%2025.pdf",
+      "quote": "Ce poste abrite la contrevaleur en dirhams des avoirs en or conservés au Maroc et auprès de dépositaires étrangers",
+      "note": "Bank Al-Maghrib's own gold note says the line covers gold kept in Morocco AND with foreign depositaries, plus gold placements made with foreign counterparties ('ainsi que des placements en or effectués avec des contreparties étrangères'), and it names not one depositary, counterparty, institution or city. The holding is given as 711,078 ounces, about 22 tonnes, worth 28,049,899 thousand dirhams at end-2025. The rest of the document was grepped for 'dépositaire', 'Banque d'Angleterre', 'Banque de France', 'BRI' and 'Réserve fédérale': the only hits are the macroeconomic chapters, the Bank's 11.3 million SDR shareholding in the BIS, and the report's acronym glossary, where 'BoE : Banque d'Angleterre (Bank of England)' appears as a dictionary entry and not as a counterparty. So nothing in this document ties a named institution to the metal, and the Albania trap is avoided. Read from raw text: 9,026,188-byte PDF fetched by curl with a browser user-agent, 862,644 characters extracted by pdftotext and grepped in full; the quote is copied from the extract.",
+      "state": "abroad and at home, no institution named"
+    },
+    {
+      "iso3": "PNG",
+      "document": "Bank of Papua New Guinea, Annual Report 2024, notes to the financial statements, accounting-policy Note 1(k) 'Gold'",
+      "note_number": "Note 1(k)",
+      "source_url": "https://www.bankpng.gov.pg/sites/default/files/2025-06/BPNG%20Annual%20Report%202024.pdf",
+      "quote": null,
+      "note": "PROVISIONAL AND SUMMARISER-MEDIATED — flagged deliberately, do not file as settled. The BPNG host answers HTTP 403 with a ~3.5 KB block page to curl on three different document paths, with a browser user-agent and with Accept/Referer headers added, so no raw PDF text was obtained. Read through WebFetch in two windows, the document's accounting-policy Note 1(k) 'Gold' was reported to read 'Gold reserves placed on deposit with a financial institution are valued at the Kina equivalent' and 'the underlying transaction means that the Bank holds a gold asset which is separately disclosed as gold', and the Statement of Financial Position carries a gold line of K437,470 thousand for 2024 with no note reference. On that reading the Bank's own accounts place its gold on deposit with an institution they decline to name. Two cautions for the curator: the wording says 'on deposit with a financial institution' rather than 'abroad', so it is a near neighbour of this state and not an exact instance of it; and because round 74 caught the fetch summariser inventing characterisations, the wording above is not verified against the file. Filing it here rather than as a blank keeps the finding visible; it needs one raw-text read to settle, by a route that gets past the bankpng.gov.pg 403.",
+      "state": "unnamed institution, wording not verified against raw text"
+    }
+  ],
+  "blanks": [
+    {
+      "iso3": "KWT",
+      "state": "confirmed blank",
+      "note": "KWT: Central Bank of Kuwait, 'Annual Report 2011/2012' (cbk.gov.kw/en/images/annual-reports-2011-2012-10204_v20_tcm10-10204.pdf, 203,190 bytes, downloaded with a browser user-agent and grepped in full) read on gold. The word gold appears three times in the whole document: as the first line of the statement of financial position, and in significant-accounting-policy 2(a) 'Gold', which reads in full 'In accordance with the Amiri Decree of 4 July 1978, gold is valued at KD 12.500 per fine ounce.' That is a valuation rule and nothing else — no custodian, no depository, no vault, no city, no country. There is no separate gold note behind the balance-sheet line. Also grepped for custodian, deposit with, vault, Bank of England, BIS: no hit touches the gold line. The limit of this blank is its vintage: this is the most recent CBK annual report whose text extracts, the FY2018/19 combined report being substantially an image scan (round 69 recorded that), so a later edition could in principle say more."
+    },
+    {
+      "iso3": "FJI",
+      "state": "confirmed blank",
+      "note": "FJI: Reserve Bank of Fiji Annual Report August 2023–July 2024, tabled and served as a parliamentary paper (parliament.gov.fj/wp-content/uploads/2024/12/Reserve-Bank-of-Fiji-Annual-Report-August-2023–July-2024.pdf, 6,241,558 bytes, 342,184 characters of text, grepped in full), including the audited financial statements with notes. Every gold reference was read: accounting-policy Note 2 'Gold' gives only market valuation and the revaluation-reserve treatment; Note 5 'External reserves' carries the gold line inside the reserves table with no custody wording; the asset-revaluation-reserve note and the currency-risk and credit-risk tables carry the gold line without naming a counterparty for it. The whole document was then grepped for custodian, depository, held with, held at, Bank of England, Reserve Bank of Australia, Reserve Bank of New Zealand and BIS: the only custody hits are the Bank's own Central Securities Depository for domestic securities and term deposits held with financial institutions, neither tied to gold. No location and no holder is disclosed."
+    },
+    {
+      "iso3": "BIH",
+      "state": "confirmed blank",
+      "note": "BIH: Central Bank of Bosnia and Herzegovina, 'Financial statements and independent auditor's report for the year ended 31 December 2025', reached from the bank's own Annual Financial Statements archive at https://cbbh.ba/Content/Archive/1134 and downloaded as https://cbbh.ba/content/DownloadAttachment/?id=53adf4d2-d91b-4b40-8cc6-70cad6057928&langTag=en (1,766,864 bytes, 200,130 characters, grepped in full). Note 11 'MONETARY GOLD' was read in full: it gives the quantity, 112,000 fine ounces at both 31 December 2025 and 2024, the price per fine ounce, the fair value (KM 804,614 thousand for 2025) and the year's movement, and it names no custodian, no depository, no bank and no location. The accounting-policy note on monetary gold (fair-value measurement and the fair-value reserve) adds only valuation. The gold-price-risk note sets a maximum quantity for the portfolio and names nobody. The document was grepped for custodian, deposited with, vault, held abroad, Bank of England and Bank for International Settlements: the BIS appears only as the holder of the Bank's 1,060 BIS shares and the payer of its dividend, 'Deposits with foreign banks (central banks, commercial banks and BIS)' is the cash-and-deposits line and not metal, and the only vault references are the Bank's own banknote vaults. This is the Albania trap and it is refused here too."
+    },
+    {
+      "iso3": "PER",
+      "state": "not reached",
+      "note": "PER: still the highest-value unreached place on this row and still blocked, now on three transports. bcrp.gob.pe answers the Incapsula bot wall rather than the file: curl with --compressed and a browser user-agent returned an identical 5,996-byte 'Pardon Our Interruption' challenge page for both memoria-bcrp-2024-7.pdf and memoria-bcrp-2025-7.pdf, and WebFetch on the older, search-returned memoria-bcrp-2017-7.pdf came back with nothing but the Incapsula meta tags. So the user-agent trick that opened other hosts this round does not open this one, and round 75's reading of the host stands. Searching surfaces the whole series on the same host (2002, 2004, 2008, 2012, 2017, 2018, 2020, 2024, 2025 chapter-7 files), so the problem is purely the wall. Next route: a transport that is neither curl nor WebFetch — a browser tool — or an off-host mirror of the memoria's chapter 7, since every path on bcrp.gob.pe will behave identically. The gold note has still never been read."
+    },
+    {
+      "iso3": "PAK",
+      "state": "not reached",
+      "note": "PAK: round 75's 403 was retried with the browser user-agent the common brief recommends and it did not help, so the host refusal is real rather than a user-agent problem. www.sbp.org.pk returned HTTP 403 with a ~2 KB body for the search-returned '08-Annual Accounts of State Bank of Pakistan.pdf' (2020 edition) with the user-agent set; WebFetch on the same URL failed as client_error. Two other paths answered HTTP 200 with the site's own JavaScript shell instead of a document — the constructed arFY24 Annual-Accounts path and the search-returned Reports/Annual/FS/FY11/Cons-Financial-Statements-FY-2011-12.pdf — which is the quiet 200 the brief warns about, so neither tested anything. The SBP's gold note has never been read. Next route: a browser tool, or the Auditor-General of Pakistan material; note that /tmp/pak_agp.pdf, an Auditor-General document another agent of this session downloaded, is on disk and was not grepped for gold by me."
+    },
+    {
+      "iso3": "MKD",
+      "state": "not reached",
+      "note": "MKD: the host refusal recorded at round 70 is confirmed and the user-agent does not lift it. https://www.nbrm.mk/content/Independent-Auditor's-Report-and-Financial-Statement-of-the-National-Bank_2023.pdf, which web search returned, answers HTTP 403 with a 3,323-byte block page to curl with --compressed and a full browser user-agent. The NBRNM does publish the right document; this environment cannot reach it on either tool, now across four rounds. The monetary-gold note has never been read. Recommend either a browser tool or dropping North Macedonia from this row."
+    },
+    {
+      "iso3": "MLT",
+      "state": "not reached",
+      "note": "MLT: Malta is now blocked in a way that costs a call every round and yields nothing. www.centralbankmalta.org answered HTTP 403 with a 3,229-byte Cloudflare 'Just a moment...' interstitial to curl on the annual-reports index even with a browser user-agent, and a WebFetch of the same index again rendered the page but returned only link labels — 'Full Report and Statement of Accounts', 'Part III - Financial Statements' (twice), 'Part I', 'Part II', 'Foreword', 'AR 2025 Presentation' — with no href values, exactly as round 75 found. So the PDF path for Part III is still unknown and 'Gold and gold receivables' has never been read. The only remaining route is a tool that can read the page's HTML source or follow the link, i.e. a browser; two rounds of WebFetch on this index have now produced the same unusable answer, so a third should not be spent."
+    },
+    {
+      "iso3": "CYP",
+      "state": "not reached",
+      "note": "CYP: not located, for the second round running, and the bank's own index did not help. A search framed on the ESCB's own note title, 'gold and gold receivables', returned no centralbank.cy document at all — only Cyprus trade-press items on the CBC's monthly balance-sheet totals (cyprus-mail, cbn.com.cy, kiprinform, cyprusprofile) and, oddly, three Central Bank of Malta monthly balance sheets. A curl of https://www.centralbank.cy/en/publications/annual-reports with a browser user-agent returned HTTP 200 but the body is the CBC's own 404 page (title 'Central Bank of Cyprus - 404', 8,714 bytes), so the annual-reports path is not that. Cyprus holds about 13.9 tonnes and its gold note has never been read. Next route: the publications section of centralbank.cy found by following the site's own navigation with a tool that returns hrefs, rather than by search or by path guessing."
+    },
+    {
+      "iso3": "URY",
+      "state": "not reached",
+      "note": "URY: Uruguay is the one target in this slice with no entry of any kind in agents/searched.json, on any row, so nothing has ever been recorded against it, and it is still untested. The BCU's own 'Rendición de cuentas' page (https://www.bcu.gub.uy/Acerca-de-BCU/Paginas/Rendicion-de-cuentas.aspx), which a Spanish-language search for 'estados contables auditados' returned, is unreachable on both tools in this environment: curl failed four times with 'SSL certificate problem: unable to get local issuer certificate' (and once with a connection reset through the agent proxy), including with the session CA bundle passed as --cacert, and WebFetch refused it as robots_disallowed. The same search returned no BCU statements PDF — every estados-contables file belonged to Banco de la República Oriental del Uruguay, a commercial bank whose name is easily mistaken for the central bank's. Next route: a browser tool on bcu.gub.uy, or the BCU's estados contables mirrored on gub.uy, which serves."
+    },
+    {
+      "iso3": "OMN",
+      "state": "not reached",
+      "note": "OMN: the document was located precisely and then the host carrying it would not connect. A WebFetch of the CBO's own annual-report index (https://cbo.gov.om/Pages/AnnualReport.aspx, which curl could not open — SSL local-issuer failure) gave the exact PDF paths for 2023, 2024 and 2025, all on publishing.bnet.om. A curl of the 2024 file failed with 'CONNECT tunnel failed, response 502' and the agent proxy reported publishing.bnet.om:443 as connect_unreachable, i.e. the host could not be reached from this session at all; a WebFetch of the same URL was refused with PROVENANCE_REQUIRED. Nothing of Oman was read, and the row has no earlier gold note for Oman in searched.json either. Named next document, with the path now in hand: https://publishing.bnet.om/sites/assets/Documents/English/Publications/AnnualReports/Annual%20Report%202024%20ENG.pdf, notes to the financial statements, gold note."
+    },
+    {
+      "iso3": "SAU",
+      "state": "not reached",
+      "note": "SAU: untested, and the index route round 75 named does not exist as given. A curl with a browser user-agent of https://www.sama.gov.sa/en-US/EconomicReports/Pages/report.aspx?cid=55, the publications index that round 75 recommended, returned HTTP 404 with a 2,141-byte body. No other SAMA path was tried this round because the budget had gone to places where documents were being served. SAMA's gold note has never been read. Next route: find a SAMA annual report PDF path through a search that returns one on sama.gov.sa, then curl it with the user-agent — the common brief records that the user-agent plus a real path is what unblocked this host."
+    },
+    {
+      "iso3": "PRY",
+      "state": "not reached",
+      "note": "PRY: a third search, this time framed on 'estados financieros' plus 'dictamen auditoría externa' and restricted in wording to bcp.gov.py, again returned no Banco Central del Paraguay statements — only Paraguayan commercial banks' annual balances (Atlas, ueno, GNB, Familiar, Citibank Paraguay), two contrataciones.gov.py procurement files, one bcp.gov.py methodological note on external-debt compilation, and an Última Hora article headlined that the Contraloría alleges the BCP obstructed an audit. So the BCP's audited statements are not findable by search in Spanish, three rounds running, and the gold note has never been opened. Next route: the BCP's own transparency index on bcp.gov.py read with a tool that returns hrefs, not another search."
+    },
+    {
+      "iso3": "BDI",
+      "state": "not reached",
+      "note": "BDI: no call was spent on Burundi this round and it stays untested on this row, as it has been since round 68. The standing route is unchanged and is recorded here so it is not lost: the Banque de la République du Burundi publishes 'Etats financiers' and a 'Rapport annuel' in French, the gold note would be headed 'Or' or 'Or monétaire', and the host bcb.bi answers HTTP 429 to curl with a 24 KB error body (recorded at rounds 69 and 72), so it needs WebFetch or a long-spaced retry. File paths on that host take the form /images/YYYY/<NAME>.pdf with spaces percent-encoded."
+    },
+    {
+      "iso3": "DZA",
+      "state": "not reached",
+      "note": "DZA: no call was spent on Algeria, deliberately. Three earlier rounds on two different rows have established that www.bank-of-algeria.dz is dark to both tools in this environment — robots-disallowed to WebFetch and failing TLS or returning HTTP 000 with zero bytes to curl, on the rapports-annuels listing and on individual PDF paths alike — and no search has ever returned a PDF on the bank's own host. Spending this round's calls on a fourth attempt would have cost the places that were actually serving documents. The gold note has never been read. Next route: the IMF Algeria Article IV staff report's reserves discussion, or an off-host mirror of the Banque d'Algérie rapport annuel."
+    },
+    {
+      "iso3": "LBY",
+      "state": "not reached",
+      "note": "LBY: no call was spent on Libya and it remains untested, the state round 75 left it in. Recorded so the next round does not have to rediscover it: the Central Bank of Libya has published audited statements covering the period after the 2011 institutional split, its holding is large (about 117 tonnes on World Gold Council figures), the documents are in Arabic — which per the common brief must be NFKC-normalised and stripped of bidi marks before grepping, because an Arabic PDF can extract perfectly and grep falsely — and any location claim must say which of the Tripoli and Benghazi administrations' statements it came from."
+    },
+    {
+      "iso3": "EGY",
+      "state": "not reached",
+      "note": "EGY: no call was spent on Egypt this round. Round 70 established on three searches across two rows that the problem is structural rather than a search failure: no Central Bank of Egypt annual report and no CBE audited financial statements surface anywhere, every statements PDF returned belonging to an Egyptian commercial bank, and every CBE item being a monthly External Position bulletin, a monthly Reserve Money release or press coverage of the monthly balance sheet. The CBE appears to publish a statement of financial position without notes. If there is no note set there is no gold note, but that has not been shown and the country is untested rather than closed. Next route: the cbe.org.eg Economic Research publications index read with a tool that returns hrefs; failing that, the IMF Egypt Article IV safeguards material."
+    },
+    {
+      "iso3": "LAO",
+      "state": "not reached",
+      "note": "LAO: no call was spent on Laos. The host position recorded at round 70 is specific enough to act on without retesting: bol.gov.la refuses curl's socket outright (HTTP 000, zero-byte transfer, repeatable) and answers WebFetch with only a language toggle and the bank's street address, so the site is script-rendered and its document list is invisible to both tools. Nothing of Laos has ever been read on this row. Next route, unchanged: the BOL annual economic report mirrored on data.opendevelopmentmekong.net, foreign-reserves chapter, then the 2025 Article IV staff report."
+    },
+    {
+      "iso3": "JOR",
+      "state": "not reached",
+      "note": "JOR: no call was spent on Jordan, and this row should note what the reserve-managers row concluded three rounds running. The Central Bank of Jordan's 'Financial statements and independent auditor's report' exists as Open Data Jordan dataset 450-2018, with a later MIGRATED-450-2020 dataset, and the files are served through portal.jordan.gov.jo/OD/files/, a host that has failed on every attempt by every round that tried it — a connection error before any HTTP code at round 68, and four failures with ws_closed_mid_exchange through the agent proxy at round 73. Rounds 69 and 70 both recommended dropping Jordan rather than spending more rounds on file-number guessing; that recommendation is repeated here for the gold row. If it is kept, the untried route is cbj.gov.jo's own annual report through a browser tool."
+    },
+    {
+      "iso3": "MWI",
+      "state": "not reached",
+      "note": "MWI: Malawi has never been opened on this row — round 68 reserved it to the manager because the Reserve Bank of Malawi's document list loads by script and blocks automated readers, and no round since has spent a call on it. One search this round, framed on the RBM annual report and financial statements, returned no rbm.mw document whatever: the results were Malawi Government Gazettes, Nation and Malawi24 press coverage of RBM profit and loss figures, a commercial bank's annual review, the Reserve Bank of Malawi Act 1989, and an RBM 'Financial Statement 31 December 2024' uploaded to Scribd, which is not the bank's own host and would in any case be a weak source. The gold note has never been read. Next route: rbm.mw read with a browser tool, or the Malawi Auditor-General's reports."
+    },
+    {
+      "iso3": "SGP",
+      "state": "vein closed",
+      "note": "SGP: no call was spent on Singapore and round 75's provisional blank is left standing rather than upgraded. That round's position is worth restating precisely, because it is the kind of blank that can be mistaken for a settled one: mas.gov.sg served an identical 853,817-byte HTML 'Maintenance' page to curl for two different statements URLs, so no raw PDF text was ever obtained, and the finding that the only gold content is accounting-policy Note 3.9 — gold stated at cost as a long-term investment, with a balance-sheet gold line of S$5,658 million for FY2026 and S$7,597 million for FY2025 and no note reference — reached that round only through the fetch summariser. Given round 74's experience of the summariser inventing characterisations, and given that MAS has bought heavily since 2021, the note is worth one raw-text grep before Singapore is called closed. Document: https://www.mas.gov.sg/-/media/mas-media-library/publications/annual-report/2026/mas-financial-statements-2025_2026.pdf."
+    },
+    {
+      "iso3": "TJK",
+      "state": "vein closed",
+      "note": "TJK: no call was spent on Tajikistan, but the curator should look again at what round 69 already read, because the row's rules have changed since. That round read Note 13 'Золото и прочие драгоценные металлы' of the National Bank of Tajikistan's audited consolidated statements at 31 December 2025 line by line, from the NBT's own financial-reports listing at https://nbt.tj/ru/about/finansovye-otchety.php, and recorded verbatim that the note itemises monetary gold by where the metal is: gold bars in the vault, gold in accounts at foreign banks ('Золото на счетах в иностранных банках', 3,854,498 thousand somoni) and gold at foreign refineries ('Золото на иностранных аффинажных заводах', 728,717 thousand), naming no bank and no refinery. Round 69 filed that as a confirmed blank, which was correct under the rules it had. Under this round's rules it is a textbook instance of gold stated to be abroad with no institution named, and the gold-at-foreign-refineries line is physical metal rather than an account. I have not reopened the document, so I am not filing it as a reclassification of someone else's reading; I am flagging that it can be reclassified from round 69's own verbatim quotes without spending a fetch, and that the same note's vault lines are a candidate home-custody record if the curator will accept 'in the vault' in the NBT's own accounts as the NBT's own vault."
+    },
+    {
+      "iso3": "LKA",
+      "state": "confirmed blank",
+      "note": "LKA: not retested, and round 68's blank is a sound reading that should not be respent. That round grepped the Central Bank of Sri Lanka's 'Financial Statements and Operations 2024' in full (548,403 characters) and read Note 18 'Gold', which gives only the statutory basis under section 40(2) of the CBSL Act and the quantity, 15,148.163 bar fine ounces. It also closed the three obvious side routes: the reserve-management narrative's 'securities lending (managed by custodians on behalf of CBSL)' names no custodian and is not tied to gold; the credit-risk counterparty table listing the Federal Reserve, the RBA, the BIS, the Bank of Japan, the Bundesbank, the Bank of England, the Riksbank, the Bank of Canada, the RBNZ, the RBI and the PBoC sits against 'Cash and Cash Equivalents' and not against gold, which is the trap this row refuses; and the only named global custodian in the document, Euroclear, is tied to AUD collateral for bond lending."
+    },
+    {
+      "iso3": "ESP",
+      "state": "confirmed blank",
+      "note": "ESP: not retested, and round 68's blank is a sound reading. The Banco de España's Cuentas Anuales 2023 note 'Oro y derechos en oro' was read and gives only the value and 9,054 million fine troy ounces, naming no depositary, institution or city, and the Informe Institucional 2024's financial-information chapter was read in full (38,928 characters) and itemises the foreign-currency portfolio by currency and instrument and the gold holding separately, again with no holder or location. Two things in that round's own note are still open and are the only reason to return: the second half of the Cuentas Anuales 2023 PDF (characters 100,000 to 181,678, income statement and post-reserves notes) was not read, and the Cuentas Anuales 2024 edition was never opened. Host note: repositorio.bde.es returns HTTP 403 to curl and serves to WebFetch, while the section page bde.es/bde/en/secciones/informes/informes-y-memorias-anuales/cuentas-anuales/ serves to plain curl and lists every year's PDF."
+    },
+    {
+      "iso3": "YEM",
+      "state": "confirmed blank",
+      "note": "YEM: not retested, and round 70's blank is the right shape for this country and should be read as it was written — a want-of-document blank, not a silent-document blank. No audited financial statements with notes have been published by either the Aden or the Sanaa bank since 2016, so there is no gold note to read; separately, the two monthly 'Monetary and Financial Developments' bulletins the Aden bank does publish were downloaded and grepped in full (December 2025 and September 2025, about 28,500 characters each) and neither contains the word gold anywhere. Host facts from that round: www.cby.gov.ye resets the connection to curl, while cby-ye.com and english.cby-ye.com serve. An undisclosed holding and an unpublished bank read identically in the data and are not the same fact; Yemen is the second."
+    }
+  ],
+  "checked_not_in_assignment": [
+    {
+      "note": "No country outside the 28 was researched or filed. All 28 assigned ISO3 codes were checked against agents/work/r77/have_gold.json before any search: none of BDI, BIH, CYP, DZA, EGY, ESP, FJI, JOR, KWT, LAO, LBY, LKA, MAR, MKD, MLT, MWI, OMN, PAK, PER, PNG, PRY, SAU, SGP, SLV, SUR, TJK, URY or YEM appears in that file, so no record in this file is a duplicate at country level."
+    },
+    {
+      "note": "Both incoming party names were checked against party_names.json for an existing spelling before being written, per the common brief's firm-name rule. 'Bank for International Settlements' and 'Royal Canadian Mint' are both already on the map in exactly those spellings — the Royal Canadian Mint as a gold custodian for the Netherlands, sourced to DNB's own gold page — so neither record introduces a new diamond or a second spelling. Both source documents state the name in the same form, with the single exception of the El Salvador liquidity-reserve statement's table line, which capitalises it 'Bank For International Settlements'."
+    }
+  ],
+  "leads_not_opened": [
+    {
+      "iso3": "OMN",
+      "lead": "https://publishing.bnet.om/sites/assets/Documents/English/Publications/AnnualReports/Annual%20Report%202024%20ENG.pdf (and the 2023 and 2025 editions on the same path pattern), being the Central Bank of Oman annual report PDFs as linked from the CBO's own index at https://cbo.gov.om/Pages/AnnualReport.aspx. The path is now known; the host was unreachable from this session (502 CONNECT, connect_unreachable)."
+    },
+    {
+      "iso3": "PNG",
+      "lead": "A raw-text read of https://www.bankpng.gov.pg/sites/default/files/2025-06/BPNG%20Annual%20Report%202024.pdf, accounting-policy Note 1(k) 'Gold', to verify or refute the 'placed on deposit with a financial institution' wording filed provisionally above. The host answers 403 to curl on three paths; a browser tool is the route. Older BPNG statements on the same host, which search returned, may carry the same note and are unopened: Financial Statement 2001 through 2010 under /sites/default/files/2024-09/."
+    },
+    {
+      "iso3": "SUR",
+      "lead": "https://www.cbvs.sr/images/content/annual-reports/Jaarverslag_2023_Secured.pdf, the Centrale Bank van Suriname's own 2023 annual report, to test whether the Royal Canadian Mint custody filed above still held in 2023. Returned HTTP 403 to curl with a browser user-agent; not tried on WebFetch."
+    },
+    {
+      "iso3": "MAR",
+      "lead": "Bank Al-Maghrib publishes its 'Etats financiers' / comptes annuels as a publication separate from the Rapport annuel read this round. If that separate document carries a fuller gold note than the Rapport annuel's Note 1, it could name the foreign depositaries the Rapport annuel declines to name. Not searched for."
+    },
+    {
+      "iso3": "SLV",
+      "lead": "The El Salvador transparency portal carries a long run of BCR documents at https://transparencia.gob.sv/institutions/bcr/documents/<id>/download, of which search returned about twenty ids; 593967 (2023 financial statements) and 593992 (2023 liquidity-reserve statement) were opened, and 607296, 572254, 526648, 509736, 482948, 425754, 409415, 409419, 356275, 356327, 347645, 341537, 309368, 293433, 277466, 277486, 277491 and 243383 were not. A later edition would show whether the BIS custody persists after 2023. Note the host's behaviour: these ids 404 to curl and serve to WebFetch."
+    },
+    {
+      "iso3": "general",
+      "lead": "Documents left on disk in /tmp by other agents of this session that were never grepped for gold by me, and that cost nothing to read: /tmp/pak_agp.pdf (Auditor-General of Pakistan, 5.0 MB), /tmp/eg.pdf (Egypt's central bank law 194 of 2020 — a statute, so not a record under the brief, but it may name a custody power), /tmp/lkfs.pdf and /tmp/lk.pdf (Sri Lanka), /tmp/png_p4.pdf (the PNG Auditor-General report round 75 grepped). Also /tmp/g2/ holds the four documents this round downloaded as raw text: mar25.txt, sur2020.txt, fji2024.txt, bih.txt and kwt.txt, each already extracted and greppable for the other rows of this map at no fetch cost."
+    }
+  ]
+}

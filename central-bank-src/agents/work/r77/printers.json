@@ -1,0 +1,199 @@
+{
+ "records": [
+  {
+   "cb_iso3": "NLD",
+   "entity": "Oberthur Fiduciaire",
+   "name_as_stated": "Oberthur Fiduciaire SAS",
+   "relation": "prints its banknotes",
+   "entity_type": "firm",
+   "entity_hq_city": null,
+   "entity_hq_iso3": "FRA",
+   "source_url": "https://ted.europa.eu/en/notice/-/detail/65988-2024",
+   "quote": "Supply of Euro Banknotes ES2 2025 -2028",
+   "weak_source": false,
+   "summary": "De Nederlandsche Bank does not print the euro banknotes allocated to it; one of the three private printers it awarded framework agreements to in December 2023 is Oberthur Fiduciaire of France.",
+   "detail": "Contract-award notice 65988-2024, published in the EU's official procurement journal (Tenders Electronic Daily) on 1 February 2024 by De Nederlandsche Bank N.V. of Amsterdam, records framework agreements under the title 'Supply of Euro Banknotes ES2 2025 -2028', with the award decision dated 21 December 2023 and three winners: Oberthur Fiduciaire SAS (France), Giesecke+Devrient Currency Technology GmbH (Germany) and Bundesdruckerei GmbH (Germany). The notice's own description states that 'the Contracting Authority and the other Participating NCBs may issue Orders amongst all Contractors for ES2 banknotes for the production year 2025 and 2026', so orders are spread across the three printers rather than given to one. The notice number, title, winners, winner countries and award date here were read from TED's public API (api.ted.europa.eu/v3/notices/search), because the TED web page is served behind an AWS WAF challenge that refuses automated clients; the same notice opens in a browser at the URL given. Checked again against the API on 17 November 2026: buyer 'De Nederlandsche Bank N.V.', title 'Supply of Euro Banknotes ES2 2025 -2028', notice type can-standard, winner names 'Oberthur Fiduciaire SAS', 'Giesecke+Devrient Currency Technology GmbH', 'Bundesdruckerei GmbH', award decision 21 December 2023. The API returns winner countries as a separate array in a different order from the names, so the country given for each firm here is the firm's own home country and not a position in that array."
+  },
+  {
+   "cb_iso3": "NLD",
+   "entity": "Giesecke+Devrient",
+   "name_as_stated": "Giesecke+Devrient Currency Technology GmbH",
+   "relation": "prints its banknotes",
+   "entity_type": "firm",
+   "entity_hq_city": null,
+   "entity_hq_iso3": "DEU",
+   "source_url": "https://ted.europa.eu/en/notice/-/detail/65988-2024",
+   "quote": "Supply of Euro Banknotes ES2 2025 -2028",
+   "weak_source": false,
+   "summary": "Giesecke+Devrient's currency arm in Germany is one of three printers De Nederlandsche Bank awarded framework agreements to for the euro banknotes allocated to the Dutch central bank for 2025 to 2028.",
+   "detail": "Contract-award notice 65988-2024, published by De Nederlandsche Bank N.V. in Tenders Electronic Daily on 1 February 2024, names three winners of framework agreements titled 'Supply of Euro Banknotes ES2 2025 -2028' — Oberthur Fiduciaire SAS, Giesecke+Devrient Currency Technology GmbH and Bundesdruckerei GmbH — with an award decision dated 21 December 2023 and the winners' countries given as France, Germany and Germany. The map already carries this firm as 'Giesecke+Devrient'; the name printed in the notice is 'Giesecke+Devrient Currency Technology GmbH'. Notice fields were read from TED's public API because the TED web page is behind an AWS WAF challenge that returns an empty body to automated clients; the notice itself opens in a browser at the cited URL. No city is given for the winner in the notice data, so the head-office city is left null."
+  },
+  {
+   "cb_iso3": "NLD",
+   "entity": "Bundesdruckerei GmbH",
+   "name_as_stated": "Bundesdruckerei GmbH",
+   "relation": "prints its banknotes",
+   "entity_type": "firm",
+   "entity_hq_city": null,
+   "entity_hq_iso3": "DEU",
+   "source_url": "https://ted.europa.eu/en/notice/-/detail/65988-2024",
+   "quote": "Supply of Euro Banknotes ES2 2025 -2028",
+   "weak_source": false,
+   "summary": "Germany's Bundesdruckerei is the third printer holding a framework agreement to supply De Nederlandsche Bank with the euro banknotes allocated to the Netherlands for the 2025 to 2028 production years.",
+   "detail": "The same De Nederlandsche Bank contract-award notice, 65988-2024 of 1 February 2024 in Tenders Electronic Daily, lists Bundesdruckerei GmbH (Germany) alongside Oberthur Fiduciaire SAS and Giesecke+Devrient Currency Technology GmbH as winners of the framework agreements 'Supply of Euro Banknotes ES2 2025 -2028', award decision dated 21 December 2023. Bundesdruckerei already appears on the map as a printer for the Deutsche Bundesbank, so the Dutch tie puts the same firm on a second central bank. Notice fields read from TED's public API, the TED web page being behind an AWS WAF challenge for automated clients; no winner city is given in the notice data, so the head-office city is left null."
+  },
+  {
+   "cb_iso3": "GRC",
+   "entity": "EuropaFi",
+   "name_as_stated": "EUROPAFI SAS",
+   "relation": "makes its banknote paper",
+   "entity_type": "firm",
+   "entity_hq_city": null,
+   "entity_hq_iso3": "FRA",
+   "source_url": "https://ted.europa.eu/en/notice/-/detail/309272-2026",
+   "quote": "Supply of EURO 5 ES2 banknote paper",
+   "weak_source": false,
+   "summary": "The Bank of Greece buys the paper for the five-euro notes it is allocated from EuropaFi in France, which has won the Greek central bank's banknote-paper contract in three successive years.",
+   "detail": "Contract-award notice 309272-2026, published in Tenders Electronic Daily on 6 May 2026 by the buyer named as 'BANK OF GREECE', is titled 'Supply of EURO 5 ES2 banknote paper' and gives the winner as EUROPAFI SAS of France with a tender value of EUR 892,921.20. Earlier award notices under the same title went to the same company on 5 August 2024 (469305-2024) and 9 September 2025 (588433-2025). This is the banknote-paper relation rather than the printer relation, filed because the Bank of Greece was not previously on the paper row; EuropaFi already appears on the map as the paper maker for the Banque de France. That the Bank of Greece buys ES2 banknote paper itself, together with the ECB's published allocation of five-euro production to GR, points to printing in its own works, but no source read in this round states who prints the notes, so no printer tie is filed. Notice fields read from TED's public API; the TED web pages return an AWS WAF challenge to automated clients and open normally in a browser.",
+   "second_source_url": "https://ted.europa.eu/en/notice/-/detail/588433-2025"
+  }
+ ],
+ "blanks": [
+  {
+   "iso3": "NLD",
+   "kind": "converted",
+   "note": "NLD converted to three records above. Also read DNB's own page '20 jaar euro, 20 leuke weetjes' (https://www.dnb.nl/algemeen-nieuws/2022/20-jaar-euro-20-leuke-weetjes), item 20: it says Koninklijke Joh. Enschede in Haarlem printed the first Dutch banknotes in 1810, that this ended for DNB in 2011 when it 'koos voor drukkers in Duitsland en Groot-Brittannie' (chose printers in Germany and Great Britain), and that Enschede stopped printing banknotes altogether at the end of 2016. The page names no firm for the post-2011 period, so nothing was filed from it; the firm names come from the 2024 TED award."
+  },
+  {
+   "iso3": "GRC",
+   "kind": "vein closed",
+   "note": "GRC: paper tie filed; printer not settled. The Bank of Greece website was tried twice (https://www.bankofgreece.gr/en/the-bank/printing-works and .../main-tasks/banknotes-and-coins/printing-works-ieta) and both returned HTTP 503 with an identical 447,663-byte error page from this network, so the bank's own description of its printing works (IETA) was never read. The Bank of Greece 2025 annual financial statements PDF served from athexgroup.gr was downloaded (395,953 bytes) and grepped for 'IETA', 'printing works', 'banknote print' and 'printing': it is the balance sheet and profit-and-loss statement only, with no production or printing-works section. Next round: get the bankofgreece.gr printing-works page, or the Bank of Greece annual report (not the financial statements) from the bank's own site."
+  },
+  {
+   "iso3": "BEL",
+   "kind": "confirmed blank",
+   "note": "BEL: the National Bank of Belgium's own procurement trail was searched in Tenders Electronic Daily through its public API. The NBB has published contract notices titled 'Banknotes' (159437-2017 of 27 April 2017 and 168766-2018 of 19 April 2018), but a query for award notices by that buyer mentioning banknotes (buyer-name ~ Banque nationale de Belgique, notice types can-standard/can-tran/can-modif/veat, full text 'banknotes') returns zero, so no TED award notice names a printer for Belgium. The NBB press release of 31 March 2021 on the 2020 result and profit distribution (https://nbb.be/doc/ts/enterprise/press/2021/cp210331en-2.pdf) was read in full and names no printer. ECB's production table shows BE commissioning 5, 10 and 20-euro production in various years, so Belgium does have an allocation to place somewhere."
+  },
+  {
+   "iso3": "SVN",
+   "kind": "confirmed blank",
+   "note": "SVN: Banka Slovenije Annual Report 2024 (https://www.bsi.si/storage/uploads/b700f937-6664-4638-a35a-0918d6734230/Letno-porocilo-2024_EN_07_eng-GB_complete.pdf, 3,976,161 bytes) downloaded and read at both places that would name a printer. Section 3.6 'Banknotes and coins' says only that 'each year Banka Slovenije is involved in the printing of euro banknotes at Eurosystem level; in 2024 it was 50-euro notes that were printed', with a footnote pointing to the ECB website. Note 35 'Banknote production services' gives EUR 1.5 million of expenses 'related to the production and transportation of banknotes' and explains the capital-key allocation, naming no printer. Grepped the whole report for 'Oberthur', 'Enschede', 'Giesecke', 'De La Rue' and 'natisn': no hits."
+  },
+  {
+   "iso3": "IRL",
+   "kind": "vein closed",
+   "note": "IRL: Central Bank of Ireland has itself tendered for banknote printing — TED contract notice 361312-2019 of 1 August 2019, CPV category 'banknote printing services', full text matching 'Supply of Euro Banknotes', and a further contract notice 180183-2026 of 16 March 2026 under the banknote CPV. A query for CBI award notices mentioning 'banknote' (notice types can-standard/can-tran/can-modif/veat) returns zero, so no award notice in TED names the printer that replaced the Currency Centre. Nothing was fetched from centralbank.ie this round."
+  },
+  {
+   "iso3": "HRV",
+   "kind": "not reached",
+   "note": "HRV: four Hrvatska narodna banka notices under CPV 22430000 'Banknotes' were located in TED — 620533-2019 (veat, 30 December 2019), 128252-2020 (award, 17 March 2020), 434495-2020 (veat, 16 September 2020) and 570899-2020 (award, 27 November 2020) — but these pre-date Croatia's euro changeover and, being on the old TED schema, carry no winner name in the API's structured fields. The TED web and PDF pages for them could not be opened: ted.europa.eu answers HTTP 202 with a zero-length body and header 'x-amzn-waf-action: challenge' to any automated client. Winner names for these four notices are the open route."
+  },
+  {
+   "iso3": "CYP",
+   "kind": "confirmed blank",
+   "note": "CYP: no banknote-printing award notice for the Central Bank of Cyprus exists in TED. A query for all its notices mentioning 'banknote' returns one item, 636298-2022 of 16 November 2022, a contract notice for currency-exchange services, not printing. Its euro allocation is published by the ECB (CY appears for the 5, 10, 20 and 50-euro denominations in several years) but no document read names who prints it."
+  },
+  {
+   "iso3": "EST",
+   "kind": "confirmed blank",
+   "note": "EST: all 100 most recent Eesti Pank notices in TED were scanned for banknote vocabulary; the only printing-related ones are a secure-printing solution won by OVERALL EESTI AS (568064-2023) and software and data contracts, none of them banknote production. EE appears in the ECB's published allocation for the 5, 10, 20 and 50-euro notes, but no printer is named in any document read."
+  },
+  {
+   "iso3": "FIN",
+   "kind": "confirmed blank",
+   "note": "FIN: Suomen Pankki's 83 TED notices were scanned in full; the matches on printing vocabulary are all 'business services: law, marketing, consulting, recruitment, printing' category notices, with no banknote production contract and no award naming a printer. FI appears in the ECB's allocation table for the 5, 10, 20 and 50-euro notes. Finland's own route (Bank of Finland annual report, and the history of Setec after its sale) was not opened."
+  },
+  {
+   "iso3": "LTU",
+   "kind": "confirmed blank",
+   "note": "LTU: Lietuvos bankas notices in TED were scanned (first 100 of 641, plus a full-text 'banknotes' query filtered to the Baltic buyers); the matches are banknote sorting machines and software, not printing. LT appears in the ECB's published allocation for the 20, 50 and 100-euro notes in several years. No award notice or bank publication read names a printer."
+  },
+  {
+   "iso3": "LVA",
+   "kind": "confirmed blank",
+   "note": "LVA: Latvijas Banka notices in TED were scanned the same way; its banknote-adjacent contracts are 'equipment and apparatus with specific functions' (140865-2020, 339096-2020) and audit and clearing services, with no printing award. LV appears in the ECB's allocation for the 10, 20, 50 and 100-euro notes. No printer named in anything read."
+  },
+  {
+   "iso3": "LUX",
+   "kind": "confirmed blank",
+   "note": "LUX: Banque centrale du Luxembourg has 65 notices in TED; a query for those mentioning 'banknote' returns zero. Its printing-related contracts are general 'printing and related services' (405078-2019, award 490400-2020, and 57186-2026 'Services d'impression'), which the notice titles do not tie to banknotes. LU appears in the ECB's allocation for the 5, 10, 20 and 50-euro notes. Not converted; the Luxembourg allocation is printed somewhere unnamed."
+  },
+  {
+   "iso3": "MLT",
+   "kind": "confirmed blank",
+   "note": "MLT: Central Bank of Malta has 40 notices in TED and only one mentions 'banknote' — 636298-2022, a currency-exchange services contract notice of 16 November 2022 — with no banknote-printing tender or award. MT appears in the ECB's allocation for the 5, 10, 20 and 50-euro notes."
+  },
+  {
+   "iso3": "SVK",
+   "kind": "confirmed blank",
+   "note": "SVK: Narodna banka Slovenska notices in TED were scanned; the banknote-related ones are banknote counters (376442-2018, award 226867-2019) and a general 'printing services' contract notice 439113-2018 with award 43839-2019, whose subject the title does not tie to banknotes and whose text was not read because ted.europa.eu refuses automated clients with an AWS WAF challenge. SK appears in the ECB's allocation for the 5, 10, 20 and 50-euro notes. Award 43839-2019 is the open route."
+  },
+  {
+   "iso3": "SMR",
+   "kind": "not reached",
+   "note": "SMR: not tested. The EU-San Marino monetary agreement, which is the document that would say whether San Marino may issue banknotes at all, could not be opened: eur-lex.europa.eu returns a zero-length body to curl and refuses WebFetch by robots.txt (robots_disallowed), and the ECB legal-act page www.ecb.europa.eu/ecb/legal/1004/1351/html/act_5156_amend.en.html also returned zero bytes, although other ECB pages served normally. Note that San Marino does not appear in the ECB's published list of NCBs commissioning euro banknote production for any year from 2017 to 2028, which is consistent with it having no banknote allocation, but that is an absence rather than a statement."
+  },
+  {
+   "iso3": "MNE",
+   "kind": "not reached",
+   "note": "MNE: not tested. Montenegro uses the euro unilaterally and does not appear among the NCBs commissioning euro banknote production in the ECB's table, but no Central Bank of Montenegro document was opened this round, so whether it issues any banknote of its own is untested here."
+  },
+  {
+   "iso3": "PSE",
+   "kind": "not reached",
+   "note": "PSE: not tested. No Palestine Monetary Authority document was opened; the assignment's expectation that Palestine has no currency of its own was not confirmed against a source, so this is a genuine untested place rather than a documented negative."
+  },
+  {
+   "iso3": "ECU",
+   "kind": "not reached",
+   "note": "ECU: not tested. A Spanish-language search for Banco Central del Ecuador material on dollarisation and banknote issuance returned only press and opinion columns; no central bank document was fetched, so the negative (no banknote of its own since dollarisation) is not sourced."
+  },
+  {
+   "iso3": "SLV",
+   "kind": "not reached",
+   "note": "SLV: not tested. Same search returned no Banco Central de Reserva de El Salvador document; nothing fetched."
+  },
+  {
+   "iso3": "TLS",
+   "kind": "not reached",
+   "note": "TLS: attempted and failed. The IMF selected-issues paper on Timor-Leste dollarisation was requested twice (imf.org/-/media/files/publications/selected-issues-papers/2024/english/sipea2024042.pdf and the .ashx form of 1tlsea2024003) and both returned a 472-488 byte HTML error rather than a PDF. The Banco Central de Timor-Leste pages bancocentral.tl/en/go/know-your-money (158,175 bytes) and bancocentral.tl/currency/co_in_c/ were fetched, but the body text is loaded by script: both yield only the navigation menu, in which 'Exchange USD Banknotes' and 'Exchange Coins (Centavos)' appear as labels with no statement of what is legal tender or what BCTL issues. No claim filed."
+  },
+  {
+   "iso3": "MDA",
+   "kind": "not reached",
+   "note": "MDA: not reached. No search or fetch was spent on the National Bank of Moldova this round; the budget went to the euro-area structure as instructed."
+  },
+  {
+   "iso3": "MDG",
+   "kind": "not reached",
+   "note": "MDG: not reached. Note that have_print_sibling.json already carries Papierfabrik Louisenthal as the maker of Madagascar's banknote paper, so the paper row is taken and only the printer is missing; no Banque Centrale de Madagascar document was opened."
+  },
+  {
+   "iso3": "GIN",
+   "kind": "not reached",
+   "note": "GIN: not reached. No Banque Centrale de la Republique de Guinee document opened."
+  },
+  {
+   "iso3": "ZMB",
+   "kind": "not reached",
+   "note": "ZMB: not reached. have_print_sibling.json already carries Landqart AG as the substrate supplier for the new kwacha series, which per the assignment does not count on the printer row; no Bank of Zambia document was opened this round."
+  }
+ ],
+ "checked_not_in_assignment": [
+  "Checked have_print.json for all 24 assigned codes before searching: none of BEL CYP ECU EST FIN GIN GRC HRV IRL LTU LUX LVA MDA MDG MLT MNE NLD PSE SLV SMR SVK SVN TLS ZMB is present, so all 24 were genuinely open on the printer row.",
+  "Checked have_print_sibling.json: MDG (paper, Papierfabrik Louisenthal) and ZMB (substrate, Landqart AG) hold sibling ties only, which per the assignment leaves both absent on the printer row. No sibling tie exists there for any other assigned country.",
+  "Read the euro-area countries already on the printer row (DEU, FRA, ITA, ESP, AUT, PRT) to see how the row is worded for Eurosystem members, and the non-euro neighbours CZE, POL, HUN, DNK, SWE, BGR, SRB, ROU. No record was filed for any of them: the Bank of Greece paper award and the Dutch printing awards are the only new ties, both for assigned countries.",
+  "Checked party_names.json before writing entity names: used the existing spellings 'Oberthur Fiduciaire', 'Giesecke+Devrient', 'Bundesdruckerei GmbH' and 'EuropaFi' rather than the longer forms printed in the notices, keeping the notice wording in name_as_stated. Noted that the map carries both 'Joh. Enschede Banknotes B.V.' and 'Royal Joh. Enschede' as separate parties; nothing was filed for either this round."
+ ],
+ "leads_not_opened": [
+  "The single document that could settle the most places: the tender documents behind De Nederlandsche Bank's framework agreements. Award notice 65988-2024 says orders may be issued by 'the Contracting Authority and the other Participating NCBs', so DNB ran a joint euro-banknote procurement for several NCBs without printing works of their own. The participating NCBs are not named in the structured notice data; the earlier contract notice 351379-2023 and the 'Selection Guidelines' it refers to would name them, and if they include EE, IE, CY, LU, MT, SI, SK and FI, the three printers filed for NLD would apply to those places too. Do not assume that: get the list.",
+  "ECB's production statistics page, https://www.ecb.europa.eu/stats/euro/production/html/index.en.html, carries the full table of 'NCBs commissioning production' by denomination for every year from 2002 to 2028. It settles which countries have an allocation but never who prints it. It is a good source for the allocation itself if the map ever wants that as a separate fact.",
+  "ECB press release of 22 October 2004, https://www.ecb.europa.eu/press/pr/date/2004/html/pr041022.en.html, sets out the framework: a single Eurosystem tender procedure for euro banknote production, with the rule that 'NCBs with in-house printing works or those using public printing works may decide not to participate in the single Eurosystem tender procedure and will then continue to produce the euro banknotes allocated to them in those printing works'. That is the mechanism, not a record, so nothing was filed from it, but it explains the split: in-house printers keep their own production and the rest tender.",
+  "TED's web interface is behind an AWS WAF challenge (HTTP 202, empty body, header x-amzn-waf-action: challenge) for every automated client, while its public API at api.ted.europa.eu/v3/notices/search answers freely and carries buyer, winner, winner country, contract title, award decision date and tender value. Expert-query syntax that works: 'buyer-name ~ (\"Central Bank of Malta\")', 'FT ~ (\"banknote printing\")', 'classification-cpv IN (22430000)' (22430000 is the banknotes CPV; 22440000 is the broad stamps-and-cheque-forms class and is mostly noise), 'buyer-country IN (BEL IRL ...)', 'notice-type IN (can-standard veat)'. Passing an unsupported field name makes the API dump its whole 60,000-character field list, so use only fields seen to work.",
+  "Croatian notices 620533-2019, 128252-2020, 434495-2020 and 570899-2020 (Hrvatska narodna banka, CPV 22430000 'Banknotes') need their winner names, which are not in the API's structured fields for old-schema notices. The EU open data bulk XML packages of TED notices are the route.",
+  "Slovak award notice 43839-2019 (Narodna banka Slovenska, 'printing services', 29 January 2019) and the Irish notices 361312-2019 and 180183-2026 need their texts read for the same reason.",
+  "Bank of Greece printing works (IETA) at Holargos: bankofgreece.gr returned HTTP 503 from this network on both paths tried, so the bank's own page was never read. The Bank of Greece annual report, as distinct from the financial statements served via athexgroup.gr, is the other route."
+ ],
+ "note": "Four records, all from primary EU documents: three printers for the Netherlands and the banknote-paper maker for Greece. The euro-area structure was tackled first as instructed, and it mostly resists the printer row. The ECB publishes the allocation but not the printing: its production statistics page lists, year by year, which NCBs commission which denominations, and its 2004 press release explains that NCBs with in-house or public printing works keep their own production while the others tender. Neither names a printer for a country that tenders. Small NCBs' own reports are no better: Banka Slovenije's 2024 annual report says it 'is involved in the printing of euro banknotes at Eurosystem level' and books EUR 1.5 million of banknote production expense without naming anyone. What does name printers is the EU procurement journal, and there the whole euro area yields exactly one banknote award with named winners, De Nederlandsche Bank's framework agreements of December 2023 to Oberthur Fiduciaire, Giesecke+Devrient and Bundesdruckerei. Belgium, Ireland and Slovakia have published banknote tenders but no award notice with a winner; Cyprus, Estonia, Finland, Lithuania, Latvia, Luxembourg, Malta and Slovenia have none at all. One finding worth carrying forward: the Dutch award says orders may be placed by 'the other Participating NCBs', so that procurement was joint, and the list of participants would likely convert several of the eight blanks at once. The Greek record is deliberately on the sibling paper relation, not the printer relation: EuropaFi has won the Bank of Greece's 'Supply of EURO 5 ES2 banknote paper' contract three years running, which with the ECB's allocation of five-euro production to GR points at the bank's own works doing the printing, but no source read says so and bankofgreece.gr returned 503 on both attempts. The ten non-euro places went largely untested, which is the cost of the instruction to spend the budget on the euro structure: Timor-Leste was attempted and failed on three fetches (two IMF PDFs that returned HTML errors, and BCTL pages whose text is script-loaded), and San Marino failed because eur-lex returns an empty body to curl and refuses WebFetch by robots.txt. Those are recorded as 'not reached' rather than as documented negatives, because an absence from the ECB's allocation table is not a statement that a place has no banknotes. Ecuador, El Salvador, Palestine, Montenegro, Moldova, Madagascar, Guinea and Zambia were not opened at all. Fetch count: about 24 calls, of which roughly half were TED API queries and three were wasted on hosts that refuse this network (bankofgreece.gr 503, eur-lex 0 bytes, imf.org PDF paths)."
+}
