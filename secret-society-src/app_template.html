@@ -215,6 +215,8 @@ button.btn:hover,#infoBtn:hover,#worldBtn:hover{border-color:var(--accent-hi);co
 #story{inset:0;z-index:1001;border-radius:0;border:0;display:none;overflow:auto;padding:60px max(28px,calc((100% - 760px)/2)) 50px;background:rgba(5,6,16,.975)}
 #story.open{display:block}
 #story p{font-size:15.5px;line-height:1.75;color:#e4e0e8;margin:0 0 16px}
+#story p.big{font-size:18px;line-height:1.6;color:#f0ece4;border-left:2px solid var(--accent-hi);padding-left:14px;margin:0 0 18px}
+#story p.mute{color:var(--mute);font-size:13.5px}
 #story h2{font:400 22px/1.3 'Uncial Antiqua','Marcellus','Georgia',serif;margin:0 0 18px;color:#f0ece4}
 #story h3{font:400 15px/1.3 'Uncial Antiqua','Marcellus','Georgia',serif;margin:26px 0 10px;color:var(--accent-hi);letter-spacing:.3px}
 #storyClose{position:fixed;top:12px;right:12px;z-index:1002;display:none}
@@ -931,6 +933,17 @@ function openCountry(k, fly) {
   if (cs.length) h += '<div class="hp-h">Cases — ' + cs.length + '</div><div class="sub" style="margin-top:-2px">Click a case to open it. Faded markers are suspected or disputed.</div>' + cs.map(recCase).join("");
   const hq = ORGS.filter((o) => o.c === k);
   if (hq.length) h += '<div class="hp-h">Headquartered here — ' + hq.length + '</div>' + hq.map(recOrg).join("");
+  // what this country's own organisations are documented as having reached
+  const _r = ROWS[k] || {};
+  if (_r.srcn) {
+    const ab = _r.srcab || [], ho = _r.srchome || 0;
+    h += '<div class="hp-h">Infiltration organised from here — ' + _r.srcn + '</div>' +
+      '<div class="sub">' + _r.srcn + ' documented case' + (_r.srcn === 1 ? '' : 's') +
+      ' were carried out by an organisation based in ' + esc(k) + ': ' + ho + ' inside ' + esc(k) +
+      ' itself' + (ab.length ? ', and ' + (_r.srcn - ho) + ' in ' + ab.length + ' other countr' + (ab.length === 1 ? 'y' : 'ies') : '') + '.' +
+      (ab.length ? ' ' + ab.map((c2) => '<a href="#" data-cty="' + esc(c2) + '">' + esc(c2) + '</a>').join(', ') + '.' : '') +
+      ' This counts only cases that name an organisation with a recorded home country, so it is a floor, not a total.</div>';
+  }
   h += '<div class="hp-src">Conditions: Global Organized Crime Index 2025 (GI-TOC). The composite and reach scores are this map\'s own; see About and sources.</div>';
   show(h, ["c", k]);
   if (fly) { const f = map.querySourceFeatures("bounds", { filter: ["==", ["get", "iso3"], ISO[k] || ""] })[0]; const s = SMALL[ISO[k]]; const hq0 = ORGS.find((o) => o.c === k);

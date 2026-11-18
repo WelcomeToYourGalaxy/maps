@@ -19,6 +19,10 @@ this map's data, plate and About page written in. about.py writes the About page
 import json
 import math, re, base64, os, sys, hashlib
 
+# build.py is sometimes run with -I, which drops its own directory from the import path.
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import source
+
 if os.environ.get('PYTHONHASHSEED') != '0':
     # Somewhere in here a set is iterated into the page, so Python's per-process
     # string hash randomisation reordered the output: two runs of identical code
@@ -89,6 +93,13 @@ LENSES = [
    'desc': 'The shading. From the Global Organized Crime Index: how often officials in a country use their posts for interests outside the state, and how weak the courts, police and watchdogs are that should stop them. It is scored the same way for every country, so the colours can be compared.'},
   {'k': 'sea',   'label': 'Officials working for criminal networks', 'accent': '#8e4a5b',
    'desc': 'The shading. The Global Organized Crime Index is an expert-led assessment of all 193 UN member states. One of its scores, "state-embedded actors", measures how far people inside the government, police, courts and army work with or for criminal groups, from 1 to 10. Because it covers every country with the same questions, it measures the whole field rather than the cases on this map. In its 2025 edition these insiders were the most widespread kind of criminal actor in the world, with severe influence (7.5 or more) in 80 countries.'},
+]
+
+SRC_LENSES = [
+  {'k': 'srcout', 'label': 'Infiltration reaching out of this country', 'accent': '#7a5c4a',
+   'desc': 'The shading. Built from this map\'s own records, not from an outside index: how many OTHER countries have a documented case in which an organisation based here got inside an institution. It answers "whose networks reach furthest", so a country scores on this only when its organisations operate abroad. Read it with its limits in view: it covers the %d records that name an organisation with a recorded home country, out of %d, and it measures what has been documented on this map rather than the whole world. Heavy domestic coverage shows up as a low score here - Italy has the most records of any country and reaches 8 others, while the United States has fewer records and reaches 51.'},
+  {'k': 'srcrec', 'label': 'Infiltration originating in this country', 'accent': '#6a6b4a',
+   'desc': 'The shading. Built from this map\'s own records: how many documented cases were carried out by an organisation based here, at home or abroad. Unlike the view above this counts a country\'s domestic cases too, so it is closer to "where documented infiltration is organised from". Same limits: it covers the %d records naming an organisation with a recorded home country, out of %d, and a high score can mean a country is heavily reported rather than heavily infiltrated.'},
 ]
 STATUS_W = {'investigation': 0.55, 'alleged': 0.3, 'convicted': 1.0, 'inquiry': 0.9, 'acknowledged': 0.9, 'designated': 0.8, 'settled': 0.8,
             'indicted': 0.7, 'reported': 0.45, 'annulled': 0.3, 'acquitted': 0.2}
@@ -380,11 +391,25 @@ def main():
     RCAP = max(1.0, pctl([v for kk, v in reach_raw.items() if v > 0 and kk in names], 0.92))
     reach = {k: min(10, 10 * v / RCAP) for k, v in reach_raw.items()}
 
+    # ------------------------------------------------- where infiltration comes from
+    # Derived from this map's own records, unlike the three GI-TOC lenses. See source.py
+    # for what it can and cannot say, and for the five aggregator dots it corrects.
+    SRC = source.countries(cases, orgs, names)
+    src_out_raw = {k: len(SRC['abroad'][k]) for k in names}
+    src_rec_raw = {k: SRC['rec'][k] for k in names}
+    SOCAP = max(1.0, pctl([v for v in src_out_raw.values() if v > 0], 0.92))
+    SRCAP = max(1.0, pctl([v for v in src_rec_raw.values() if v > 0], 0.95))
+    src_out = {k: (0 if v <= 0 else min(10, 10 * v / SOCAP)) for k, v in src_out_raw.items()}
+    src_rec = {k: (0 if v <= 0 else min(10, 10 * math.log1p(v) / math.log1p(SRCAP))) for k, v in src_rec_raw.items()}
+
     rows = {}
     for k in names:
         r = rows_c[k]
         cnd = (r['sea'] + (10 - r['res'])) / 2
         rows[k] = {'doc': round(doc[k], 2), 'reach': round(reach[k], 2),
+                   'srcout': round(src_out[k], 2), 'srcrec': round(src_rec[k], 2),
+                   'srcn': src_rec_raw[k], 'srcab': SRC['abroad'][k],
+                   'srchome': SRC['at_home'][k], 'srcorgs': SRC['orgs'][k],
                    'meta': round((cnd + r['sea']) / 2, 2), 'cond': round(cnd, 2), 'sea': r['sea'], 'res': r['res'],
                    'band': band_of(cnd), 'est': doc[k] == 0, 'raw': round(doc_raw[k], 2),
                    'pres': [[p[0], 1 if p[1] else 0, round(p[2], 3)] for p in present[k]]}
@@ -437,7 +462,7 @@ def main():
     import collections as _co
     _cityc = _co.Counter(c['city'] for c in cases if c.get('city'))
     _topcity, _topcity_n = _cityc.most_common(1)[0] if _cityc else ('Washington', 0)
-    data = {'rows': rows, 'alias': alias, 'cases': case_out, 'lenses': LENSES, 'bands': BANDS,
+    data = {'rows': rows, 'alias': alias, 'cases': case_out, 'lenses': LENSES + [dict(l, desc=l['desc'] % (SRC['attributed'], len(cases))) for l in SRC_LENSES], 'bands': BANDS,
             'sectors': TYPES, 'entities': ent, 'casebuckets': CASE_BUCKETS, 'groups': groups,
             'routes': routes, 'quarantine': [], 'dupes': [], 'qdup': [], 'notes': [], 'noted': 0,
             'patterns': build_patterns(_pats, case_out, ent, channels),
@@ -445,6 +470,10 @@ def main():
             'reloc': [], 'cnotes': cnotes, 'gtypes': TYPES, 'recovered': [],
             'orgnames': oname, 'orgtypes': otype,
             'field': load('field_estimate.json', {}),
+            'entrank': source.entities(cases, orgs),
+            'srcmeta': {'attributed': SRC['attributed'], 'unattributed': SRC['unattributed'],
+                        'total': len(cases), 'fixed': source.ORIGIN_FIX,
+                        'noorigin': sorted(source.NO_ORIGIN)},
             'coverage': coverage(case_out),
             'inf': INF, 'tgt': TGT, 'rel': REL, 'lik': LIK, 'intl': INTL, 'widel': WIDEL, 'typew': TYPE_W,
             'offpres': {k: [[p[0], 1 if p[1] else 0] for p in present[k]] for k in OFFSETS if present.get(k)},

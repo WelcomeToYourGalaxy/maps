@@ -4236,3 +4236,121 @@ its score is wrong.** Every agent that used these flags well did so by reading t
 - Five unworked in-cell leads banked with their update-block warnings (Odorheiu Secuiesc hospital,
   Institutul Clinic Fundeni, Neamț county hospital's operating block, Nicolae Malaxa hospital, the
   Brașov second indictment) so a later round starts from them rather than re-crawling.
+
+# THE EXEC RECODE, THE FOUR RULINGS, AND TWO NEW ORIGIN LAYERS (18 November 2026)
+
+## Rulings 17 to 21, settled
+
+**17 — what `bk` class a national body belongs to.** Classify by what the body does:
+**`company`** sells goods or services or is a state-owned enterprise (provincial health
+authorities and hospital trusts included); **`security`** polices compliance (regulator,
+inspectorate, guard, customs, tax enforcement, police, military, intelligence);
+**`cabinet`** administers a government programme (ministry, ministerial department, national
+institute, benefits or social-security administrator, a licensing authority that is not an
+inspectorate); **`court`** a court, tribunal or prosecution service; **`legis`** an elected
+assembly or council. This replaces the ad-hoc conventions and settles both open questions: the
+Environmental Guard and the road-transport inspectorate are `security`, and **INPS is `cabinet`**,
+which makes Operation Podere mafioso writable.
+
+**18 — `exec` means the head of state or head of government, or their own office.** A ministry is
+not `exec`; nor is a provincial governor, a party leader as such, or "the executive branch" at
+large.
+
+**19 — a new record needs a new event, not a new finding.** A later report elaborating a placement
+the map already holds is an update to `d`, `undone` and `cite`. A different act by the same person
+in the same post is a new record.
+
+**20 — money inside a supervising post counts, even with no decision named**, capped at
+`lik: probable`, and the record must say no decision serving the payer has been identified. It does
+not reach post-employment work (the removed Renzi, Schröder and Merz shape) or a demand with
+nothing received.
+
+**21 — a subnational executive is `cabinet`.** Governors, state premiers, chief ministers and
+regional presidents administer a government; `legis` is for elected assemblies and councils only.
+**This corrected an error in my own recode brief**, which told agents to send a governor to
+`legis` while ruling 17 defined `legis` as an assembly. All four agents flagged the contradiction
+independently; nine records were redirected on merge.
+
+## THE EXEC RECODE DELIVERED 2.2 POINTS, NOT THE 6.5 I ESTIMATED, AND THE REASON MATTERS
+
+186 records read by four agents against rulings 17 and 18. **36 moved** — 22 to `cabinet`, 6 to
+`security`, 4 to `company`, 2 to `finance`, 2 to `legis` — and `exec` went from 186 to 150.
+Deviation 25.9 → 23.7.
+
+**The premise was wrong.** I had estimated that 101 of the 186 were loosely coded and would move.
+All four agents independently reported the opposite: `exec` is *not* loosely used. 34 of 47, 42 of
+47, 36 of 46 and 39 of 46 name a president, monarch, prime minister, premier, chancellor or their
+personal staff in `rank` without ambiguity. One put it plainly: "This batch is not where the
+`exec` over-count lives."
+
+**So the remaining 3.8-point `exec` gap is a sampling bias, not a coding error.** A head of state
+is newsworthy, so any corpus built from published cases over-represents them relative to the
+customs officers and procurement clerks where infiltration actually concentrates. That cannot be
+recoded away and it cannot be researched away — it can only be diluted, which is what `shape.py`
+has been saying all along. **Anyone planning future rounds should stop treating `exec` as
+recoverable.**
+
+Six records could not be classified at all because **they name no body** — SNC-Lavalin/Libya
+("officials linked to the ruling Gaddafi family"), a CIA source in Venezuela ("a person inside
+Venezuela's government"), Daimler/Turkmenistan, Och-Ziff/DRC, Airbus/Ghana and Strukton/Saudi
+Arabia. Those are ruling-11 problems, not classification ones, and they are a separate decision.
+
+## TWO NEW LAYERS: WHERE INFILTRATION COMES FROM
+
+The map's three existing shadings all answer how open a country's own officials are, and all come
+from the Global Organized Crime Index. **The two new ones answer the opposite question — whose
+organisations are doing the reaching — and are built from this map's own records.** New module
+`source.py`; both appear in the shading dropdown automatically.
+
+- **"Infiltration reaching out of this country"** — how many *other* countries have a documented
+  case run by an organisation based here.
+- **"Infiltration originating in this country"** — every documented case run from here, home and
+  abroad.
+
+The country popup now carries the figures and lists the countries reached. The About page gains a
+section with **a league table of every organisation with cases in two or more countries**, and the
+limits stated in full.
+
+**What they can and cannot say, stated on the layer itself.** `c` records where an infiltration
+*landed*; the only origin in the data is an organisation's recorded home country, so the layers
+cover **1,500 of 3,102 records**. Heavy domestic coverage reads as a low score: Italy has the most
+records of any country and reaches 8 others; the United States has fewer and reaches 51.
+
+**Five organisation circles are aggregators, and left uncorrected they would have published
+nonsense.** `foreign_state` — "state influence networks (several states)" — is pinned to Andorra
+la Vella, and would have made **Andorra the tenth country reaching into the most others in the
+world.** `prc_state` — "PRC state proxies" — is pinned to Montreal, splitting China's record
+between two countries. Handled in `source.py` with the reason recorded: `prc_state` counts as
+China; `foreign_state` and `freemasonry` ("other grand lodges") are left unattributed because they
+have no single origin.
+
+Top of the reaching-out layer, after those corrections: **United States 51 other countries, Russia
+34, Colombia 34, United Kingdom 29, China 29, Germany 28, France 26, Brazil 20.** Top
+organisations by countries reached: South American cocaine trafficking networks (32), Russian
+intelligence services (24), the CIA (23), Soviet intelligence services (12), Odebrecht (11),
+Siemens (11).
+
+## "WHAT TO WATCH NOW", ADDED TO THE STORY PANEL AND COMPUTED FROM THE DATA
+
+The figures are generated at build time, so the claim moves with the map rather than going stale.
+What the current records actually say, against the premise that a worldwide order is taking over:
+
+Of **1,263 current cases: companies 41 per cent, criminal groups 34 per cent, a foreign state 10
+per cent.** Bodies reached: **police and border services 31 per cent, state-owned companies and
+public health authorities 31 per cent, a head of state or government 3 per cent.**
+
+**The dominant shape is the opposite of a transnational conspiracy** — ordinary companies and
+local criminal groups buying the people who already staff the state, in their own countries, one
+office at a time. The GI-TOC Index 2025 reaches the same conclusion scoring all 193 member states
+on the same questions rather than on what surfaced.
+
+The genuinely cross-border part is recorded as narrow: in conduct from 2023 on, one organisation
+inside several countries at once is a short list — a handful of state intelligence services, a
+cocaine-trafficking complex that needs customs and ports to function, and state-run labour
+schemes. **That is documented and worth watching; a single network running many governments is
+not what this map holds, and the panel says so.**
+
+## Mechanical
+
+`build.py` now inserts its own directory into `sys.path`, because it is sometimes run with `-I`,
+which drops it and broke the `source` import.
