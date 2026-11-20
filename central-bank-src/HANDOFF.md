@@ -3784,6 +3784,13 @@ precision that way.
 
 ## What is left
 
+**For gold custodians and outside reserve managers only, there is a separate standing brief:**
+`FINISH_TWO_ROWS.md`. It carries those two rows' remaining places by name and by class, the
+observed rate per round on the rounds that actually worked them, the rounds-to-ceiling arithmetic,
+the veins that pay, the hosts that refuse, and what is settled and must not be reopened. Run
+`python3 agents/work/rounds_to_ceiling.py` for the live version of its headline numbers. The
+sections below stay the general account of every row.
+
 ### 1. External auditors — 93% of the reachable 192, and the row is now AT ITS CEILING
 178 of 206 done, union members included. `coverage.py` prints the list and does the subtraction: **14 countries remain**:
 
