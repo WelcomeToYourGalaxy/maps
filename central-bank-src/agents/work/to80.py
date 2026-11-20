@@ -43,8 +43,16 @@ def main():
         m = re.search(r"(\d+) of the (\d+) places with a holding above zero", out)
         have, den = int(m.group(1)), int(m.group(2))
     tg = re.search(r"Gold custodians — \d+ to go\s*\n\s+([A-Z ]+)\n", out)
-    rows.append(("Gold custodians", have, den, "gold_custodians",
-                 tg.group(1).split() if tg else []))
+    gold_absent = tg.group(1).split() if tg else []
+    # coverage.py's "to go" list is places with no custody TIE, so it still contains the places
+    # whose accounts say the gold is abroad and name nobody -- and `have` above already counts
+    # those. Adding the two gave a ceiling one place too high for every such place that also
+    # falls in an open bucket. At round 77 that was Morocco, and the ceiling read 71% when the
+    # arithmetic supports 70%. Subtract what `have` already counts before classifying.
+    _third = json.load(open(os.path.join(CB, "agents", "gaps.json"), encoding="utf-8")) \
+        .get("gold_abroad_undisclosed") or {}
+    gold_absent = [i for i in gold_absent if i not in _third]
+    rows.append(("Gold custodians", have, den, "gold_custodians", gold_absent))
 
     # coverage.py prints an absent list for seven rows and NOT for swap lines or named
     # shareholders, so the swap row's absent set has to be derived. The first run of this script
