@@ -6,32 +6,37 @@ Repo: WelcomeToYourGalaxy/maps. Build output: `infiltration.html` (repo root). S
 ## What the map is
 A MapLibre globe of documented cases where an outside party (foreign state or spy service, organised crime, company/industry, bank, lodge/secret society, religious movement, elite network, political or armed movement, lender) got its people, money or control INSIDE a government body, an international body or a company, and decisions there served it.
 
-Current size: 3433 cases in 183 jurisdictions, 510 organisations, 48 channels, 31 patterns.
-By who infiltrates: corp 1521, crime 976, state 392, movement 300, lodge 76, money 70, faith 59, elite 29, lender 10.
-By relevance: legacy 1573, now 1352, past 508. Countries with no qualifying case, shown as estimates: 15.
-Shape deviation 17.8 points against the goal of 5.0. Run `python3 shape.py`.
-(Figures as of round 16, 18 November 2026. The dated handoffs in the project carry what changed,
-and HANDOFF-ROUND16.md is the current one. DO NOT STATE A HELD-COUNT ANYWHERE IN THIS FILE: one of
+Current size: 3523 cases in 183 jurisdictions, 510 organisations, 48 channels, 31 patterns.
+By who infiltrates: corp 1578, crime 1006, state 392, movement 301, lodge 76, money 70, faith 59, elite 31, lender 10.
+By relevance: legacy 1643, now 1372, past 508. Countries with no qualifying case, shown as estimates: 15.
+Shape deviation 16.6 points against the goal of 5.0. Run `python3 shape.py`.
+(Figures as of round 30, 19 November 2026. The dated handoffs in the project carry what changed,
+and HANDOFF-ROUND30.md is the current one. DO NOT STATE A HELD-COUNT ANYWHERE IN THIS FILE: one of
 them went stale between rounds and cost an agent four finished records. State the rate and let
 findheld.py answer the count when the brief is written.)
 
-## READ THIS BEFORE PLANNING A ROUND, 18 November 2026
+## READ THIS BEFORE PLANNING A ROUND, 19 November 2026
 
-**`bk: security` has reached target** at 29.9 per cent against an estimated 30, after 92 of round
-15 and 16's 134 records went there. It has roughly 20 records of headroom before it crosses 30 and
-becomes the problem the company rebalance was built to fix. **`bk: company` is now the largest gap
-on either axis at -3.3**, and a whole 100-record round of it would only bring it to target. Steer
-there: state-owned enterprises reached through their own officers, public hospitals under ruling 17,
-banks whose ownership was taken, firms with insiders placed. The note at the head of BRIEF16 saying
-a company-shaped round makes the shape worse was true at deviation 53.6 and is now wrong; the
-instruction has flipped twice.
+**`bk: company` is still the only real gap at -2.5**, and it is where to steer. `bk: security`
+(-0.7), `bk: legis` (-0.6), `bk: court` (-0.5) and `bk: cabinet` (-0.4) have all reached target
+after rounds 17 to 30, so a round aimed at any of them now buys almost nothing. Company means
+state-owned enterprises reached through their own officers, public hospitals and universities under
+ruling 17, banks whose ownership was taken, firms with insiders placed. The instruction to steer
+here has now held for two sessions; before that it had flipped twice, so check `shape.py` rather
+than trusting this paragraph on its own.
+
+**On the other axis the gaps are now `movement` (-1.5) and `crime` (-1.4).** `crime` comes free with
+company work, because ruling 17's paying applicants are `crime`. `movement` does not: exactly one of
+the ninety records in rounds 17 to 30 was a `movement` case. Neither the Romanian prosecution corpus
+nor the DOJ corpus carries many unions, churches, parties or campaigns reaching into public bodies,
+so a `movement` round needs a seam that does not exist yet.
 
 **And the composition rule is simpler than the per-cell table looks.** Deviation is twice the sum of
 the POSITIVE gaps, so an under-target class contributes nothing and adding to it closes the gap only
 by diluting the over-represented classes. Every non-over-represented cell is worth the same per
 case, which is why shape.py prints an identical figure for all five of its "best" cells. What
 matters is not which deficit cell a record lands in but that it lands in NONE of the
-over-represented ones: `exec` +3.3, `intl` +1.6, `finance` +1.4, and `state` and `lodge` on the
+over-represented ones: `exec` +3.2, `intl` +1.5, `finance` +1.3, and `state` +1.1 and `lodge` +1.2 on the
 infiltrator axis.
 
 ## THE STANDING GOAL (set by the owner, 16 November 2026) — read this first
