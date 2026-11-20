@@ -1,14 +1,19 @@
 # Globalization Case Map: handoff for a new chat
 
-Last updated: round 47 — **the extends desk round. The OECD Watch extend queue is now empty, and
-the matcher that built it was wrong 11 times in 28.**
+Last updated: 19 Nov 2026 — **the owner narrowed the programme to the five OECD Watch rounds only.
+That job runs from its own handoff, `docs/HANDOFF_OECDW.md`. Read that one to run a round.** The last
+round of work on the map was 47, the extends desk round: the OECD Watch extend queue is now empty,
+and the matcher that built it was wrong 11 times in 28.
 
-**READ `THE PROGRAMME` SECTION BEFORE COMMISSIONING ANYTHING.** On 17 Nov 2026 the owner settled
-the shape of the remaining work: **all 26 wide rounds, or do not start.** No register is to be
-worked partway. The order of the registers, the expected yields, and the method for running a wide
-round are all in that section. The map stands at **1,189 cases in 137 countries**, 29 patterns, 31
-suspected patterns, 26.0 MB, `loan-condition cases matched 173 of 173`, zero page and zero console
-errors.
+**BEFORE COMMISSIONING ANYTHING, READ `docs/HANDOFF_OECDW.md`.** The remaining research work is the
+five wide rounds on the 389 unworked OECD Watch leads, and nothing else: **all five, or do not
+start.** No register is to be worked partway. That file carries the queue, the tests, the precedent
+chain, the round method, the costs and the defects to clear. The `SUPERSEDED` section below records
+what the 17 Nov programme covered and why it was narrowed.
+
+The map stands at **1,189 cases in 137 countries**, 29 patterns, 31 suspected patterns, 26.0 MB,
+`loan-condition cases matched 173 of 173`, zero page and zero console errors, 676 `documented`
+against 513 `contested`.
 
 ## Round 47 — the extends desk round, merged, built and tested
 
@@ -291,7 +296,28 @@ Reuters's at least one. No court has ruled.
 
 Replaces every earlier handoff.
 
-## THE PROGRAMME, settled by the owner 17 Nov 2026: all 26 wide rounds, or do not start
+## SUPERSEDED, 19 Nov 2026: the programme is now the five OECD Watch rounds only
+
+**The owner narrowed the work on 19 Nov 2026: the five wide rounds on the 389 unworked OECD Watch
+leads are the job, and the other registers are out of scope.** BankTrack's 319 Dodgy Deal profiles,
+the Business & Human Rights Resource Centre's 781 Chinese-company and transition-mineral
+allegations, and ICIJ's 546 possible-displacement rows are no longer commissioned. The
+all-or-nothing rule carries over to what is left: all five rounds, or do not start.
+
+**That job has its own handoff: `docs/HANDOFF_OECDW.md`.** It is self-contained — the queue, the
+tests and precedents, the round method, the costs, the defects to clear, and what each round must
+write back. Run the five rounds from that file. This one stays the map's general handoff and keeps
+the round history.
+
+`docs/oecdw_wide_plan.json` holds the queue: **389 open leads grouped into the 282 distinct events
+they describe**, tiered and assigned to rounds 48 to 52, every lead in exactly one event and one
+round. The 282 figure is new and was not known when the section below was written — OECD Watch files
+one complaint per respondent, and 47 clusters cover 154 of the leads.
+
+The section below is kept for its reasoning on registers, yields and method. **Its table of seven
+queues no longer governs what may be commissioned.**
+
+## THE PROGRAMME as settled 17 Nov 2026 (superseded above): all 26 wide rounds, or do not start
 
 **The owner's instruction: "the 26 wide rounds or not try at all."** That is a decision about
 half-worked registers, and it governs what may be commissioned from here.
