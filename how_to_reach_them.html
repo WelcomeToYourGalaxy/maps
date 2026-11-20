@@ -2795,9 +2795,122 @@ const isQ = s => /^Q\d+$/.test(s||'');
 function setDot(id, cls, txt){ const d=$('#d-'+id); if(!d) return; d.className='dot'+(cls?' '+cls:''); if(txt) $('#t-'+id).textContent=txt; }
 
 const CACHE_V='htrt4';
+/* Thirty days rather than seven. What is cached here is the list of
+   offices a government has and the outline of its boundary, and both
+   change over months, not days. At seven days a reader coming back to
+   their own town a fortnight later asked the query service for all of
+   it again. */
+const CACHE_TTL=2592e6;
 function cget(k){ try{ const r=localStorage.getItem(CACHE_V+':'+k); if(!r) return null;
-  const o=JSON.parse(r); if(Date.now()-o.t > 6048e5) return null; return o.v; }catch(e){ return null; } }
+  const o=JSON.parse(r); if(Date.now()-o.t > CACHE_TTL) return null; return o.v; }catch(e){ return null; } }
 function cset(k,v){ try{ localStorage.setItem(CACHE_V+':'+k, JSON.stringify({t:Date.now(),v:v})); }catch(e){} }
+
+/* ====================================================================
+   THE SAME REQUEST, ONCE
+
+   Two things were making requests that did not need making, and both
+   of them scale with the number of people reading the page.
+
+   **The same request at the same moment.** A place resolves through
+   several queries that run together, and the coordinates for its
+   offices are asked for in batches. Where two of those ask for the
+   same thing — and they do, because levels share offices — the cache
+   cannot help: nothing has come back yet, so both miss and both go
+   out. Holding the unresolved promise under the cache key instead of
+   only the answer means the second caller waits on the first
+   caller's request.
+
+   **A request for something already in this repository.** The query
+   service is a shared service that Wikimedia asks people not to put
+   behind high-traffic pages, and the same is true of the volunteer
+   Overpass servers. Anything recorded under `wdcache/` here is served
+   from this repository instead, and a key found there costs the public
+   services nothing at all. Nothing is recorded there yet; the path
+   exists so that a place can be added to it without touching this
+   file, and a key that is not there falls through to the live service
+   exactly as before.
+   ==================================================================== */
+const INFLIGHT={}, STATIC_MISS={};
+/* Filling `wdcache/` without writing the queries out a second time
+   somewhere else: the page has already asked them and kept every
+   answer under its key, so the page is the build tool. Browse the
+   places that matter, run `htrtExportCache()` in the console, and the
+   file that downloads holds every key the session collected. The
+   script at tools/split_wdcache.py turns it into the one-file-per-key
+   layout `staticRows` reads. Keys recorded that way cost the public
+   services nothing for every reader after. */
+function htrtExportCache(){
+  const out={};
+  for(let i=0;i<localStorage.length;i++){
+    const k=localStorage.key(i);
+    if(!k || k.indexOf(CACHE_V+':')!==0) continue;
+    const bare=k.slice(CACHE_V.length+1);
+    /* the place-suggestion and read-API keys are one reader's typing
+       and are not worth freezing for everyone else */
+    if(bare.indexOf('ps:')===0 || bare.indexOf('wd:')===0) continue;
+    try{ out[bare]=JSON.parse(localStorage.getItem(k)).v; }catch(e){}
+  }
+  const n=Object.keys(out).length;
+  const blob=new Blob([JSON.stringify(out)], {type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='wdcache-export.json';
+  a.click();
+  return n+' keys exported';
+}
+try{ window.htrtExportCache=htrtExportCache; }catch(e){}
+const STATIC_DIR='wdcache/';
+const keySafe = k => String(k).replace(/[^A-Za-z0-9._-]/g,'_');
+
+/* The index is read once and says which keys are here. Without it,
+   every key would cost a 404 while the directory is empty, which is
+   fifteen requests a place spent to save none — and an empty or absent
+   index switches the whole path off for the session after one request
+   rather than after every key. */
+let STATIC_IX=null, STATIC_IX_TRIED=false;
+async function staticIndex(){
+  if(STATIC_IX_TRIED) return STATIC_IX;
+  STATIC_IX_TRIED=true;
+  try{
+    const r=await fetch(STATIC_DIR+'index.json', {cache:'force-cache'});
+    if(!r.ok) return (STATIC_IX=null);
+    const j=await r.json();
+    const keys=(j && j.keys) || (Array.isArray(j) ? j : null);
+    if(!keys || !keys.length) return (STATIC_IX=null);
+    STATIC_IX=new Set(keys);
+  }catch(e){ STATIC_IX=null; }
+  return STATIC_IX;
+}
+
+async function staticRows(cacheKey){
+  if(!cacheKey || STATIC_MISS[cacheKey]) return null;
+  const ix=await staticIndex();
+  if(!ix || !ix.has(keySafe(cacheKey))){ STATIC_MISS[cacheKey]=1; return null; }
+  try{
+    const r=await fetch(STATIC_DIR+keySafe(cacheKey)+'.json', {cache:'force-cache'});
+    if(!r.ok){ STATIC_MISS[cacheKey]=1; return null; }
+    const j=await r.json();
+    cset(cacheKey, j);
+    return j;
+  }catch(e){ STATIC_MISS[cacheKey]=1; return null; }
+}
+
+/* Wraps any cached fetch: the stored answer, then this repository, then
+   the live service, with one request per key however many callers ask. */
+function once(cacheKey, run, useStatic){
+  if(!cacheKey) return run();
+  const c=cget(cacheKey); if(c) return Promise.resolve(c);
+  if(INFLIGHT[cacheKey]) return INFLIGHT[cacheKey];
+  const pr=(async()=>{
+    /* Only the keys a build could have written are looked for in the
+       repository. Asking for the rest would be one 404 each, which is
+       a request saved at one service and spent at another. */
+    if(useStatic!==false){ const st=await staticRows(cacheKey); if(st) return st; }
+    return run();
+  })().finally(()=>{ delete INFLIGHT[cacheKey]; });
+  INFLIGHT[cacheKey]=pr;
+  return pr;
+}
 
 /* Every office on this page comes from one query service, and that
    service refuses requests when it is busy: 429 with a retry window, 503,
@@ -2830,7 +2943,10 @@ function noteQueryTrouble(){
   try{ noteBelow(''); }catch(e){}
 }
 async function sparql(query, cacheKey){
-  if(cacheKey){ const c=cget(cacheKey); if(c) return c; }
+  if(cacheKey) return once(cacheKey, ()=>sparqlLive(query, cacheKey));
+  return sparqlLive(query, cacheKey);
+}
+async function sparqlLive(query, cacheKey){
   const url = WDQS+'?query='+encodeURIComponent(query)+'&format=json';
   let last='';
   for(let att=0; att<3; att++){
@@ -3113,7 +3229,10 @@ function qOsmMuni(b, lv){
    reason to stop. Returns [] rather than throwing, because every
    caller's fallback is to leave the rings alone. */
 async function overpass(query, cacheKey){
-  if(cacheKey){ const c=cget(cacheKey); if(c) return c; }
+  if(cacheKey) return once(cacheKey, ()=>overpassLive(query, cacheKey));
+  return overpassLive(query, cacheKey);
+}
+async function overpassLive(query, cacheKey){
   for(const ep of OVERPASS){
     /* 90 seconds was below the measured response time and nothing ever
        arrived. Overpass took 88 s for Los Angeles County, 214 s for
@@ -6532,7 +6651,10 @@ async function wdEntities(ids, props){
      boundary files out of it. */
   const keep = props.indexOf('claims')<0;
   const key='wd:'+props+':'+ids.join(',');
-  if(keep){ const c=cget(key); if(c) return c; }
+  if(keep) return once(key, ()=>wdEntitiesLive(ids, props, key, keep), false);
+  return wdEntitiesLive(ids, props, key, keep);
+}
+async function wdEntitiesLive(ids, props, key, keep){
   const url=WD_API+'?action=wbgetentities&format=json&origin=*'+
     '&languages=en&languagefallback=1&sitefilter=enwiki'+
     '&props='+encodeURIComponent(props)+'&ids='+encodeURIComponent(ids.join('|'));
@@ -8256,12 +8378,25 @@ function closeStart(){ $('#start').classList.add('off'); $('#sopen').classList.a
 const PHOTON='https://photon.komoot.io/api/';
 const NOM_LOOKUP='https://nominatim.openstreetmap.org/lookup';
 let TA_T=null, TA_GEN=0;
+/* The suggestion list is the page's highest-volume request by a wide
+   margin: it is one request per pause in typing, where everything else
+   is a handful per place. Three things hold it down. A pause of 320ms
+   rather than 200 means a steady typist spends one request on a word
+   rather than three. Three characters rather than two means "Sa" is not
+   a request at all, and a two-letter query returns eight places chosen
+   from tens of thousands, which was no use to anybody. And a query
+   already answered is answered again from the store, which is what
+   backspacing a character does.
+
+   The service behind it is Komoot's, offered free and for everybody, so
+   what the page spends there is worth counting. */
+const PSEARCH={};
 function typeAhead(){
   clearTimeout(TA_T);
   const q=($('#sq').value||'').trim();
   const out=$('#sout');
-  if(q.length<2){ out.classList.remove('live'); out.innerHTML=''; return; }
-  TA_T=setTimeout(()=>runSearch(q,true), 200);
+  if(q.length<3){ out.classList.remove('live'); out.innerHTML=''; return; }
+  TA_T=setTimeout(()=>runSearch(q,true), 320);
 }
 
 async function placeSearch(){
@@ -8279,10 +8414,19 @@ async function runSearch(q, live){
   out.classList.toggle('live', !!live);
   if(!live) out.innerHTML='<div class="msg">Looking for '+esc(q)+'&hellip;</div>';
   let rows=[];
+  const pk=q.toLowerCase();
   try{
-    const r=await fetch(PHOTON+'?q='+encodeURIComponent(q)+'&limit=8&lang=en');
-    if(!r.ok) throw new Error(String(r.status));
-    rows=(await r.json()).features||[];
+    if(PSEARCH[pk]) rows=PSEARCH[pk];
+    else{
+      const c=cget('ps:'+pk);
+      if(c){ rows=c; PSEARCH[pk]=c; }
+      else{
+        const r=await fetch(PHOTON+'?q='+encodeURIComponent(q)+'&limit=8&lang=en');
+        if(!r.ok) throw new Error(String(r.status));
+        rows=(await r.json()).features||[];
+        PSEARCH[pk]=rows; cset('ps:'+pk, rows);
+      }
+    }
   }catch(e){
     if(gen!==TA_GEN) return;
     if(!live) out.innerHTML='<div class="msg">The place lookup could not be reached just now. '+
