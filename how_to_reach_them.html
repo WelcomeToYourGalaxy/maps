@@ -1166,7 +1166,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
    rather than as a box of its own on the map. */
 #gov{position:fixed;z-index:99;display:none;flex-direction:column;
   width:400px;height:300px;background:rgba(17,24,21,.97);
-  border:1px solid var(--line);border-right:0;border-radius:12px 0 0 12px;
+  border:1px solid var(--line);border-radius:12px;
   box-shadow:-14px 18px 50px rgba(0,0,0,.45);overflow:hidden;
   transition:width .22s ease,height .22s ease}
 #gov.on{display:flex}
@@ -1185,7 +1185,15 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
   background-image:radial-gradient(rgba(154,163,155,.13) 1px, transparent 1.2px);
   background-size:16px 16px}
 #govvp.grab{cursor:grabbing}
-#govcv{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+#govcv{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform;
+  display:flex;flex-direction:column;align-items:center}
+/* one chart per level, the level below under the one above, a quiet
+   rule between them saying what the lower one sits inside */
+#govcv .govch{flex:none}
+#govcv .govsep{flex:none;align-self:stretch;display:flex;align-items:center;gap:10px;
+  margin:18px 24px 6px;color:var(--faint);font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;white-space:nowrap}
+#govcv .govsep::before,#govcv .govsep::after{content:"";flex:1;height:1px;background:rgba(154,163,155,.25)}
+#govcv .govbad{padding:14px 18px;font-size:11px;color:var(--faint)}
 #govcv.glide{transition:transform .45s cubic-bezier(.2,.7,.2,1)}
 #govcv svg{display:block;max-width:none!important;overflow:visible}
 #govmsg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
@@ -3215,7 +3223,7 @@ SELECT ?item ?itemLabel ?coord WHERE {
 
    The markers used to come from `qCoords`, which asks for everything
    with `applies to jurisdiction` = this place and a coordinate. That is
-   not a list of offices: for a large county it returned Ergomotion
+   not a list of offices: for one large county it returned Ergomotion
    Inc., Penthouse World Broadcasting LLC, Venturi Astrolab Inc., the
    McMartin preschool trial and the San Diego Humane Society — companies
    regulated there and events that happened there. 573 markers, almost
@@ -3246,7 +3254,7 @@ SELECT ?item ?itemLabel ?coord WHERE {
    cities, and those are where a mayor and a council sit. Two ways in:
    a settlement class, or the plain fact that the place has a head of
    government or a legislature of its own. The second catches the ones
-   whose class is unusual — a nearby city is a "charter city", not a
+   whose class is unusual — a "charter city", say, rather than a
    "city in the United States". */
 function qSubdiv(q){ return `
 SELECT ?d ?dLabel WHERE { wd:${q} wdt:P150 ?d .
@@ -3266,9 +3274,9 @@ SELECT ?d ?dLabel WHERE { wd:${q} wdt:P150 ?d .
       not a polygon. They have to be joined end to end, and a fragment
       may need reversing to join. `osmRings` does that; `osmPolygon`
       then puts each inner ring inside the outer ring that contains it.
-      Measured on a large county: 150 of 150 relations closed.
+      Measured on a large US county: 150 of 150 relations closed.
    2. A county-sized query takes tens of seconds and returns megabytes
-      (a large county: 2.7 MB, 150 relations). That is far too slow to block
+      (that county: 2.7 MB, 150 relations). That is far too slow to block
       a click, so the Wikidata rings are drawn first and the polygons
       replace them when they arrive. Never await this on the click path.
    3. The public endpoints rate-limit and time out under load, one
@@ -3301,7 +3309,7 @@ async function overpass(query, cacheKey){
 async function overpassLive(query, cacheKey){
   for(const ep of OVERPASS){
     /* 90 seconds was below the measured response time and nothing ever
-       arrived. Overpass took 88 s for a large county, 214 s for
+       arrived. Overpass took 88 s for that county, 214 s for
        Hérault and 240 s for Vaucluse, so a 90 s abort killed every
        request just before it answered and municipalities simply never
        appeared. The server's own cap is set in the query (`timeout:180`),
@@ -4068,7 +4076,7 @@ function classifyRows(core, items){
     if(/^Q[0-9]+$/.test(label.trim())) return;
     /* An office that no longer exists.
 
-       "Member of the a city's common council", described by the
+       "Member of the ... Common Council" of one large city, described by the
        record as a former position, was on the map beside the sitting
        council: a reader cannot tell the two apart, and writing to one
        of them reaches nobody. The queries now ask Wikidata to leave
@@ -4484,7 +4492,7 @@ function trail(){
   });
   /* The sequence used to stop at the subject — Start, the intention,
      the place, the subject — and the two screens past it were off it.
-     A reader on the a county board of supervisors' page had
+     A reader on a county board of supervisors' page had
      no line saying they had come through Chambers to reach it, and no
      way back to Chambers except the one back link at the top left.
      Both screens are steps and both are on the trail: the kind of
@@ -6170,7 +6178,7 @@ function renderOffice(o){
   let h='';
   /* The trail is the one thing on every screen, and it was dropped
      here: arriving at an office lost Start \u203a Create a rule that does
-     not exist yet \u203a a large county \u203a Land, water and air, which
+     not exist yet \u203a the county \u203a Land, water and air, which
      is the reader's whole account of how they got here and the only
      way back to any of it in one click. It is drawn first, as on every
      other screen. */
@@ -6179,8 +6187,8 @@ function renderOffice(o){
      sequence above, and clicking it is what comes back here. */
   /* Wikidata's one-line description of this office, on the title line.
      It was a block of its own further down, set off with a rule, which
-     gave a line like "First 5 county commission for a large city
-     County, California, United States" the weight of a section and
+     gave a line like a commission's county, state and country
+     the weight of a section and
      pushed everything under it down the screen. It belongs with the
      name, because that is what it is: part of the name's own record. */
   /* The two subtitles are one line now — see mergeSub. */
@@ -6672,7 +6680,7 @@ async function runEntTexts(){
    drawn for them instead was the shape of the record — what it is
    classed as, what it is part of, what it covers — and a reader
    looking at "the record classes it as department of parks and
-   recreation, part of a large county" has been told the
+   recreation, part of County of ..." has been told the
    title again and nothing about the work.
 
    No register anywhere states, in prose, what every government body
@@ -6680,8 +6688,8 @@ async function runEntTexts(){
    are asked for in that order:
 
      1. the body's own one-line description on its record, written by
-        hand — "county agency responsible for parks in a large city
-        County" — which is short and is about this body;
+        hand — "county agency responsible for parks in ... County"
+        — which is short and is about this body;
      2. what a body of its kind does. The record already says the kind
         — a parks and recreation department, a city council, a
         ministry of health — and the kind is itself a record with its
@@ -8550,7 +8558,7 @@ async function runSearch(q, live){
 }
 
 /* What kind of unit a suggestion is, in the words a reader would use.
-   a large city and a large county come back as two rows that would
+   A city and the county named after it come back as two rows that would
    otherwise read almost identically. Photon's `osm_value` carries the
    OSM tag, which is the thing that tells them apart. */
 const OSMKIND={city:'City', town:'Town', village:'Village', hamlet:'Hamlet',
@@ -8646,7 +8654,7 @@ const SUFFIXES = ['', ' County', ' Province', ' District', ' Region', ' Municipa
   ' Oblast', ' District Council', ' Metropolitan Municipality'];
 const RX_ADMIN = /\b(county|province|district|region|state|municipality|commune|department|governorate|prefecture|parish|borough|canton|oblast|voivodeship|territor|administrative|subdivision|city|town|village|ward|constituency)\b/i;
 /* the kind of unit each level ought to be, used to break ties between
-   same-named entities — "a large city" is both a city and a county */
+   same-named entities — one name is often both a city and a county */
 const WANT_REGION = /\b(state|province|region|oblast|krai|republic|territor|governorate|voivodeship|canton|emirate|prefecture|department|county)\b/i;
 const WANT_DISTRICT = /\b(county|district|parish|borough|municipality|commune|prefecture|department|subdivision|shire|raion|powiat|okrug)\b/i;
 
@@ -8669,8 +8677,8 @@ async function resolveUnitIn(nm, countryQ, want){
          terms the wrong way round, so California resolved to California
          City — a town of 14,000 in Kern County — and every office above
          the county came from there. But simply reversing it is wrong
-         too: the boundary files name a large county "a large city",
-         and the exact match for that is the city, not the county.
+         too: the boundary files name some counties by the bare name
+         of their seat, and the exact match for that is the city.
 
          So the level is passed in. `want` is a pattern for the kind of
          unit this ought to be — states and provinces at the region
@@ -8725,8 +8733,8 @@ async function resolveUnit(nm){
          terms the wrong way round, so California resolved to California
          City — a town of 14,000 in Kern County — and every office above
          the county came from there. But simply reversing it is wrong
-         too: the boundary files name a large county "a large city",
-         and the exact match for that is the city, not the county.
+         too: the boundary files name some counties by the bare name
+         of their seat, and the exact match for that is the city.
 
          So the level is passed in. `want` is a pattern for the kind of
          unit this ought to be — states and provinces at the region
@@ -9956,7 +9964,8 @@ const GOVDIR='govtree/';
 const MERMAID_SRC='https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.min.js';
 const GOV_IDRX=/(?:^|-)(g\d+)(?:-|$)/;
 const GOV_PAGE=12;      /* children shown per box before "more" */
-const GOV_COL=8;        /* a long list is stacked in columns this tall */
+const GOV_COL=8;
+const GOV_GAP=5;        /* px between the box and the panel */        /* a long list is stacked in columns this tall */
 const GOV_BR={
   leg:{nm:'Legislative', sub:'writes and passes laws', col:'#7fae8a', fill:'#16221b'},
   exe:{nm:'Executive',   sub:'carries laws out and signs them', col:'#7d98b3', fill:'#151d24'},
@@ -10065,10 +10074,11 @@ function govTree(){
   for(let i=1;i<STACK.length;i++){
     const st=STACK[i];
     let nm=''; try{ nm=levelName(i); }catch(e){ nm='Level '+i; }
+    /* Each level is a chart of its own, drawn under the one above it.
+       A county is not a branch of its state's government, and drawing it
+       beside the state's legislative, executive and judicial boxes said
+       that it was. */
     add('L:'+i,{t:'level', lv:i, l:(st.label||nm), sub:nm, s:-20-i});
-    /* each level hangs from the one above it, which is how authority
-       runs: the state under the country, the county under the state */
-    link(i===1?'R':'L:'+(i-1), 'L:'+i);
   }
   for(let i=0;i<STACK.length;i++){
     const top = i===0 ? 'R' : 'L:'+i, pre = i===0 ? '' : 'L:'+i+':';
@@ -10118,10 +10128,10 @@ function govFromFile(T, add, link, top, pre, d, lv){
   ['leg','exe','jud'].forEach(b=>{ add(pre+'B:'+b,{t:'branch', br:b, l:GOV_BR[b].nm, sub:GOV_BR[b].sub, lv:lv});
     link(top, pre+'B:'+b); });
   (d.heads||[]).forEach(h=>{ const k=pre+'H:'+h.q;
-    add(k,{t:'body', br:'exe', l:h.l, sub:h.r, q:h.q, s:99}); link(pre+'B:exe',k); alias[h.q]=k; });
+    add(k,{t:'body', br:'exe', l:h.l, sub:h.r, q:h.q, s:99, c:h.c||null}); link(pre+'B:exe',k); alias[h.q]=k; });
   const N=d.n||{};
   Object.keys(N).forEach(q=>{ const e=N[q];
-    add(pre+'N:'+q,{t:'body', br:e.b, l:e.l, q:q, d:e.d||'', w:e.w||'', s:e.s||0, a:e.a||[], u:!!e.u});
+    add(pre+'N:'+q,{t:'body', br:e.b, l:e.l, q:q, d:e.d||'', w:e.w||'', s:e.s||0, a:e.a||[], u:!!e.u, c:e.c||null});
     (e.a||[]).forEach(o=>{ if(!alias[o]) alias[o]=pre+'N:'+q; });
     if(!alias[q]) alias[q]=pre+'N:'+q;
   });
@@ -10200,15 +10210,23 @@ function govCut(s,n){ s=String(s||''); if(s.length<=n) return s;
   const c=s.slice(0,n); const i=c.lastIndexOf(' '); return (i>n*0.6?c.slice(0,i):c)+'…'; }
 function govCountUnder(T,k){ let n=0; const st=[k]; while(st.length){ const x=st.pop(); const kk=T[x].kids; n+=kk.length; kk.forEach(c=>st.push(c)); if(n>9999) break; } return n; }
 
-function govSource(T){
-  GOV.key2id={}; GOV.id2key={};
-  let seq=0; const id=k=>{ if(!GOV.key2id[k]){ const g='g'+(seq++); GOV.key2id[k]=g; GOV.id2key[g]=k; } return GOV.key2id[k]; };
+/* The chart roots in order: the country, then each level below it. */
+function govRoots(T){ const r=['R']; for(let i=1;i<STACK.length;i++) if(T['L:'+i]) r.push('L:'+i); return r; }
+/* One Mermaid source per level. Ids run on across the charts, so a node
+   id is unique on the whole canvas and GOV_IDRX finds it in any of them. */
+function govSources(T){
+  GOV.key2id={}; GOV.id2key={}; GOV_IDSEQ=0;
+  return govRoots(T).map(r=>({root:r, src:govSource(T, r)}));
+}
+let GOV_IDSEQ=0;
+function govSource(T, root){
+  const id=k=>{ if(!GOV.key2id[k]){ const g='g'+(GOV_IDSEQ++); GOV.key2id[k]=g; GOV.id2key[g]=k; } return GOV.key2id[k]; };
   const lines=['flowchart TB'], edges=[], cls={};
   const node=k=>{
     const n=T[k], g=id(k);
     let lab=mmEsc(govCut(n.l, n.t==='root'?60:58));
     if(n.t==='root') lab='<b>'+lab+'</b><br/>'+mmEsc('National government');
-    else if(n.t==='level') lab='<b>'+lab+'</b><br/>'+mmEsc(n.sub||'');
+    else if(n.t==='level') lab='<b>'+lab+'</b><br/>'+mmEsc((n.sub||'Local')+' government');
     else if(n.t==='branch') lab='<b>'+lab+'</b>'+(n.sub?'<br/>'+mmEsc(n.sub):'');
     else if(n.t==='group') lab='<b>'+lab+'</b>';
     else if(n.t==='body' && n.sub) lab=lab+'<br/>'+mmEsc(n.sub);
@@ -10217,7 +10235,7 @@ function govSource(T){
       lab+='<br/>'+mmEsc('▸ '+c.toLocaleString()+' under it');
     }
     let shape;
-    if(n.t==='root') shape='(["'+lab+'"])';
+    if(n.t==='root' || n.t==='level') shape='(["'+lab+'"])';
     else if(n.t==='body' || n.t==='office') shape='("'+lab+'")';
     else shape='["'+lab+'"]';
     lines.push('  '+g+shape);
@@ -10248,7 +10266,7 @@ function govSource(T){
       }
     }
   };
-  walk('R');
+  walk(root);
   const C={
     groot:'fill:#1b2620,stroke:#8cbd9a,stroke-width:1.6px,color:#e7e4dc',
     gmore:'fill:transparent,stroke:#4a524c,stroke-dasharray:3 3,color:#9aa39b',
@@ -10295,12 +10313,12 @@ function govPlace(){
   let leftLimit=18;
   try{ const bb=document.getElementById('bubbles');
        if(bb && bb.style.display==='block'){ const c=bb.querySelector('.bubc'); leftLimit=18+(c?c.offsetWidth:156)+18; } }catch(e){}
-  const room=Math.max(240, Math.round(r.left-leftLimit));
+  const room=Math.max(240, Math.round(r.left-GOV_GAP-leftLimit));
   const w=Math.min(GOV.big?Math.max(560, Math.round(r.left*0.62)):400, room);
   const hMax=Math.round(r.height-8);
   const h=GOV.min?34:Math.min(GOV.big?Math.round(Math.min(innerHeight*0.72, 660)):300, hMax);
   b.style.width=w+'px'; b.style.height=h+'px';
-  b.style.left=Math.round(r.left-w+1)+'px';
+  b.style.left=Math.round(r.left-w-GOV_GAP)+'px';
   b.style.top=Math.round(r.bottom-h)+'px';
   const bg=document.getElementById('govbig'); if(bg){ bg.textContent=GOV.big?'↙':'↗'; bg.title=GOV.big?'Smaller':'Larger'; }
   const mn=document.getElementById('govmin'); if(mn){ mn.textContent=GOV.min?'▴':'–'; mn.title=GOV.min?'Unfold':'Fold away'; }
@@ -10363,31 +10381,48 @@ async function govDraw(){
     do{
       GOV.again=false;
       const T=GOV.T; if(!T) return;
-      const src=govSource(T);
-      if(src===GOV.sig) continue;
+      const charts=govSources(T);
+      const sig=charts.map(c=>c.src).join('\n%%\n');
+      if(sig===GOV.sig) continue;
       let mm;
       try{ mm=await govMermaid(); }
       catch(e){ govMsg('The diagram library could not be loaded just now. '+esc(e.message||'')); console.warn(e); return; }
       const cv=document.getElementById('govcv');
-      let out;
-      try{ out=await mm.render('govsvg'+(GOV_SEQ++), src); }
-      catch(e){ govMsg('This chart could not be drawn: '+esc((e&&e.message)||'error')); console.warn('government diagram', e, src); return; }
       /* keep whatever the reader was looking at where it was */
       const anchor=GOV.anchor; let before=null;
       if(anchor) before=govNodeScreen(anchor);
-      cv.innerHTML=out.svg;
-      GOV.sig=src; govMsg('');
-      const svg=cv.querySelector('svg');
-      if(svg){ svg.removeAttribute('style');
+      /* only the charts whose source changed are drawn again */
+      GOV.svgs=GOV.svgs||{};
+      const html=[];
+      for(let i=0;i<charts.length;i++){
+        const c=charts[i];
+        let svg=GOV.svgs[c.root] && GOV.svgs[c.root].src===c.src ? GOV.svgs[c.root].svg : null;
+        if(!svg){
+          try{ svg=(await mm.render('govsvg'+(GOV_SEQ++), c.src)).svg; }
+          catch(e){ console.warn('government diagram', e, c.src);
+            svg='<div class="govbad">This level could not be drawn: '+esc((e&&e.message)||'error')+'</div>'; }
+          GOV.svgs[c.root]={src:c.src, svg:svg};
+        }
+        if(i>0){
+          const lv=+c.root.split(':')[1];
+          let nm=''; try{ nm=levelName(lv); }catch(e){}
+          const up=(STACK[lv-1]&&STACK[lv-1].label)||'';
+          html.push('<div class="govsep"><span>'+esc(nm||'Below')+(up?' \u00b7 within '+esc(up):'')+'</span></div>');
+        }
+        html.push('<div class="govch">'+svg+'</div>');
+      }
+      cv.innerHTML=html.join('');
+      GOV.sig=sig; govMsg('');
+      cv.querySelectorAll('svg').forEach(svg=>{ svg.removeAttribute('style');
         const vb=(svg.getAttribute('viewBox')||'').split(/\s+/).map(Number);
-        if(vb.length===4){ svg.setAttribute('width',vb[2]); svg.setAttribute('height',vb[3]); GOV.size={w:vb[2],h:vb[3]}; } }
+        if(vb.length===4){ svg.setAttribute('width',vb[2]); svg.setAttribute('height',vb[3]); } });
+      GOV.size={w:cv.offsetWidth, h:cv.offsetHeight};
       govBindNodes();
       govApplyLit();
       if(anchor && before){ const after=govNodeLocal(anchor);
         if(after){ GOV.view.x=before.x-after.x*GOV.view.k; GOV.view.y=before.y-after.y*GOV.view.k; govSetView(false); } }
       /* until the reader has moved the chart themselves, each redraw
-         is framed afresh: the levels below the country arrive after it
-         and widen the chart, which left the country's box off the edge */
+         is framed afresh: the levels below the country arrive after it */
       else if(!GOV.view || !GOV.touched){
         if(GOV.lit.length && govNodeEl(GOV.lit[0])){ if(!GOV.view) GOV.view={x:0,y:0,k:0.85}; govCenterOn(GOV.lit[0], false); }
         else govFit(false);
@@ -10410,8 +10445,8 @@ function govNodeLocal(k){
   const el=govNodeEl(k); if(!el) return null;
   /* nodes sit inside nested groups, so the rendered rect is the honest
      answer, divided back out of the current zoom */
-  try{ const svg=el.ownerSVGElement;
-       const r=el.getBoundingClientRect(), s=svg.getBoundingClientRect();
+  try{ const cv=document.getElementById('govcv');
+       const r=el.getBoundingClientRect(), s=cv.getBoundingClientRect();
        const k=GOV.appliedK||1;
        return {x:(r.left+r.width/2-s.left)/k, y:(r.top+r.height/2-s.top)/k};
   }catch(e){ return null; }
@@ -10477,11 +10512,20 @@ function govBindViewport(){
     if(!moved){ const k=govKeyAt(e.clientX, e.clientY); if(k) govClick(k); } };
   vp.addEventListener('pointerup', end);
   vp.addEventListener('pointercancel', ()=>{ drag=null; vp.classList.remove('grab'); });
-  /* the wheel zooms the chart, not the map behind it */
+  /* The wheel and the trackpad scroll the charts, up and down and side
+     to side, and never the map behind them. A pinch, or the wheel with
+     Ctrl or Cmd held, zooms. */
   vp.addEventListener('wheel', e=>{
     e.preventDefault(); e.stopPropagation();
+    if(!GOV.view) return;
+    GOV.touched=true;
     const r=vp.getBoundingClientRect();
-    govZoom(Math.exp(-e.deltaY*0.0016), e.clientX-r.left, e.clientY-r.top);
+    if(e.ctrlKey || e.metaKey){
+      govZoom(Math.exp(-e.deltaY*0.006), e.clientX-r.left, e.clientY-r.top); return; }
+    const u = e.deltaMode===1 ? 16 : e.deltaMode===2 ? vp.clientHeight : 1;
+    let dx=e.deltaX*u, dy=e.deltaY*u;
+    if(e.shiftKey && !dx){ dx=dy; dy=0; }
+    GOV.view.x-=dx; GOV.view.y-=dy; govSetView(false);
   }, {passive:false});
   vp.addEventListener('dblclick', e=>{ e.preventDefault(); govFit('all'); });
   vp.addEventListener('pointerleave', ()=>{ if(GOV.hover){ GOV.hover=null; govLegend(); } });
@@ -10499,9 +10543,33 @@ function govBindNodes(){
     el.addEventListener('mouseenter', ()=>{ GOV.hover=k; govInfo(k); });
   });
 }
+/* Moving the map to an office or a body that was picked from a list or
+   a diagram, rather than from the map. An office with a marker goes to
+   its marker, the way a bubble does; a body with no office on the map
+   goes to the coordinates its own record gives, or its headquarters'
+   town when that is all the record has. Nothing moves when there is no
+   location on record. */
+let GOV_NOFLY=0, GOV_LASTFLY=null;
+function govFlyTo(lng, lat, z){
+  try{ map.stop(); map.easeTo({center:[lng, lat], zoom:Math.min(Math.max(map.getZoom(), z), 14), duration:800}); }catch(e){}
+}
+function govFlyOffice(o){
+  if(!o) return;
+  if(PINS[o.id]){ try{ bubFocusMain(o.id); }catch(e){} return; }
+  const e=GOV_OFF[o.id], n=e && GOV.T && GOV.T[e.k];
+  if(n && n.c) govFlyTo(n.c[0], n.c[1], n.c[2]?10:13);
+}
+function govFlyNode(n){
+  if(!n) return;
+  const off=n.o || govOfficeFor(n);
+  if(off && PINS[off.id]){ try{ bubFocusMain(off.id); }catch(e){} return; }
+  if(n.c) govFlyTo(n.c[0], n.c[1], n.c[2]?10:13);
+}
+
 /* Pointer-up decides a click so that a drag across a box is a drag. */
 function govClick(k){
   const T=GOV.T, n=T&&T[k]; if(!n) return;
+  if(n.t==='body' || n.t==='office') govFlyNode(n);
   if(n.t==='more'){ const p=n.par; GOV.shown[p]=(GOV.shown[p]||GOV_PAGE)+24; GOV.anchor=p; govDraw(); return; }
   if(n.kids && n.kids.length){
     if(GOV.open.has(k)){ GOV.open.delete(k); GOV.closedByHand.add(k); }
@@ -10526,15 +10594,22 @@ function govTargets(T){
   const forOffice=id=>{ const e=GOV_OFF[id]; if(e) push(e.k); };
   if(typeof SEL!=='undefined' && SEL && SEL.id){ forOffice(SEL.id); if(out.length) return out; }
   if(typeof LEAFKIND!=='undefined' && LEAFKIND){
+    /* A kind of office lights the box that holds that kind at each
+       level — Chambers, not the first chamber the list happens to
+       hold. Where a level's government comes from its own file the
+       offices belong to bodies instead (members of a house light the
+       house), and those bodies are what is lit there. One office is lit
+       only when the reader opens it. */
     let es=[]; try{ es=officeEntriesFor([LEAFKIND], LEAFLVL, LEAFSUB); }catch(e){}
-    /* below the country, the offices themselves where there are few
-       enough to read; past that, the box that holds them */
-    const per={}; es.forEach(e=>{ if(e.lvl>=1) per[e.lvl]=(per[e.lvl]||0)+1; });
     es.forEach(e=>{
       const kk=(e.lvl>=1?'L:'+e.lvl+':':'')+'K:'+LEAFKIND;
-      if(e.lvl>=1 && per[e.lvl]>24 && T[kk]) push(kk); else forOffice(e.o.id);
+      if(T[kk]) push(kk); else forOffice(e.o.id);
     });
-    if(out.length) return out.slice(0,60);
+    if(out.length){
+      const lvOf=k=>{ const m=/^L:(\d+):/.exec(k); if(m) return +m[1]; return (T[k]&&T[k].lv)||0; };
+      out.sort((a,b)=>lvOf(a)-lvOf(b));
+      return out.slice(0,60);
+    }
   }
   if(typeof LEAFLVL!=='undefined' && LEAFLVL!=null){ push(LEAFLVL===0?'R':'L:'+LEAFLVL); }
   return out;
@@ -10610,6 +10685,24 @@ async function govSyncNow(){
     window[name]=function(){ const r=f.apply(this, arguments); try{ govSync(); }catch(e){} return r; };
   }catch(e){ console.warn('government diagram: could not follow '+name, e); } };
   ['render','renderOffice','openModal','closeModal','paintTrail','setPins'].forEach(wrap);
+  /* An office opened from the panel's list, or from this box, moves the
+     map to it. One opened from a marker does not: the marker is already
+     under the reader's pointer, and moving the ground under it is what
+     the handoff's bubble section warns against. */
+  try{
+    /* the marker popup's button is the one way an office opens from
+       the map itself; the panel's list calls openPin directly */
+    const mg=window.markerGo;
+    if(typeof mg==='function') window.markerGo=function(){ GOV_NOFLY++; try{ return mg.apply(this, arguments); } finally { GOV_NOFLY--; } };
+    const ro=window.renderOffice;
+    window.renderOffice=function(o){
+      const r=ro.apply(this, arguments);
+      try{ if(o && o.id && o.id!==GOV_LASTFLY && !GOV_NOFLY && !NAVLOCK) govFlyOffice(o); GOV_LASTFLY=o?o.id:null; }catch(e){}
+      return r;
+    };
+    const rd=window.render;
+    window.render=function(){ const r=rd.apply(this, arguments); try{ if(!SEL) GOV_LASTFLY=null; }catch(e){} return r; };
+  }catch(e){ console.warn('government diagram: could not follow office opening', e); }
   const watch=()=>{ const md=document.getElementById('modal'); if(!md) return setTimeout(watch,300);
     new MutationObserver(()=>{ try{ govPlace(); }catch(e){} }).observe(md,{attributes:true, attributeFilter:['style','class']});
     try{ new ResizeObserver(()=>{ try{ govPlace(); }catch(e){} }).observe(md); }catch(e){} };
