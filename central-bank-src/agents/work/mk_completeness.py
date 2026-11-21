@@ -55,6 +55,13 @@ def main():
     m5 = re.search(r"(\d+) further places say in their own audited accounts", out)
     gold_abroad = int(m5.group(1)) if m5 else 0
 
+    # Round 78: the managers row gained the same third state as gold. Parse the combined figure
+    # the same way, and fall back to the tie count if coverage.py has not been patched.
+    m6 = re.search(r"counting those, (\d+) of about \d+ either name a manager", out)
+    mgr_known = int(m6.group(1)) if m6 else None
+    m7 = re.search(r"(\d+) further places say in their own source that outside parties", out)
+    mgr_undisclosed = int(m7.group(1)) if m7 else 0
+
     cc = snap["Corruption cases"]
     m3 = re.search(r"(\d+) of those are coloured on the case layer", out)
     cc_live = int(m3.group(1)) if m3 else cc["places"]
@@ -134,7 +141,7 @@ def main():
        "dated, so eleven counterparties absent from it are now marked lapsed rather than left at "
        "an unknown status, and Serbia, also absent, was checked separately and stays active "
        "because the re-signing of its line post-dates the table."),
-      ("Outside reserve managers", snap["Outside reserve managers"]["places"], mgr_den or N,
+      ("Outside reserve managers", mgr_known or snap["Outside reserve managers"]["places"], mgr_den or N,
        ("of an estimated %d central banks that use an external manager" % mgr_den) if mgr_den
        else "of the 192, but see the note",
        ("THE DENOMINATOR HERE IS AN ESTIMATE, NOT A ROSTER, and that is as good as this row gets. "
@@ -148,6 +155,11 @@ def main():
         "name. Round 77 also took Norway's 103 external managers of the Government Pension Fund "
         "Global off this row and onto a relation of their own: they were half of it, all from one "
         "published mandate list, and a sovereign wealth fund is not foreign exchange reserves. "
+        "The figure shown counts two different things, kept apart in the data and added here the "
+        "way the gold row adds its own: %d places name a manager, and %d more state in their own "
+        "published source that outside parties run part of the reserves and refuse to say who. "
+        "That refusal is the row's substantive finding rather than a gap in it. "
+        % (snap["Outside reserve managers"]["places"], mgr_undisclosed - 1) +
         "What is left here is 104 ties at 40 firms, and the row now means one thing."
         ) if mgr_den else
        ("THIS ROW HAS NO HONEST DENOMINATOR. No list exists anywhere of which central banks hire "

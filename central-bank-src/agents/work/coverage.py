@@ -188,6 +188,27 @@ print(f"  counting those, {len(_known)} of the {len(GOLDP)} places that hold gol
 print(f"  {len(_gdp - LISTED)} further places have a custodian but no gold holding of their own "
       f"(the BCEAO members, whose gold is pooled at the union rather than apportioned)")
 
+# The same third state on the outside-reserve-managers row, added at round 78. See
+# gaps['managers_external_undisclosed_note'] for the test. Kept apart from the tie count for the
+# same reason as the gold one: a bank that says outsiders run its money and will not say who is
+# not a tie, but it is not an unworked gap either, and reporting it as one understates the row.
+# The denominator is the estimated population in gaps['reserve_managers_denominator'], not 192.
+_mgrp = cats['Outside reserve managers'][0] & places
+_MGR_DEN = 144
+_mgr_und = set((gaps.get('managers_external_undisclosed') or {}).keys()) & places
+_mgr_und_firm = {k for k, v in (gaps.get('managers_external_undisclosed') or {}).items()
+                 if not v.get('weak_source')} & places
+_mgr_und = _mgr_und - _mgrp
+_mgr_und_firm = _mgr_und_firm - _mgrp
+print(f"\nOutside reserve managers, measured against the estimated population of banks that use "
+      f"one at all:")
+print(f"  {len(_mgrp)} of about {_MGR_DEN} name a manager = {100*len(_mgrp)/_MGR_DEN:.0f}%")
+print(f"  {len(_mgr_und)} further places say in their own source that outside parties run part of "
+      f"the reserves and name none: {' '.join(sorted(_mgr_und))}")
+print(f"  counting those, {len(_mgrp)+len(_mgr_und_firm)} of about {_MGR_DEN} either name a manager "
+      f"or state that they will not = {100*(len(_mgrp)+len(_mgr_und_firm))/_MGR_DEN:.0f}% "
+      f"({len(_mgr_und)-len(_mgr_und_firm)} more on trade press alone, not counted)")
+
 # ---- DEPTH: how many places hold exactly one record, on the three priority rows ----
 # The three rows the owner cares most about are at their breadth ceiling, so the honest measure of
 # a round is no longer the place count: it is how many places move off "exactly one". "One findable
