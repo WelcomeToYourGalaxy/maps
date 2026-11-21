@@ -96,7 +96,7 @@ classes, and only one of them is work:
 | No register exists | nothing — it is closed | — | Mexico, the Philippines, Chile, Portugal, Colombia (per-city only) |
 | Needs a credential | one application, once | the account holder | Sweden 292, Denmark 98 |
 | Needs an identifier on Wikidata | one import, which unblocks the country permanently and for everybody | anyone with a Wikidata account | Slovakia 2,898, Estonia 1,238, Greece 940, Japan 1,812 |
-| Host unreachable from this sandbox | the same script, run from an ordinary connection | a local machine | Russia 20,283, Poland 3,185, Hungary 3,191, Receita's bulk files, Geofabrik, 118 of 193 parliament front pages |
+| Host unreachable from this sandbox | the same script, run from an ordinary connection | a local machine | Russia 20,283, Receita's bulk files, Geofabrik, overpass-api.de, 118 of 193 parliament front pages. Poland was here and shipped in round twenty-four; Hungary's KSH answers as of that round |
 
 The third and fourth classes are where the volume is, and neither is a
 round of research. **An import is the highest-leverage thing in this
@@ -137,10 +137,11 @@ it and read it before surveying anything.
 
 | Source | Last checked | Class | What would reopen it |
 | --- | --- | --- | --- |
-| Poland `api.dane.gov.pl` | round sixteen | unreachable here | run it from an ordinary connection |
-| Hungary `data.gov.hu`, KSH Helységnévtár | round eight | unreachable here / JS links | run it locally; key coverage is 99% |
+| Poland `api.dane.gov.pl` | round twenty-four | **open — shipped 2,411** | dataset 4431, the national contact base of local governments |
+| Hungary `data.gov.hu`, KSH Helységnévtár | round twenty-four | data.gov.hu still unreachable; **www.ksh.hu answers** | find the Helységnévtár file on ksh.hu; key coverage is 99% |
 | Receita Federal bulk CNPJ files | round twenty | paths not discoverable | the mirror works; find the real paths locally |
-| Geofabrik, overpass-api.de, kumi, private.coffee | rounds seven, thirteen | unreachable here | a planet or country extract downloaded locally |
+| Geofabrik, overpass-api.de, private.coffee | round twenty-four | unreachable here | a country extract downloaded locally |
+| overpass.kumi.systems, planet.openstreetmap.org | round twenty-four | **both answer** | the `P402` town-hall route, country by country through kumi |
 | Rosstat | round twelve | self-signed certificate | locally, with OKTMO on 98% of items |
 | Bulgaria IISDA | round seventeen | **publishes no contacts at all** | nothing. It holds post titles. Closed. |
 | Spain DIR3 for autonomous communities | round seventeen | no `CONTACTOS` column | nothing in that file. Closed. |
@@ -267,6 +268,42 @@ and `u` when nothing on the record shows the body still exists.
   the other. The full build prints every chart under ten bodies so the
   next one can be checked; the rest of that list is microstates whose
   record is genuinely thin.
+
+### Second pass, same round: the whole government at every level
+
+The first version drew the levels below the country from the panel's own
+list, which `MAPKINDS` filters to offices with a part in making a law. The
+chart is meant to be the whole government, with the lawmaking offices seen
+in place among the rest, so:
+
+- `classifyRows` now returns `all`, every office it recognises, before the
+  `MAPKINDS` test, each marked `onmap`. `loadChainPins` keeps it per level
+  in `LEVELALL`. Nothing else reads `LEVELALL`; the map, the panel and the
+  search still see only what `MAPKINDS` lets through. Offices off the map
+  are drawn dashed and the info line says why they are not on the map.
+- **Regions have files of their own.** `build_govtree.py --regions` builds
+  every first-level division of every country (3,715 — US states, Länder,
+  Indian states, French regions…) the same way as a country, indexed in
+  `govtree/regions.json`. The page fetches a region's file only when the
+  index lists it. Below the regions the chart is built from `LEVELALL`.
+- `--regions` drops the P17 requirement on ministries and agencies (a
+  state's own departments carry the country in P17, which is the reason
+  the national build needs it).
+- The tree code is `govTree` → `govFromFile` (a file's government under a
+  level) → `govOffices` (the level's offices, lit through a body where the
+  file has one, otherwise by kind under their branch).
+
+### Also this round: Poland
+
+`tools/build_muni.py` gained `build_poland` and a `--merge` flag. The
+national contact base of local governments (dane.gov.pl dataset 4431)
+joins on TERYT (`P1653`): **2,411 Polish governments shipped**, each with
+website, telephone and street address and all but two with an email; the
+name check agrees on 99.9%. 414 rows did not join — the sixteen
+voivodeships carry no TERYT on Wikidata, and the rest are worth a look next
+round. `--merge POL` rebuilt Poland alone and kept Italy, Spain and Quebec
+exactly as shipped; without `--merge`, a one-country run rewrites every
+shard and would have dropped the other three.
 
 ### Known, not fixed
 

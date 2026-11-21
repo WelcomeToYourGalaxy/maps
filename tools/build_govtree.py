@@ -2,6 +2,10 @@
 """One diagram per country of how its national government is organised.
 
 Writes govtree/<Q-id>.json (one file per country) and govtree/index.json.
+With --regions it does the same one level down - every first-level division
+of every country (US states, German Länder, Indian states, French regions…) -
+and indexes them in govtree/regions.json. The page draws a region's file
+under the country; below the regions it uses the offices it has loaded.
 The page reads a country's file when a place in that country is searched,
 draws it as a Mermaid chart in the box hung off the panel's bottom-left
 corner, and adds the levels below the country from the offices the page
@@ -123,6 +127,25 @@ DIPLO = re.compile(r"\b(embassy|embassies|consulate|nunciature|high commission o
 CASE = re.compile(r"\sv\.?\s|\[\d{4}\]|\bcase\b", re.I)
 DEFUNCT_DESC = re.compile(r"\b(former|defunct|abolished|dissolved|disbanded|historical|historic)\b", re.I)
 
+# a ministry must also be filed under the country itself; a region's own
+# departments carry the country in P17, so in --regions mode it is dropped
+P17C = "?X wdt:P17 ?c ."
+REGIONS = False
+PARENT = {}
+
+def regions(only):
+    """first-level divisions of every country, current ones only"""
+    rows = ask("""SELECT DISTINCT ?r ?c WHERE { ?c wdt:P31 wd:Q6256 .
+      ?c p:P150 ?st . ?st ps:P150 ?r . FILTER NOT EXISTS { ?st pq:P582 ?e }
+      FILTER NOT EXISTS { ?r wdt:P576 ?d } FILTER NOT EXISTS { ?r wdt:P582 ?e2 } }""")
+    out = {}
+    for r in rows:
+        q = v(r, "r")
+        if only and q not in only: continue
+        if q in out: continue
+        out[q] = {"iso3": None, "num": None}; PARENT[q] = v(r, "c")
+    return out
+
 def countries(only):
     if only:
         # named on the command line: built whether or not the item
@@ -154,10 +177,10 @@ def ministries(cs, ap):
     out = defaultdict(set)
     for ch in chunks(cs, 300):
         rows = ask(f"""SELECT DISTINCT ?c ?X WHERE {{ VALUES ?c {{ {vals(ch)} }}
-          ?X wdt:P31/wdt:P279* wd:Q192350 ; wdt:P17 ?c .
+          ?X wdt:P31/wdt:P279* wd:Q192350 . {P17C}
           {{ ?X wdt:P1001 ?c }} UNION {{ ?X wdt:P131 ?c }}
           UNION {{ ?c wdt:P208 ?g . ?X wdt:P361|wdt:P749 ?g }}
-          {ENDED} {NOTBODY_F} }}""")
+          {ENDED} {NOTBODY_F} }}""".replace("{P17C}", P17C))
         for r in rows: out[v(r, "c")].add(v(r, "X"))
     return out
 
@@ -166,9 +189,9 @@ def national(cs, cls, strict=False):
     where = "?X wdt:P1001 ?c ." if strict else "{ ?X wdt:P1001 ?c } UNION { ?X wdt:P131 ?c }"
     for ch in chunks(cs, 300):
         rows = ask(f"""SELECT DISTINCT ?c ?X WHERE {{ VALUES ?c {{ {vals(ch)} }}
-          ?X wdt:P31/wdt:P279* wd:{cls} ; wdt:P17 ?c .
+          ?X wdt:P31/wdt:P279* wd:{cls} . {P17C}
           {where}
-          {ENDED} {NOTBODY_F} }}""")
+          {ENDED} {NOTBODY_F} }}""".replace("{P17C}", P17C))
         for r in rows: out[v(r, "c")].add(v(r, "X"))
     return out
 
@@ -208,6 +231,8 @@ def divisions(cs):
         for r in rows: out[v(r, "c")].add(r["l"]["value"])
     return out
 
+LAWDOC = re.compile(r"\b(act|statute|ordinance|amendment|code)(\s+of\s+\d{4}|\s+\d{4})?$", re.I)
+TENURE_MIN = re.compile(r"^(?!.*\bof\b)(?!.*\bdepartment\b).*\bministry$", re.I)
 CAUCUS = re.compile(r"\b(caucus|friendship group|parliamentary group of)\b", re.I)
 TENURE = re.compile(r"\bcabinet\b", re.I)
 TENURE_OK = re.compile(r"\b(office|secretariat|division|department|committee|council|"
@@ -264,8 +289,11 @@ def main():
     AS = None
     args = sys.argv[1:]
     if args[:1] == ["--as"]: AS = args[1]; args = args[2:]
+    global REGIONS, P17C
+    if args[:1] == ["--regions"]:
+        REGIONS = True; P17C = ""; args = args[1:]
     only = set(a for a in args if re.match(r"^Q\d+$", a))
-    cs = countries(only)
+    cs = regions(only) if REGIONS else countries(only)
     print(len(cs), "countries", file=sys.stderr)
     ql = list(cs)
     ap = apex(ql); mins = ministries(ql, ap)
@@ -354,6 +382,9 @@ def main():
             if DEFUNCT_DESC.search(desc.get(n, "")): continue
             if DIPLO.search(L): continue
             if CASE.search(L): continue
+            # a law filed as if it were a body, and a ministry named for
+            # the leader who formed it, which is a term of office
+            if LAWDOC.search(L) or TENURE_MIN.search(L): continue
             # a caucus is a club of members, not a body of the legislature
             if CAUCUS.search(L): continue
             p0 = parent[(cc, n)]
@@ -392,6 +423,7 @@ def main():
         for h in heads:
             if h["q"] in both: h["r"] = "Head of state and government"
         out = {"q": c, "iso3": cs[c]["iso3"], "heads": heads, "n": {}}
+        if REGIONS: out["in"] = PARENT.get(c)
         for n, o in nodes.items():
             e = {"l": o["l"], "b": o["b"]}
             if o["p"]: e["p"] = o["p"]
@@ -428,14 +460,15 @@ def main():
                     "jud": sum(1 for x in out["n"].values() if x["b"] == "jud"),
                     "heads": len(heads),
                     "cur": sum(1 for x in out["n"].values() if not x.get("u"))}
-    if only and os.path.exists(os.path.join(OUT, "index.json")):
-        old = json.load(open(os.path.join(OUT, "index.json")))
+    IX = "regions.json" if REGIONS else "index.json"
+    if only and os.path.exists(os.path.join(OUT, IX)):
+        old = json.load(open(os.path.join(OUT, IX)))
         old.get("c", {}).update(index); index = old["c"]
     json.dump({"built": time.strftime("%Y-%m-%d"), "source": "Wikidata via QLever", "c": index},
-              open(os.path.join(OUT, "index.json"), "w"), separators=(",", ":"))
+              open(os.path.join(OUT, IX), "w"), separators=(",", ":"))
     print(len(index), "countries written", file=sys.stderr)
     thin = sorted((v["n"], k, v["iso3"]) for k, v in index.items() if v["n"] < 10)
-    if thin and not only:
+    if thin and not only and not REGIONS:
         print("thin charts - check whether the government is filed on another item "
               "and rebuild with --as:", thin, file=sys.stderr)
 

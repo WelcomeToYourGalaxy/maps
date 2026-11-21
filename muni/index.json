@@ -1,15 +1,17 @@
 {
- "built": "2026-11-18",
+ "built": "2026-11-20",
  "shards": 512,
  "countries": [
   "CAN",
   "ESP",
-  "ITA"
+  "ITA",
+  "POL"
  ],
  "registers": {
   "ITA": "IPA",
   "ESP": "DIR3 and the Registro de Entidades Locales",
-  "CAN": "Répertoire des municipalités du Québec"
+  "CAN": "Répertoire des municipalités du Québec",
+  "POL": "Baza teleadresowa jednostek samorządu terytorialnego (dane.gov.pl, 16 March 2026)"
  },
  "counts": {
   "ITA": {
@@ -53,6 +55,20 @@
     "cn": 1104,
     "of": 1103,
     "src": 1106
+   }
+  },
+  "POL": {
+   "shipped": 2411,
+   "refused_code_maps_to_two_items": 1,
+   "refused_item_claimed_twice": 0,
+   "no_shared_code": 414,
+   "register_publishes_no_contact": 0,
+   "fields": {
+    "u": 2411,
+    "e": 2409,
+    "p": 2411,
+    "o": 2411,
+    "src": 2411
    }
   }
  },
