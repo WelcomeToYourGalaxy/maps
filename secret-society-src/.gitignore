@@ -1,1 +1,18 @@
-work/
+# The crawls and PDF downloads: large, and re-fetchable from a known URL at no
+# search cost. Keep ignoring these.
+work/docs/
+work/*.jsonl
+work/*.log
+work/index.json
+work/scratch_*/
+
+# work/text/ is NOT ignored, deliberately. Rounds 17 to 30 wrote every corpus,
+# cache and read-mark into work/ while the handoff recorded "everything persists
+# in /home/claude/work" — and a single `work/` line here meant none of it was
+# ever committed. Round 31 opened with an empty work directory and had to
+# re-crawl before it could write a record. The extracted report text is 5 MB and
+# is the expensive half to rebuild, so it is tracked.
+
+# Stray crawl output that earlier rounds left at this directory's root.
+f.jsonl
+crawl4.log

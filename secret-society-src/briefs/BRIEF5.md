@@ -16,6 +16,8 @@ Every case must be confirmed with WebSearch/WebFetch from reliable sources (cour
 These are not hypothetical. Every one cost a record in the November 2026 rounds.
 
 1. **Never invent a denial.** This is the most common failure by a wide margin: eight records in two rounds carried a denial their source did not contain. If the page says someone declined to comment, say that. If it records no response, say that. If it says nothing at all about a response, say nothing. A manufactured denial is a fabrication even though it reads as fairness, and in one case the article said the opposite of the denial the record attributed.
+
+1b. **And never omit a denial the source records.** This is now the commoner half of the same fault: one round produced 17 omitted denials and zero invented ones. Official reports and court judgments routinely state the subject's response and then reject it — and agents keep the finding and drop the response. Restore it even where the body rejected it, and say that it was rejected. The sharpest case so far: a record asserted that a militia controlled a state judicial police unit, while the cited annex carried that militia's own four-part denial, one limb of which was that the judicial police answer to the justice ministry and not to it. The denial went to the very claim the record made.
 2. **Never invent an explanation of how something came to light.** "Suspicion arose because they volunteered for the same shifts" was nowhere in its source; the case came from wiretaps.
 3. **Never state a claim the page does not carry**, however plausible — a president suspending officials, a resumption date, a parallel case at another border post, a ministry issuing a passport when the page names a lawyer.
 4. **Keep the source's qualifiers.** "Originally", "allegedly", "in some cases", "as many as", "some payments", "helped secure". If the source hedged, the record hedges. Stripping a hedge is as wrong as adding a claim.
@@ -31,7 +33,11 @@ If a fact matters enough to write, it is on a page you opened. If it is not, lea
 - "n": title, plain, who got inside what (max ~75 chars)
 - "c": country of the institution infiltrated — MUST be a name exactly as in secret-society-src/briefs/countries.txt
 - "city": city name; "lat", "lng": accurate decimal coordinates of that city (the institution's seat)
-- "y": year it happened or came to light (integer)
+- "y": **the year the conduct reached the institution** (integer). This is ruling 16 and it is
+  the single most-corrected field on this map: 52 records in one round set `y` to the year of the
+  verdict, the report, the indictment, the arrest or the publication instead. If the source says
+  the payments ran 2009 to 2020 and the sentence came in 2025, `y` is **2009**. Only where no
+  source states any conduct date does the year it came to light stand, and then say so in `d`.
 - "org": key of an existing organisation from /home/claude/work/b5/orgs.txt if one fits exactly, else "" (do not invent keys)
 - "org_label": if org is "", the name of the infiltrating group or person (else omit)
 - "bk": office reached, one of exec (heads of state/government), cabinet, legis (parliament, parties, local office), court (judges, prosecutors), security (military, intelligence, police, prisons, customs), finance (central banks, state banks, regulators, finance ministry), intl (international bodies), company
