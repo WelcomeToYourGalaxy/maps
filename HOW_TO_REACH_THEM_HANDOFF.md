@@ -336,6 +336,58 @@ municipal email and telephone columns would land somewhere around 55–65%
 of all municipalities on Earth, not 100%, and the street-address column
 rises with every register because most registers publish it.
 
+### Third pass: one chart per level, and the box follows the reader
+
+- **One chart per level.** The country, then each level below it, is its
+  own Mermaid chart, stacked top to bottom in the box with a thin rule
+  between them naming what the lower one sits inside. A county is not a
+  branch of its state, and drawing it beside the state's three branches
+  said that it was. `govRoots` lists the charts, `govSources` writes one
+  source per chart with node ids running on across them, and `govDraw`
+  redraws only the charts whose source changed (`GOV.svgs`). Node
+  positions are read against `#govcv`, not against one svg.
+- **The wheel scrolls** the charts, both ways; a pinch or Ctrl/Cmd with
+  the wheel zooms. Drag still works.
+- **A kind of office lights its box** at every level (`L:<i>:K:<kind>`),
+  sorted top level first, and the chart goes to the first. It used to
+  light every office of the kind and go to whichever came first in the
+  index, which put a single county board in front of a reader who had
+  only opened Chambers. One office is lit only when it is opened.
+- **Opening an office from the panel's list or from the diagram moves the
+  map to it** — to its marker through `bubFocusMain`, or for a body with no
+  marker to the coordinates in its govtree record (`c`: `[lng, lat, hq]`,
+  `hq` 1 when only the headquarters' town is known). An office opened
+  from the map's own marker popup (`markerGo`) does not move the map.
+  `tools/build_govtree.py` writes `c` from P625, or P159's P625.
+  **The files on disk predate `c`**: the national rebuild from this
+  sandbox stalled twice on the first batch of parts (QLever timing out on
+  the class-instance union), so bodies move the map only after the next
+  rebuild. Until then the offices with markers do. If it stalls again,
+  lower the batch in `children()` from 400 or drop `tries` to 1 so a
+  timed-out batch is split within minutes rather than after six retries.
+- `GOV_GAP` keeps five pixels between the box and the panel.
+- **Examples in this file and in the page's comments name no specific
+  town, city or county.** Describe the case instead ("a large US county",
+  "a city and the county named after it").
+
+### The diagrams kept current, and towards complete
+
+Everything below the regions is read live when a place is searched.
+The country and region files are a snapshot of Wikidata; a weekly
+rebuild (a scheduled GitHub Action running the three commands in §00)
+keeps them within a week of it. Not yet added: adding a workflow that
+pushes on a schedule needs the maintainer's say-so.
+
+Official directories that answer live, checked this round, which would
+replace Wikidata's guesswork for those countries — status, parent body and
+all — and could be read in the browser at search time:
+
+| Country | Source | Bodies | Says whether a body still exists |
+| --- | --- | ---: | --- |
+| United States | federalregister.gov `/api/v1/agencies` (CORS open) | 473, 226 with a parent | no; current list only |
+| United Kingdom | gov.uk `/api/organisations` | 1,273 | yes, live or closed |
+| France | api-lannuaire.service-public.fr | the whole administration | yes |
+
 ### Also this round: Poland
 
 `tools/build_muni.py` gained `build_poland` and a `--merge` flag. The
