@@ -357,11 +357,16 @@ them**; round 47 had to backfill it. A round that converts a lead marks the lead
    stayed **115**. The published figure does not move, but it was right by accident. Both leads the
    title key had left unmarked are now marked.
 
-2. **STILL OPEN. Only 362 of the 503 complaints have a record in the complaints layer.** A converted
-   lead whose complaint has no record needs one built from the harvest, with the case's own
-   coordinates and a `pt` saying so. Round 47's brief has the field shape. Every one of the 115
-   complaints named in a case does now resolve to a record of its own, so this bites only on
-   conversion, not on what is already published.
+2. **PREPARED, not closed. Only 362 of the 503 complaints have a record in the complaints layer.**
+   The missing 141 are now staged in **`docs/oecdw_cmp_stubs.json`**, grouped by round — 21 in round
+   48, 21 in 49, 5 in 50, 33 in 51, 61 in 52 — with every field that comes from the harvest already
+   filled (`k` on the slug, `o`, `t`, `y`, `place` as the complaint's country, `al`, `fi`, `st`, `u`,
+   `company`, `ncp`) and each one carrying a `_you_must_add` block naming the five a writer can only
+   take from the case: `lat`, `lng`, `pt`, `ap`, `h`, and `cs`. All 141 carry a title, year, status,
+   URL and contact point, no stub key collides with an existing record, and every one is assigned to
+   a round. It closes as the rounds convert leads, not before. Every one of the 115 complaints named
+   in a case does now resolve to a record of its own, so this bites only on conversion, not on what
+   is already published.
 
 3. **NOT A DEFECT, and the brief that says it is will corrupt 282 events' worth of new records.**
    `ap` does not record whether the contact point accepted the complaint. `base.html` renders it as
@@ -401,7 +406,9 @@ them**; round 47 had to backfill it. A round that converts a lead marks the lead
 The desk work in *Running one round, step 1* is done and sits in `rounds/`. No research was run, so
 there is no conversion figure to report yet.
 
-**What is built.** `dedupe_oecdw2.py` re-run against today's 1,189 cases: **0 probable duplicates**,
+**What is built.** `docs/BRIEF48.md` and `docs/CHECK48.md`, written to this file's rules and carrying
+the corrected `ap` definition, the slug-based `cx` convention and the supplier question below.
+`dedupe_oecdw2.py` re-run against today's 1,189 cases: **0 probable duplicates**,
 387 open leads checked. Six batch files, `rounds/r48_batch_1.json` to `_6.json`, built from
 `oecdw_wide_plan.json` and not from the lead file, each carrying the full lead record for every lead
 in the event, every event's leads kept together, and each event labelled
@@ -506,7 +513,10 @@ A round that does not leave these behind has made the next one pay for its work 
 | --- | --- |
 | The queue, clustered and assigned | `docs/oecdw_wide_plan.json` |
 | The lead records | `docs/leads_oecdwatch.json` |
+| **Round 48's writer brief and check brief** | **`docs/BRIEF48.md`, `docs/CHECK48.md`** |
+| **Round 48's six batches, and its precedent drops** | **`rounds/r48_batch_1..6.json`, `rounds/r48_precedent_drops.json`** |
+| **The 141 missing complaint records, staged by round** | **`docs/oecdw_cmp_stubs.json`** |
 | Round 45's brief, for this register | `docs/BRIEF45.md` |
-| Round 47's brief and check brief, for the record shapes | `docs/BRIEF47.md`, `docs/CHECK47.md` |
+| Round 47's brief and check brief — note the `ap` definition in both is wrong | `docs/BRIEF47.md`, `docs/CHECK47.md` |
 | The second-pass dedupe | `dedupe_oecdw2.py` |
 | The map's general handoff and round history | `docs/HANDOFF.md` |
