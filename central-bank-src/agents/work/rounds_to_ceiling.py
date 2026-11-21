@@ -36,6 +36,8 @@ WORKED = {
     "Outside reserve managers": [
         ("r67", 76, 79, 1, "HANDOFF: 'Round 67 added Morocco, Kazakhstan and South Korea'"),
         ("r77", 79, 81, 1, "round-77 section: 79 places to 81, like-for-like across the Norway split"),
+        ("r78", 81, 100, 1, "round-78: third state adopted, 17 reclassified from managers_unavailable "
+                            "plus IND and PHL worked fresh; not a research rate, a counting change"),
     ],
 }
 CEILING_TARGET = {"Gold custodians": 70, "Outside reserve managers": 99}
@@ -85,9 +87,18 @@ def main():
     for name in ("Outside reserve managers", "Gold custodians"):
         d = L[name]
         obs = WORKED[name]
-        gains = [a - b for _, b, a, _, _ in obs]
+        # A round whose gain came from a counting change rather than research is still LISTED,
+        # because the point of the list is that the level can be checked against the rounds
+        # behind it, but it is NOT averaged into the rate. Round 78 added 19 places to the
+        # managers row by adopting a third state, 17 of them reclassifications of records that
+        # earlier rounds had already made. Folding that into a per-round research rate gave 8.0
+        # a round, three times anything this row has ever produced by research, and every
+        # projection below would have inherited it. Mark such a round "not a research rate" in
+        # its note and it is excluded here and flagged in the printout.
+        rate_obs = [o for o in obs if "not a research rate" not in o[4]]
+        gains = [a - b for _, b, a, _, _ in rate_obs]
         per_round = sum(gains) / len(gains)
-        per_agent = sum(gains) / sum(ag for _, _, _, ag, _ in obs)
+        per_agent = sum(gains) / sum(ag for _, _, _, ag, _ in rate_obs)
         target_places = int(-(-CEILING_TARGET[name] / 100.0 * d["den"] // 1))
         need = max(d["ceiling"], target_places) - d["have"]
 
@@ -99,6 +110,10 @@ def main():
         print("  rounds that worked it     %s" % ", ".join(
             "%s %+d with %d agent%s" % (r, a - b, ag, "" if ag == 1 else "s")
             for r, b, a, ag, _ in obs))
+        _skipped = [o[0] for o in obs if o not in rate_obs]
+        if _skipped:
+            print("  NOT IN THE RATE           %s -- counting change, not research"
+                  % ", ".join(_skipped))
         print("  rate on those rounds      %.1f places a round, %.1f per agent"
               % (per_round, per_agent))
         print("  what is still absent      %s" % ", ".join(

@@ -84,6 +84,21 @@ def main():
         # Measuring it against 192 overstated the shortfall by a third.
         if key == "reserve_managers":
             den_override = 144
+            # Round 78: the row gained a third state, the same way gold did at r75. coverage.py
+            # prints the tie count and the combined figure separately; the combined one is what
+            # the chart and about.html report, so the shortfall is measured against that. Falls
+            # back to the tie count if coverage.py has not been patched.
+            _mc = re.search(r"counting those, (\d+) of about \d+ either name a manager", out)
+            if _mc:
+                places = int(_mc.group(1))
+            # Same trap as the gold row hit at r77, and for the same reason: coverage.py's
+            # "to go" list is places with no manager TIE, so it still holds every third-state
+            # place that `places` above now counts. Adding the two inflates the ceiling by one
+            # per such place -- here by 19, taking a 100% reading that the evidence does not
+            # support. Subtract what `places` already counts before classifying.
+            _mthird = json.load(open(os.path.join(CB, "agents", "gaps.json"), encoding="utf-8")) \
+                .get("managers_external_undisclosed") or {}
+            _mdrop = {k for k, v in _mthird.items() if not v.get("weak_source")}
         if pat is None:
             absent = swap_absent
         else:
@@ -93,6 +108,8 @@ def main():
                          "the parser rather than letting it report an empty list, which reads as "
                          "'nothing left to do'." % label)
             absent = t.group(1).split()
+        if key == "reserve_managers":
+            absent = [i for i in absent if i not in locals().get("_mdrop", set())]
         rows.append((label, places, locals().get("den_override") or 192, key, absent))
 
     print("CAN THESE ROWS REACH 80%, AND WHAT IS ACTUALLY LEFT\n")
