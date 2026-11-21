@@ -723,7 +723,7 @@ earth alike. The key is the row at top right.
 ### What `fitToPins` frames, and why not everything
 
 Not all the markers. The United States has federal offices thousands of
-kilometres from any one town, and framing those put Sierra Madre at zoom 1.6 —
+kilometres from any one town, and framing those put a small town at zoom 1.6 —
 the whole globe, which answers nothing. The frame is built from the levels
 **between the municipality and the region**: the offices that govern this place
 and sit near it. The country's offices stay on the map, further out, and the
@@ -1308,7 +1308,7 @@ first: that is how the collisions got there.
   placed. See §11 — the user's own `executive-map` repo holds 145,547 town
   halls and 256,548 government offices with coordinates, addresses, phone
   numbers and websites, and that is the obvious fix.
-- **Wikidata is thin at municipal level.** Sierra Madre (pop. ~11,000) resolves
+- **Wikidata is thin at municipal level.** A town of about 11,000 people resolved
   to zero offices; the panel shows the city website and four empty branches.
   That is the real state of the data, not a bug, and §11 is the way out.
 - **Below the municipality** works only where OSM has levels 9/10, and those
@@ -1369,7 +1369,7 @@ municipality's own level, are coloured with it, and open their own panel
 with a vote.
 
 Measured: Washington D.C. returns **504 local contacts, 169 with a telephone
-number and 225 with a website**. Sierra Madre returns three — city hall, police,
+number and 225 with a website**. A small town tested returns three — city hall, police,
 fire — with no contact details on any of them, which is what OSM holds.
 
 To rebuild after `executive-map` changes, re-run the bucketing with the field

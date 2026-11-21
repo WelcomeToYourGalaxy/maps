@@ -3930,8 +3930,8 @@ function paintSiteLink(){
   if(SELFSITE){ a.href=SELFSITE; a.textContent='Official site \u2197'; a.style.display=''; }
   else { a.removeAttribute('href'); a.style.display='none'; }
   /* Beside it, always. The recorded address for a small municipality is
-     frequently one it has left — Sierra Madre's record still pointed
-     at ci.sierra-madre.ca.us — and a reader who clicks a dead link
+     frequently one it has left — one small city's record still pointed
+     at a domain the city had given up — and a reader who clicks a dead link
      has no way on from it. A search never goes stale. */
   const f=$('#mfind'); if(!f) return;
   const nm=(STACK.length?(STACK[STACK.length-1].label||''):'')||(CUR?CUR.label:'');
@@ -6140,7 +6140,7 @@ function holderLine(holder){
    link did not open is looking at the link.
 
    The place in the search is the place at the office's own level: a
-   national chamber searched as "... Sierra Madre" is a search for
+   national chamber searched with a town's name added is a search for
    something that does not exist. */
 function findSiteLink(o){
   if(!o) return '';
@@ -8419,8 +8419,8 @@ function closeStart(){ $('#start').classList.add('off'); $('#sopen').classList.a
    Nominatim answers a finished query well and partial words badly:
    "Sierra Mad" returns nothing from it, so nothing appeared until the
    last letter was typed. Photon is OpenStreetMap's own autocomplete
-   geocoder, built for prefix matching, and it answers "Sierra Mad" with
-   Sierra Madre, California first. What it does not return is the
+   geocoder, built for prefix matching, and it answers a half-typed
+   town name with that town first. What it does not return is the
    boundary polygon or the Wikidata id, which this map needs to draw the
    place and resolve its offices.
 
