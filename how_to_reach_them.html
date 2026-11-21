@@ -1108,8 +1108,6 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #bubhint span i{font-style:normal;font-weight:600;color:var(--accent-hi)}
 #bubhint .bhn{margin-top:8px;padding-top:7px;border-top:1px solid var(--line);
   font-size:9.8px;line-height:1.45;color:var(--faint)}
-#bubhint .bhx{position:absolute;top:2px;right:4px;border:0;background:none;color:inherit;font:inherit;font-size:16px;line-height:1;padding:4px 6px;cursor:pointer;opacity:.7}
-#bubhint .bhx:hover{opacity:1}
 #bubbles.lightbase #bubhint{background:rgba(248,247,243,.94);border-color:rgba(24,36,30,.16);
   color:#3d4a42}
 #bubbles.lightbase #bubhint b{color:#14201a;border-bottom-color:rgba(24,36,30,.16)}
@@ -8869,9 +8867,7 @@ const BUB_MAX=170, BUB_MIN=112, BUB_LBL=60, BUB_LBL_G=86, BUB_TOP=74,
       DEEP_D=210, DEEP_STEP=2.5, DEEP_MAX=18;
 /* The card at the head of the column saying what the circles do. The
    circles start below it, so its height comes out of theirs. */
-let BUB_HINT=(function(){try{return localStorage.getItem('htrt_bubhint_seen')?0:112;}catch(e){return 112;}})();
-function bubHintSeen(){try{localStorage.setItem('htrt_bubhint_seen','1');}catch(e){}}
-function dismissBubHint(){BUB_HINT=0; BUB_KEY=''; try{paintBubbles();}catch(e){}}
+const BUB_HINT=0;
 /* The space under each circle is what its caption needs, and a caption
    with the group chip on it is a line taller than one without. Sized
    for the short one, the bottom bubble's chip ran off the foot of the
@@ -9318,16 +9314,7 @@ function buildBubbles(L){
         '<span class="bubs" id="bubs'+i+'"></span>'+
         '<span class="bgrp" id="bubg'+i+'"></span></div>'+
     '</div>').join('')+
-    (BUB_HINT>0 ? '<div id="bubhint">'+
-      '<button type="button" class="bhx" aria-label="Close this note" onclick="dismissBubHint()">\u00d7</button>'+
-      '<b>These circles are magnifiers</b>'+
-      '<span><i>Click</i> zoom in \u00b7 <i>double-click</i> out</span>'+
-      '<span><i>Drag</i> move \u00b7 <i>hover</i> closer view</span>'+
-      '<span><i>Click a marker</i> open that office</span>'+
-      '<span class="bhn">The wheel zooms the big map, not these. '+
-      'Move off one and it returns to its level.</span>'+
-      '</div>' : '');
-  if(BUB_HINT>0) bubHintSeen();
+    '';
   /* The captions and the groups are known without a map, so they are
      filled in now and the circles arrive under them. */
   L.forEach((info,i)=>{
