@@ -323,7 +323,7 @@ otherwise.
 
 | Round | Work | Unlocks (municipalities, roughly) | Needs the user? |
 | --- | --- | ---: | --- |
-| 25 | National rebuild; France, the Netherlands, Norway, Finland from their registers (rounds 4–21 recorded the endpoints and join keys) | 40,000 | no |
+| 25 | National rebuild; France, the Netherlands, Norway, Finland from their registers (rounds 4–21 recorded the endpoints and join keys) | 36,000 | no |
 | 26 | Brazil (Receita mirror) and Hungary (KSH now answers) | 8,700 | no |
 | 27–29 | The OSM town-hall route through overpass.kumi.systems, country by country, for countries with `P402` and no register | up to 55,000 | no |
 | 30 | Russia (Rosstat refuses this sandbox) — a script run on the MacBook | 20,000 | runs one command |
