@@ -3,7 +3,8 @@
 **Live:** https://welcometoyourgalaxy.github.io/maps/how_to_reach_them.html
 **Files in this repo:** `how_to_reach_them.html` (one self-contained page),
 `world_lowest.topojson` (48,263 jurisdictions), `atlas-plate-how-to-reach-them.webp`
-(the Atlas basemap plate with this map's cartouche), `contacts/` (670,845
+(the Atlas basemap plate with this map's cartouche), `govtree/` (one
+government chart per country, §0 round twenty-four), `contacts/` (670,845
 buildings in 2° cells, §11), and `tools/completeness.py` and
 `tools/keycheck.py`, which are the two measurements every round starts with
 (§0).
@@ -187,6 +188,117 @@ regions, and the only register that has touched it is Spain's eighteen
 provincial councils. **The street-address column is 2% worldwide and
 Brazil alone is 5,568 of it**, so a register that publishes a street and
 no email still moves a column nobody else is filling.
+
+---
+
+## 00. Round twenty-four: the government diagram
+
+**One Mermaid chart per country, in a smaller box hung off the panel's
+bottom-left corner.** It shows how the searched place's country is
+governed from the top down — head of state and government, the three
+branches, the legislature's chambers and committees, the ministries and
+the agencies under them, the courts — and then the levels below the
+country (state, county, city…) down to the searched place. Opening an
+office or a kind of office in the panel lights the matching boxes and
+glides the chart to them, opening whatever was folded above them.
+
+This brings back, on request, a diagram §14 records as removed. That one
+was a fixed list of office *kinds*; this one is the government's actual
+bodies, per country, and follows the panel.
+
+### Files
+
+- `govtree/<Q>.json` — one per country, keyed by the Wikidata id the page
+  already resolves for `STACK[0]` (`ISO2Q`). `govtree/index.json` holds the
+  per-country counts and the build date; the box falls back to it by ISO3
+  when the id did not resolve.
+- `tools/build_govtree.py` — builds them all from Wikidata through QLever
+  (WDQS as fallback). About 30 minutes for every country. Its docstring
+  says exactly what puts a body on a chart and what keeps one off.
+  `python3 -I tools/build_govtree.py Q30 Q145` rebuilds just those.
+- The page code is one block at the end of the script, headed **THE
+  GOVERNMENT DIAGRAM**, and one block of CSS headed the same way.
+
+### Node format in a country file
+
+`n` maps a body's Q-id to `l` label, `b` branch (`leg`/`exe`/`jud`), `p`
+parent (another Q-id, or `@min` ministries, `@agencies` national bodies
+reached by no root, `@courts`), `d` description, `w` website, `a` the
+offices that direct it (P2389) or sit in it (P361) — **this is what lights
+a body when the panel opens one of those offices** — `s` a sort weight,
+and `u` when nothing on the record shows the body still exists.
+
+### Rules that are load-bearing
+
+- **The levels below the country are not in the file.** They are built at
+  run time from `officeIndex()`, so they are exactly the offices the panel
+  lists, grouped branch → kind → office. Nothing below national level is
+  researched separately.
+- **Hooks, not edits.** The box follows the page by wrapping `render`,
+  `renderOffice`, `openModal`, `closeModal`, `paintTrail` and `setPins` at
+  `window`. Renaming any of those silently disconnects it; the wrapper
+  warns in the console when a name is missing.
+- **Folded by default, opened twelve at a time.** The UK file holds two
+  thousand bodies and Mermaid lays out everything it is given before
+  drawing, so the chart opens with branches, chambers and ministries
+  showing. Anything lit is always shown, past the fold or not.
+- **Clicks are bound by the page** (pointer-up on `#govvp`, node key from
+  the element id with `GOV_IDRX`), for the reason §7 gives. Mermaid is
+  pinned at 11.17.2 and loaded only when a place is searched. A version
+  change can alter the element id format; check a click after any upgrade.
+- **Long sibling lists stack in columns of eight**; a list with an open
+  child goes side by side so the opened subtree has room.
+- **Unconfirmed bodies are drawn, dashed, not dropped.** Wikidata gives most
+  abolished ministries no end date (Japan's eighth-century ministries,
+  Brazil's pre-2023 ones). A body counts as confirmed current if it has an
+  official site, a chair or director with no end date, a heading office
+  held since 2000 with no end date, or a founding date since 2015. Dropping
+  the rest would also drop real ones — three current Australian departments
+  have none of these. The info line tells the reader to check before
+  contacting a dashed one.
+- **Dropped outright:** ended bodies (P576, P582, P1366, or an end date on
+  the statement placing them), diplomatic missions in any language, court
+  cases filed as courts, committees named for one bill, caucuses, cabinets
+  named for one leader, a state's own department filed under a national
+  one, and anything whose parent was dropped.
+- **A country's government can sit on a different item from its code.**
+  The page resolves the Netherlands to the kingdom (Q29999); its
+  government hangs off Q55. `--as Q29999 Q55` builds one and files it as
+  the other. The full build prints every chart under ten bodies so the
+  next one can be checked; the rest of that list is microstates whose
+  record is genuinely thin.
+
+### Known, not fixed
+
+- Wikidata still holds some committees and offices that have ended
+  without saying so — renamed US subcommittees appear twice; the UK's
+  post-Brexit EU sub-committees are there. The dashed style catches some.
+- The page's own classifier files Berlin's *Senate Departments* under
+  Chambers (the word "senate"), so lighting Chambers lights them too. That
+  is `B[]`'s behaviour, not the diagram's.
+- Judiciary is the thinnest branch: 67% of countries have a court charted,
+  and most have only the highest court.
+
+### Completeness, this round
+
+The diagram layer:
+
+| Layer | Units | Head office(s) | Legislature | Ministries | Judiciary | Official site | Confirmed current | Lights from a panel office |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Countries with a chart | 200 | 200 (100%) | 190 (95%) | 192 (96%) | 134 (67%) | — | — | — |
+| National bodies charted | 19,387 | — | 1,820 | — | 629 | 10,666 (55%) | 11,653 (60%) | 5,923 (31%) |
+
+The standing chart (`tools/completeness.py --quick`, unchanged by this
+round, which added no contacts):
+
+| Layer | Units | Website | Email | Telephone | Street address | Lawmaking body |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Countries | 205 | 171 (83%) | 1 (0%) | 1 (0%) | 0 (0%) | 203 (99%) |
+| First-level divisions | 5,167 | 2,502 (48%) | 213 (4%) | 160 (3%) | 35 (1%) | 813 (16%) |
+| Municipalities | 191,581 | 102,699 (54%) | 47,086 (25%) | 38,365 (20%) | 3,721 (2%) | 2,158 (1%) |
+
+**Every round from here on reports both tables**, the diagram layer
+measured from `govtree/index.json`.
 
 ---
 
