@@ -99,23 +99,40 @@ new claim: each is a reclassification of a record an earlier round already made.
 `verbatim_unverified` because the quotes were copied out of `managers_unavailable` prose rather
 than re-extracted from the sources.
 
-**This changes the row's headline number, so it is a proposal and not a merge.** Adopting it
-needs the same two things the gold third state has: a `..._note` string in `gaps.json` setting
-out the test, and the counting change in `coverage.py`. The test should be the strict one used
-here — *the bank's own published source states that outside parties manage part of its reserves,
-and names none of them* — which is why ARE is flagged and the internal-management places are
-excluded.
+**Adopted.** `gaps.json` now carries `managers_external_undisclosed` and its `_note` setting out
+the test — *the bank's own published source states that outside parties manage part of its
+reserves, and names none of them* — which is why ARE is carried with `weak_source` and not counted,
+and why the internal-management places are excluded. `coverage.py` reports the two figures apart
+and then together, the way the gold row does, and `mk_completeness.py` takes the combined figure
+into the chart in `about.html`. All six checkers pass.
 
-### Where the remaining 11 would come from
+India and the Philippines were added this round on their own sources, taking the state to 19
+counted places plus ARE:
 
-Not from the "never worked" 29; most of those are already negatives. From the not-reached group,
-and the brief already points at the two likeliest: the RBI Annual Report chapter on Management
-of Foreign Exchange Reserves, and the BSP financial statements note on investments in foreign
-securities. Singapore's full MAS Annual Report financial statements, Portugal's Relatorio de
-Atividade e Contas, and the Dominican Republic's transparency-section statements are the next
-three. If those five are confirmations, the row reaches 103 of 144 = 72 per cent; 76 per cent
-needs all of them plus six more, and on this round's evidence the supply of confirmations is
-thinner than the supply of internal-management negatives.
+```
+ 81 of about 144 = 56%   naming a manager
+100 of about 144 = 69%   counting the 19 that state the fact and withhold the firm
+110 of about 144 = 76%   the target, so 10 further places
+```
+
+**Philippines, the one lead worth a browser.** The BSP's note reads "Other investments include
+externally managed funds, Asian bond fund, BISIP". That names the fund and its manager but gives
+no figure, and the rule settled at r68 on the BCEAO BISIP K and Slovakia BISIP CNY precedents
+requires all three. A current BSP financial-statements note carrying a BISIP amount converts the
+Philippines from this state to a named BIS tie. bsp.gov.ph is robots-disallowed to WebFetch.
+
+### Where the remaining 10 would come from
+
+Not from the "never worked" 29; most of those are already negatives. The two the brief pointed at
+were worked this round and both landed: India and the Philippines. Portugal was worked and is the
+opposite case — the Banco de Portugal manages two ECB reserve portfolios with Lietuvos bankas and
+two Cabo Verde sovereign funds, so it is a manager and not a client. That leaves Singapore's full
+MAS Annual Report financial statements, the Dominican Republic's transparency-section statements,
+Bangladesh, Curacao, Madagascar, Algeria, Burundi and France among the not-reached. On this
+round's evidence the supply of confirmations is thinner than the supply of internal-management
+negatives, so 76 per cent is possible but not likely from this group alone. The Philippines BISIP
+lead is worth more than any of them, because the same test applied to other banks' notes may
+convert several places to named BIS ties at once.
 
 ## Not done
 
