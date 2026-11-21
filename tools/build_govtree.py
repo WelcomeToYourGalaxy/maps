@@ -196,10 +196,27 @@ def national(cs, cls, strict=False):
     return out
 
 def children(parents):
-    """child -> parents, for organisations placed under any of `parents`"""
+    """child -> parents, for organisations placed under any of `parents`.
+    A batch the endpoint times out on is split in half and asked again, so
+    one heavy parent costs a few requests rather than the whole build."""
     out = defaultdict(set)
-    for ch in chunks(parents, 400):
-        rows = ask(f"""SELECT DISTINCT ?X ?P ?court WHERE {{ VALUES ?P {{ {vals(ch)} }}
+    todo = list(chunks(parents, 400))
+    while todo:
+        ch = todo.pop()
+        try:
+            rows = _children_rows(ch)
+        except SystemExit:
+            if len(ch) == 1:
+                print("  gave up on the parts of", ch[0], file=sys.stderr); continue
+            todo += [ch[:len(ch)//2], ch[len(ch)//2:]]; continue
+        for r in rows:
+            out[v(r, "X")].add(v(r, "P"))
+            if r.get("court"): COURT.add(v(r, "X"))
+    return out
+
+def _children_rows(ch):
+    if True:
+        return ask(f"""SELECT DISTINCT ?X ?P ?court WHERE {{ VALUES ?P {{ {vals(ch)} }}
           {{ ?X p:P361 ?s . ?s ps:P361 ?P . FILTER NOT EXISTS {{ ?s pq:P582 ?_q }} }}
           UNION {{ ?X p:P749 ?s . ?s ps:P749 ?P . FILTER NOT EXISTS {{ ?s pq:P582 ?_q }} }}
           UNION {{ ?P p:P527 ?s . ?s ps:P527 ?X . FILTER NOT EXISTS {{ ?s pq:P582 ?_q }} }}
@@ -207,11 +224,7 @@ def children(parents):
           UNION {{ ?X wdt:P31 ?P }}
           {{ ?X wdt:P31/wdt:P279* wd:Q43229 }} UNION {{ ?X wdt:P279+ wd:Q43229 }}
           OPTIONAL {{ ?X wdt:P31/wdt:P279* ?_ct . VALUES ?_ct {{ wd:Q41487 wd:Q105985 }} BIND(1 AS ?court) }}
-          {ENDED} {NOTBODY_F} }}""")
-        for r in rows:
-            out[v(r, "X")].add(v(r, "P"))
-            if r.get("court"): COURT.add(v(r, "X"))
-    return out
+          {ENDED} {NOTBODY_F} }}""", tries=2)
 COURT = set()
 
 def aliases(nodes):

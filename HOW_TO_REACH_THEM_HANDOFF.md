@@ -293,6 +293,49 @@ in place among the rest, so:
   level) → `govOffices` (the level's offices, lit through a body where the
   file has one, otherwise by kind under their branch).
 
+### The diagram layer, after the second pass
+
+| Layer | Units with a chart | Bodies charted | Confirmed current | Charts of 10+ bodies |
+| --- | ---: | ---: | ---: | ---: |
+| Countries | 200 | 19,387 | 11,653 (60%) | — |
+| First-level divisions | 1,612 of 3,715 | 13,002 | 8,748 (67%) | 223 |
+| Counties and municipalities | every searched place | built from the offices read for it | — | — |
+
+The standing chart is unchanged in Wikidata terms (this round edits nothing
+there); the shards went from 15,886 records to **18,297** with Poland, and
+the ledger has a row for round twenty-four.
+
+**Pending:** the national files were built before the two filters added
+this round (a law filed as a body; a ministry named for the leader who
+formed it). Two full rebuilds timed out at the endpoints; `children()` now
+splits a batch that times out rather than giving up. Rerun
+`python3 -I tools/build_govtree.py` then `--as Q29999 Q55` first thing next
+round. The regions were built with both filters.
+
+### Getting the chart towards 100%, and how many rounds
+
+Not every column can reach 100%. A country with no published register of
+its municipalities (Mexico, the Philippines, Chile, Portugal, Colombia) has
+nothing to join, and the "Lawmaking body" column measures `P194` on
+Wikidata, which only edits to Wikidata move. The order below takes the
+largest yield per round first; each line is one round unless it says
+otherwise.
+
+| Round | Work | Unlocks (municipalities, roughly) | Needs the user? |
+| --- | --- | ---: | --- |
+| 25 | National rebuild; France, the Netherlands, Norway, Finland from their registers (rounds 4–21 recorded the endpoints and join keys) | 40,000 | no |
+| 26 | Brazil (Receita mirror) and Hungary (KSH now answers) | 8,700 | no |
+| 27–29 | The OSM town-hall route through overpass.kumi.systems, country by country, for countries with `P402` and no register | up to 55,000 | no |
+| 30 | Russia (Rosstat refuses this sandbox) — a script run on the MacBook | 20,000 | runs one command |
+| 31 | Slovakia, Estonia, Greece, Japan — prepare the Wikidata imports as QuickStatements files | 6,900 | uploads them with a Wikidata account |
+| — | Sweden and Denmark registers | 390 | applies for the two accounts |
+
+About seven rounds for everything this sandbox can reach, two more that
+need one action from the user, then the remainder is closed doors. The
+municipal email and telephone columns would land somewhere around 55–65%
+of all municipalities on Earth, not 100%, and the street-address column
+rises with every register because most registers publish it.
+
 ### Also this round: Poland
 
 `tools/build_muni.py` gained `build_poland` and a `--merge` flag. The
