@@ -4043,8 +4043,8 @@ function isDefunct(desc, classes){
 }
 
 function classifyRows(core, items){
-  const out={leg:[],exec:[],jud:[],ag:[],other:[]}, byId={};
-  if(!core && !items) return {out:out, byId:byId};
+  const out={leg:[],exec:[],jud:[],ag:[],other:[]}, byId={}, all=[];
+  if(!core && !items) return {out:out, byId:byId, all:all};
   const merged={};
   (core||[]).forEach(r=>{
     if(r.kind.value==='self') return;
@@ -4102,9 +4102,14 @@ function classifyRows(core, items){
        all — see MAPKINDS. This is the only place the test is
        applied, which is what keeps the markers, the search and the
        lists saying the same thing. */
-    if(!MAPKINDS.has(o.kind)) return;
-    /* the one flag the whole map now turns on */
+    /* The government diagram shows the whole government, so it is
+       given every office recognised here, before the map's own filter;
+       `onmap` says which of them the map and the panel carry. */
     o.law = LAWKINDS.has(o.kind);
+    o.onmap = MAPKINDS.has(o.kind);
+    o.theme = themeOf(label+' '+cls);
+    all.push(o);
+    if(!o.onmap) return;
     /* Every office gets a subject, not only the agencies. The subject
        is what decides which of a hundred departments is the right one:
        an environmental rule goes to the environment department, not to
@@ -4115,7 +4120,7 @@ function classifyRows(core, items){
     byId[o.id]=o;
     out[c.br].push(o);
   });
-  return {out:out, byId:byId};
+  return {out:out, byId:byId, all:all};
 }
 
 /* ---------- names and definitions for each kind of office ----------
@@ -7944,6 +7949,7 @@ async function loadChainPins(){
     try{ core = await sparql(qCore(lv.q), 'core:'+lv.q); }catch(e){}
     try{ items = await sparql(qJuris(lv.q), 'juris:'+lv.q); }catch(e){}
     const bk = classifyRows(core, items);
+    LEVELALL[lv.q] = bk.all;
     const ids = Object.keys(bk.byId);
     if(!ids.length) continue;
     for(let k=0;k<ids.length;k+=180){
@@ -7989,6 +7995,9 @@ async function loadChainPins(){
   }
 }
 let CHAIN_DONE={}, CHAIN_CLAIMED={}, CHAIN_GEN=0;
+/* every office recognised for a level, by the level's id, including the
+   ones the map leaves off; read only by the government diagram */
+let LEVELALL={};
 /* ====================================================================
    THE MUNICIPAL REGISTERS
 
@@ -9963,7 +9972,7 @@ function govLevelCol(i){ const p=(typeof LEVELSETS!=='undefined'&&LEVELSETS.nigh
 let GOV={q:null, data:null, dataQ:null, loading:null, index:null,
   open:new Set(), shown:{}, pin:new Set(), lit:[], litSig:'', big:false, min:false, shut:false,
   T:null, key2id:{}, id2key:{}, sig:'', view:{x:12,y:12,k:1}, size:{w:0,h:0},
-  rendering:false, again:false, hover:null, ready:null, closedByHand:new Set(), anchor:null};
+  rendering:false, again:false, hover:null, ready:null, closedByHand:new Set(), anchor:null, reg:{}, regIx:null, known:null};
 
 /* ---------- loading ---------- */
 function govMermaid(){
@@ -10000,6 +10009,22 @@ async function govIndex(){
 }
 /* the country's file, by its Wikidata id or, where the id did not
    resolve, by the ISO code the stack carries */
+/* The regions' own governments — US states, German Länder, Indian
+   states — built by tools/build_govtree.py --regions. The index says
+   which regions have a file, so a level without one costs no request. */
+async function govRegions(){
+  if(!GOV.regIx){
+    try{ const r=await fetch(GOVDIR+'regions.json',{cache:'force-cache'});
+         GOV.regIx = r.ok ? ((await r.json()).c||{}) : {}; }
+    catch(e){ console.warn('government diagram: no region index', e); GOV.regIx={}; }
+  }
+  const want=STACK.slice(1).map(s=>s.q).filter(q=>q && GOV.regIx[q] && !(q in GOV.reg));
+  await Promise.all(want.map(async q=>{
+    GOV.reg[q]=null;
+    try{ const r=await fetch(GOVDIR+q+'.json',{cache:'force-cache'}); if(r.ok) GOV.reg[q]=await r.json(); }
+    catch(e){ console.warn('government diagram: region '+q+' did not load', e); }
+  }));
+}
 async function govLoad(){
   const st=STACK[0]; if(!st) return null;
   let q=st.q;
@@ -10037,84 +10062,19 @@ function govTree(){
   const link=(p,k)=>{ if(T[p] && T[k] && T[k].par==null){ T[k].par=p; T[p].kids.push(k); } };
   const st0=STACK[0]||{};
   add('R',{t:'root', l:(st0.label||'This country'), lv:0});
-  const d=GOV.data;
-  const alias={};             /* office q -> node key */
-  if(d){
-    ['leg','exe','jud'].forEach(b=>{ add('B:'+b,{t:'branch', br:b, l:GOV_BR[b].nm, sub:GOV_BR[b].sub}); link('R','B:'+b); });
-    (d.heads||[]).forEach(h=>{ add('H:'+h.q,{t:'body', br:'exe', l:h.l, sub:h.r, q:h.q, s:99});
-      link('B:exe','H:'+h.q); alias[h.q]='H:'+h.q; });
-    const N=d.n||{};
-    Object.keys(N).forEach(q=>{ const e=N[q];
-      add('N:'+q,{t:'body', br:e.b, l:e.l, q:q, d:e.d||'', w:e.w||'', s:e.s||0, a:e.a||[], u:!!e.u});
-      (e.a||[]).forEach(o=>{ if(!alias[o]) alias[o]='N:'+q; });
-      if(!alias[q]) alias[q]='N:'+q;
-    });
-    const hasMin=Object.values(N).some(e=>e.p==='@min');
-    const hasAg=Object.values(N).some(e=>e.p==='@agencies');
-    if(hasMin){ add('G:min',{t:'group', br:'exe', l:'Ministries and departments', s:50}); link('B:exe','G:min'); }
-    if(hasAg){ add('G:ag',{t:'group', br:'exe', l:'Other national bodies', s:-5}); link('B:exe','G:ag'); }
-    /* parents first, so a child is never linked before its parent exists */
-    Object.keys(N).forEach(q=>{ const e=N[q], k='N:'+q;
-      let p = e.p==='@min' ? 'G:min' : e.p==='@agencies' ? 'G:ag' : e.p==='@courts' ? 'B:jud'
-            : e.p ? 'N:'+e.p : 'B:'+e.b;
-      if(!T[p]) p='B:'+e.b;
-      link(p,k);
-    });
-    /* a cycle in the record leaves a body with no way up to the
-       country; hang it on its branch rather than lose it */
-    Object.keys(T).forEach(k=>{
-      let a=k, n=0; while(a && a!=='R' && n<40){ a=T[a].par; n++; }
-      if(a!=='R' && T[k].t==='body'){ const b='B:'+(T[k].br||'exe');
-        if(T[k].par && T[T[k].par]) T[T[k].par].kids=T[T[k].par].kids.filter(x=>x!==k);
-        T[k].par=null; link(b,k); }
-    });
-  }
-  /* the offices the panel lists, by level */
-  let ix={}; try{ ix=officeIndex(); }catch(e){ console.warn('government diagram: office index', e); }
-  const byLvl={};
-  Object.values(ix).forEach(e=>{ if(!e||!e.o) return; const lv=e.lvl==null?STACK.length-1:e.lvl;
-    (byLvl[lv]=byLvl[lv]||[]).push(e.o); });
-  /* national offices: lit through the body they belong to, or listed
-     under their branch where the file has no such body */
-  (byLvl[0]||[]).forEach(o=>{
-    if(alias[o.id]){ GOV_OFF[o.id]={k:alias[o.id], o:o}; return; }
-    const br = o.br==='ag' ? 'exe' : (o.br==='other' ? 'exe' : o.br);
-    if(!T['B:'+br]){ add('B:'+br,{t:'branch', br:br, l:GOV_BR[br].nm, sub:GOV_BR[br].sub}); link('R','B:'+br); }
-    const g='G:x:'+br;
-    if(!T[g]){ add(g,{t:'group', br:br, l: d ? 'Also on the map' : 'Offices on the map', s:-9}); link('B:'+br,g); }
-    add('O:'+o.id,{t:'office', br:br, l:o.label, q:o.id, o:o, d:o.desc||'', law:o.law});
-    link(g,'O:'+o.id); GOV_OFF[o.id]={k:'O:'+o.id, o:o};
-  });
   for(let i=1;i<STACK.length;i++){
-    const st=STACK[i]; const L='L:'+i;
+    const st=STACK[i];
     let nm=''; try{ nm=levelName(i); }catch(e){ nm='Level '+i; }
-    add(L,{t:'level', lv:i, l:(st.label||nm), sub:nm, s:-20-i});
+    add('L:'+i,{t:'level', lv:i, l:(st.label||nm), sub:nm, s:-20-i});
     /* each level hangs from the one above it, which is how authority
        runs: the state under the country, the county under the state */
-    link(i===1?'R':'L:'+(i-1), L);
-    const offs=byLvl[i]||[];
-    const kinds={};
-    offs.forEach(o=>{ (kinds[o.kind]=kinds[o.kind]||[]).push(o); });
-    const brs=['leg','exec','jud','ag','other'];
-    brs.forEach(b=>{
-      const ks=Object.keys(kinds).filter(k=>k.split('/')[0]===b);
-      if(!ks.length) return;
-      const bk=L+':B:'+b, bb=(b==='exec'?'exe':b);
-      add(bk,{t:'branch', br:bb, l:(GOV_BR[bb]||GOV_BR.other).nm, lv:i});
-      link(L,bk);
-      const order=(typeof KINDORDER!=='undefined' && KINDORDER[b]) || [];
-      ks.sort((x,y)=>{ const a=order.indexOf(x), c=order.indexOf(y); return (a<0?99:a)-(c<0?99:c); });
-      ks.forEach((kd,j)=>{
-        const kk=L+':K:'+kd;
-        add(kk,{t:'group', br:bb, l:(KINDLABEL[kd]||kd), kind:kd, lv:i, s:-j});
-        link(bk,kk);
-        kinds[kd].forEach(o=>{
-          if(T['O:'+o.id]) return;
-          add('O:'+o.id,{t:'office', br:bb, l:o.label, q:o.id, o:o, d:o.desc||'', law:o.law, lv:i});
-          link(kk,'O:'+o.id); GOV_OFF[o.id]={k:'O:'+o.id, o:o};
-        });
-      });
-    });
+    link(i===1?'R':'L:'+(i-1), 'L:'+i);
+  }
+  for(let i=0;i<STACK.length;i++){
+    const top = i===0 ? 'R' : 'L:'+i, pre = i===0 ? '' : 'L:'+i+':';
+    const file = i===0 ? GOV.data : (STACK[i].q && GOV.reg[STACK[i].q]) || null;
+    const alias = file ? govFromFile(T, add, link, top, pre, file, i) : {};
+    govOffices(T, add, link, top, pre, alias, govLevelOffices(i), i);
   }
   /* the weightiest first under every box; the record's own order is
      arbitrary */
@@ -10122,26 +10082,102 @@ function govTree(){
     if(n.t==='root' || n.t==='level') return;
     n.kids.sort((a,b)=>{
       const A=T[a], B=T[b];
-      if(A.t==='level'!==(B.t==='level')) return A.t==='level'?1:-1;
       return (B.s||0)-(A.s||0) || String(A.l).localeCompare(String(B.l));
     });
   });
-  /* the branches in the order the map uses, levels after them */
-  T.R.kids.sort((a,b)=>{ const o=['B:leg','B:exe','B:jud']; const A=o.indexOf(a), B=o.indexOf(b);
-    return (A<0?9:A)-(B<0?9:B); });
+  /* branches in the order the map uses them, the level below last */
+  const BO=['leg','exe','jud','other'];
+  [ 'R' ].concat(Object.keys(T).filter(k=>T[k].t==='level')).forEach(k=>{
+    T[k].kids.sort((a,b)=>{
+      const A=T[a], B=T[b];
+      const ra = A.t==='level' ? 9 : (A.t==='branch' ? BO.indexOf(A.br) : 5);
+      const rb = B.t==='level' ? 9 : (B.t==='branch' ? BO.indexOf(B.br) : 5);
+      return ra-rb;
+    });
+  });
   return T;
+}
+/* Every office the page has read for a level, the ones with no part in
+   making a law included: the chart is the whole government, so that the
+   lawmaking offices the panel lists are seen in place among the rest.
+   LEVELALL is filled by loadChainPins from the same classification the
+   panel uses; the panel's own list is the fallback. */
+function govLevelOffices(i){
+  const st=STACK[i]; const out=[], seen=new Set();
+  const all=(st && st.q && typeof LEVELALL!=='undefined' && LEVELALL[st.q]) || [];
+  all.forEach(o=>{ if(!seen.has(o.id)){ seen.add(o.id); out.push(o); } });
+  let ix={}; try{ ix=officeIndex(); }catch(e){}
+  Object.values(ix).forEach(e=>{ if(e && e.o && e.lvl===i && !seen.has(e.o.id)){ seen.add(e.o.id); out.push(e.o); } });
+  return out;
+}
+/* A government from a govtree file: its heads, branches and bodies,
+   hung under `top`. Returns office q -> node key for the offices that
+   direct a body or sit in one. */
+function govFromFile(T, add, link, top, pre, d, lv){
+  const alias={};
+  ['leg','exe','jud'].forEach(b=>{ add(pre+'B:'+b,{t:'branch', br:b, l:GOV_BR[b].nm, sub:GOV_BR[b].sub, lv:lv});
+    link(top, pre+'B:'+b); });
+  (d.heads||[]).forEach(h=>{ const k=pre+'H:'+h.q;
+    add(k,{t:'body', br:'exe', l:h.l, sub:h.r, q:h.q, s:99}); link(pre+'B:exe',k); alias[h.q]=k; });
+  const N=d.n||{};
+  Object.keys(N).forEach(q=>{ const e=N[q];
+    add(pre+'N:'+q,{t:'body', br:e.b, l:e.l, q:q, d:e.d||'', w:e.w||'', s:e.s||0, a:e.a||[], u:!!e.u});
+    (e.a||[]).forEach(o=>{ if(!alias[o]) alias[o]=pre+'N:'+q; });
+    if(!alias[q]) alias[q]=pre+'N:'+q;
+  });
+  if(Object.values(N).some(e=>e.p==='@min')){ add(pre+'G:min',{t:'group', br:'exe', l:'Ministries and departments', s:50}); link(pre+'B:exe',pre+'G:min'); }
+  if(Object.values(N).some(e=>e.p==='@agencies')){ add(pre+'G:ag',{t:'group', br:'exe', l:'Other bodies', s:-5}); link(pre+'B:exe',pre+'G:ag'); }
+  Object.keys(N).forEach(q=>{ const e=N[q], k=pre+'N:'+q;
+    let p = e.p==='@min' ? pre+'G:min' : e.p==='@agencies' ? pre+'G:ag' : e.p==='@courts' ? pre+'B:jud'
+          : e.p ? pre+'N:'+e.p : pre+'B:'+e.b;
+    if(!T[p]) p=pre+'B:'+e.b;
+    link(p,k);
+  });
+  /* a cycle in the record leaves a body with no way up; hang it on its
+     branch rather than lose it */
+  Object.keys(N).forEach(q=>{ const k=pre+'N:'+q; if(!T[k]) return;
+    let a=k, n=0; while(a && a!==top && n<40){ a=T[a].par; n++; }
+    if(a!==top){ const b=pre+'B:'+(T[k].br||'exe');
+      if(T[k].par && T[T[k].par]) T[T[k].par].kids=T[T[k].par].kids.filter(x=>x!==k);
+      T[k].par=null; link(b,k); }
+  });
+  return alias;
+}
+/* The offices of one level: lit through the body they belong to where
+   the file has one, otherwise listed by kind under their branch. */
+function govOffices(T, add, link, top, pre, alias, offs, lv){
+  const kinds={};
+  offs.forEach(o=>{
+    if(alias[o.id]){ GOV_OFF[o.id]={k:alias[o.id], o:o}; return; }
+    (kinds[o.kind]=kinds[o.kind]||[]).push(o);
+  });
+  const brOf=k=>{ const b=k.split('/')[0]; return b==='exec'||b==='ag' ? 'exe' : (b==='leg'||b==='jud' ? b : 'other'); };
+  const order=[].concat((KINDORDER.leg||[]),(KINDORDER.exec||[]),(KINDORDER.jud||[]),(KINDORDER.ag||[]));
+  Object.keys(kinds).sort((x,y)=>{ const a=order.indexOf(x), c=order.indexOf(y); return (a<0?99:a)-(c<0?99:c); })
+  .forEach((kd,j)=>{
+    const br=brOf(kd), bk=pre+'B:'+br;
+    if(!T[bk]){ add(bk,{t:'branch', br:br, l:(GOV_BR[br]||GOV_BR.other).nm, sub:(GOV_BR[br]||GOV_BR.other).sub, lv:lv}); link(top,bk); }
+    const kk=pre+'K:'+kd;
+    if(!T[kk]){ add(kk,{t:'group', br:br, l:(KINDLABEL[kd]||kd), kind:kd, lv:lv, s:-10-j}); link(bk,kk); }
+    kinds[kd].forEach(o=>{
+      const ok='O:'+o.id;
+      if(T[ok]) return;
+      add(ok,{t:'office', br:br, l:o.label, q:o.id, o:o, d:o.desc||'', law:o.law, lv:lv});
+      link(kk,ok); GOV_OFF[o.id]={k:ok, o:o};
+    });
+  });
 }
 let GOV_OFF={};     /* office q -> {k: node key, o: office} */
 
 /* What starts open: enough to see the shape of the government —
    branches, chambers, ministries, the levels and their branches. */
 function govDefaultOpen(T){
-  const o=new Set(['R','B:leg','B:exe','B:jud','G:min']);
+  const o=new Set(['R']);
   Object.keys(T).forEach(k=>{
     const n=T[k];
-    if(n.t==='level' || (n.t==='branch' && n.lv)) o.add(k);
+    if(n.t==='level' || n.t==='branch' || /(^|:)G:min$/.test(k)) o.add(k);
     /* the legislature itself opens to show its chambers */
-    if(n.t==='body' && n.par==='B:leg') o.add(k);
+    if(n.t==='body' && /(^|:)B:leg$/.test(n.par||'')) o.add(k);
   });
   return o;
 }
@@ -10188,7 +10224,7 @@ function govSource(T){
     let c = n.t==='root' ? 'groot' : n.t==='level' ? 'glv'+Math.min(n.lv||0,4)
           : n.t==='branch' ? 'gb'+(n.br||'other') : n.t==='group' ? 'gg'+(n.br||'other')
           : 'gn'+(n.br||'other');
-    if(n.t==='office' && n.law===false) c+='x';
+    if(n.t==='office' && (n.law===false || (n.o && n.o.onmap===false))) c+='x';
     if(n.u) c='gu'+(n.br||'other');
     (cls[c]=cls[c]||[]).push(g);
   };
@@ -10298,7 +10334,8 @@ function govInfo(k){
   if(n.u) h+=' <i>Nothing on the record shows it still exists — no website, no head in post, no recent founding date. It may be a former body; check before contacting it.</i>';
   else if(n.sub && n.t!=='root') h+=' — '+esc(n.sub);
   const bits=[];
-  if(off) bits.push('<a onclick="govOpenOffice(\''+esc(off.id)+'\')">Open in the panel ›</a>');
+  if(off && off.onmap!==false) bits.push('<a onclick="govOpenOffice(\''+esc(off.id)+'\')">Open in the panel ›</a>');
+  else if(off) bits.push('<i>no part in making a law, so not on the map</i>');
   if(n.w) bits.push('<a href="'+esc(n.w)+'" target="_blank" rel="noopener">Official site ↗</a>');
   if(n.kids && n.kids.length) bits.push(GOV.open.has(k)?'click to fold':'click to open '+govCountUnder(T,k).toLocaleString()+' under it');
   if(bits.length) h+='<br>'+bits.join(' · ');
@@ -10313,7 +10350,7 @@ function govOfficeFor(n){
   return null;
 }
 function govOpenOffice(id){
-  const e=GOV_OFF[id]; if(!e||!e.o) return;
+  const e=GOV_OFF[id]; if(!e||!e.o||e.o.onmap===false) return;
   try{ SEL=e.o; renderOffice(e.o); }catch(err){ console.warn('government diagram: could not open office', err); }
 }
 
@@ -10494,8 +10531,8 @@ function govTargets(T){
        enough to read; past that, the box that holds them */
     const per={}; es.forEach(e=>{ if(e.lvl>=1) per[e.lvl]=(per[e.lvl]||0)+1; });
     es.forEach(e=>{
-      if(e.lvl>=1){ if(per[e.lvl]>24) push('L:'+e.lvl+':K:'+LEAFKIND); else forOffice(e.o.id); }
-      else forOffice(e.o.id);
+      const kk=(e.lvl>=1?'L:'+e.lvl+':':'')+'K:'+LEAFKIND;
+      if(e.lvl>=1 && per[e.lvl]>24 && T[kk]) push(kk); else forOffice(e.o.id);
     });
     if(out.length) return out.slice(0,60);
   }
@@ -10546,11 +10583,16 @@ async function govSyncNow(){
     if(busy) govMsg('Reading how this government is laid out…');
     await govLoad();
     await govIndex();
+    await govRegions();
     if(!GOV.hover) govLegend();
     GOV_OFF={};
     GOV.T=govTree();
-    if(GOV.dataQ!==before || !GOV.open.size){ GOV.open=govDefaultOpen(GOV.T); GOV.closedByHand=new Set(); }
-    else Object.keys(GOV.T).forEach(k=>{ const n=GOV.T[k]; if(n.t==='level'||(n.t==='branch'&&n.lv)) if(!GOV.closedByHand.has(k)) GOV.open.add(k); });
+    /* What opens by default is applied to boxes the first time they
+       appear — a level arriving, a region's file landing — and never
+       again, so a box the reader folded stays folded. */
+    if(GOV.dataQ!==before || !GOV.known){ GOV.open=new Set(); GOV.closedByHand=new Set(); GOV.known=new Set(); }
+    const def=govDefaultOpen(GOV.T);
+    Object.keys(GOV.T).forEach(k=>{ if(!GOV.known.has(k)){ GOV.known.add(k); if(def.has(k)) GOV.open.add(k); } });
     if(!GOV.data && Object.keys(GOV.T).length<=1){
       govMsg('No record of this government’s bodies was found.'); return; }
     await govFollow();

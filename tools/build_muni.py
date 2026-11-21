@@ -4,6 +4,7 @@
     python3 -I tools/build_muni.py                # every country
     python3 -I tools/build_muni.py ITA            # one of them
     python3 -I tools/build_muni.py --out /tmp/m   # somewhere else
+    python3 -I tools/build_muni.py --merge POL     # one country, the rest kept as shipped
 
 Each country is one entry in COUNTRIES: read the government's own register,
 join it to Wikidata on a code both sides publish, and key the result by the
@@ -544,12 +545,106 @@ def build_spain():
         b.put(qid, rec)
     return b
 
+
+# ---------------------------------------------------------------- Poland
+
+PL_URL = ("https://api.dane.gov.pl/media/resources/20260316/"
+          "Baza_teleadresowa_jst_w_Polsce_16.03.2026.xls")
+
+def build_poland():
+    """The Ministry of Digital Affairs' contact base of every local
+    government in Poland (Baza teleadresowa jednostek samorządu
+    terytorialnego, dane.gov.pl dataset 4431): 2,825 rows, every gmina,
+    powiat, city with county rights, Warsaw district and voivodeship, each
+    with its office's street address, telephone, email and website.
+
+    Joined on the TERYT code, which Wikidata carries as P1653: seven digits
+    for a gmina (province, county, gmina, type), four for a powiat. A city
+    with county rights is one row and two governments on Wikidata — the
+    city and the city county — so its row is offered to both codes. The
+    sixteen voivodeships carry no TERYT on Wikidata and do not join.
+
+    This door was recorded as closed in rounds seven, twelve and sixteen
+    because api.dane.gov.pl did not answer from the build machine. It
+    answers now, and the file is one request."""
+    import xlrd
+    sh = xlrd.open_workbook(file_contents=get(PL_URL)).sheet_by_index(0)
+    head = [str(x).strip() for x in sh.row_values(0)]
+    col = {h: i for i, h in enumerate(head)}
+    rows = [sh.row_values(r) for r in range(1, sh.nrows)]
+    print(f"    {len(rows):,} local governments in the register")
+
+    wd = {}
+    for r in sparql("""SELECT ?x ?t ?lab WHERE {
+            ?x wdt:P1653 ?t . FILTER NOT EXISTS { ?x wdt:P576 ?d }
+            OPTIONAL { ?x rdfs:label ?lab . FILTER(LANG(?lab)='pl') } }"""):
+        qid = r["x"]["value"].rsplit("/", 1)[-1]
+        e = wd.setdefault(qid, {"t": set(), "lab": ""})
+        e["t"].add(r["t"]["value"].strip())
+        if "lab" in r and not e["lab"]: e["lab"] = r["lab"]["value"]
+    by, amb = index_by_code(wd, "t")
+    print(f"    {len(wd):,} Wikidata items with a TERYT code, {len(by):,} usable keys")
+
+    def cell(row, name):
+        v = row[col[name]] if name in col else ""
+        if isinstance(v, float):
+            v = str(int(v)) if v == int(v) else str(v)
+        return str(v or "").strip()
+    def teryt(row):
+        t = re.sub(r"\D", "", cell(row, "Kod_TERYT"))
+        return t.zfill(7) if t else ""
+
+    b = Build("POL", "Baza teleadresowa jednostek samorządu terytorialnego (dane.gov.pl, 16 March 2026)")
+    b.dropped_ambig_code = amb
+    agree = checked = 0
+    for row in rows:
+        t, typ = teryt(row), cell(row, "typ_JST")
+        if not t: b.dropped_nocode += 1; continue
+        if typ == "P": codes = [t[:4]]
+        elif typ == "W": codes = [t[:2]]
+        elif typ == "MNP": codes = [t, t[:4]]
+        else: codes = [t]
+        rec = {}
+        site = cell(row, "adres www jednostki")
+        if site:
+            site = site.split()[0]
+            rec["u"] = site if site.startswith(("http://", "https://")) else "https://" + site
+        mails = [m for m in re.split(r"[\s;,]+", cell(row, "ogólny adres poczty elektronicznej gminy/powiatu/województwa")) if "@" in m]
+        if mails: rec["e"] = mails
+        area = re.sub(r"\D", "", cell(row, "telefon kierunkowy"))
+        tel = re.split(r"[;\n,]", cell(row, "telefon"))[0]
+        tel = re.sub(r"\D", "", tel)
+        # nine digits is a whole Polish number; seven is the local part,
+        # which the register's own area-code column completes
+        if len(tel) == 9: rec["p"] = "+48 " + tel
+        elif tel and area and len(area + tel) == 9: rec["p"] = "+48 " + area + " " + tel
+        elif tel: rec["p"] = tel
+        street = " ".join(x for x in [cell(row, "Ulica"), cell(row, "Nr domu")] if x)
+        town = " ".join(x for x in [cell(row, "Kod pocztowy"), cell(row, "poczta")] if x)
+        if street or town:
+            rec["o"] = ", ".join(x for x in [street, town] if x)
+        joined = False
+        # a city with county rights is often one item holding both codes;
+        # that is one government, offered once
+        for qid in dict.fromkeys(by[c] for c in codes if c in by):
+            joined = True
+            nm, lab = fold(cell(row, "nazwa_samorządu")), fold(wd[qid]["lab"])
+            nm = re.sub(r"^(gmina|powiat|miasto|wojewodztwo) ", "", nm)
+            if lab:
+                checked += 1
+                if nm and (nm in lab or lab in nm): agree += 1
+            b.put(qid, dict(rec))
+        if not joined: b.dropped_nocode += 1
+    gate("register name against the Polish label", agree, checked, 0.95)
+    return b
+
 # ---------------------------------------------------------------- registry
 
 COUNTRIES = {
     "ITA": ("Italy", build_italy),
     "ESP": ("Spain", build_spain),
     "CAN": ("Canada — Quebec only", build_quebec),
+    "POL": ("Poland", build_poland),
 }
 
 FIELDS = {
@@ -566,9 +661,21 @@ FIELDS = {
     "src": "which register the record came from",
 }
 
-def write_shards(builds, out):
+def write_shards(builds, out, merge=False):
     os.makedirs(out, exist_ok=True)
     shards = {}
+    old_idx = {}
+    if merge and os.path.exists(os.path.join(out, "index.json")):
+        # --merge: keep every other country's records exactly as shipped
+        # and replace only the countries built this run, recognised by the
+        # register name each record carries in `src`
+        old_idx = json.load(open(os.path.join(out, "index.json")))
+        redo = set(old_idx.get("registers", {}).get(b.iso3) for b in builds) | set(b.src for b in builds)
+        for k in range(SHARDS):
+            p = os.path.join(out, f"{k}.json")
+            if os.path.exists(p):
+                keep = {q: r for q, r in json.load(open(p)).items() if r.get("src") not in redo}
+                if keep: shards[k] = keep
     for b in builds:
         for qid, rec in b.rec.items():
             shards.setdefault(int(qid[1:]) % SHARDS, {})[qid] = rec
@@ -581,11 +688,13 @@ def write_shards(builds, out):
         data = shards.get(k, {})
         if data or os.path.exists(p):
             json.dump(data, open(p, "w"), separators=(",", ":"), ensure_ascii=False)
+    regs = dict(old_idx.get("registers", {})); regs.update({b.iso3: b.src for b in builds})
+    counts = dict(old_idx.get("counts", {})); counts.update({b.iso3: b.report() for b in builds})
     idx = {"built": time.strftime("%Y-%m-%d"),
            "shards": SHARDS,
-           "countries": sorted(b.iso3 for b in builds),
-           "registers": {b.iso3: b.src for b in builds},
-           "counts": {b.iso3: b.report() for b in builds},
+           "countries": sorted(regs),
+           "registers": regs,
+           "counts": counts,
            "fields": FIELDS,
            "note": "Keyed by Wikidata id. shard = int(qid[1:]) % 512. "
                    "A record states what its register publishes; nothing here "
@@ -599,6 +708,8 @@ if __name__ == "__main__":
     out = os.path.join(ROOT, "muni")
     if "--out" in args:
         i = args.index("--out"); out = args[i+1]; del args[i:i+2]
+    merge = "--merge" in args
+    if merge: args.remove("--merge")
     want = [a.upper() for a in args] or list(COUNTRIES)
     builds = []
     for iso in want:
@@ -616,7 +727,7 @@ if __name__ == "__main__":
         print("    fields: " + ", ".join(f"{k} {v:,}" for k, v in
               sorted(r["fields"].items(), key=lambda kv: -kv[1]) if k != "src"))
         builds.append(b)
-    shards, idx = write_shards(builds, out)
+    shards, idx = write_shards(builds, out, merge)
     tot = sum(len(v) for v in shards.values())
     big = max((len(json.dumps(v)) for v in shards.values()), default=0)
     print(f"\nwrote {out}: {tot:,} records, largest shard {big/1024:.0f} KB")
