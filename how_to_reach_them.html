@@ -1158,6 +1158,60 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .lawwrap{margin-top:2px}
 /* the trail, where it sits on a page that is not the walkthrough */
 #mbody > .ptrail{margin-bottom:12px}
+/* ---------- the government diagram, hung off the panel's bottom-left corner ----------
+   One Mermaid chart per country: the national government from
+   govtree/<Q>.json and the levels below it from the offices this page
+   has already loaded for the searched place. Set against the panel's
+   left edge and level with its foot, so it reads as part of the panel
+   rather than as a box of its own on the map. */
+#gov{position:fixed;z-index:99;display:none;flex-direction:column;
+  width:400px;height:300px;background:rgba(17,24,21,.97);
+  border:1px solid var(--line);border-right:0;border-radius:12px 0 0 12px;
+  box-shadow:-14px 18px 50px rgba(0,0,0,.45);overflow:hidden;
+  transition:width .22s ease,height .22s ease}
+#gov.on{display:flex}
+#gov.min{height:34px!important}
+#gov.min #govvp,#gov.min #govinfo{display:none}
+#govhd{flex:none;display:flex;align-items:center;gap:8px;height:34px;padding:0 6px 0 12px;
+  border-bottom:1px solid var(--line);cursor:default}
+#govtt{flex:1;min-width:0;font-size:11px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#govtt b{color:var(--ink);font-weight:600}
+#govtt i{font-style:normal;color:var(--faint)}
+#govhd button{flex:none;width:24px;height:22px;border-radius:6px;border:1px solid transparent;
+  background:none;color:var(--dim);font:inherit;font-size:13px;line-height:1;cursor:pointer;padding:0}
+#govhd button:hover{color:var(--ink);border-color:var(--line);background:rgba(74,124,89,.14)}
+#govvp{position:relative;flex:1;min-height:0;overflow:hidden;cursor:grab;touch-action:none;
+  background-color:#0e1411;
+  background-image:radial-gradient(rgba(154,163,155,.13) 1px, transparent 1.2px);
+  background-size:16px 16px}
+#govvp.grab{cursor:grabbing}
+#govcv{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+#govcv.glide{transition:transform .45s cubic-bezier(.2,.7,.2,1)}
+#govcv svg{display:block;max-width:none!important;overflow:visible}
+#govmsg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  padding:18px;text-align:center;font-size:11.5px;color:var(--faint);line-height:1.5;pointer-events:none}
+#govinfo{flex:none;min-height:38px;max-height:64px;overflow:hidden;padding:6px 12px 7px;
+  border-top:1px solid var(--line);font-size:10.5px;line-height:1.45;color:var(--faint)}
+#govinfo b{color:var(--ink);font-weight:600;font-size:11px}
+#govinfo a{color:var(--accent-hi);text-decoration:none;cursor:pointer;white-space:nowrap}
+#govinfo a:hover{text-decoration:underline}
+#govinfo .gk{display:inline-flex;align-items:center;gap:5px;margin-right:11px;white-space:nowrap}
+#govinfo .gk i{display:inline-block;width:9px;height:9px;border-radius:3px;border:1.5px solid}
+#govinfo .gk .glit{border-radius:50%;background:#dfeee2;border-color:#dfeee2;box-shadow:0 0 6px 1px rgba(156,207,167,.8)}
+
+/* the chart itself: Mermaid draws it, these finish it */
+#govcv .node{cursor:pointer}
+#govcv .node rect,#govcv .node polygon,#govcv .node path{transition:stroke .2s,filter .2s,fill .2s}
+#govcv .node:hover rect,#govcv .node:hover path{filter:brightness(1.25)}
+#govcv .node .label,#govcv .node .nodeLabel{color:#e7e4dc!important;font-family:'DM Sans',system-ui,sans-serif}
+#govcv .edgePath path,#govcv .flowchart-link{stroke:rgba(154,163,155,.42)!important;stroke-width:1.2px!important}
+#govcv marker path{fill:rgba(154,163,155,.6)!important;stroke:none!important}
+#govcv .node.lit rect,#govcv .node.lit path,#govcv .node.lit polygon{stroke:#e7f2e9!important;stroke-width:2.4px!important;
+  filter:drop-shadow(0 0 5px rgba(156,207,167,.95)) drop-shadow(0 0 14px rgba(156,207,167,.5))}
+#govcv .node.lit .nodeLabel{color:#ffffff!important}
+#govcv .node.litpulse rect,#govcv .node.litpulse path{animation:govpulse 1.3s ease-out 2}
+@keyframes govpulse{0%{stroke-width:2.4px}40%{stroke-width:5px}100%{stroke-width:2.4px}}
+#govcv .node.dim{opacity:.55}
 </style>
 </head>
 <body>
@@ -9859,6 +9913,668 @@ function shiftForBox(on){
     map.easeTo({padding:{top:0,left:lpad,bottom:0,right:pad}, duration:0});
   }catch(e){}
 }
+
+
+/* ====================================================================
+   THE GOVERNMENT DIAGRAM
+
+   A smaller box hung off the panel's bottom-left corner, holding one
+   Mermaid chart per country: how that country's government is laid
+   out, from the top down. The country's own branches and bodies come
+   from govtree/<Q>.json, which tools/build_govtree.py builds from
+   Wikidata; the levels below it (state, county, city and so on) come
+   from the offices this page has already loaded for the searched
+   place, so they are the same offices the panel lists.
+
+   The chart follows the panel. Opening an office, or a kind of office,
+   in the panel lights the matching boxes here and moves the chart to
+   them, opening whatever was folded above them on the way.
+
+   What is folded. A national government on Wikidata runs to two
+   thousand bodies for the United Kingdom, and Mermaid lays out every
+   box it is given before drawing any of them, so the chart opens with
+   the branches, the legislature's chambers and the ministries showing
+   and everything under those folded. A folded box says how many sit
+   under it; clicking it opens them, twelve at a time.
+
+   Clicks and hover are bound here, not by Mermaid's `click` directive,
+   for the reason section 7 of the handoff gives: the directive fails
+   silently in this page. The node key is recovered from the rendered
+   element's id with GOV_IDRX, so a Mermaid upgrade that changes the id
+   format turns the clicks off — test one after changing the version.
+   ==================================================================== */
+const GOVDIR='govtree/';
+const MERMAID_SRC='https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.min.js';
+const GOV_IDRX=/(?:^|-)(g\d+)(?:-|$)/;
+const GOV_PAGE=12;      /* children shown per box before "more" */
+const GOV_COL=8;        /* a long list is stacked in columns this tall */
+const GOV_BR={
+  leg:{nm:'Legislative', sub:'writes and passes laws', col:'#7fae8a', fill:'#16221b'},
+  exe:{nm:'Executive',   sub:'carries laws out and signs them', col:'#7d98b3', fill:'#151d24'},
+  jud:{nm:'Judicial',    sub:'decides what laws mean', col:'#a597a8', fill:'#1f1b22'},
+  ag :{nm:'Agencies',    sub:'turn laws into rules', col:'#7d98b3', fill:'#151d24'},
+  other:{nm:'Other offices', sub:'role not identified', col:'#8f968f', fill:'#191d1b'}
+};
+/* level colours over a dark ground: the night palette, so a level's
+   dot here is the hue of its markers on the map */
+function govLevelCol(i){ const p=(typeof LEVELSETS!=='undefined'&&LEVELSETS.night)||['#9a93c4','#83abc6','#8abb9d','#c88f85','#b0aaa0'];
+  return p[Math.min(Math.max(i,0),p.length-1)]; }
+
+let GOV={q:null, data:null, dataQ:null, loading:null, index:null,
+  open:new Set(), shown:{}, pin:new Set(), lit:[], litSig:'', big:false, min:false, shut:false,
+  T:null, key2id:{}, id2key:{}, sig:'', view:{x:12,y:12,k:1}, size:{w:0,h:0},
+  rendering:false, again:false, hover:null, ready:null, closedByHand:new Set(), anchor:null};
+
+/* ---------- loading ---------- */
+function govMermaid(){
+  if(GOV.ready) return GOV.ready;
+  GOV.ready=new Promise((res,rej)=>{
+    if(window.mermaid) return res(window.mermaid);
+    const s=document.createElement('script');
+    s.src=MERMAID_SRC; s.async=true;
+    s.onload=()=>{
+      try{
+        window.mermaid.initialize({startOnLoad:false, securityLevel:'strict', theme:'base',
+          maxTextSize:900000, maxEdges:20000,
+          flowchart:{htmlLabels:true, curve:'basis', nodeSpacing:16, rankSpacing:30,
+                     padding:9, useMaxWidth:false, wrappingWidth:190, diagramPadding:14},
+          themeVariables:{fontFamily:"'DM Sans', system-ui, sans-serif", fontSize:'11.5px',
+            primaryColor:'#171f1b', primaryTextColor:'#e7e4dc', primaryBorderColor:'#4a524c',
+            lineColor:'#5b655e', background:'transparent', mainBkg:'#171f1b',
+            clusterBkg:'transparent', edgeLabelBackground:'transparent'}});
+        res(window.mermaid);
+      }catch(e){ rej(e); }
+    };
+    s.onerror=()=>rej(new Error('the diagram library did not load'));
+    document.head.appendChild(s);
+  });
+  GOV.ready.catch(()=>{ GOV.ready=null; });
+  return GOV.ready;
+}
+async function govIndex(){
+  if(GOV.index) return GOV.index;
+  try{ const r=await fetch(GOVDIR+'index.json',{cache:'force-cache'});
+       GOV.index = r.ok ? await r.json() : {c:{}}; }
+  catch(e){ console.warn('government diagram: no index', e); GOV.index={c:{}}; }
+  return GOV.index;
+}
+/* the country's file, by its Wikidata id or, where the id did not
+   resolve, by the ISO code the stack carries */
+async function govLoad(){
+  const st=STACK[0]; if(!st) return null;
+  let q=st.q;
+  if(!q && st.iso3){
+    const ix=await govIndex();
+    q=Object.keys(ix.c||{}).find(k=>ix.c[k].iso3===st.iso3)||null;
+  }
+  if(!q) return null;
+  if(GOV.dataQ===q) return GOV.data;
+  if(GOV.loading && GOV.loading.q===q) return GOV.loading.p;
+  const p=(async()=>{
+    let d=null;
+    try{ const r=await fetch(GOVDIR+q+'.json',{cache:'force-cache'});
+         if(r.ok) d=await r.json(); }
+    catch(e){ console.warn('government diagram: '+q+' did not load', e); }
+    GOV.data=d; GOV.dataQ=q; GOV.open=new Set(); GOV.shown={}; GOV.view=null; GOV.litSig=''; GOV.touched=false;
+    return d;
+  })();
+  GOV.loading={q:q,p:p};
+  try{ return await p; } finally { GOV.loading=null; }
+}
+
+/* ---------- the tree ----------
+   One tree for the whole country. Keys:
+     R           the country            B:leg|exe|jud   its branches
+     H:<q>       a head-of-state or head-of-government office
+     N:<q>       a national body, from the file
+     G:min G:ag  ministries; national bodies outside them
+     G:x:<br>    national offices the panel lists that the file lacks
+     L:<i>       a level below the country, i = its place in STACK
+     L:<i>:B:<br>, L:<i>:K:<kind>   that level's branches and kinds
+     O:<q>       an office the panel lists */
+function govTree(){
+  const T={}, add=(k,o)=>{ T[k]=Object.assign({k:k, kids:[], s:0}, o); return T[k]; };
+  const link=(p,k)=>{ if(T[p] && T[k] && T[k].par==null){ T[k].par=p; T[p].kids.push(k); } };
+  const st0=STACK[0]||{};
+  add('R',{t:'root', l:(st0.label||'This country'), lv:0});
+  const d=GOV.data;
+  const alias={};             /* office q -> node key */
+  if(d){
+    ['leg','exe','jud'].forEach(b=>{ add('B:'+b,{t:'branch', br:b, l:GOV_BR[b].nm, sub:GOV_BR[b].sub}); link('R','B:'+b); });
+    (d.heads||[]).forEach(h=>{ add('H:'+h.q,{t:'body', br:'exe', l:h.l, sub:h.r, q:h.q, s:99});
+      link('B:exe','H:'+h.q); alias[h.q]='H:'+h.q; });
+    const N=d.n||{};
+    Object.keys(N).forEach(q=>{ const e=N[q];
+      add('N:'+q,{t:'body', br:e.b, l:e.l, q:q, d:e.d||'', w:e.w||'', s:e.s||0, a:e.a||[], u:!!e.u});
+      (e.a||[]).forEach(o=>{ if(!alias[o]) alias[o]='N:'+q; });
+      if(!alias[q]) alias[q]='N:'+q;
+    });
+    const hasMin=Object.values(N).some(e=>e.p==='@min');
+    const hasAg=Object.values(N).some(e=>e.p==='@agencies');
+    if(hasMin){ add('G:min',{t:'group', br:'exe', l:'Ministries and departments', s:50}); link('B:exe','G:min'); }
+    if(hasAg){ add('G:ag',{t:'group', br:'exe', l:'Other national bodies', s:-5}); link('B:exe','G:ag'); }
+    /* parents first, so a child is never linked before its parent exists */
+    Object.keys(N).forEach(q=>{ const e=N[q], k='N:'+q;
+      let p = e.p==='@min' ? 'G:min' : e.p==='@agencies' ? 'G:ag' : e.p==='@courts' ? 'B:jud'
+            : e.p ? 'N:'+e.p : 'B:'+e.b;
+      if(!T[p]) p='B:'+e.b;
+      link(p,k);
+    });
+    /* a cycle in the record leaves a body with no way up to the
+       country; hang it on its branch rather than lose it */
+    Object.keys(T).forEach(k=>{
+      let a=k, n=0; while(a && a!=='R' && n<40){ a=T[a].par; n++; }
+      if(a!=='R' && T[k].t==='body'){ const b='B:'+(T[k].br||'exe');
+        if(T[k].par && T[T[k].par]) T[T[k].par].kids=T[T[k].par].kids.filter(x=>x!==k);
+        T[k].par=null; link(b,k); }
+    });
+  }
+  /* the offices the panel lists, by level */
+  let ix={}; try{ ix=officeIndex(); }catch(e){ console.warn('government diagram: office index', e); }
+  const byLvl={};
+  Object.values(ix).forEach(e=>{ if(!e||!e.o) return; const lv=e.lvl==null?STACK.length-1:e.lvl;
+    (byLvl[lv]=byLvl[lv]||[]).push(e.o); });
+  /* national offices: lit through the body they belong to, or listed
+     under their branch where the file has no such body */
+  (byLvl[0]||[]).forEach(o=>{
+    if(alias[o.id]){ GOV_OFF[o.id]={k:alias[o.id], o:o}; return; }
+    const br = o.br==='ag' ? 'exe' : (o.br==='other' ? 'exe' : o.br);
+    if(!T['B:'+br]){ add('B:'+br,{t:'branch', br:br, l:GOV_BR[br].nm, sub:GOV_BR[br].sub}); link('R','B:'+br); }
+    const g='G:x:'+br;
+    if(!T[g]){ add(g,{t:'group', br:br, l: d ? 'Also on the map' : 'Offices on the map', s:-9}); link('B:'+br,g); }
+    add('O:'+o.id,{t:'office', br:br, l:o.label, q:o.id, o:o, d:o.desc||'', law:o.law});
+    link(g,'O:'+o.id); GOV_OFF[o.id]={k:'O:'+o.id, o:o};
+  });
+  for(let i=1;i<STACK.length;i++){
+    const st=STACK[i]; const L='L:'+i;
+    let nm=''; try{ nm=levelName(i); }catch(e){ nm='Level '+i; }
+    add(L,{t:'level', lv:i, l:(st.label||nm), sub:nm, s:-20-i});
+    /* each level hangs from the one above it, which is how authority
+       runs: the state under the country, the county under the state */
+    link(i===1?'R':'L:'+(i-1), L);
+    const offs=byLvl[i]||[];
+    const kinds={};
+    offs.forEach(o=>{ (kinds[o.kind]=kinds[o.kind]||[]).push(o); });
+    const brs=['leg','exec','jud','ag','other'];
+    brs.forEach(b=>{
+      const ks=Object.keys(kinds).filter(k=>k.split('/')[0]===b);
+      if(!ks.length) return;
+      const bk=L+':B:'+b, bb=(b==='exec'?'exe':b);
+      add(bk,{t:'branch', br:bb, l:(GOV_BR[bb]||GOV_BR.other).nm, lv:i});
+      link(L,bk);
+      const order=(typeof KINDORDER!=='undefined' && KINDORDER[b]) || [];
+      ks.sort((x,y)=>{ const a=order.indexOf(x), c=order.indexOf(y); return (a<0?99:a)-(c<0?99:c); });
+      ks.forEach((kd,j)=>{
+        const kk=L+':K:'+kd;
+        add(kk,{t:'group', br:bb, l:(KINDLABEL[kd]||kd), kind:kd, lv:i, s:-j});
+        link(bk,kk);
+        kinds[kd].forEach(o=>{
+          if(T['O:'+o.id]) return;
+          add('O:'+o.id,{t:'office', br:bb, l:o.label, q:o.id, o:o, d:o.desc||'', law:o.law, lv:i});
+          link(kk,'O:'+o.id); GOV_OFF[o.id]={k:'O:'+o.id, o:o};
+        });
+      });
+    });
+  }
+  /* the weightiest first under every box; the record's own order is
+     arbitrary */
+  Object.values(T).forEach(n=>{
+    if(n.t==='root' || n.t==='level') return;
+    n.kids.sort((a,b)=>{
+      const A=T[a], B=T[b];
+      if(A.t==='level'!==(B.t==='level')) return A.t==='level'?1:-1;
+      return (B.s||0)-(A.s||0) || String(A.l).localeCompare(String(B.l));
+    });
+  });
+  /* the branches in the order the map uses, levels after them */
+  T.R.kids.sort((a,b)=>{ const o=['B:leg','B:exe','B:jud']; const A=o.indexOf(a), B=o.indexOf(b);
+    return (A<0?9:A)-(B<0?9:B); });
+  return T;
+}
+let GOV_OFF={};     /* office q -> {k: node key, o: office} */
+
+/* What starts open: enough to see the shape of the government —
+   branches, chambers, ministries, the levels and their branches. */
+function govDefaultOpen(T){
+  const o=new Set(['R','B:leg','B:exe','B:jud','G:min']);
+  Object.keys(T).forEach(k=>{
+    const n=T[k];
+    if(n.t==='level' || (n.t==='branch' && n.lv)) o.add(k);
+    /* the legislature itself opens to show its chambers */
+    if(n.t==='body' && n.par==='B:leg') o.add(k);
+  });
+  return o;
+}
+
+/* ---------- what is on show ---------- */
+function govAncestors(T,k){ const out=[]; let a=T[k]&&T[k].par; let n=0;
+  while(a && n<60){ out.push(a); a=T[a]&&T[a].par; n++; } return out; }
+function govVisibleKids(T,k){
+  const n=T[k]; if(!n || !GOV.open.has(k)) return {show:[], more:0};
+  const lim=GOV.shown[k]||GOV_PAGE;
+  let show=n.kids.slice(0,lim);
+  /* anything lit, or on the way to something lit, is shown even when
+     it sorts past the fold */
+  n.kids.slice(lim).forEach(c=>{ if(GOV.pin.has(c)) show.push(c); });
+  return {show:show, more:n.kids.length-show.length};
+}
+function mmEsc(s){ return String(s==null?'':s).replace(/&/g,'#38;').replace(/"/g,'#34;')
+  .replace(/</g,'#60;').replace(/>/g,'#62;').replace(/#(?!\d+;)/g,'#35;').replace(/[\[\]{}|]/g,' ').replace(/\s+/g,' ').trim(); }
+function govCut(s,n){ s=String(s||''); if(s.length<=n) return s;
+  const c=s.slice(0,n); const i=c.lastIndexOf(' '); return (i>n*0.6?c.slice(0,i):c)+'…'; }
+function govCountUnder(T,k){ let n=0; const st=[k]; while(st.length){ const x=st.pop(); const kk=T[x].kids; n+=kk.length; kk.forEach(c=>st.push(c)); if(n>9999) break; } return n; }
+
+function govSource(T){
+  GOV.key2id={}; GOV.id2key={};
+  let seq=0; const id=k=>{ if(!GOV.key2id[k]){ const g='g'+(seq++); GOV.key2id[k]=g; GOV.id2key[g]=k; } return GOV.key2id[k]; };
+  const lines=['flowchart TB'], edges=[], cls={};
+  const node=k=>{
+    const n=T[k], g=id(k);
+    let lab=mmEsc(govCut(n.l, n.t==='root'?60:58));
+    if(n.t==='root') lab='<b>'+lab+'</b><br/>'+mmEsc('National government');
+    else if(n.t==='level') lab='<b>'+lab+'</b><br/>'+mmEsc(n.sub||'');
+    else if(n.t==='branch') lab='<b>'+lab+'</b>'+(n.sub?'<br/>'+mmEsc(n.sub):'');
+    else if(n.t==='group') lab='<b>'+lab+'</b>';
+    else if(n.t==='body' && n.sub) lab=lab+'<br/>'+mmEsc(n.sub);
+    if(n.kids.length && !GOV.open.has(k)){
+      const c=govCountUnder(T,k);
+      lab+='<br/>'+mmEsc('▸ '+c.toLocaleString()+' under it');
+    }
+    let shape;
+    if(n.t==='root') shape='(["'+lab+'"])';
+    else if(n.t==='body' || n.t==='office') shape='("'+lab+'")';
+    else shape='["'+lab+'"]';
+    lines.push('  '+g+shape);
+    let c = n.t==='root' ? 'groot' : n.t==='level' ? 'glv'+Math.min(n.lv||0,4)
+          : n.t==='branch' ? 'gb'+(n.br||'other') : n.t==='group' ? 'gg'+(n.br||'other')
+          : 'gn'+(n.br||'other');
+    if(n.t==='office' && n.law===false) c+='x';
+    if(n.u) c='gu'+(n.br||'other');
+    (cls[c]=cls[c]||[]).push(g);
+  };
+  const walk=k=>{
+    node(k);
+    const {show,more}=govVisibleKids(T,k);
+    const list=show.slice();
+    if(more>0){ const mk='M:'+k; T[mk]={k:mk, t:'more', l:'+ '+more+' more', par:k, kids:[]}; list.push(mk); }
+    list.forEach(c=>{ if(T[c].t==='more'){ const g=id(c); lines.push('  '+g+'["'+mmEsc(T[c].l)+'"]'); (cls.gmore=cls.gmore||[]).push(g); } else walk(c); });
+    /* a short list sits side by side under its parent; a long one is
+       stacked in columns, so twenty ministries do not run three
+       thousand pixels wide */
+    const p=id(k);
+    const openKid=list.some(c=>T[c] && T[c].kids && T[c].kids.length && GOV.open.has(c));
+    if(list.length<=4 || T[k].t==='root' || T[k].t==='level' || (openKid && list.length<=7)){
+      list.forEach(c=>edges.push('  '+p+' --> '+id(c)));
+    }else{
+      for(let i=0;i<list.length;i+=GOV_COL){
+        edges.push('  '+p+' --> '+id(list[i]));
+        for(let j=i+1;j<Math.min(i+GOV_COL,list.length);j++) edges.push('  '+id(list[j-1])+' ~~~ '+id(list[j]));
+      }
+    }
+  };
+  walk('R');
+  const C={
+    groot:'fill:#1b2620,stroke:#8cbd9a,stroke-width:1.6px,color:#e7e4dc',
+    gmore:'fill:transparent,stroke:#4a524c,stroke-dasharray:3 3,color:#9aa39b',
+  };
+  Object.keys(GOV_BR).forEach(b=>{ const x=GOV_BR[b];
+    C['gb'+b]='fill:'+x.fill+',stroke:'+x.col+',stroke-width:1.5px,color:#e7e4dc';
+    C['gg'+b]='fill:#121915,stroke:'+x.col+',stroke-width:1px,stroke-dasharray:4 3,color:#d9d6ce';
+    C['gn'+b]='fill:'+x.fill+',stroke:'+x.col+',stroke-width:1px,color:#e7e4dc';
+    C['gu'+b]='fill:#101512,stroke:'+x.col+',stroke-width:1px,stroke-dasharray:2 3,color:#8f968f';
+    C['gn'+b+'x']='fill:#141a17,stroke:'+x.col+',stroke-width:1px,stroke-dasharray:2 2,color:#b9b6ae';
+  });
+  for(let i=0;i<5;i++) C['glv'+i]='fill:#18201c,stroke:'+govLevelCol(i)+',stroke-width:1.8px,color:#e7e4dc';
+  Object.keys(cls).forEach(c=>{ if(C[c]){ lines.push('  classDef '+c+' '+C[c]); lines.push('  class '+cls[c].join(',')+' '+c); } });
+  return lines.concat(edges).join('\n');
+}
+
+/* ---------- the box ---------- */
+function govEl(){
+  let b=document.getElementById('gov'); if(b) return b;
+  b=document.createElement('div'); b.id='gov';
+  b.innerHTML='<div id="govhd"><div id="govtt"></div>'+
+    '<button type="button" onclick="govZoom(1/1.25)" title="Zoom out">−</button>'+
+    '<button type="button" onclick="govZoom(1.25)" title="Zoom in">+</button>'+
+    '<button type="button" onclick="govFit(\'all\')" title="Fit the whole chart">⤢</button>'+
+    '<button type="button" id="govbig" onclick="govBig()" title="Larger">↗</button>'+
+    '<button type="button" id="govmin" onclick="govMin()" title="Fold away">–</button></div>'+
+    '<div id="govvp"><div id="govcv"></div><div id="govmsg"></div></div><div id="govinfo"></div>';
+  document.body.appendChild(b);
+  govBindViewport();
+  return b;
+}
+function govOn(){
+  let open=false;
+  try{ const md=document.getElementById('modal'); open=!!(md && md.classList.contains('on')); }catch(e){}
+  return open && STACK.length>0 && innerWidth>900 && !GOV.shut;
+}
+/* Set against the panel's left edge and level with its foot. The panel
+   can be dragged and resized, so its rect is read every time. */
+function govPlace(){
+  const b=govEl();
+  if(!govOn()){ b.classList.remove('on'); return; }
+  b.classList.add('on');
+  const md=document.getElementById('modal'); const r=md.getBoundingClientRect();
+  let leftLimit=18;
+  try{ const bb=document.getElementById('bubbles');
+       if(bb && bb.style.display==='block'){ const c=bb.querySelector('.bubc'); leftLimit=18+(c?c.offsetWidth:156)+18; } }catch(e){}
+  const room=Math.max(240, Math.round(r.left-leftLimit));
+  const w=Math.min(GOV.big?Math.max(560, Math.round(r.left*0.62)):400, room);
+  const hMax=Math.round(r.height-8);
+  const h=GOV.min?34:Math.min(GOV.big?Math.round(Math.min(innerHeight*0.72, 660)):300, hMax);
+  b.style.width=w+'px'; b.style.height=h+'px';
+  b.style.left=Math.round(r.left-w+1)+'px';
+  b.style.top=Math.round(r.bottom-h)+'px';
+  const bg=document.getElementById('govbig'); if(bg){ bg.textContent=GOV.big?'↙':'↗'; bg.title=GOV.big?'Smaller':'Larger'; }
+  const mn=document.getElementById('govmin'); if(mn){ mn.textContent=GOV.min?'▴':'–'; mn.title=GOV.min?'Unfold':'Fold away'; }
+  b.classList.toggle('min', GOV.min);
+}
+function govBig(){ GOV.big=!GOV.big; GOV.min=false; govPlace(); setTimeout(()=>govFocusLit(false),260); }
+function govMin(){ GOV.min=!GOV.min; govPlace(); if(!GOV.min) setTimeout(()=>govFocusLit(false),60); }
+
+function govTitle(){
+  const t=document.getElementById('govtt'); if(!t) return;
+  const st=STACK[0]; const nm=st?st.label:'';
+  t.innerHTML='<b>'+esc(nm||'Government')+'</b> <i>· how its government is laid out</i>';
+}
+function govLegend(){
+  const i=document.getElementById('govinfo'); if(!i) return;
+  const k=(c,t)=>'<span class="gk"><i style="border-color:'+c+'"></i>'+t+'</span>';
+  let h=k(GOV_BR.leg.col,'Legislative')+k(GOV_BR.exe.col,'Executive')+k(GOV_BR.jud.col,'Judicial')+
+    '<span class="gk"><i class="glit"></i>open in the panel</span>'+
+    '<span class="gk"><i style="border-style:dashed;border-color:#8f968f"></i>not confirmed current</span>';
+  const ix=GOV.index&&GOV.index.built;
+  h+='<br>Click a box to open it \u00b7 Wikidata'+(ix?', '+esc(ix):'');
+  i.innerHTML=h;
+}
+function govInfo(k){
+  const i=document.getElementById('govinfo'); if(!i) return;
+  const T=GOV.T; const n=T&&T[k];
+  if(!n || n.t==='more'){ govLegend(); return; }
+  let h='<b>'+esc(n.l)+'</b>';
+  const off = n.o || (n.q && GOV_OFF[n.q] && GOV_OFF[n.q].o) || govOfficeFor(n);
+  if(n.d) h+=' — '+esc(typeof capFirst==='function'?capFirst(n.d):n.d);
+  if(n.u) h+=' <i>Nothing on the record shows it still exists — no website, no head in post, no recent founding date. It may be a former body; check before contacting it.</i>';
+  else if(n.sub && n.t!=='root') h+=' — '+esc(n.sub);
+  const bits=[];
+  if(off) bits.push('<a onclick="govOpenOffice(\''+esc(off.id)+'\')">Open in the panel ›</a>');
+  if(n.w) bits.push('<a href="'+esc(n.w)+'" target="_blank" rel="noopener">Official site ↗</a>');
+  if(n.kids && n.kids.length) bits.push(GOV.open.has(k)?'click to fold':'click to open '+govCountUnder(T,k).toLocaleString()+' under it');
+  if(bits.length) h+='<br>'+bits.join(' · ');
+  i.innerHTML=h;
+}
+/* a body the panel has an office for: its own record, or one of the
+   offices that direct it or sit in it */
+function govOfficeFor(n){
+  if(!n || !n.q) return null;
+  if(GOV_OFF[n.q] && GOV_OFF[n.q].o) return GOV_OFF[n.q].o;
+  for(const a of (n.a||[])) if(GOV_OFF[a] && GOV_OFF[a].o) return GOV_OFF[a].o;
+  return null;
+}
+function govOpenOffice(id){
+  const e=GOV_OFF[id]; if(!e||!e.o) return;
+  try{ SEL=e.o; renderOffice(e.o); }catch(err){ console.warn('government diagram: could not open office', err); }
+}
+
+/* ---------- drawing ---------- */
+let GOV_SEQ=0;
+async function govDraw(){
+  if(GOV.rendering){ GOV.again=true; return; }
+  GOV.rendering=true;
+  try{
+    do{
+      GOV.again=false;
+      const T=GOV.T; if(!T) return;
+      const src=govSource(T);
+      if(src===GOV.sig) continue;
+      let mm;
+      try{ mm=await govMermaid(); }
+      catch(e){ govMsg('The diagram library could not be loaded just now. '+esc(e.message||'')); console.warn(e); return; }
+      const cv=document.getElementById('govcv');
+      let out;
+      try{ out=await mm.render('govsvg'+(GOV_SEQ++), src); }
+      catch(e){ govMsg('This chart could not be drawn: '+esc((e&&e.message)||'error')); console.warn('government diagram', e, src); return; }
+      /* keep whatever the reader was looking at where it was */
+      const anchor=GOV.anchor; let before=null;
+      if(anchor) before=govNodeScreen(anchor);
+      cv.innerHTML=out.svg;
+      GOV.sig=src; govMsg('');
+      const svg=cv.querySelector('svg');
+      if(svg){ svg.removeAttribute('style');
+        const vb=(svg.getAttribute('viewBox')||'').split(/\s+/).map(Number);
+        if(vb.length===4){ svg.setAttribute('width',vb[2]); svg.setAttribute('height',vb[3]); GOV.size={w:vb[2],h:vb[3]}; } }
+      govBindNodes();
+      govApplyLit();
+      if(anchor && before){ const after=govNodeLocal(anchor);
+        if(after){ GOV.view.x=before.x-after.x*GOV.view.k; GOV.view.y=before.y-after.y*GOV.view.k; govSetView(false); } }
+      /* until the reader has moved the chart themselves, each redraw
+         is framed afresh: the levels below the country arrive after it
+         and widen the chart, which left the country's box off the edge */
+      else if(!GOV.view || !GOV.touched){
+        if(GOV.lit.length && govNodeEl(GOV.lit[0])){ if(!GOV.view) GOV.view={x:0,y:0,k:0.85}; govCenterOn(GOV.lit[0], false); }
+        else govFit(false);
+      }
+      else govSetView(false);
+      GOV.anchor=null;
+    }while(GOV.again);
+  } finally { GOV.rendering=false; }
+}
+function govMsg(t){ const m=document.getElementById('govmsg'); if(m) m.innerHTML=t||''; }
+
+function govNodeEl(k){
+  const g=GOV.key2id[k]; if(!g) return null;
+  const cv=document.getElementById('govcv'); if(!cv) return null;
+  for(const el of cv.querySelectorAll('g.node')){ const m=GOV_IDRX.exec(el.id||''); if(m && m[1]===g) return el; }
+  return null;
+}
+/* a node's centre in the chart's own coordinates */
+function govNodeLocal(k){
+  const el=govNodeEl(k); if(!el) return null;
+  /* nodes sit inside nested groups, so the rendered rect is the honest
+     answer, divided back out of the current zoom */
+  try{ const svg=el.ownerSVGElement;
+       const r=el.getBoundingClientRect(), s=svg.getBoundingClientRect();
+       const k=GOV.appliedK||1;
+       return {x:(r.left+r.width/2-s.left)/k, y:(r.top+r.height/2-s.top)/k};
+  }catch(e){ return null; }
+}
+function govNodeScreen(k){ const p=govNodeLocal(k); if(!p) return null;
+  return {x:GOV.view.x+p.x*GOV.view.k, y:GOV.view.y+p.y*GOV.view.k}; }
+
+function govSetView(glide){
+  const cv=document.getElementById('govcv'); if(!cv||!GOV.view) return;
+  cv.classList.toggle('glide', !!glide);
+  cv.style.transform='translate('+GOV.view.x+'px,'+GOV.view.y+'px) scale('+GOV.view.k+')';
+  /* what the rendered rects are scaled by right now, which is what a
+     node's position has to be divided back out of */
+  GOV.appliedK=GOV.view.k;
+}
+function govFit(glide){
+  const vp=document.getElementById('govvp'); if(!vp) return;
+  const W=vp.clientWidth, H=vp.clientHeight, w=GOV.size.w||1, h=GOV.size.h||1;
+  /* The whole chart where it fits at a size that can be read;
+     otherwise the top of it, readable, with the country's own box
+     centred — the reader zooms out or drags for the rest. */
+  let k=Math.min(W/w, H/h, 1.1);
+  if(k>=0.62 || glide==='all'){ GOV.view={k:k, x:(W-w*k)/2, y:Math.max(6,(H-h*k)/2)}; govSetView(!!glide); return; }
+  k=0.8; GOV.view={k:k, x:8, y:8};
+  const p=govNodeLocal('R');
+  if(p) GOV.view.x=W/2-p.x*k;
+  govSetView(glide);
+}
+function govZoom(f, cx, cy){
+  GOV.touched=true;
+  const vp=document.getElementById('govvp'); if(!vp) return;
+  if(!GOV.view) GOV.view={x:0,y:0,k:1};
+  const W=vp.clientWidth, H=vp.clientHeight;
+  if(cx==null){ cx=W/2; cy=H/2; }
+  const k=Math.max(0.12, Math.min(2.6, GOV.view.k*f));
+  GOV.view.x=cx-(cx-GOV.view.x)*(k/GOV.view.k);
+  GOV.view.y=cy-(cy-GOV.view.y)*(k/GOV.view.k);
+  GOV.view.k=k; govSetView(cx==null);
+}
+function govCenterOn(k, glide){
+  const vp=document.getElementById('govvp'); const p=govNodeLocal(k); if(!vp||!p) return;
+  if(GOV.view.k<0.7) GOV.view.k=0.85;
+  GOV.view.x=vp.clientWidth/2-p.x*GOV.view.k;
+  GOV.view.y=vp.clientHeight/2-p.y*GOV.view.k;
+  govSetView(glide);
+}
+function govBindViewport(){
+  const vp=document.getElementById('govvp'); if(!vp || vp.dataset.bound) return; vp.dataset.bound='1';
+  let drag=null, moved=false;
+  vp.addEventListener('pointerdown', e=>{
+    if(e.button!==0) return;
+    drag={x:e.clientX, y:e.clientY, vx:GOV.view?GOV.view.x:0, vy:GOV.view?GOV.view.y:0}; moved=false; GOV.touched=true;
+    vp.setPointerCapture(e.pointerId); vp.classList.add('grab');
+  });
+  vp.addEventListener('pointermove', e=>{
+    if(!drag||!GOV.view) return;
+    const dx=e.clientX-drag.x, dy=e.clientY-drag.y;
+    if(Math.abs(dx)+Math.abs(dy)>3) moved=true;
+    GOV.view.x=drag.vx+dx; GOV.view.y=drag.vy+dy; govSetView(false);
+  });
+  const end=e=>{ if(!drag) return; drag=null; vp.classList.remove('grab');
+    try{ vp.releasePointerCapture(e.pointerId); }catch(x){}
+    if(!moved){ const k=govKeyAt(e.clientX, e.clientY); if(k) govClick(k); } };
+  vp.addEventListener('pointerup', end);
+  vp.addEventListener('pointercancel', ()=>{ drag=null; vp.classList.remove('grab'); });
+  /* the wheel zooms the chart, not the map behind it */
+  vp.addEventListener('wheel', e=>{
+    e.preventDefault(); e.stopPropagation();
+    const r=vp.getBoundingClientRect();
+    govZoom(Math.exp(-e.deltaY*0.0016), e.clientX-r.left, e.clientY-r.top);
+  }, {passive:false});
+  vp.addEventListener('dblclick', e=>{ e.preventDefault(); govFit('all'); });
+  vp.addEventListener('pointerleave', ()=>{ if(GOV.hover){ GOV.hover=null; govLegend(); } });
+}
+function govKeyAt(x,y){
+  const el=document.elementFromPoint(x,y); if(!el) return null;
+  const n=el.closest && el.closest('g.node'); if(!n) return null;
+  const m=GOV_IDRX.exec(n.id||''); return m ? GOV.id2key[m[1]] : null;
+}
+function govBindNodes(){
+  const cv=document.getElementById('govcv'); if(!cv) return;
+  cv.querySelectorAll('g.node').forEach(el=>{
+    const m=GOV_IDRX.exec(el.id||''); if(!m) return;
+    const k=GOV.id2key[m[1]]; if(!k) return;
+    el.addEventListener('mouseenter', ()=>{ GOV.hover=k; govInfo(k); });
+  });
+}
+/* Pointer-up decides a click so that a drag across a box is a drag. */
+function govClick(k){
+  const T=GOV.T, n=T&&T[k]; if(!n) return;
+  if(n.t==='more'){ const p=n.par; GOV.shown[p]=(GOV.shown[p]||GOV_PAGE)+24; GOV.anchor=p; govDraw(); return; }
+  if(n.kids && n.kids.length){
+    if(GOV.open.has(k)){ GOV.open.delete(k); GOV.closedByHand.add(k); }
+    else { GOV.open.add(k); GOV.closedByHand.delete(k); }
+    GOV.anchor=k; govDraw(); govInfo(k); return;
+  }
+  /* a box with nothing under it: its office, where the panel has one */
+  const off=n.o || govOfficeFor(n);
+  if(off){ govOpenOffice(off.id); return; }
+  govInfo(k);
+}
+
+/* ---------- following the panel ----------
+   What is lit: the office open in the panel, or every office of the
+   kind open in it, at the level chosen. A national office lights the
+   body it directs or sits in. Where nothing more specific matches, the
+   level chosen is lit, so the chart still says where in the government
+   the reader is. */
+function govTargets(T){
+  const out=[];
+  const push=k=>{ if(k && T[k] && out.indexOf(k)<0) out.push(k); };
+  const forOffice=id=>{ const e=GOV_OFF[id]; if(e) push(e.k); };
+  if(typeof SEL!=='undefined' && SEL && SEL.id){ forOffice(SEL.id); if(out.length) return out; }
+  if(typeof LEAFKIND!=='undefined' && LEAFKIND){
+    let es=[]; try{ es=officeEntriesFor([LEAFKIND], LEAFLVL, LEAFSUB); }catch(e){}
+    /* below the country, the offices themselves where there are few
+       enough to read; past that, the box that holds them */
+    const per={}; es.forEach(e=>{ if(e.lvl>=1) per[e.lvl]=(per[e.lvl]||0)+1; });
+    es.forEach(e=>{
+      if(e.lvl>=1){ if(per[e.lvl]>24) push('L:'+e.lvl+':K:'+LEAFKIND); else forOffice(e.o.id); }
+      else forOffice(e.o.id);
+    });
+    if(out.length) return out.slice(0,60);
+  }
+  if(typeof LEAFLVL!=='undefined' && LEAFLVL!=null){ push(LEAFLVL===0?'R':'L:'+LEAFLVL); }
+  return out;
+}
+function govApplyLit(){
+  const cv=document.getElementById('govcv'); if(!cv) return;
+  cv.querySelectorAll('g.node.lit').forEach(e=>e.classList.remove('lit','litpulse'));
+  GOV.lit.forEach(k=>{ const el=govNodeEl(k); if(el) el.classList.add('lit'); });
+}
+async function govFollow(){
+  const T=GOV.T; if(!T) return;
+  const lit=govTargets(T);
+  const sig=lit.join('|');
+  const changed = sig!==GOV.litSig;
+  GOV.lit=lit; GOV.litSig=sig;
+  /* open the way down to everything lit */
+  GOV.pin=new Set();
+  lit.forEach(k=>{ GOV.pin.add(k); govAncestors(T,k).forEach(a=>{ GOV.open.add(a); GOV.pin.add(a); }); });
+  await govDraw();
+  govApplyLit();
+  if(changed && lit.length) govFocusLit(true);
+}
+function govFocusLit(glide){
+  if(!GOV.lit.length) return;
+  const k=GOV.lit[0];
+  govCenterOn(k, glide);
+  const el=govNodeEl(k);
+  if(el){ el.classList.remove('litpulse'); void el.getBBox(); el.classList.add('litpulse'); }
+  govInfo(k);
+}
+
+/* ---------- the one entry point ----------
+   Called after anything that can change what the chart shows: a place
+   searched, offices arriving, the panel moving to another page. Cheap
+   when nothing changed, because the Mermaid source is compared before
+   anything is drawn. */
+let GOV_T=null;
+function govSync(){ clearTimeout(GOV_T); GOV_T=setTimeout(govSyncNow, 120); }
+async function govSyncNow(){
+  try{
+    govEl(); govPlace();
+    if(!govOn()) return;
+    govTitle();
+    const before=GOV.dataQ;
+    const busy=!GOV.data && !GOV.dataQ;
+    if(busy) govMsg('Reading how this government is laid out…');
+    await govLoad();
+    await govIndex();
+    if(!GOV.hover) govLegend();
+    GOV_OFF={};
+    GOV.T=govTree();
+    if(GOV.dataQ!==before || !GOV.open.size){ GOV.open=govDefaultOpen(GOV.T); GOV.closedByHand=new Set(); }
+    else Object.keys(GOV.T).forEach(k=>{ const n=GOV.T[k]; if(n.t==='level'||(n.t==='branch'&&n.lv)) if(!GOV.closedByHand.has(k)) GOV.open.add(k); });
+    if(!GOV.data && Object.keys(GOV.T).length<=1){
+      govMsg('No record of this government’s bodies was found.'); return; }
+    await govFollow();
+  }catch(e){ console.warn('government diagram', e); govMsg('The chart hit an error: '+esc((e&&e.message)||'')); }
+}
+
+/* The hooks. Each wraps a function the page already calls at the right
+   moment, so nothing elsewhere has to know this box exists. */
+(function(){
+  /* function declarations at the top of a classic script are
+     properties of the window, so replacing the property is what every
+     caller in the page reaches */
+  const wrap=(name)=>{ try{
+    const f=window[name]; if(typeof f!=='function'){ console.warn('government diagram: no '+name+' to follow'); return; }
+    window[name]=function(){ const r=f.apply(this, arguments); try{ govSync(); }catch(e){} return r; };
+  }catch(e){ console.warn('government diagram: could not follow '+name, e); } };
+  ['render','renderOffice','openModal','closeModal','paintTrail','setPins'].forEach(wrap);
+  const watch=()=>{ const md=document.getElementById('modal'); if(!md) return setTimeout(watch,300);
+    new MutationObserver(()=>{ try{ govPlace(); }catch(e){} }).observe(md,{attributes:true, attributeFilter:['style','class']});
+    try{ new ResizeObserver(()=>{ try{ govPlace(); }catch(e){} }).observe(md); }catch(e){} };
+  watch();
+  addEventListener('resize', ()=>{ try{ govPlace(); }catch(e){} });
+  try{ window.govZoom=govZoom; window.govFit=govFit; window.govBig=govBig; window.govMin=govMin; window.govOpenOffice=govOpenOffice; }catch(e){}
+})();
 
 </script>
 </body>
