@@ -833,8 +833,8 @@ is gone; the `next` arrays in `LEAVES` are no longer read.
 
 **The trail runs to the end of the path, not to the subject.** `trail()`
 used to stop at the last `PATH` step, so the two screens past it were off
-the account of how the reader got there: a page for the Los Angeles County
-Board of Supervisors said nothing about having come through Chambers. The
+the account of how the reader got there: a page for a county's board of
+supervisors said nothing about having come through Chambers. The
 kind is appended from `LEAFKIND` (or `SEL.kind`) and the office from `SEL`,
 the kind's crumb going back to its page and the office's being inert.
 
@@ -1003,20 +1003,20 @@ do not touch.
 
 | Unit | Relations | Stitched | With `wikidata` | Raw | Server time |
 | --- | --- | --- | --- | --- | --- |
-| Los Angeles County, US | 150 | 150 | 122 | 2.7 MB | 88–102 s |
+| A large US county | 150 | 150 | 122 | 2.7 MB | 88–102 s |
 | Vaucluse, FR | 391 | 391 | **391** | 8.9 MB | 240 s |
 | Hérault, FR | 559 | 559 | **559** | 13.4 MB | 214 s |
 | Nakuru, KE | 81 | 81 | **0** | 6.7 MB | 82 s |
 | Gifu/Nagoya, JP | 16 | 16 | 16 | 0.9 MB | 88 s |
-| Pasadena, US (level 9) | 7 | 7 | 0 | 83 KB | fast |
+| A US city (level 9) | 7 | 7 | 0 | 83 KB | fast |
 
 Three things follow. **French communes are fully linked to Wikidata** — all 950
 across two départements — so France gets municipal offices without a single
 name guess. **Kenya's wards carry no `wikidata` tag at all**, so they fall back
 to name matching and resolve poorly; that is a gap in OSM, not in the code, and
 counting those tags is the first thing to do when extending to a new country.
-**The sub-municipal level works where OSM has it**: Pasadena returns seven
-council districts at `admin_level=9`, all seven stitch, and Pasadena City Hall
+**The sub-municipal level works where OSM has it**: one US city tested returns seven
+council districts at `admin_level=9`, all seven stitch, and its city hall
 falls inside exactly one of them — District 5 — which also shows the districts
 partition the city without overlapping. They carry no Wikidata ids, so they
 draw and are clickable but resolve no offices of their own.
@@ -1341,15 +1341,15 @@ first: that is how the collisions got there.
   returned the exact name match LAST — the comparator's terms were reversed —
   and since `SUFFIXES` tries "<name> City", California resolved to California
   City, a town of 14,000 in Kern County, and every office above the county came
-  from there. Simply reversing it is also wrong: the boundary files name Los
-  Angeles County "Los Angeles", whose exact match is the city. The level is now
+  from there. Simply reversing it is also wrong: the boundary files name some
+  counties by the bare name of their county seat, whose exact match is the city. The level is now
   passed in (`WANT_REGION`, `WANT_DISTRICT`) and a unit of the right kind beats
   one of the wrong kind whatever its name; only then does an exact match break
-  the tie. **Check both California and Los Angeles County after touching this —
+  the tie. **Check a state and a county named after its seat after touching this —
   they fail in opposite directions.**
 - **Markers used to come from `qCoords`, which is not a list of offices.** It
   asks for everything with `applies to jurisdiction` = this place that has a
-  coordinate, so Los Angeles County returned 573 markers: Ergomotion Inc.,
+  coordinate, so one large county returned 573 markers: Ergomotion Inc.,
   Penthouse World Broadcasting LLC, Venturi Astrolab Inc., the McMartin
   preschool trial, the San Diego Humane Society. Companies regulated there and
   events that happened there. Markers now come from the ids the classifier
@@ -1765,7 +1765,7 @@ them and the one after it.
 
 The classifier works from a title and a Wikidata class, which is enough to
 say what *kind* of office something is and nothing at all about which one it
-is: First 5 LA and the Los Angeles County Board of Supervisors came out with
+is: a county's children-and-families commission and its board of supervisors came out with
 the same paragraph under both. There is no way to write that difference
 without inventing it.
 
@@ -1774,8 +1774,8 @@ produces it wherever `?item` is bound, so it costs nothing — and each office
 carries `desc`. It appears under the office's name in the list, and on the
 office's own page it sits on the title line as `.nmd` rather than in a block
 of its own. It was a block, set off with a rule, which gave a line like
-"First 5 county commission for Los Angeles County, California, United
-States" the weight of a section and pushed the methods under it off the
+a one-line description naming the commission's county, state and
+country the weight of a section and pushed the methods under it off the
 screen. It is often absent, and is shown only when
 present. `CACHE_V` went to `htrt3` because the cached answers predate the
 column.

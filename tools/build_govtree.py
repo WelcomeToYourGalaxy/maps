@@ -289,6 +289,23 @@ def labels(qs):
         del lab[k]
     return lab, desc, site
 
+def coords(qs):
+    """Where a body sits, so the page can move the map to it: its own
+    coordinates (P625), or failing that its headquarters' (P159), which
+    is usually a city and is marked as such. Nothing is estimated."""
+    out = {}
+    for ch in chunks(qs, 400):
+        rows = ask(f"""SELECT ?X ?c ?hq WHERE {{ VALUES ?X {{ {vals(ch)} }}
+          {{ ?X wdt:P625 ?c }} UNION {{ ?X wdt:P159 ?h . ?h wdt:P625 ?c BIND(1 AS ?hq) }} }}""")
+        for r in rows:
+            x = v(r, "X")
+            m = re.match(r"Point\(([-\d.eE]+) ([-\d.eE]+)\)", r["c"]["value"])
+            if not m: continue
+            hq = bool(r.get("hq"))
+            if x in out and (out[x][2] == 0 or hq): continue
+            out[x] = [round(float(m.group(1)), 5), round(float(m.group(2)), 5), 1 if hq else 0]
+    return out
+
 ALLEDGE = defaultdict(set)
 WEIGHTY = re.compile(r"\b(ministry|department|agency|authority|commission|administration|bureau|"
                      r"service|directorate|court|tribunal|house|senate|chamber|assembly|council|"
@@ -381,6 +398,7 @@ def main():
     lab, desc, site = labels(allq)
     al = aliases(allq)
     cur = current(allq)
+    xy = coords(allq)
     al_lab = labels(set(o for s in al.values() for o in s))[0]
 
     divs = divisions(ql)
@@ -428,6 +446,7 @@ def main():
             for x in ap[c][k]:
                 if x in lab and not any(h["q"] == x for h in heads):
                     heads.append({"q": x, "l": lab[x], "r": nm})
+                    if x in xy: heads[-1]["c"] = xy[x]
         for h in heads:
             if any(x["q"] == h["q"] for x in heads if x is not h): pass
         # a single office that is both
@@ -444,6 +463,7 @@ def main():
             if n in site: e["w"] = site[n]
             if al.get(n): e["a"] = sorted(al[n])
             if n not in cur: e["u"] = 1
+            if n in xy: e["c"] = xy[n]
             out["n"][n] = e
         kids = defaultdict(int)
         for n, e in out["n"].items():
