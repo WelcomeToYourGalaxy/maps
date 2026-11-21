@@ -93,9 +93,9 @@ same commit as the work it did.
   - Links: `{n, cb | tn, rel, role, detail, src_t, src_u}`.
   - Popups turn each link into a plain sentence (`SAY` / `sayLink` / `srcItem` in `app.js`). Add a `SAY` entry for any new `role` string.
 
-## Where it stands (77 rounds in, 18 November 2026)
+## Where it stands (78 rounds in, 20 November 2026)
 
-1,726 outside parties and 2,537 ties. One writeup for every box, 1,944 of them. 20 patterns
+1,726 outside parties and 2,538 ties. One writeup for every box, 1,944 of them. 20 patterns
 and 14 suspected patterns.
 
 The party count is lower than the tie count implies, and deliberately: round 60 folded 28 duplicate
@@ -116,7 +116,7 @@ ignores" below.
 | Governor removals and pressure | 279 | 183 | 89% | 95% |
 | External auditors | 216 | 178 | 86% | 93% |
 | Banknote printers | 187 | 169 | 82% | 88% |
-| Outside reserve managers | 107 | 81 | 39% | 42% |
+| Outside reserve managers | 108 | 82 | 40% | 43% |
 | Gold custodians | 105 | 64 | 31% | 33% |
 | Swap lines | 279 | 91 | 44% | 47% |
 | Named shareholders | 228 | 9 | 4% | 5% |
@@ -402,8 +402,10 @@ will name. There is also no rate to project from: no round has yet worked this r
 and 103 of its 142 distinct firms, all from a single published mandate list. They manage the Government
 Pension Fund Global, a SOVEREIGN WEALTH FUND rather than foreign exchange reserves, unlike every other
 block on the row, so the row was conflating two instruments. They now sit on `manages its sovereign
-wealth fund`, with their own sentence in `app.js`. Nothing was dropped. What remains on this row is 107
-ties at 40 firms across 81 places. The second problem is unchanged and cannot be split away: And it is a disclosure artefact: a bank with equally many
+wealth fund`, with their own sentence in `app.js`. Nothing was dropped. What remains on this row is 108
+ties at 41 parties across 82 places, the newest being a Bank for International Settlements tie for the
+Philippines: BSP Note 8 for 31 December 2024 names the BIS Investment Pool and gives PHP56.096 billion,
+which meets the test settled at round 68 on the BCEAO and Slovakia BISIP precedents. The second problem is unchanged and cannot be split away: And it is a disclosure artefact: a bank with equally many
 external managers that publishes nothing scores zero. The completeness chart counts places, not
 ties, which avoids the worst of it. Whether to move the Norway block to its own
 sovereign-wealth-fund relation is an open decision for the owner. All of this is in
