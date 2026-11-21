@@ -1,7 +1,9 @@
 # Handoff: finishing the OECD Watch register in five wide rounds
 
-This file governs one job and nothing else: **turning the 389 unworked OECD Watch complaints into
-cases on the Globalization Case Map, or dropping them, across five wide rounds.** It is
+This file governs one job and nothing else: **turning the unworked OECD Watch complaints into
+cases on the Globalization Case Map, or dropping them, across five wide rounds.** The queue stood at
+389 when this file was written and stands at **387** since 20 Nov 2026, when two leads already named
+by a case were marked. It is
 self-contained — a new chat needs no other file to run a round from it. `docs/HANDOFF.md` remains the
 map's general handoff and carries the round-by-round history; nothing here replaces it.
 
@@ -327,27 +329,137 @@ them**; round 47 had to backfill it. A round that converts a lead marks the lead
 
 ---
 
-## Defects to clear, and one of them should be fixed before round 48
+## Defects: four cleared on 20 Nov 2026, one still open, one that was not a defect
 
-1. **The complaints layer is keyed on the complaint's title, and five titles in the register are
-   shared by two different complaints each** — `Community members in Bandayi and Mege, DRC vs.
-   AngloGold Ashanti`, `Amnesty International and Friends of the Earth vs Shell`,
-   `Reprieve vs.  British Telecommunications plc`, `CIPCE vs. Skanska`,
-   `Transparency International Germany vs. Ratiopharm`. `merge.py` resolves a complaint link by that
-   key, so two complaints sharing one key means a link can silently attach to the wrong complaint.
-   **The key should carry the OECD Watch slug, not the title.** Two leads are unmarked today for
-   exactly this reason, and these five rounds will write 282 events' worth of new keys into the same
-   namespace. **Fix it first.**
-2. **Only 362 of the 503 complaints have a record in the complaints layer.** A converted lead whose
-   complaint has no record needs one built from the harvest, with the case's own coordinates and a
-   `pt` saying so. Round 47's brief has the field shape.
-3. **`ap` is wrong on at least five existing records** — the two KTNC Watch filings, the Korean POSCO
-   filing and the G4S complaint all carry `ap: true` although each was rejected at initial assessment,
-   and Tozzi Green's `ap: true` is unverified while the complaint sits at Filed.
-4. **`webuye-interchange-traders` carries a company record inside `cp`**, a field that holds office
-   codes.
-5. **The harvested `affected` list for the Freeport complaint contains OECD Watch's site navigation
-   and cookie-banner text.** Anything built on `affected` should expect that in other records too.
+1. **CLEARED. The complaints layer was keyed on the complaint's title; it now carries the OECD Watch
+   slug.** All 362 `ncp` records were re-keyed to `ncp:<slug>` and all 116 `ncp` links on cases
+   rewritten to carry the slug. Nothing was guessed: every one of the 362 records holds its own
+   `u` field, so the slug came from the complaint's own OECD Watch URL, and the three links that
+   had no URL were settled by matching their subtitle against the lead file. The convention changes
+   with it — **a complaint goes in `cx` as `["ncp", "<the OECD Watch slug>", "<subtitle>", null, null]`
+   and its record as `k: "ncp:<slug>"`.** The subtitle in position 2 is what the page displays
+   (`h[2] || h[1]`), so it must not be left empty now that position 1 is a slug. `merge.py` now
+   asserts the slug shape on every incoming `ncp` record and prints `COLLISION` where an incoming
+   record shares a key with a stored one but disagrees on office, year, URL, place or status —
+   the silent `continue` is what lost round 46's second draft.
+
+   **What the title key was actually costing, which was worse and smaller than it looked.** Two
+   opposite errors were cancelling each other in the published figure:
+   - `kibali-bandayi-mege-demolitions` carried **two links with the same title**, one for the 2024
+     complaint and one for the 2026 one. The coverage set counts `h[0]+"|"+h[1]`, so the two
+     counted as one, and both "Open the complaint" buttons resolved to whichever record
+     `findIndex` reached first.
+   - `lundin-block-5a-sudan` carried **three links for two complaints** — the Aker ASA and Aker BP
+     complaints are genuinely separate filings with separate slugs, and one of them was present
+     twice under a truncated title variant.
+
+   Net: 116 links became 115, and the number of distinct OECD Watch complaints named in a case
+   stayed **115**. The published figure does not move, but it was right by accident. Both leads the
+   title key had left unmarked are now marked.
+
+2. **STILL OPEN. Only 362 of the 503 complaints have a record in the complaints layer.** A converted
+   lead whose complaint has no record needs one built from the harvest, with the case's own
+   coordinates and a `pt` saying so. Round 47's brief has the field shape. Every one of the 115
+   complaints named in a case does now resolve to a record of its own, so this bites only on
+   conversion, not on what is already published.
+
+3. **NOT A DEFECT, and the brief that says it is will corrupt 282 events' worth of new records.**
+   `ap` does not record whether the contact point accepted the complaint. `base.html` renders it as
+   `(c.ap ? ' <span class="mute">(placed approximately)</span>' : "")` — **it flags an approximate
+   map pin.** The data agrees with the page and not with the brief: of the 1,584 records across all
+   offices whose `pt` text itself says "approximate", **all 1,584 carry `ap: true`**, and 97 of the
+   99 `ncp` records whose complaint was rejected also carry `ap: true`, which no acceptance flag
+   would do. Acceptance is already recorded, in `st`. So the five records named here are right and
+   were left alone.
+
+   **`docs/BRIEF47.md` line 93 and `docs/CHECK47.md` line 36 define `ap` as acceptance.** A round
+   run on that definition writes acceptance data into a field the page publishes as pin precision.
+   Round 48's brief must define `ap` as approximate placement, or the field should be dropped from
+   the brief and left to the harvest.
+
+4. **CLEARED. `webuye-interchange-traders` carried a company record inside `cp`.** `cp` holds office
+   codes and now holds `["ip"]`. The entity record — the Kenya National Highways Authority, with
+   `name`, `role` and `desc` — matches the shape of the 262 `companies` entries that carry exactly
+   those three fields, so it was moved to `companies` rather than discarded. State bodies already
+   sit in `companies` elsewhere on the map.
+
+5. **CLEARED, and the scale is now known. Six `affected` lists carried OECD Watch's site navigation
+   and cookie banner**, not one. Sixty lines of chrome each, 360 lines in all, in
+   `community-members-in-bandayi-and-mege-drc-vs-anglogold-ashanti`,
+   `individual-on-behalf-of-approximately-233-migrant-workers...`,
+   `smallholder-cinchona-bark-farmers-in-south-kivu...`,
+   `wellatota-farmers-organization-vs-kolon-global-c...`,
+   `caring-work-group...vs-freeport-mcmoran-inc` and `former-employees-of-bralima-vs-heineken-2026`.
+   In every one the tail was pure chrome against a list of the 52 known strings, so only the tail
+   was dropped and the real entries kept. No other list field in the register carries it:
+   `complainants`, `other_companies` and `countries` are clean across all 503 records.
+
+---
+
+## Round 48's desk work, done 20 Nov 2026 — and the one thing that stops the round closing
+
+The desk work in *Running one round, step 1* is done and sits in `rounds/`. No research was run, so
+there is no conversion figure to report yet.
+
+**What is built.** `dedupe_oecdw2.py` re-run against today's 1,189 cases: **0 probable duplicates**,
+387 open leads checked. Six batch files, `rounds/r48_batch_1.json` to `_6.json`, built from
+`oecdw_wide_plan.json` and not from the lead file, each carrying the full lead record for every lead
+in the event, every event's leads kept together, and each event labelled
+`these_leads_are_one_event`. **530 deciding sentences pre-extracted** from the outcome texts and
+tagged with why each was picked — the contact point's own finding, a date, the respondent's stated
+role, whether it was accepted — with the full text kept alongside so no writer is working from the
+selection alone.
+
+**Round 48 is 53 events and 83 leads, not 57 and 90.** Two single-lead events left the queue as
+converted (the Bandayi/Mege pair). Two more are already decided by the precedent chain and are
+staged in `rounds/r48_precedent_drops.json` to be recorded as drops, not researched:
+
+| Event | Leads | Precedent |
+| --- | --- | --- |
+| `cluster:adhrb-vs-beta-d3-ltd` | 4 — Beta D3, Delta 3 (UK), Formula One Management, Formula One World Championship | licensor; the four Formula One entities this file already names |
+| `ecchr-et-al-vs-tuv-rheinland-ag` | 1 | certifier; carries a CONFIRM step, since the class rule is what disqualifies it and nobody has read this complaint's own record of the respondent's role |
+
+The batches run 8–9 events and 13–14 leads each, which is even on leads rather than on events.
+
+**Nine more Bahrain leads want a precedent decision before any research.** Beyond the Formula One
+four, round 48 holds tear-gas suppliers (`adhrb-vs-condor-non-lethal-technologies`,
+`adhrb-vs-sae-alsetex-etienne-lacroix-group`, `bahrain-watch-et-al-vs-dae-kwang`) and surveillance
+vendors (`privacy-international-et-al-vs-gamma-international`,
+`privacy-international-et-al-vs-trovicor`). On the chain as written a supplier fails test 1. That
+is a drop a writer should record in the first pass rather than research, but it is a decision this
+file has not made, so it is flagged and not taken.
+
+**One lead needs settling, and it is not bookkeeping.** `amnesty-international-and-friends-of-the-earth-vs-shell`
+is marked `already_on_map: ogoni-shell-niger-delta`, but after the re-key no case names it: the link
+on that case carries the subtitle of the *other* complaint of the pair, `...-vs-shell-2`, 'Human
+Rights and Environmental violations by Shell Nigeria'. The base complaint is 'Misleading disclosure
+by Shell on oil spills in Nigeria', which on test 2 is a disclosure failure rather than harm. So
+either the case rests on both complaints and a link is missing, or the lead was marked in error and
+belongs back in the queue. The lead carries an `r48_flag` saying so. **It was not guessed either
+way.**
+
+### The rendered check cannot run in a cloud session, and the round cannot close without it
+
+`coverage_chart.py --rendered` was not run, and **no coverage figure here has been re-verified
+against the page.** `test_map.js` loads `http://localhost:8766/globalization.html` through Playwright
+and needs two things this session does not have: a Chromium binary (`playwright install chromium`
+fetches nothing through the proxy) and a local HTTP server. Writing the chart from figures computed
+over the data is the exact error round 37 made, so it was not done.
+
+What *was* verified, at the data level: `build.py` clean, `loan-condition cases matched 173 of 173`,
+26.0 MB, 29 patterns, 1,189 cases and 3,004 complaint records before and after, 362 `ncp` keys
+unique and slug-shaped, all 115 named complaints resolving to a record, and no non-string value left
+in any `cp`.
+
+**So the last step of every one of these five rounds has to run somewhere with a browser** — the
+owner's own machine, where the chain in *Running one round, step 5* works as written. A cloud session
+can do the desk work, the writing, the checking and the merge, and cannot close the round.
+
+### One more trap for the host list
+
+`ncp:workers-assistance-center-et-al-vs-il_kyoung-co-ltd` — a real OECD Watch slug with an
+**underscore** in it. The first version of the `merge.py` assertion rejected it. Slugs are
+`[a-z0-9_-]+`, not `[a-z0-9-]+`.
 
 ---
 

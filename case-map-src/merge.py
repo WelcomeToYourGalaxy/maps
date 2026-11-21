@@ -1,6 +1,6 @@
 """Merge fact-checked round files into base.html: cases, complaint records, extensions.
 Usage: python3 case-map-src/merge.py rounds/r17f_x.json [more files]  (paths relative to case-map-src/)"""
-import json, sys, os
+import json, sys, os, re
 S = os.path.dirname(os.path.abspath(__file__)) + '/'
 P = S + 'base.html'
 s = open(P).read()
@@ -26,7 +26,17 @@ for f in sys.argv[1:]:
         c['cx'] = c.get('cx') or []
         C.append(c); ids[c['id']] = c; added += 1
     for x in d.get('complaints', []):
-        if x['k'] in cmk: continue
+        if x['k'] in cmk:
+            # A key that is already present is normally the same complaint merged twice.
+            # Where the incoming record disagrees with the stored one on the facts that
+            # identify a complaint, the key is being shared by two different complaints:
+            # say so loudly rather than dropping one of them on the floor.
+            m0 = next(m for m in CM if m['k'] == x['k'])
+            clash = [f for f in ('o', 'y', 'u', 'place', 'st') if x.get(f) and m0.get(f) and x[f] != m0[f]]
+            if clash: print('COLLISION on %r: differs on %s - two complaints are sharing one key' % (x['k'], ', '.join(clash)))
+            continue
+        if x['o'] == 'ncp':
+            assert re.fullmatch(r'ncp:[a-z0-9_-]+', x['k']), 'ncp complaint keys carry the OECD Watch slug, not the title: %r' % x['k']
         x.setdefault('cs', []); CM.append(x); cmk.add(x['k']); comp += 1
     byk = {m['k']: m for m in CM}
     for x in d.get('complaint_links', []):
