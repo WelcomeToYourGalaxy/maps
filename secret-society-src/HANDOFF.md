@@ -6,14 +6,227 @@ Repo: WelcomeToYourGalaxy/maps. Build output: `infiltration.html` (repo root). S
 ## What the map is
 A MapLibre globe of documented cases where an outside party (foreign state or spy service, organised crime, company/industry, bank, lodge/secret society, religious movement, elite network, political or armed movement, lender) got its people, money or control INSIDE a government body, an international body or a company, and decisions there served it.
 
-Current size: 3523 cases in 183 jurisdictions, 510 organisations, 48 channels, 31 patterns.
-By who infiltrates: corp 1578, crime 1006, state 392, movement 301, lodge 76, money 70, faith 59, elite 31, lender 10.
-By relevance: legacy 1643, now 1372, past 508. Countries with no qualifying case, shown as estimates: 15.
-Shape deviation 16.6 points against the goal of 5.0. Run `python3 shape.py`.
-(Figures as of round 30, 19 November 2026. The dated handoffs in the project carry what changed,
+Shape deviation 15.1 points against the goal of 5.0. Run `python3 shape.py` for every figure,
+and `python3 findheld.py` for a held count. The numbers that used to sit here are gone on purpose:
+the note below says why, and round 31 proved it again when a per-scope held file built from the
+wrong spelling of a country name told an agent the map held zero cases of a country it holds 28 of.
+(Figures as of round 31, 20 November 2026. The dated handoffs in the project carry what changed,
 and HANDOFF-ROUND30.md is the current one. DO NOT STATE A HELD-COUNT ANYWHERE IN THIS FILE: one of
 them went stale between rounds and cost an agent four finished records. State the rate and let
 findheld.py answer the count when the brief is written.)
+
+## READ THIS BEFORE PLANNING A ROUND, 20 November 2026 (round 31)
+
+**The deviation is now made entirely of the over-represented classes, and that changes how to plan
+a round.** At 3,637 cases the positive gaps are `bk: exec` +3.1, `bk: intl` +1.5, `bk: finance` +1.2,
+`inf: lodge` +1.1 and `inf: state` +0.8. They sum to 7.7; doubled, that is the whole 15.1. Every
+under-target class is now within 1.5 points, so **there is no high-value deficit cell left to steer
+toward.** `shape.py` prints an identical milli-point figure for every permitted cell because the only
+lever left is dilution. The planning question has stopped being "which cell" and become "how many
+records can pass the test in any cell that is not one of those five".
+
+So brief agents on the **bar**, not on a target. Barred: `bk: exec`, `bk: intl`, `bk: finance`,
+`inf: state`, `inf: lodge`. Permitted: `bk` company/security/legis/court/cabinet, `inf`
+corp/crime/movement/faith/money/elite/lender. Round 31 did this and came in at **13.2 milli-points a
+case across 114 merged records, above the optimum `shape.py` projected for a round of that size** —
+the first round since 9 to hit its ceiling. Rounds 11 to 14 ran at 23.6, 20.3, 18.2 and 17.1 against
+their own optima and drifted.
+
+**`bk: exec` is worth a decision, not a bar.** 149 records at four times its estimate, and it alone is
+3.1 of the remaining 15.1 — a fifth of the gap. The estimate was written for "head of state or
+government", which is not how `exec` is coded. If those 149 are mostly not heads of state, this is a
+recode, not 2,000 records of research; the rulings recode of 16 November closed 2.2 points with no new
+cases at all. Still an open owner decision.
+
+## WHAT ROUND 31 MEASURED, AND THREE CORRECTIONS TO THIS FILE
+
+**1. `movement` was never seamless — it was in the wrong corpus.** Round 30 concluded that `movement`
+"needs a seam that does not exist yet" because neither the Romanian prosecution corpus nor the DOJ
+corpus carries unions, churches or parties. True of those two. But the held `movement` records are
+Hezbollah, the Badr Organization, Asa'ib Ahl al-Haq, the Sadrist movement, the Grey Wolves — armed and
+political movements inside state bodies — and **the UN Panel of Experts corpus is made of exactly
+that**. Five agents worked it as their primary cell and `inf: movement` went from −1.5 to −0.7 in one
+round.
+
+**2. The labour-racketeering seam this file recommended does not work, and the reason is structural.**
+Measured on two sources. The DOJ press-release API returns 1,363 releases with "union" in the title;
+109 distinct ones pulled and deduplicated, every body grepped for public-body words — 22 hits, all
+incidental (a county of residence, an address). **Zero cases of a local placing anything inside a
+public body.** Then DOJ's own programme page: the unit exists to combat "the infiltration *by
+organised criminal groups of* labour unions", and in all 24 civil RICO cases **the union is the
+captured entity and La Cosa Nostra is the infiltrator**. So the corpus codes `inf: crime` with a union
+as the body reached, and a union is not a qualifying institution — `removed_titles.txt` already drops
+the CFMEU case as "a union is outside the test". **Do not commit a round to it.**
+
+**What works instead: party machines inside state companies and public agencies, worldwide.** 13 of
+16 records from one agent, eleven countries, no saturation reached. The ANC deployment committee over
+Transnet and Eskom; Guatemala's Patriot Party officers inside ministries; Mexico's oil union drawing
+1.58bn pesos out of Pemex for the PRI campaign; North Macedonia's ruling party running election crimes
+through state staff; Chicago city jobs to a political organisation's campaign workers. Where
+union-as-infiltrator cases exist at all they come from **commissions of inquiry, not prosecutions** —
+both union records written came from South Africa's Volmink and Jali commissions.
+
+**3. Public universities are an unworked `movement`/`faith` seam.** Under ruling 17 a public
+university is `bk: company`, so a movement inside one hits both axis gaps at once. Bangladesh,
+Pakistan and India each yielded one on a single call, and no held record in that scope used it.
+
+## THE BIGGEST DUPLICATE SOURCE IS AN ANNEX AN EARLIER ROUND ALREADY MINED
+
+**Seven of twelve Libya records duplicated held records built from the same report paragraphs** —
+S/2026/224 annex 9, S/2024/914 annexes 20 and 25, S/2023/673 annex 19. One held record's body carries
+the PTTEP/Arthit finding and another's carries the `.ye` domain, and **neither is visible in a title or
+even in a subject**. Two other agents independently withdrew records that a title-only check had
+passed: a Russia/TENEX case and a Czech Post case, where **neither held title contained a state-firm
+word** — not "state", not "Rosatom", not "Česká pošta".
+
+**The rule: before writing from a Panel annex, grep `cases.json` cites for the report symbol and the
+annex number, and grep descriptions for the actor's surname and the place name. Titles are useless in
+a worked scope.** That check alone would have saved seven records of work in Libya.
+
+## SEQUENCE THE VERIFICATION PASSES. DO NOT RUN THEM IN PARALLEL
+
+Round 31 ran the cold review and the four source-checks at the same time to save wall-clock time, and
+**most of the named source-check corrections landed on records the reviewer had already killed** —
+eight of nine omitted denials and both arithmetic faults sat on dropped records. Review first, then
+source-check only the survivors. It would have cut about a third of the checking work.
+
+## THE INVERTED DENIAL IS NOW THE DOMINANT FAULT, AS THIS FILE PREDICTED
+
+Round 30 recorded that invented denials had stopped and said to watch for the inverted form — omitting
+a denial a document records *and rejects*. Round 31: **17 omitted denials across the batch, every one
+the inverted form, and not one invented denial.** Panel reports and court judgments routinely record
+the subject's response and then reject it; agents keep the finding and drop the response. The sharpest
+case: the Deterrence Apparatus gave the Panel a four-part denial including that the judicial police
+answer to the justice ministry and not to it — which is the very claim that record made.
+
+Fault rates by batch: UN panel 70% (59% medium/high), health and movement 91% (81% excluding one
+systematic error), SOE/Romania/LatAm/Asia 88% (68% excluding the same), Italy 100% any-fault (64%
+substantive). Against 39, 42 and 48 in earlier rounds. **Read the second number in each pair** — the
+inflation is one fault, below.
+
+## RULING 16 NEEDS TO BE IN BRIEF5, NOT JUST IN THIS FILE
+
+**52 year faults across 151 records, the single largest fault class in the round.** Agents set `y` to
+the year of the verdict, the report, the indictment, the arrest or the publication. Ohio State dated
+2025 for conduct the release dates 2009–2020; Chicago dated 2005 for a spreadsheet the Seventh Circuit
+dates 1990–1997; DePuy dated 2019 for a file covering 2000–2006; Zondo dated 2022 for 2012–2017. Twelve
+records had no other fault at all. Two checkers independently recommended the same fix: **put ruling 16
+in the record schema the agents actually read, rather than correcting 50 records a round.** Not yet
+done — do it before the next round.
+
+## READ TO THE BOTTOM OF EVERY DNA PAGE
+
+`dna.ro/comunicat.xhtml?id=N` **carries its own later `Actualizare` block at the foot of the page with
+the final outcome.** Two of round 31's five "written as resolved and are not" corrections were sitting
+at the bottom of the page the record already cited — the Obregia hospital acquittal (Bucharest Court of
+Appeal 1066/A of 05.09.2024, "faptele nu sunt prevăzute de legea penală", DEFINITIVĂ) and the metro
+contractor's termination by limitation. Nobody had to search. This is a free outcome check on the map's
+largest non-US corpus.
+
+The other three: the DePuy Greek-hospital record said "convicted" when the Athens Court of Appeal
+**quashed the 2019 convictions and acquitted all defendants on 22 January 2024**; Kurz's conviction was
+**overturned and he was acquitted in May 2025**; and Operation Fisher had concluded the other way, 14
+convicted on 9 September 2026. **An Italian `convicted` is almost never final** — both such records in
+the Italy batch rested on non-final judgments, one first instance and one with the Cassation open.
+
+## USE appendround.py. merge.py WILL DESTROY cases.json
+
+Step 8 of the round procedure below says "Merge", and `merge.py`'s own docstring says it merges
+research files into `data/cases.json`. **It does not. It rebuilds the file from the research directory
+and overwrites everything else.** Run on round 31's twelve files it took `cases.json` from 3,523
+records to 536. Recovered from a backup taken a minute earlier. `appendround.py` is the tool — it
+appends and refuses a record colliding with a held one on merge.py's own key. Back `cases.json` up
+before any merge step regardless.
+
+`appendround.py` does **not** set `added` or `batch`, which step 3 of "How to add cases" requires. Set
+them by hand after appending; round 31 used `added: 2026-11-round31` and `batch: r31-<scope>`.
+
+## FREE ROUTES CONFIRMED AND CORRECTED, 20 November 2026
+
+- **`https://www.justice.gov/api/v1/press_releases.json?pagesize=N&title=<words>`** — filters DOJ
+  releases by title substring and returns **the full release body**, no key, no search cost. Found
+  independently by three agents and used by five. This file previously recorded justice.gov as needing
+  WebFetch because curl gets a bot interstitial; this route goes round it legitimately. The DOJ corpus
+  is one of the map's two main ones, so this is the round's most useful operational find.
+- **`occrp.org` is NOT dead.** Use the `www.` host and follow redirects: `curl -sSL`. Bare `occrp.org`
+  gives a Cloudflare 301. An earlier single failed attempt had it recorded as a dead host and it cost
+  two confirmable records before two checkers corrected it.
+- **`wp-json/wp/v2/posts?slug=<slug>`** recovers pages that return 403 to plain curl — it worked on
+  cronachedellacampania.it, which refuses curl outright.
+- `ministeriopublico.gob.pa/wp-json/wp/v2/posts` tracks a Panamanian prosecution across years.
+- `messinaantiusura.it`'s `wp/v2/search` plus its `estratto` post type returns full-text reprints of
+  Gazzetta del Sud, Giornale di Sicilia and La Repubblica. The most productive Italian route.
+- `orda.kz` for Kazakhstan; `premiumtimesng.com/wp-json/...?_fields=content` returns full article text.
+- **`chanrobles.com` returns 403**; use `lawphil.net` PDFs for Philippine decisions instead.
+- **`balkaninsight.com` ignores the `search` parameter** and returns the latest posts — do not trust
+  its results.
+- Refusing automated fetches, readable only through WebFetch: `business-standard.com`,
+  `taipeitimes.com`, `dawn.com`, `intellinews.com`, `miningweekly.com`, `japantimes.co.jp`.
+  Refusing entirely: `sec.gov` (403), `stf.jus.br` (403 from an F5 front end),
+  `elperiodico.com.gt` (no public DNS).
+- **The DIA half-yearly reports are not worth fetching.** Cheap to get, but they anonymise almost every
+  institution: a sweep of the 2024 volume for "Azienda Sanitaria Provinciale di", "Policlinico",
+  "ATERP" and "Università degli Studi" returned two hits, one of them a bibliography line. The regional
+  press and Polizia di Stato releases name bodies; the DIA reports do not.
+
+## CELLS AND SCOPES MEASURED CLOSED OR EMPTY, ROUND 31
+
+Do not re-research these. Each is a measurement, not a failure to look.
+
+- **Haiti `crime -> security` is closed, not thin.** 24 of 39 held Haiti cases are already in it. All
+  four Panel reports read end to end including every annex; nearly every candidate proved to be a held
+  event, its later outcome, or the Panel restating an earlier finding. The figures confirm it: 2,695
+  rounds, nine boxes, 130 kg, 999 rounds and 120,000 rounds all recur in held descriptions.
+- **Yemen `inf: crime` is empty in the Panel corpus.** Across 138,000 words with every annex read,
+  *collusion, connivance, complicit, bribe, bribery, corrupt* return two hits combined, neither about a
+  Yemeni official. Every smuggling passage is a network, a route, a seizure table, no official inside.
+  Where a trafficking network does reach the Yemeni state there, the network **is** the Houthi movement,
+  so the case is `movement`. Needs Yemeni court files or Aden Counter-Terrorism Unit records.
+- **CAR `movement -> company` is structurally empty.** Armed groups meet companies in CAR only as paid
+  protection, taxation or robbery — 3R securing Burkinabè-financed pits at Zamboye, UPC paid by Midas at
+  Ndassima, 3R protection deals at Abba. **The company hires the militia, so limb 3 runs the wrong
+  way.** CAR `movement -> security` is the opposite: saturated, 18 of 28 held CAR cases already in it.
+- **Latin America `crime -> legis` is a shape problem, not a sourcing one.** What local reporting still
+  supplies in volume is the opposite shape — the politician charged as a *member* of the trafficking
+  group — which fails limb 2: no outside party, no decision of the body. Six such cases banked.
+- **Sudan's S/2025/239 and Somalia's S/2025/777 yielded zero.** S/2025/239 is a war-conduct report whose
+  only infiltration material is held three times over. For S/2025/777 the Panel could not travel to
+  Somalia, its finance expert started on 17 October 2025, and paragraph 56 says in terms that it could
+  not investigate Al-Shabaab's money. New Somali cases need S/2021/849, S/2023/724 and S/2024/748.
+- **Italy `crime -> court` is close to exhausted.** 13 held records occupy essentially every named-officer
+  seam — Cassation, the Catanzaro appeal, the Reggio preventive-measures and real-estate judges, Imperia,
+  Vibo, Bari, the Palermo usher, the Catanzaro prosecution official, the Rome wiretap office, the Milan
+  court driver.
+- **Asia `corp -> company` thinness tracks the presence of a case feed, not of cases.** 247 held records
+  for those countries, running down to a single bank branch manager taking 5,000 rupees — every one from a
+  national anti-corruption case feed (CBI, state lokayuktas, KPK, MACC, Vietnamese court reporting). The
+  countries with room — Kazakhstan, Uzbekistan, Kyrgyzstan, Mongolia, Cambodia, Sri Lanka — have no
+  comparable fetchable feed, so a record there costs two to four calls instead of a fraction of one.
+  Where a feed exists the cell fills at once: `orda.kz` alone gave two of seven from one search.
+- **DRC is now close to mined out for the movement cells** — 1 record per 60,000 words, because round 9
+  took it, not because the text is thin.
+
+## THE LEAD BANK IS A POINTER TO DOCUMENTS, NOT A QUEUE OF CASES
+
+`data/candidates.json` holds 691 leads and this file has carried "about 25% conversion" since round 14.
+**Measured three times in round 31: the conversion is near zero.** Libya: of 43 banked leads from its
+main report, none produced a record. Yemen: none of 39. CAR: none of 37 — they were abbreviations,
+methodology pages and out-of-scope material. Every record came from full-text reading, and six of
+Yemen's ten came from annexes the paragraph extraction never reaches. Use a lead to find the document
+and the page, then read the document. Do not plan a round's volume on the bank.
+
+## TWO PRE-EXISTING DUPLICATE PAIRS INSIDE cases.json
+
+Found incidentally by the round-31 reviewer, not fixed — they are the owner's call:
+- **2821 / 2994** — the same Caltagirone prison officer warning the same mafia heir of the same raid.
+- **2449 / 2505** — the same Artibonite police unit, same 5.56mm boxes, same 10,000 gourdes, same annex 19.
+
+And one inconsistency in `removed_records.json`: the drop reason on "Six per cent offered to the head of
+Romania's state auto register" calls it a duplicate "of the held Romanian Auto Register record", but no
+Romanian record with "Auto" in its title exists in `cases.json`. Either that record was itself removed
+later or the reason misdescribed what it duplicated. The removal stands on its own second ground — the
+director general reported the offer, so limb 3 fails — but a reason pointing at a record that is not
+there will mislead the next reader. Round 31 re-added this case before the reviewer caught it.
 
 ## READ THIS BEFORE PLANNING A ROUND, 19 November 2026
 
