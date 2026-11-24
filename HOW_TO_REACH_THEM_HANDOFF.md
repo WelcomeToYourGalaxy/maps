@@ -370,6 +370,53 @@ rises with every register because most registers publish it.
   town, city or county.** Describe the case instead ("a large US county",
   "a city and the county named after it").
 
+### Fourth pass: everything open, one chart per government, official registers
+
+- **History rewritten, 24 November.** Every branch was rewritten with
+  git filter-repo so that no version of this file or of the page, and no
+  commit message, names the towns that had been used as worked examples;
+  commit ids from mid-November on changed. **Any clone made before then is
+  stale: clone again rather than pull.** The two pull-request refs on
+  GitHub cannot be rewritten from a clone; GitHub Support can purge them
+  and its cached views of the old commits.
+- **Every box is open by default.** Charts run left to right (each rank a
+  column, the top of the government at the left): fully open, a top-down
+  United States chart measured 57,000 px wide; left to right it is about
+  1,900 px wide and as tall as the list is long. `GOV_PAGE` no longer holds
+  anything back. Clicking still folds a box.
+- **One chart per government, not per tier.** `govGroups` merges levels of
+  the chain that resolve to the same record, that Wikidata calls
+  coextensive (`govtree/coextensive.json`, from P3403, built by
+  `--coextensive`), or whose boundaries cover the same ground within 5%.
+  The District of Columbia had been drawn as state, county and city;
+  Berlin as Land, Kreis and Gemeinde; Paris as department and commune.
+- **The chain itself.** A level smaller than the searched place is
+  dropped (a search for London had put it under Westminster).
+  `resolveUnitIn` now tries the subdivisions the level above lists (P150)
+  without accents first, refuses abolished or replaced units (P576,
+  P1366), and returns nothing rather than a non-government match (a
+  boundary named without its accent had matched a school). Cache keys for
+  these lookups moved to `unit2:`.
+- **Bodies are placed.** 12,919 bodies across the charts carry
+  coordinates (`--coords` patches charts on disk without a rebuild), so
+  clicking one in the diagram moves the map.
+- **Official registers** (`--directories`, `DIRECTORIES` in the builder):
+  GOV.UK's organisations register for the United Kingdom (live/closed
+  status and parent for 1,273 bodies: 141 confirmed, 529 added, 30 closed
+  ones taken off) and the US Government Manual for the United States (the
+  GPO's handbook, newest edition on GovInfo: 48 confirmed, 44 added).
+  Joined on the official website, then on the name with the country's own
+  name taken off. A body confirmed or added this way says so in the box's
+  info line.
+- `govtree-refresh.yml` rebuilds everything every Sunday: regions,
+  countries, the Netherlands, the registers, the coextensive list.
+
+The diagram layer now: 19,934 national bodies, 12,215 (61%) confirmed
+current; regions unchanged at 1,612 charted.
+
+Next register rounds, in order of size: France (api-lannuaire.service-public.fr),
+Canada, Australia, Germany, India, Japan, Brazil — about two or three a round.
+
 ### The diagrams kept current, and towards complete
 
 Everything below the regions is read live when a place is searched.

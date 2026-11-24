@@ -10229,7 +10229,7 @@ function govFromFile(T, add, link, top, pre, d, lv){
     add(k,{t:'body', br:'exe', l:h.l, sub:h.r, q:h.q, s:99, c:h.c||null}); link(pre+'B:exe',k); alias[h.q]=k; });
   const N=d.n||{};
   Object.keys(N).forEach(q=>{ const e=N[q];
-    add(pre+'N:'+q,{t:'body', br:e.b, l:e.l, q:q, d:e.d||'', w:e.w||'', s:e.s||0, a:e.a||[], u:!!e.u, c:e.c||null});
+    add(pre+'N:'+q,{t:'body', br:e.b, l:e.l, q:q, d:e.d||'', w:e.w||'', s:e.s||0, a:e.a||[], u:!!e.u, c:e.c||null, src:e.src||''});
     (e.a||[]).forEach(o=>{ if(!alias[o]) alias[o]=pre+'N:'+q; });
     if(!alias[q]) alias[q]=pre+'N:'+q;
   });
@@ -10451,6 +10451,7 @@ function govInfo(k){
   let h='<b>'+esc(n.l)+'</b>';
   const off = n.o || (n.q && GOV_OFF[n.q] && GOV_OFF[n.q].o) || govOfficeFor(n);
   if(n.d) h+=' — '+esc(typeof capFirst==='function'?capFirst(n.d):n.d);
+  if(n.src) h+=' <i>Listed as current in the '+esc(n.src)+'.</i>';
   if(n.u) h+=' <i>Nothing on the record shows it still exists — no website, no head in post, no recent founding date. It may be a former body; check before contacting it.</i>';
   else if(n.sub && n.t!=='root') h+=' — '+esc(n.sub);
   const bits=[];

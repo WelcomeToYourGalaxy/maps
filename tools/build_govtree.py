@@ -4,6 +4,7 @@
 Writes govtree/<Q-id>.json (one file per country) and govtree/index.json.
 --coords adds coordinates to the charts on disk without rebuilding them;
 --coextensive writes govtree/coextensive.json (places that are one ground).
+--directories applies each country's own register of its bodies (DIRECTORIES).
 With --regions it does the same one level down - every first-level division
 of every country (US states, German Länder, Indian states, French regions…) -
 and indexes them in govtree/regions.json. The page draws a region's file
@@ -331,6 +332,158 @@ def coextensive():
               open(os.path.join(OUT, "coextensive.json"), "w"), separators=(",", ":"))
     print(len(out), "places with a coextensive twin", file=sys.stderr)
 
+# ---------------------------------------------------------------- official directories
+#
+# A government's own list of its bodies says what Wikidata cannot: which
+# ones exist today. Each source below is applied to that country's chart
+# after it is built: a body the directory lists is marked current and
+# credited to it; a body it says has closed is taken off; a body it lists
+# that Wikidata lacks is added under the parent the directory gives.
+# Matching is on the official website first (both sides publish it), then
+# on the name with the country's own name and articles taken off.
+
+def _host_path(u):
+    u = (u or "").strip().lower()
+    u = re.sub(r"^https?://", "", u); u = re.sub(r"^www\.", "", u)
+    return u.rstrip("/")
+
+def _name_key(s, country_words):
+    s = (s or "").lower()
+    s = re.sub(r"[\u2019']", "", s)
+    for w in country_words: s = s.replace(w, " ")
+    s = re.sub(r"\b(the|of|and|for|u\.s\.|us|hm|his majesty's|her majesty's)\b", " ", s)
+    return re.sub(r"[^a-z0-9]+", "", s)
+
+def _get_json(url):
+    rq = urllib.request.Request(url, headers={"User-Agent": "HowToReachThem-govtree/1.0 (welcometoyourgalaxy.com)",
+                                              "Accept": "application/json"})
+    with urllib.request.urlopen(rq, timeout=120) as r:
+        return json.loads(r.read())
+
+def _apply(path, entries, src, country_words, drop_closed=True):
+    """entries: dicts with id, l, w, parent (entry id or None), b, top
+    ('@min', '@agencies', '@courts' or None), live (bool)"""
+    d = json.load(open(path))
+    N = d["n"]
+    by_web, by_name = {}, {}
+    for q, e in N.items():
+        if e.get("w"): by_web.setdefault(_host_path(e["w"]), q)
+        by_name.setdefault(_name_key(e["l"], country_words), q)
+    for h in d.get("heads", []):
+        by_name.setdefault(_name_key(h["l"], country_words), h["q"])
+    match = {}
+    for x in entries:
+        q = by_web.get(_host_path(x.get("w"))) if x.get("w") else None
+        if not q: q = by_name.get(_name_key(x["l"], country_words))
+        if q: match[x["id"]] = q
+    added = confirmed = dropped = 0
+    # closed bodies go, with whatever sits under them that the directory
+    # does not list as live
+    live_ids = {match[x["id"]] for x in entries if x["live"] and x["id"] in match}
+    if drop_closed:
+        gone = {match[x["id"]] for x in entries if not x["live"] and x["id"] in match} - live_ids
+        changed = True
+        while changed:
+            changed = False
+            for q, e in list(N.items()):
+                if q in gone: continue
+                if e.get("p") in gone and q not in live_ids: gone.add(q); changed = True
+        for q in gone:
+            if q in N: N.pop(q); dropped += 1
+    for x in entries:
+        if not x["live"]: continue
+        q = match.get(x["id"])
+        if q and q in N:
+            N[q].pop("u", None); N[q]["src"] = src; confirmed += 1
+            if not N[q].get("w") and x.get("w"): N[q]["w"] = x["w"]
+    key = lambda x: match.get(x["id"]) or (src.split()[0].lower() + ":" + str(x["id"]))
+    for x in entries:
+        if not x["live"] or x["id"] in match: continue
+        k = key(x)
+        par = None
+        if x.get("parent"):
+            pk = None
+            for y in entries:
+                if y["id"] == x["parent"]: pk = key(y); break
+            if pk and (pk in N or any(y["id"] == x["parent"] and y["live"] for y in entries)): par = pk
+        e = {"l": x["l"], "b": x["b"], "src": src, "s": 1}
+        if par: e["p"] = par
+        elif x.get("top"): e["p"] = x["top"]
+        if x.get("w"): e["w"] = x["w"]
+        N[k] = e; added += 1
+    # a parent added after its child is fine; a parent never added is not
+    for k, e in N.items():
+        p = e.get("p")
+        if p and not p.startswith("@") and p not in N: e["p"] = None if e["b"] == "leg" else "@agencies"
+    d.setdefault("dirs", [])
+    if src not in d["dirs"]: d["dirs"].append(src)
+    json.dump(d, open(path, "w"), ensure_ascii=False, separators=(",", ":"))
+    print(f"  {src}: {confirmed} confirmed current, {added} added, {dropped} taken off as closed",
+          file=sys.stderr)
+
+def dir_uk():
+    """GOV.UK's register of every UK government organisation, with its
+    status (live, closed, replaced…) and its parent organisations."""
+    out, page = [], 1
+    while True:
+        j = _get_json(f"https://www.gov.uk/api/organisations?page={page}")
+        for r in j["results"]:
+            det = r.get("details") or {}
+            slug = det.get("slug") or r["id"].rsplit("/", 1)[-1]
+            fmt = (r.get("format") or "").lower()
+            par = (r.get("parent_organisations") or [{}])[0].get("id", "")
+            out.append({"id": slug, "l": r["title"], "w": r.get("web_url"),
+                        "parent": par.rsplit("/", 1)[-1] if par else None,
+                        "b": "leg" if "parliament" in fmt else ("jud" if "court" in fmt or "tribunal" in fmt else "exe"),
+                        "top": "@min" if "ministerial department" == fmt else "@agencies",
+                        "live": det.get("govuk_status") in ("live", "exempt", "transitioning", "joining")})
+        if page >= j.get("pages", 1): break
+        page += 1
+    return out
+
+def dir_us():
+    """The United States Government Manual (GPO, GovInfo bulk data): the
+    official handbook of the federal government, every top-level body by
+    branch with its website. Newest edition on GovInfo."""
+    import io, zipfile, xml.etree.ElementTree as ET
+    years = _get_json("https://www.govinfo.gov/bulkdata/json/GOVMAN")["files"]
+    yr = sorted((f["name"] for f in years if f["name"].isdigit()), reverse=True)[0]
+    files = _get_json(f"https://www.govinfo.gov/bulkdata/json/GOVMAN/{yr}")["files"]
+    z = [f["link"] for f in files if f["name"].endswith(".zip")][0]
+    rq = urllib.request.Request(z, headers={"User-Agent": "HowToReachThem-govtree/1.0"})
+    raw = urllib.request.urlopen(rq, timeout=300).read()
+    zf = zipfile.ZipFile(io.BytesIO(raw))
+    root = ET.fromstring(zf.read([n for n in zf.namelist() if n.endswith(".xml")][0]))
+    out = []
+    for e in root.findall("Entity"):
+        cat = (e.findtext("Category") or "").strip()
+        if cat.startswith("International"): continue      # not part of the US government
+        name = (e.findtext("AgencyName") or "").strip()
+        web = ""
+        for a in e.iter("WebAddress"):
+            if (a.text or "").strip(): web = a.text.strip(); break
+        b = "leg" if cat.startswith("Legislative") else ("jud" if cat.startswith("Judicial") else "exe")
+        top = "@min" if "Departments" in cat else (None if b != "exe" else "@agencies")
+        if "The President" in cat: continue                # the heads are on the chart already
+        out.append({"id": e.get("EntityId"), "l": name, "w": web, "parent": None,
+                    "b": b, "top": top, "live": True})
+    return out
+
+DIRECTORIES = [
+    ("Q145", "GOV.UK organisations register", dir_uk, ["united kingdom", "uk "], True),
+    ("Q30", "US Government Manual", dir_us, ["united states", "u.s.", "federal"], False),
+]
+
+def directories():
+    for q, src, fn, words, drop in DIRECTORIES:
+        path = os.path.join(OUT, q + ".json")
+        if not os.path.exists(path): continue
+        try:
+            entries = fn()
+        except Exception as e:
+            print(f"  {src}: not reachable ({e}); chart left as built", file=sys.stderr); continue
+        _apply(path, entries, src, words, drop)
+
 def patch_coords():
     """Add coordinates to every chart already on disk without rebuilding
     it: one query per 400 bodies rather than the whole build."""
@@ -364,6 +517,8 @@ def main():
         return patch_coords()
     if args[:1] == ["--coextensive"]:
         return coextensive()
+    if args[:1] == ["--directories"]:
+        return directories()
     if args[:1] == ["--regions"]:
         REGIONS = True; P17C = ""; args = args[1:]
     only = set(a for a in args if re.match(r"^Q\d+$", a))

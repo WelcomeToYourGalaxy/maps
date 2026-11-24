@@ -41,6 +41,9 @@ jobs:
       # the Netherlands' government is filed on Q55, its country code on Q29999
       - name: countries filed on another item
         run: python3 -I tools/build_govtree.py --as Q29999 Q55
+      # each government's own register of its bodies, where one is read
+      - name: official directories
+        run: python3 -I tools/build_govtree.py --directories
       - name: places that are one ground (merged levels)
         run: python3 -I tools/build_govtree.py --coextensive
       - name: commit the charts
