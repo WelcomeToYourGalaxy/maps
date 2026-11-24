@@ -2,6 +2,8 @@
 """One diagram per country of how its national government is organised.
 
 Writes govtree/<Q-id>.json (one file per country) and govtree/index.json.
+--coords adds coordinates to the charts on disk without rebuilding them;
+--coextensive writes govtree/coextensive.json (places that are one ground).
 With --regions it does the same one level down - every first-level division
 of every country (US states, German Länder, Indian states, French regions…) -
 and indexes them in govtree/regions.json. The page draws a region's file
@@ -65,7 +67,7 @@ PRE = ("PREFIX wdt: <http://www.wikidata.org/prop/direct/> "
        "PREFIX ps: <http://www.wikidata.org/prop/statement/> "
        "PREFIX pq: <http://www.wikidata.org/prop/qualifier/> ")
 
-def ask(q, tries=3):
+def ask(q, tries=3, timeout=900):
     body = urllib.parse.urlencode({"query": PRE + q}).encode()
     last = ""
     for ep in EP:
@@ -75,7 +77,7 @@ def ask(q, tries=3):
                     "Accept": "application/sparql-results+json",
                     "Content-Type": "application/x-www-form-urlencoded",
                     "User-Agent": "HowToReachThem-govtree/1.0 (welcometoyourgalaxy.com)"})
-                with urllib.request.urlopen(rq, timeout=900) as r:
+                with urllib.request.urlopen(rq, timeout=timeout) as r:
                     return json.loads(r.read())["results"]["bindings"]
             except Exception as e:
                 last = f"{ep}: {e}"
@@ -200,7 +202,7 @@ def children(parents):
     A batch the endpoint times out on is split in half and asked again, so
     one heavy parent costs a few requests rather than the whole build."""
     out = defaultdict(set)
-    todo = list(chunks(parents, 400))
+    todo = list(chunks(parents, 100))
     while todo:
         ch = todo.pop()
         try:
@@ -224,7 +226,7 @@ def _children_rows(ch):
           UNION {{ ?X wdt:P31 ?P }}
           {{ ?X wdt:P31/wdt:P279* wd:Q43229 }} UNION {{ ?X wdt:P279+ wd:Q43229 }}
           OPTIONAL {{ ?X wdt:P31/wdt:P279* ?_ct . VALUES ?_ct {{ wd:Q41487 wd:Q105985 }} BIND(1 AS ?court) }}
-          {ENDED} {NOTBODY_F} }}""", tries=2)
+          {ENDED} {NOTBODY_F} }}""", tries=1, timeout=240)
 COURT = set()
 
 def aliases(nodes):
@@ -299,7 +301,7 @@ def coords(qs):
           {{ ?X wdt:P625 ?c }} UNION {{ ?X wdt:P159 ?h . ?h wdt:P625 ?c BIND(1 AS ?hq) }} }}""")
         for r in rows:
             x = v(r, "X")
-            m = re.match(r"Point\(([-\d.eE]+) ([-\d.eE]+)\)", r["c"]["value"])
+            m = re.match(r"(?i)Point\(([-\d.eE]+) ([-\d.eE]+)\)", r["c"]["value"])
             if not m: continue
             hq = bool(r.get("hq"))
             if x in out and (out[x][2] == 0 or hq): continue
@@ -313,6 +315,44 @@ WEIGHTY = re.compile(r"\b(ministry|department|agency|authority|commission|admini
 MINOR = re.compile(r"\b(group|forum|panel|unit|team|task ?force|working|stakeholder|network|"
                    r"programme|program|project|initiative|small (and disadvantaged )?business)\b", re.I)
 
+def coextensive():
+    """Places Wikidata says cover the same ground as one another (P3403),
+    among administrative units: the District of Columbia and Washington,
+    for instance. The page merges levels of a chain that are one
+    government, so they draw as one chart rather than two or three."""
+    rows = ask("""SELECT DISTINCT ?a ?b WHERE { ?a wdt:P3403 ?b .
+      ?a wdt:P31/wdt:P279* wd:Q56061 . ?b wdt:P31/wdt:P279* wd:Q56061 . }""")
+    out = defaultdict(set)
+    for r in rows:
+        a, b = v(r, "a"), v(r, "b")
+        if a != b: out[a].add(b); out[b].add(a)
+    os.makedirs(OUT, exist_ok=True)
+    json.dump({k: sorted(x) for k, x in sorted(out.items())},
+              open(os.path.join(OUT, "coextensive.json"), "w"), separators=(",", ":"))
+    print(len(out), "places with a coextensive twin", file=sys.stderr)
+
+def patch_coords():
+    """Add coordinates to every chart already on disk without rebuilding
+    it: one query per 400 bodies rather than the whole build."""
+    import glob
+    files = sorted(glob.glob(os.path.join(OUT, "Q*.json")))
+    qs = set()
+    docs = {}
+    for f in files:
+        d = json.load(open(f)); docs[f] = d
+        qs |= set(d.get("n", {})); qs |= {h["q"] for h in d.get("heads", [])}
+    print(len(files), "charts,", len(qs), "bodies", file=sys.stderr)
+    xy = coords(qs)
+    n = 0
+    for f, d in docs.items():
+        for q, e in d.get("n", {}).items():
+            if q in xy: e["c"] = xy[q]; n += 1
+        for h in d.get("heads", []):
+            if h["q"] in xy: h["c"] = xy[h["q"]]
+        with open(f, "w") as fh:
+            json.dump(d, fh, ensure_ascii=False, separators=(",", ":"))
+    print(n, "bodies placed", file=sys.stderr)
+
 def main():
     # --as Q29999 Q55: build Q55's government and file it as Q29999's,
     # for a country whose code sits on one item and its government on another
@@ -320,6 +360,10 @@ def main():
     args = sys.argv[1:]
     if args[:1] == ["--as"]: AS = args[1]; args = args[2:]
     global REGIONS, P17C
+    if args[:1] == ["--coords"]:
+        return patch_coords()
+    if args[:1] == ["--coextensive"]:
+        return coextensive()
     if args[:1] == ["--regions"]:
         REGIONS = True; P17C = ""; args = args[1:]
     only = set(a for a in args if re.match(r"^Q\d+$", a))

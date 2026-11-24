@@ -1,0 +1,53 @@
+name: government diagrams
+
+# The government diagrams on How To Make A Law are rebuilt from Wikidata
+# every week, so a ministry created, renamed or abolished reaches the page
+# within days of reaching Wikidata, without anyone touching the repo.
+# tools/build_govtree.py says what puts a body on a chart.
+
+on:
+  schedule:
+    - cron: "41 5 * * 0"        # Sundays
+  workflow_dispatch:
+  push:
+    paths:
+      - "tools/build_govtree.py"
+      - ".github/workflows/govtree-refresh.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: govtree-refresh
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      # regions first: a few countries are also a division of a realm
+      # (Denmark, Aruba), and the country build must be the one that stands
+      - name: first-level divisions
+        run: python3 -I tools/build_govtree.py --regions
+      - name: countries
+        run: python3 -I tools/build_govtree.py
+      # the Netherlands' government is filed on Q55, its country code on Q29999
+      - name: countries filed on another item
+        run: python3 -I tools/build_govtree.py --as Q29999 Q55
+      - name: places that are one ground (merged levels)
+        run: python3 -I tools/build_govtree.py --coextensive
+      - name: commit the charts
+        run: |
+          git config user.name  "govtree-bot"
+          git config user.email "govtree-bot@users.noreply.github.com"
+          git add govtree
+          git diff --staged --quiet || git commit -m "government diagrams rebuilt: $(date -u +%Y-%m-%d)"
+          git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+          git push

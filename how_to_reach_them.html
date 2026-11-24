@@ -3616,6 +3616,17 @@ function hideTip(){ if(tipEl) tipEl.style.display='none'; }
 let ISO2Q={}, ISO2ISO3={}, ISO3NUM={}, WORLD=[], admCache={};
 let STACK=[];                 /* [{q,label,iso3,level,feature}] */
 
+/* Ground covered, in square degrees: good for telling which of two
+   nearby shapes is the larger, which is all it is used for. */
+function geomArea(g){
+  if(!g) return 0;
+  const poly=p=>{ if(!p||!p.length) return 0; let a=Math.abs(ringArea(p[0]));
+    for(let i=1;i<p.length;i++) a-=Math.abs(ringArea(p[i])); return Math.max(0,a); };
+  if(g.type==='Polygon') return poly(g.coordinates);
+  if(g.type==='MultiPolygon') return g.coordinates.reduce((t,p)=>t+poly(p),0);
+  if(g.type==='GeometryCollection') return (g.geometries||[]).reduce((t,x)=>t+geomArea(x),0);
+  return 0;
+}
 function ringArea(r){ let a=0; for(let i=0,j=r.length-1;i<r.length;j=i++) a+=(r[j][0]*r[i][1]-r[i][0]*r[j][1]); return a/2; }
 function centroid(geom){
   const polys = geom.type==='Polygon' ? [geom.coordinates] : geom.coordinates;
@@ -3861,12 +3872,13 @@ async function fromWorld(f, opts){
   }
   if(mid){
     const mn = mid.properties.shapeName || mid.properties.n;
-    const hit = await resolveUnitIn(mn, cq, WANT_REGION);
+    const hit = await resolveUnitIn(mn, cq, WANT_REGION, cq);
     STACK.push({q:hit?hit.id:null, label:hit?hit.label:mn, iso3:iso3, level:1, feature:mid});
     paintTrail(); paintChain();
   }
   const lvl = STACK.length;
-  const hit2 = await resolveUnitIn(nm, cq, (f.properties.l||2)>=2 ? WANT_DISTRICT : WANT_REGION);
+  const above = STACK.length ? STACK[STACK.length-1].q : null;
+  const hit2 = await resolveUnitIn(nm, cq, (f.properties.l||2)>=2 ? WANT_DISTRICT : WANT_REGION, above);
   STACK.push({q:hit2?hit2.id:null, label:hit2?hit2.label:nm, iso3:iso3, level:lvl, feature:f});
   if(!opts.noMuniScan){
     if(hit2){ openJuris(hit2.id, hit2.label); }
@@ -8620,6 +8632,20 @@ async function enterPlace(i){
   }else{
     STACK=[];
   }
+  /* A level found by where the place's centre point falls can be smaller
+     than the place itself: a search for London lands its point in
+     Westminster, and the chain read England › Westminster › London, a
+     city under one of its own boroughs. A level that covers clearly
+     less ground than the searched place sits inside it, not above it,
+     so it is dropped. The country is never dropped. */
+  try{
+    const placeA=geomArea(feat.geometry);
+    if(placeA>0) STACK=STACK.filter((st,i)=>{
+      if(i===0 || !st.feature || !st.feature.geometry) return true;
+      const a=geomArea(st.feature.geometry);
+      return !(a>0 && a < placeA*0.9);
+    });
+  }catch(e){ console.warn('chain: could not compare areas', e); }
   /* then the place itself, as the deepest level */
   const top=STACK[STACK.length-1];
   STACK.push({q:wd, label:name, iso3:top?top.iso3:null,
@@ -8658,13 +8684,30 @@ const RX_ADMIN = /\b(county|province|district|region|state|municipality|commune|
 const WANT_REGION = /\b(state|province|region|oblast|krai|republic|territor|governorate|voivodeship|canton|emirate|prefecture|department|county)\b/i;
 const WANT_DISTRICT = /\b(county|district|parish|borough|municipality|commune|prefecture|department|subdivision|shire|raion|powiat|okrug)\b/i;
 
-async function resolveUnitIn(nm, countryQ, want){
+async function resolveUnitIn(nm, countryQ, want, parentQ){
   if(!countryQ) return null;
+  /* First the subdivisions the level above lists for itself (P150),
+     compared without accents or words like "State" and "County": the
+     boundary files spell a name the way they spell it, and an exact
+     English label is not there to be matched for "Mahārāshtra" or for
+     "Sao Paulo" without its accent. */
+  if(parentQ){
+    try{
+      const subs = await sparql(qSubdiv(parentQ), 'sub:'+parentQ);
+      const t = normName(nm);
+      for(const r of subs){ const l=(r.dLabel&&r.dLabel.value)||'';
+        if(t && normName(l)===t) return {id:qid(r.d.value), label:l, types:[]}; }
+    }catch(e){ console.warn('resolve: subdivisions of '+parentQ, e); }
+  }
   const vals = SUFFIXES.map(s=>'"'+(nm+s).replace(/"/g,'\\"')+'"@en').join(' ');
   try{
     const rows = await sparql('SELECT ?x ?xLabel ?tLabel WHERE { VALUES ?l { '+vals+
       ' } ?x rdfs:label ?l ; wdt:P17 wd:'+countryQ+' . OPTIONAL{?x wdt:P31 ?t} '+
-      'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 10', 'unit:'+countryQ+':'+nm);
+      /* a unit that has been abolished or replaced is not the government
+         over anyone: a search in Nairobi resolved to the province
+         abolished in 2013 */
+      'FILTER NOT EXISTS{?x wdt:P576 []} FILTER NOT EXISTS{?x wdt:P1366 []} '+
+      'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 10', 'unit2:'+countryQ+':'+nm);
     const cand={};
     rows.forEach(r=>{ const id=qid(r.x.value);
       if(!cand[id]) cand[id]={id:id, label:(r.xLabel&&r.xLabel.value)||nm, types:[]};
@@ -8694,7 +8737,13 @@ async function resolveUnitIn(nm, countryQ, want){
             be=b.label.toLowerCase()===nm.toLowerCase()?0:1;
       return ae-be;
     });
-    return ranked[0]||null;
+    /* Only a place that is a unit of government at all. With nothing of
+       that kind among the candidates the name matched something else —
+       a boundary called "Sao Paulo", without its accent, matched a
+       school of that name — and no answer is better than that one. */
+    const top=ranked[0]||null;
+    if(top && !top.types.some(t=>RX_ADMIN.test(t) || (want && want.test(t)))) return null;
+    return top;
   }catch(e){ return null; }
 }
 
@@ -8720,7 +8769,8 @@ async function resolveUnit(nm){
   try{
     const rows = await sparql('SELECT ?x ?xLabel ?tLabel WHERE { VALUES ?l { '+vals+
       ' } ?x rdfs:label ?l ; wdt:P17 wd:'+country+' . OPTIONAL{?x wdt:P31 ?t} '+
-      'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 10', 'unit:'+country+':'+nm);
+      'FILTER NOT EXISTS{?x wdt:P576 []} FILTER NOT EXISTS{?x wdt:P1366 []} '+
+      'SERVICE wikibase:label{bd:serviceParam wikibase:language "en"} } LIMIT 10', 'unit2:'+country+':'+nm);
     const cand={};
     rows.forEach(r=>{ const id=qid(r.x.value);
       if(!cand[id]) cand[id]={id:id, label:(r.xLabel&&r.xLabel.value)||nm, types:[]};
@@ -9963,7 +10013,7 @@ function shiftForBox(on){
 const GOVDIR='govtree/';
 const MERMAID_SRC='https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.min.js';
 const GOV_IDRX=/(?:^|-)(g\d+)(?:-|$)/;
-const GOV_PAGE=12;      /* children shown per box before "more" */
+const GOV_PAGE=1e9;     /* every child shown: nothing is held back behind "more" */
 const GOV_COL=8;
 const GOV_GAP=5;        /* px between the box and the panel */        /* a long list is stacked in columns this tall */
 const GOV_BR={
@@ -9994,8 +10044,8 @@ function govMermaid(){
       try{
         window.mermaid.initialize({startOnLoad:false, securityLevel:'strict', theme:'base',
           maxTextSize:900000, maxEdges:20000,
-          flowchart:{htmlLabels:true, curve:'basis', nodeSpacing:16, rankSpacing:30,
-                     padding:9, useMaxWidth:false, wrappingWidth:190, diagramPadding:14},
+          flowchart:{htmlLabels:true, curve:'basis', nodeSpacing:7, rankSpacing:46,
+                     padding:7, useMaxWidth:false, wrappingWidth:240, diagramPadding:14},
           themeVariables:{fontFamily:"'DM Sans', system-ui, sans-serif", fontSize:'11.5px',
             primaryColor:'#171f1b', primaryTextColor:'#e7e4dc', primaryBorderColor:'#4a524c',
             lineColor:'#5b655e', background:'transparent', mainBkg:'#171f1b',
@@ -10026,6 +10076,10 @@ async function govRegions(){
     try{ const r=await fetch(GOVDIR+'regions.json',{cache:'force-cache'});
          GOV.regIx = r.ok ? ((await r.json()).c||{}) : {}; }
     catch(e){ console.warn('government diagram: no region index', e); GOV.regIx={}; }
+  }
+  if(!GOV.coext){
+    try{ const r=await fetch(GOVDIR+'coextensive.json',{cache:'force-cache'}); GOV.coext = r.ok ? await r.json() : {}; }
+    catch(e){ console.warn('government diagram: no coextensive list', e); GOV.coext={}; }
   }
   const want=STACK.slice(1).map(s=>s.q).filter(q=>q && GOV.regIx[q] && !(q in GOV.reg));
   await Promise.all(want.map(async q=>{
@@ -10066,26 +10120,70 @@ async function govLoad(){
      L:<i>       a level below the country, i = its place in STACK
      L:<i>:B:<br>, L:<i>:K:<kind>   that level's branches and kinds
      O:<q>       an office the panel lists */
+/* Which levels of the chain are one government. The boundary files
+   and the geocoder give a level for every tier they know of, and where a
+   single government fills several tiers the chain repeats it: Berlin is
+   the Land, the Kreis and the Gemeinde all at once, and the District of
+   Columbia came back as state, county and city — three charts of one
+   council. Levels are merged when they resolve to the same record, or to
+   records Wikidata says cover the same ground (P3403, "coextensive
+   with", read from govtree/coextensive.json). A level with no record and
+   no offices is left out: there is nothing to draw for it. */
+function govGroups(){
+  const co=GOV.coext||{};
+  const same=(a,b)=> a && b && (a===b || (co[a]||[]).indexOf(b)>=0);
+  const groups=[], lead={};
+  for(let i=0;i<STACK.length;i++){
+    const st=STACK[i];
+    const g=groups[groups.length-1];
+    if(g && (g.qs.some(q=>same(q, st.q)) || govSameGround(g.levels[g.levels.length-1], i))){
+      g.levels.push(i); if(st.q && g.qs.indexOf(st.q)<0) g.qs.push(st.q);
+      if(st.label && g.labels.indexOf(st.label)<0) g.labels.push(st.label);
+      lead[i]=g.lead; continue;
+    }
+    if(i>0 && !st.q && !govLevelOffices(i).length){ lead[i]=g?g.lead:0; continue; }
+    groups.push({lead:i, levels:[i], qs:st.q?[st.q]:[], labels:st.label?[st.label]:[]});
+    lead[i]=i;
+  }
+  GOV.lead=lead;
+  return groups;
+}
+/* Two levels whose boundaries cover the same ground within a few per
+   cent are one place, whatever their records say: Paris the department
+   and Paris the commune are one council, and Wikidata does not mark the
+   two items as coextensive. */
+const GOV_AREAS={};
+function govSameGround(i, j){
+  const a=STACK[i], b=STACK[j];
+  if(!a || !b || !a.feature || !b.feature) return false;
+  const ar=x=>{ const k=(x.q||'')+'|'+x.label+'|'+x.level; if(GOV_AREAS[k]==null) GOV_AREAS[k]=geomArea(x.feature.geometry); return GOV_AREAS[k]; };
+  const A=ar(a), B=ar(b);
+  if(!(A>0 && B>0)) return false;
+  return Math.abs(A-B)/Math.max(A,B) < 0.05;
+}
 function govTree(){
   const T={}, add=(k,o)=>{ T[k]=Object.assign({k:k, kids:[], s:0}, o); return T[k]; };
   const link=(p,k)=>{ if(T[p] && T[k] && T[k].par==null){ T[k].par=p; T[p].kids.push(k); } };
-  const st0=STACK[0]||{};
-  add('R',{t:'root', l:(st0.label||'This country'), lv:0});
-  for(let i=1;i<STACK.length;i++){
-    const st=STACK[i];
-    let nm=''; try{ nm=levelName(i); }catch(e){ nm='Level '+i; }
+  const groups=govGroups();
+  groups.forEach(g=>{
+    const i=g.lead;
+    let words=[]; g.levels.forEach(j=>{ let nm=''; try{ nm=levelName(j); }catch(e){ nm='Level '+j; }
+      if(nm && words.indexOf(nm)<0) words.push(nm); });
     /* Each level is a chart of its own, drawn under the one above it.
        A county is not a branch of its state's government, and drawing it
        beside the state's legislative, executive and judicial boxes said
        that it was. */
-    add('L:'+i,{t:'level', lv:i, l:(st.label||nm), sub:nm, s:-20-i});
-  }
-  for(let i=0;i<STACK.length;i++){
+    if(i===0) add('R',{t:'root', l:(g.labels.join(' / ')||'This country'), lv:0,
+                       sub: g.levels.length>1 ? 'National government, and '+words.slice(1).join(', ').toLowerCase()+' as well' : ''});
+    else add('L:'+i,{t:'level', lv:i, l:(g.labels.join(' / ')||words[0]), sub:words.join(', '), s:-20-i});
     const top = i===0 ? 'R' : 'L:'+i, pre = i===0 ? '' : 'L:'+i+':';
-    const file = i===0 ? GOV.data : (STACK[i].q && GOV.reg[STACK[i].q]) || null;
+    let file = i===0 ? GOV.data : null;
+    if(!file) g.qs.forEach(q=>{ if(!file && GOV.reg[q]) file=GOV.reg[q]; });
     const alias = file ? govFromFile(T, add, link, top, pre, file, i) : {};
-    govOffices(T, add, link, top, pre, alias, govLevelOffices(i), i);
-  }
+    const offs=[], seen=new Set();
+    g.levels.forEach(j=>govLevelOffices(j).forEach(o=>{ if(!seen.has(o.id)){ seen.add(o.id); offs.push(o); } }));
+    govOffices(T, add, link, top, pre, alias, offs, i);
+  });
   /* the weightiest first under every box; the record's own order is
      arbitrary */
   Object.values(T).forEach(n=>{
@@ -10095,13 +10193,13 @@ function govTree(){
       return (B.s||0)-(A.s||0) || String(A.l).localeCompare(String(B.l));
     });
   });
-  /* branches in the order the map uses them, the level below last */
+  /* branches in the order the map uses them */
   const BO=['leg','exe','jud','other'];
-  [ 'R' ].concat(Object.keys(T).filter(k=>T[k].t==='level')).forEach(k=>{
+  Object.keys(T).filter(k=>T[k].t==='level'||T[k].t==='root').forEach(k=>{
     T[k].kids.sort((a,b)=>{
       const A=T[a], B=T[b];
-      const ra = A.t==='level' ? 9 : (A.t==='branch' ? BO.indexOf(A.br) : 5);
-      const rb = B.t==='level' ? 9 : (B.t==='branch' ? BO.indexOf(B.br) : 5);
+      const ra = A.t==='branch' ? BO.indexOf(A.br) : 5;
+      const rb = B.t==='branch' ? BO.indexOf(B.br) : 5;
       return ra-rb;
     });
   });
@@ -10181,7 +10279,11 @@ let GOV_OFF={};     /* office q -> {k: node key, o: office} */
 
 /* What starts open: enough to see the shape of the government —
    branches, chambers, ministries, the levels and their branches. */
+/* Everything open. The reader asked to see the whole government at
+   once; any box can still be folded by clicking it. */
 function govDefaultOpen(T){
+  const all=new Set(Object.keys(T).filter(k=>T[k].kids && T[k].kids.length));
+  all.add('R'); return all;
   const o=new Set(['R']);
   Object.keys(T).forEach(k=>{
     const n=T[k];
@@ -10212,6 +10314,8 @@ function govCountUnder(T,k){ let n=0; const st=[k]; while(st.length){ const x=st
 
 /* The chart roots in order: the country, then each level below it. */
 function govRoots(T){ const r=['R']; for(let i=1;i<STACK.length;i++) if(T['L:'+i]) r.push('L:'+i); return r; }
+/* the chart a level of the chain is drawn in, once levels are merged */
+function govLead(i){ return (GOV.lead && GOV.lead[i]!=null) ? GOV.lead[i] : i; }
 /* One Mermaid source per level. Ids run on across the charts, so a node
    id is unique on the whole canvas and GOV_IDRX finds it in any of them. */
 function govSources(T){
@@ -10221,11 +10325,17 @@ function govSources(T){
 let GOV_IDSEQ=0;
 function govSource(T, root){
   const id=k=>{ if(!GOV.key2id[k]){ const g='g'+(GOV_IDSEQ++); GOV.key2id[k]=g; GOV.id2key[g]=k; } return GOV.key2id[k]; };
-  const lines=['flowchart TB'], edges=[], cls={};
+  /* Left to right, each rank of the hierarchy a column: the top of the
+     government at the left, what sits under it to the right. With every
+     box shown, a top-down layout put each body's whole subtree side by
+     side and the United States came out 55,000 pixels wide; this way it
+     is a few columns wide and as tall as the list is long, which the
+     wheel scrolls through. */
+  const lines=['flowchart LR'], edges=[], cls={};
   const node=k=>{
     const n=T[k], g=id(k);
     let lab=mmEsc(govCut(n.l, n.t==='root'?60:58));
-    if(n.t==='root') lab='<b>'+lab+'</b><br/>'+mmEsc('National government');
+    if(n.t==='root') lab='<b>'+lab+'</b><br/>'+mmEsc(n.sub||'National government');
     else if(n.t==='level') lab='<b>'+lab+'</b><br/>'+mmEsc((n.sub||'Local')+' government');
     else if(n.t==='branch') lab='<b>'+lab+'</b>'+(n.sub?'<br/>'+mmEsc(n.sub):'');
     else if(n.t==='group') lab='<b>'+lab+'</b>';
@@ -10256,15 +10366,7 @@ function govSource(T, root){
        stacked in columns, so twenty ministries do not run three
        thousand pixels wide */
     const p=id(k);
-    const openKid=list.some(c=>T[c] && T[c].kids && T[c].kids.length && GOV.open.has(c));
-    if(list.length<=4 || T[k].t==='root' || T[k].t==='level' || (openKid && list.length<=7)){
-      list.forEach(c=>edges.push('  '+p+' --> '+id(c)));
-    }else{
-      for(let i=0;i<list.length;i+=GOV_COL){
-        edges.push('  '+p+' --> '+id(list[i]));
-        for(let j=i+1;j<Math.min(i+GOV_COL,list.length);j++) edges.push('  '+id(list[j-1])+' ~~~ '+id(list[j]));
-      }
-    }
+    list.forEach(c=>edges.push('  '+p+' --> '+id(c)));
   };
   walk(root);
   const C={
@@ -10405,8 +10507,8 @@ async function govDraw(){
         }
         if(i>0){
           const lv=+c.root.split(':')[1];
-          let nm=''; try{ nm=levelName(lv); }catch(e){}
-          const up=(STACK[lv-1]&&STACK[lv-1].label)||'';
+          const nm=(T[c.root] && T[c.root].sub) || '';
+          const upRoot=charts[i-1].root, up=(T[upRoot] && T[upRoot].l) || '';
           html.push('<div class="govsep"><span>'+esc(nm||'Below')+(up?' \u00b7 within '+esc(up):'')+'</span></div>');
         }
         html.push('<div class="govch">'+svg+'</div>');
@@ -10470,9 +10572,11 @@ function govFit(glide){
      centred — the reader zooms out or drags for the rest. */
   let k=Math.min(W/w, H/h, 1.1);
   if(k>=0.62 || glide==='all'){ GOV.view={k:k, x:(W-w*k)/2, y:Math.max(6,(H-h*k)/2)}; govSetView(!!glide); return; }
+  /* too big to read whole: the country's box at the left edge, halfway
+     down the view, at a readable size */
   k=0.8; GOV.view={k:k, x:8, y:8};
   const p=govNodeLocal('R');
-  if(p) GOV.view.x=W/2-p.x*k;
+  if(p){ GOV.view.x=Math.max(12, 90-p.x*k); GOV.view.y=H/2-p.y*k; }
   govSetView(glide);
 }
 function govZoom(f, cx, cy){
@@ -10602,7 +10706,8 @@ function govTargets(T){
        only when the reader opens it. */
     let es=[]; try{ es=officeEntriesFor([LEAFKIND], LEAFLVL, LEAFSUB); }catch(e){}
     es.forEach(e=>{
-      const kk=(e.lvl>=1?'L:'+e.lvl+':':'')+'K:'+LEAFKIND;
+      const ld=govLead(e.lvl);
+      const kk=(ld>=1?'L:'+ld+':':'')+'K:'+LEAFKIND;
       if(T[kk]) push(kk); else forOffice(e.o.id);
     });
     if(out.length){
@@ -10611,7 +10716,7 @@ function govTargets(T){
       return out.slice(0,60);
     }
   }
-  if(typeof LEAFLVL!=='undefined' && LEAFLVL!=null){ push(LEAFLVL===0?'R':'L:'+LEAFLVL); }
+  if(typeof LEAFLVL!=='undefined' && LEAFLVL!=null){ const ld=govLead(LEAFLVL); push(ld===0?'R':'L:'+ld); }
   return out;
 }
 function govApplyLit(){
