@@ -192,6 +192,85 @@ no email still moves a column nobody else is filling.
 
 ---
 
+## 000. Round twenty-five: who holds each post
+
+The government diagrams and the panel's office cards now name current
+holders, from the OpenSanctions collection of politically exposed persons
+(https://www.opensanctions.org/datasets/peps/). One download covers about
+230 sources: national parliaments, regional assemblies, mayors' registers
+(France's fr_maires, Spain's mayors and councillors, Luxembourg's
+bourgmestres), cabinet and judiciary lists, the US Plum Book, Plural's
+(OpenStates') state legislators, Brazil's PEP list from the Portal da
+Transparência, EveryPolitician, Singapore's government directory, and
+Wikidata.
+
+Licence: CC BY-NC 4.0 — free for a non-commercial site, with credit.
+The site is non-commercial (the user's answer, 25 November). Every list
+of names carries the credit line `holdCredit()`; the About section names
+the source. If the site ever earns money, OpenSanctions needs a paid
+licence and holders/ must come off.
+
+### Files
+
+- `tools/build_holders.py` — downloads entities.ftm.json (~950 MB),
+  keeps posts with a holder the source marks `current` (status exactly
+  that), drops end dates already past, people with a death date,
+  dissolved posts, party posts (topic pol.party, or "party" in the title
+  outside "working party"), and another country's envoys filed under the
+  host country ("ambassador of X to Y", nuncios). Reads only each
+  holder's name, OpenSanctions id and start date — never relatives,
+  associates, birth dates, addresses or ID numbers.
+- `holders/index.json` — built date, source date, licence, per-country
+  counts and shard count.
+- `holders/<country Q>.json` — national posts, one per line.
+- `holders/<country Q>/<n>.json` — posts below the country, keyed by the
+  Wikidata item of their jurisdiction (P1001 on the post's item) or by
+  `n:` + the folded place name; shard = FNV-1a(key) mod shard count.
+- `.github/workflows/holders-refresh.yml` — Sundays 06:17 UTC, after the
+  diagrams; also on push of the builder or the workflow.
+
+### Rules that are load-bearing
+
+- `place_key` (Python) and `holdKey` (page) must fold identically:
+  parentheses removed, accents stripped, "'s" removed, split on
+  non-letters, stopwords (municipality, city, county, of, de, council,
+  office …) dropped, joined. Change both or neither.
+- A source place written "Lyon, Rhône" keys on "lyon" and records
+  `in: "rhone"`; the page shows it only where a level of the chain folds
+  to "rhone". That is what keeps one Saint-Martin from the next.
+- Name-keyed posts carry `lv` "s" (state) or "m" (municipal). A state's
+  posts never land on the deepest level, a town's never on the first
+  level under the country unless it is the deepest — so São Paulo the
+  state and São Paulo the city keep their own.
+- On the chart a post goes on the box whose record is the post (node q,
+  head q, or a body's `a` aliases), else on the body its title names
+  ("Judge, Sofia District Court"), else on the box where the same person
+  already sits under another title, else under the branch in a group
+  "Posts named in public records", gathered by the body the title names.
+  Holders are listed in the box's info line; the box shows a one-line
+  count or the names.
+
+### Not integrated, and why
+
+- Paid services (World-Check, Dow Jones, ComplyAdvantage, Sayari, Orbis,
+  Cicero, AML Watcher, Sigma360): need accounts.
+- OpenStates, France's mayors, Brazil's PEP list, the UK Commons and
+  Lords, EveryPolitician: already inside the OpenSanctions collection;
+  read through it rather than twice.
+- Relatives and close associates, asset declarations (Ukraine's NACP),
+  procurement (OCDS, USASpending, TED): records about private people or
+  contracts, not offices.
+
+### Chain faults fixed in the same round
+
+- A county whose centre falls in the sea (Suffolk, Boston) found no
+  state: the state is now found from the searched place's own point.
+- A level is dropped as "inside the place" only below half the place's
+  area, not nine-tenths: a county drawn without water was being dropped
+  under a city outline that includes it.
+- Subdivision lists (P150) now leave out abolished units (P576, P1366);
+  cache key `sub3:`.
+
 ## 00. Round twenty-four: the government diagram
 
 **One Mermaid chart per country, in a smaller box hung off the panel's
@@ -1587,8 +1666,8 @@ first: that is how the collisions got there.
 
 ## 11. Local contacts — `contacts/`
 
-Wikidata is thin at municipal level: it records no offices at all for a small
-city (pop. ~11,000), so searching your own place could open a panel with four
+Wikidata is thin at municipal level: it records no offices at all for many
+small cities (pop. ~11,000), so searching your own place could open a panel with four
 empty branches and nothing on the map. The building where the council actually
 sits is not in Wikidata, but it is in OpenStreetMap.
 

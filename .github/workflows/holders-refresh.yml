@@ -1,0 +1,44 @@
+name: officeholders
+
+# Who holds each post on How To Make A Law, rebuilt every week from the
+# OpenSanctions collection of politically exposed persons (CC BY-NC 4.0),
+# so a holder who leaves office drops off the map within days of the
+# source marking it. tools/build_holders.py says what is kept.
+
+on:
+  schedule:
+    - cron: "17 6 * * 0"        # Sundays, after the government diagrams
+  workflow_dispatch:
+  push:
+    paths:
+      - "tools/build_holders.py"
+      - ".github/workflows/holders-refresh.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: holders-refresh
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: current holders
+        run: python3 -I tools/build_holders.py
+      - name: commit the holders
+        run: |
+          git config user.name  "holders-bot"
+          git config user.email "holders-bot@users.noreply.github.com"
+          git add -A holders
+          git diff --staged --quiet || git commit -m "officeholders rebuilt: $(date -u +%Y-%m-%d)"
+          git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+          git push

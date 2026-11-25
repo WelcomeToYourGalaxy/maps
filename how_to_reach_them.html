@@ -1201,6 +1201,20 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #govinfo{flex:none;min-height:38px;max-height:64px;overflow:hidden;padding:6px 12px 7px;
   border-top:1px solid var(--line);font-size:10.5px;line-height:1.45;color:var(--faint)}
 #govinfo b{color:var(--ink);font-weight:600;font-size:11px}
+#govinfo.gh{max-height:118px;overflow:auto}
+.gholds{margin-top:5px;line-height:1.5}
+.gholds a{white-space:nowrap}
+.gholds span{color:var(--faint)}
+.gholds i,.gcred{color:var(--faint);font-style:italic}
+.gcred{margin-top:4px}
+.holds{margin-top:8px;font-size:12.5px;line-height:1.6;word-break:normal;overflow-wrap:normal}
+.holds.long{max-height:240px;overflow:auto;padding-right:4px}
+.holds .hp{margin-bottom:3px}
+.holds .hpn{color:var(--faint);margin-right:8px}
+.holds .hn{color:var(--ink);margin-right:10px;text-decoration:none;border-bottom:1px dotted var(--faint);display:inline-block;white-space:nowrap;word-break:normal}
+.holds .hs{color:var(--faint);font-size:11px;margin-right:10px}
+.holds .hcred{font-size:11px;color:var(--faint);font-style:italic;margin-top:5px}
+.holds .hcred a{color:var(--faint)}
 #govinfo a{color:var(--accent-hi);text-decoration:none;cursor:pointer;white-space:nowrap}
 #govinfo a:hover{text-decoration:underline}
 #govinfo .gk{display:inline-flex;align-items:center;gap:5px;margin-right:11px;white-space:nowrap}
@@ -1362,14 +1376,14 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
       </tbody>
       <tfoot>
         <tr><th>Unit of measurement</th><td colspan="6">places with that field recorded — not people</td></tr>
-        <tr><th>Named officeholders</th><td colspan="6">only where the record carries one, which for most offices it does not</td></tr>
+        <tr><th>Named officeholders</th><td colspan="6">about 262,000 people in 207 countries, from the OpenSanctions collection, where its sources list a current holder</td></tr>
       </tfoot>
     </table>
     <h4 class="asub">What is on the map</h4>
     <p>Search for a place and the map displays the government offices recorded for it, from municipal to national level.</p>
     <p>Green markers identify offices that may provide a route for public engagement on legislation or policy. Examples include asking a legislator to introduce a bill, submitting evidence to a committee, commenting on a proposed regulation or filing a ballot initiative where that procedure exists. Other government offices are included for context, but may have no direct role in changing legislation. A court, for example, decides legal disputes rather than acting as a channel for lobbying on a particular case. Police enforce the law, while auditors generally examine government activity and compliance.</p>
     <p>An office’s inclusion does not mean that it has the power to make the change you want. Its authority depends on its legal mandate and the subject involved.</p>
-    <p>Office titles are relatively stable; the people holding them change. Wikidata’s records of current officeholders may be out of date, sometimes by years. Treat names shown on the map as leads and verify them against an official government source before making contact.</p>
+    <p>Office titles are relatively stable; the people holding them change. Names come from two places. The <a href="https://www.opensanctions.org/datasets/peps/" target="_blank" rel="noopener">OpenSanctions</a> collection of politically exposed persons (CC BY-NC 4.0) gathers about 230 official and public lists — parliaments, mayors’ registers, cabinet and court lists — and the map shows only holders it marks as current, rebuilt every week. Where it has none, the map falls back to Wikidata, whose records of current officeholders may be out of date, sometimes by years. Treat names shown on the map as leads and verify them against an official government source before making contact.</p>
     <p>Coverage is uneven. Some countries have extensive records, while others have limited information, particularly at municipal level. A blank means no office was found in the dataset, not that no such office exists.</p>
     <p>Office records come from <a href="https://www.wikidata.org/" target="_blank" rel="noopener">Wikidata</a>, the same source used by <a href="https://www.govdirectory.org/" target="_blank" rel="noopener">govdirectory.org</a>. Administrative boundaries come from <a href="https://github.com/WelcomeToYourGalaxy/cgaz-boundaries" target="_blank" rel="noopener">cgaz-boundaries</a>; place and local-building data come from OpenStreetMap.</p>
     <p>Effectiveness ratings for the contact methods are carried over from the leverage chart in this repository, along with the datasets used to support them. Where no reliable measurement is available, the map says so rather than assigning an estimated success rate.</p>
@@ -3258,6 +3272,7 @@ SELECT ?item ?itemLabel ?coord WHERE {
    "city in the United States". */
 function qSubdiv(q){ return `
 SELECT ?d ?dLabel WHERE { wd:${q} wdt:P150 ?d .
+ FILTER NOT EXISTS { ?d wdt:P576 [] } FILTER NOT EXISTS { ?d wdt:P1366 [] }
  SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul" } } LIMIT 600`; }
 
 /* ====================================================================
@@ -3863,11 +3878,16 @@ async function fromWorld(f, opts){
   if(f.properties.l === 2){
     try{
       const a1 = await fetchAdm(iso3, 1);
-      mid = a1.features.find(x=>{
+      /* The searched place's own point first: a county's centre can
+         fall in the sea — Suffolk County's lands in a harbour — and
+         then no state contained it and the chain lost its state. */
+      const at=p=>a1.features.find(x=>{
+        if(!x || !x.geometry) return false;
         const b=bboxOf(x.geometry);
-        if(c[0]<b[0]||c[0]>b[2]||c[1]<b[1]||c[1]>b[3]) return false;
-        return inGeom(c, x.geometry);
+        if(p[0]<b[0]||p[0]>b[2]||p[1]<b[1]||p[1]>b[3]) return false;
+        return inGeom(p, x.geometry);
       }) || null;
+      mid = (opts.pt && at(opts.pt)) || at(c);
     }catch(e){}
   }
   if(mid){
@@ -5844,8 +5864,8 @@ function hostOf(u){ return String(u).replace(/^https?:\/\//,'').replace(/\/$/,''
 
    The leaf place was used for every office, which put the municipality
    into searches for offices that are nothing to do with it: a national
-   chamber searched as "United States House of Representatives a small
-   city" is a search for something that does not exist, and the result
+   chamber searched as "United States House of Representatives" plus a
+   town's name is a search for something that does not exist, and the result
    is whatever the engine salvages from it. Each office is searched
    with the place at its own level instead, and the country is
    available separately for the methods that are national processes. */
@@ -6217,7 +6237,9 @@ function renderOffice(o){
         published an account of it. The element is always drawn, even
         empty, because the text arrives after the page does and
         `entxArrived` writes into it. */
-     '<div id="entx">'+entxHtml(o.id)+'</div>'+holderLine(holder)+'<div class="meta">';
+     '<div id="entx">'+entxHtml(o.id)+'</div>'+
+     '<div id="holdwd"'+(holdHtml(o.id)?' style="display:none"':'')+'>'+holderLine(holder)+'</div>'+
+     '<div id="holdx">'+holdHtml(o.id)+'</div>'+'<div class="meta">';
   entDetail(o).then(()=>{ const el=document.getElementById('entx');
     if(el && SEL && SEL.id===o.id) el.innerHTML=entxHtml(o.id); })
     .catch(e=>console.warn('description lookup failed:', e && e.message));
@@ -8628,7 +8650,7 @@ async function enterPlace(i){
   if(host){
     /* reuse the existing chain builder, but do not let it scan the whole
        district for every municipality inside it — we already have ours */
-    await fromWorld(host, {noMuniScan:true});
+    await fromWorld(host, {noMuniScan:true, pt:[lon,lat]});
   }else{
     STACK=[];
   }
@@ -8643,7 +8665,10 @@ async function enterPlace(i){
     if(placeA>0) STACK=STACK.filter((st,i)=>{
       if(i===0 || !st.feature || !st.feature.geometry) return true;
       const a=geomArea(st.feature.geometry);
-      return !(a>0 && a < placeA*0.9);
+      /* half, not nine-tenths: a county drawn without its water
+         (Suffolk) is a little smaller than the city outline that
+         includes it (Boston), and was being dropped as if inside it */
+      return !(a>0 && a < placeA*0.5);
     });
   }catch(e){ console.warn('chain: could not compare areas', e); }
   /* then the place itself, as the deepest level */
@@ -8693,7 +8718,7 @@ async function resolveUnitIn(nm, countryQ, want, parentQ){
      "Sao Paulo" without its accent. */
   if(parentQ){
     try{
-      const subs = await sparql(qSubdiv(parentQ), 'sub:'+parentQ);
+      const subs = await sparql(qSubdiv(parentQ), 'sub3:'+parentQ);
       const t = normName(nm);
       for(const r of subs){ const l=(r.dLabel&&r.dLabel.value)||'';
         if(t && normName(l)===t) return {id:qid(r.d.value), label:l, types:[]}; }
@@ -8752,7 +8777,7 @@ async function resolveUnit(nm){
   /* first: the subdivision list of the level above, if we have it */
   if(parent && parent.q){
     try{
-      const subs = await sparql(qSubdiv(parent.q), 'sub:'+parent.q);
+      const subs = await sparql(qSubdiv(parent.q), 'sub3:'+parent.q);
       const t = normName(nm);
       for(const r of subs){ const l=(r.dLabel&&r.dLabel.value)||'';
         if(normName(l)===t) return {id:qid(r.d.value), label:l}; }
@@ -10110,6 +10135,145 @@ async function govLoad(){
   try{ return await p; } finally { GOV.loading=null; }
 }
 
+/* ---------- who holds each post ----------
+   holders/ is built weekly by tools/build_holders.py from the
+   OpenSanctions collection of politically exposed persons, which gathers
+   some 230 official and public sources: parliaments, regional
+   assemblies, mayors' registers, cabinet and judiciary lists, the US Plum
+   Book, Plural's state legislators, EveryPolitician, Wikidata. Only posts
+   with a holder the source marks as current are in it, and only each
+   holder's name, record id and start date. OpenSanctions publishes it
+   under CC BY-NC 4.0, so every list of names carries the credit.
+   A level finds its posts by its Wikidata item or by its name, folded the
+   same way the builder folds it (holdKey); the national file is whole. */
+const HOLDDIR='holders/';
+const HOLD={ix:null, nat:{}, sh:{}, lv:{}, byQ:{}};
+const HOLD_STOP=new Set(['municipality','municipal','city','town','village','county','district',
+  'province','region','commune','of','the','de','do','da','des','du','la','le','del','di','von',
+  'council','office','mayors']);
+function holdKey(s){
+  s=String(s||'').replace(/\s*\([^)]*\)/g,'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/['\u2019]s\b/g,'');
+  return s.split(/[^\p{L}\p{N}_]+/u).filter(w=>w && !HOLD_STOP.has(w)).join('');
+}
+function holdFnv(s){ let h=0x811c9dc5; for(const b of new TextEncoder().encode(s)){ h=(h^b)>>>0; h=Math.imul(h,0x01000193)>>>0; } return h; }
+async function holdJSON(u){ try{ const r=await fetch(u,{cache:'force-cache'}); return r.ok ? await r.json() : null; }catch(e){ return null; } }
+async function holdLoad(){
+  if(!HOLD.ix) HOLD.ix=(await holdJSON(HOLDDIR+'index.json'))||{c:{}};
+  HOLD.lv={}; HOLD.byQ={};
+  const cq=GOV.dataQ, c=cq && HOLD.ix.c && HOLD.ix.c[cq];
+  if(!c) return;
+  if(c.n && !HOLD.nat[cq]) HOLD.nat[cq]=((await holdJSON(HOLDDIR+cq+'.json'))||{}).p||[];
+  HOLD.lv[0]=HOLD.nat[cq]||[];
+  for(let i=1;i<STACK.length;i++){
+    const st=STACK[i]; if(!st || !c.sh) continue;
+    const keys=[]; if(isQ(st.q)) keys.push(st.q);
+    const nk=holdKey(st.label); if(nk) keys.push('n:'+nk);
+    const out=[], seen=new Set();
+    for(const k of keys){
+      const u=HOLDDIR+cq+'/'+(holdFnv(k)%c.sh)+'.json';
+      if(!(u in HOLD.sh)) HOLD.sh[u]=(await holdJSON(u))||{};
+      (HOLD.sh[u][k]||[]).forEach(p=>{
+        /* a post found by name only: a state's or department's posts
+           belong above the town, a town's below the first level, so
+           São Paulo the state and São Paulo the city keep their own */
+        const deepest = i===STACK.length-1;
+        if(k[0]==='n' && p.lv==='s' && deepest) return;
+        if(k[0]==='n' && p.lv==='m' && i<2 && !deepest) return;
+        /* "Lyon, Rhône": the place it sits in must be on the chain too */
+        if(k[0]==='n' && p.in && !STACK.some(s=>s && holdKey(s.label)===p.in)) return;
+        const id=p.l+'|'+(p.q||'')+'|'+p.h.map(x=>x[1]).join(',');
+        if(!seen.has(id)){ seen.add(id); out.push(p); }
+      });
+    }
+    HOLD.lv[i]=out;
+  }
+  Object.values(HOLD.lv).forEach(ps=>ps.forEach(p=>{ if(p.q) (HOLD.byQ[p.q]=HOLD.byQ[p.q]||[]).push(p); }));
+}
+function holdWhen(){ const x=HOLD.ix||{}; return String(x.data||x.built||'').slice(0,10); }
+function holdLink(x){ return 'https://www.opensanctions.org/entities/'+encodeURIComponent(x[1])+'/'; }
+function holdCredit(){
+  return 'Listed as current by <a href="https://www.opensanctions.org/datasets/peps/" target="_blank" rel="noopener">OpenSanctions</a>'+
+    ' (CC BY-NC 4.0), '+esc(holdWhen())+'. Check a name with the office before relying on it.';
+}
+/* The posts of one level, hung on the chart: on the body or office the
+   post belongs to where the record or the title says which, and
+   otherwise under the branch, gathered by the body the title names. */
+function govHolders(T, add, link, top, pre, alias, posts, lv){
+  if(!posts || !posts.length) return;
+  const byName={};
+  Object.keys(T).forEach(k=>{ const n=T[k];
+    if(n.t!=='body' && n.t!=='office') return;
+    const mine = n.t==='office' ? n.lv===lv : (pre ? k.indexOf(pre)===0 : k.indexOf('L:')!==0);
+    if(!mine) return;
+    const nk=holdKey(n.l); if(nk.length>=6 && !byName[nk]) byName[nk]=k;
+  });
+  const put=(k,p)=>{ (T[k].hold=T[k].hold||[]).push(p); };
+  const where=p=>{ let k=(p.q && (alias[p.q] || (GOV_OFF[p.q] && GOV_OFF[p.q].k))) || null;
+    if(!k && p.o) k=byName[holdKey(p.o)];
+    if(!k) k=byName[holdKey(p.l)];
+    return k && T[k] ? k : null; };
+  /* The same person under a second title — "Fed. President" from one
+     list, "president of Germany" from another — goes on the box the
+     first title already found, not on a box of its own. */
+  const whose={}, rest=[];
+  posts.forEach(p=>{ const k=where(p); if(!k){ rest.push(p); return; }
+    put(k,p); p.h.forEach(x=>{ if(!whose[x[1]]) whose[x[1]]=k; }); });
+  rest.forEach((p,j)=>{
+    const ks=new Set(p.h.map(x=>whose[x[1]]));
+    if(ks.size===1 && !ks.has(undefined)){ put([...ks][0],p); return; }
+    const br=GOV_BR[p.b] ? p.b : 'exe', bk=pre+'B:'+br;
+    if(!T[bk]){ add(bk,{t:'branch', br:br, l:(GOV_BR[br]||GOV_BR.other).nm, sub:(GOV_BR[br]||GOV_BR.other).sub, lv:lv}); link(top,bk); }
+    const gk=pre+'P:'+br;
+    if(!T[gk]){ add(gk,{t:'group', br:br, l:'Posts named in public records', s:-30, lv:lv}); link(bk,gk); }
+    if(p.o){
+      const ok=pre+'PO:'+br+':'+(holdKey(p.o)||p.o).slice(0,90);
+      if(!T[ok]){ add(ok,{t:'body', br:br, l:p.o, s:0, hp:1}); link(gk,ok); }
+      put(ok,p);
+    } else {
+      const pk=pre+'PP:'+br+':'+j;
+      add(pk,{t:'body', br:br, l:p.l, s:(p.hd?40:0), hp:1}); link(gk,pk); put(pk,p);
+    }
+  });
+}
+/* the line under a box that has posts on it */
+function govHoldLine(n){
+  const ps=n.hold||[]; if(!ps.length) return '';
+  const names=[]; ps.forEach(p=>p.h.forEach(x=>names.push(x[0])));
+  if(ps.length===1){
+    const p=ps[0], who = names.length<=2 ? names.join(', ') : names.length.toLocaleString()+' named';
+    return (n.hp || holdKey(p.l)===holdKey(n.l)) ? who : govCut(p.l,40)+': '+who;
+  }
+  return ps.length.toLocaleString()+' posts, '+names.length.toLocaleString()+' named holders';
+}
+function govHoldHtml(n){
+  const ps=n.hold||[]; if(!ps.length) return '';
+  return '<div class="gholds">'+ps.map(p=>'<div><span>'+esc(p.l)+'</span> '+
+    p.h.map(x=>'<a href="'+esc(holdLink(x))+'" target="_blank" rel="noopener">'+esc(x[0])+'</a>'+
+      (x[2]?' <i>since '+esc(x[2].slice(0,10))+'</i>':'')).join(', ')+'</div>').join('')+
+    '<div class="gcred">'+holdCredit()+'</div></div>';
+}
+/* the panel's office card: the posts on its box in the chart, or the
+   posts filed under its own record */
+function holdPosts(id){
+  const e=GOV_OFF[id], n=e && GOV.T && GOV.T[e.k];
+  if(n && n.hold && n.hold.length) return n.hold;
+  return (HOLD.byQ && HOLD.byQ[id]) || [];
+}
+function holdHtml(id){
+  const ps=holdPosts(id); if(!ps.length) return '';
+  let c=0; ps.forEach(p=>c+=p.h.length);
+  return '<div class="holds'+(c>8?' long':'')+'">'+ps.map(p=>'<div class="hp"><span class="hpn">'+esc(p.l)+'</span>'+
+    p.h.map(x=>'<a class="hn" href="'+esc(holdLink(x))+'" target="_blank" rel="noopener">'+esc(x[0])+'</a>'+
+      (x[2]?'<span class="hs">since '+esc(x[2].slice(0,4))+'</span>':'')).join('')+'</div>').join('')+
+    '<div class="hcred">'+holdCredit()+'</div></div>';
+}
+function holdFill(){
+  if(typeof SEL==='undefined' || !SEL) return;
+  const hx=document.getElementById('holdx'); if(!hx) return;
+  const h=holdHtml(SEL.id); hx.innerHTML=h;
+  const wd=document.getElementById('holdwd'); if(wd) wd.style.display = h ? 'none' : '';
+}
+
 /* ---------- the tree ----------
    One tree for the whole country. Keys:
      R           the country            B:leg|exe|jud   its branches
@@ -10183,6 +10347,8 @@ function govTree(){
     const offs=[], seen=new Set();
     g.levels.forEach(j=>govLevelOffices(j).forEach(o=>{ if(!seen.has(o.id)){ seen.add(o.id); offs.push(o); } }));
     govOffices(T, add, link, top, pre, alias, offs, i);
+    const posts=[], ps=new Set(); g.levels.forEach(j=>(HOLD.lv[j]||[]).forEach(p=>{ if(!ps.has(p)){ ps.add(p); posts.push(p); } }));
+    govHolders(T, add, link, top, pre, alias, posts, i);
   });
   /* the weightiest first under every box; the record's own order is
      arbitrary */
@@ -10340,6 +10506,7 @@ function govSource(T, root){
     else if(n.t==='branch') lab='<b>'+lab+'</b>'+(n.sub?'<br/>'+mmEsc(n.sub):'');
     else if(n.t==='group') lab='<b>'+lab+'</b>';
     else if(n.t==='body' && n.sub) lab=lab+'<br/>'+mmEsc(n.sub);
+    if(n.hold && n.hold.length) lab+='<br/><i>'+mmEsc(govCut(govHoldLine(n),58))+'</i>';
     if(n.kids.length && !GOV.open.has(k)){
       const c=govCountUnder(T,k);
       lab+='<br/>'+mmEsc('▸ '+c.toLocaleString()+' under it');
@@ -10460,6 +10627,8 @@ function govInfo(k){
   if(n.w) bits.push('<a href="'+esc(n.w)+'" target="_blank" rel="noopener">Official site ↗</a>');
   if(n.kids && n.kids.length) bits.push(GOV.open.has(k)?'click to fold':'click to open '+govCountUnder(T,k).toLocaleString()+' under it');
   if(bits.length) h+='<br>'+bits.join(' · ');
+  const hh=govHoldHtml(n); h+=hh;
+  i.classList.toggle('gh', !!hh);
   i.innerHTML=h;
 }
 /* a body the panel has an office for: its own record, or one of the
@@ -10765,9 +10934,11 @@ async function govSyncNow(){
     await govLoad();
     await govIndex();
     await govRegions();
+    await holdLoad();
     if(!GOV.hover) govLegend();
     GOV_OFF={};
     GOV.T=govTree();
+    holdFill();
     /* What opens by default is applied to boxes the first time they
        appear — a level arriving, a region's file landing — and never
        again, so a box the reader folded stays folded. */
