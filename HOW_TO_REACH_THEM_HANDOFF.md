@@ -472,6 +472,24 @@ governments (US states, Canadian provinces, Australian states).
 
 National bodies now: 24,798, 17,141 (69%) confirmed current. The first weekly rebuild ran on GitHub on 25 November and committed every chart with the filters, coordinates and registers above.
 
+### Register round four: the first regional government
+
+- **Ontario**, from two of its own lists on data.ontario.ca: the official
+  names reference of current and former ministries, and the list of
+  provincial agencies with the ministry each reports to and its website.
+  9 confirmed, 158 added, 6 former ministries off. Region files take
+  registers exactly as country files do: `DIRECTORIES` is keyed by the
+  file's Q-id, whatever level it is.
+- **Host-only matching now needs a shared word.** An Ontario agency and
+  its ministry used one host between them, and the agency's name had
+  overwritten the ministry's. A body matched on its host alone (not the
+  full address) now also has to share a word of five letters or more with
+  the register entry, leaving out words like "ministry" and "department".
+- No US state, and few provinces or states anywhere, publish a list of
+  their own bodies as data; each one found is one entry in
+  `DIRECTORIES`. Candidates seen but not yet read: Ontario's FOI directory
+  of institutions, and the state directories linked from directory.gov.au.
+
 ### The diagrams kept current, and towards complete
 
 Everything below the regions is read live when a place is searched.

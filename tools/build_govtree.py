@@ -396,9 +396,15 @@ def _apply(path, entries, src, country_words, drop_closed=True, lang="en", compl
         hw, nk = _host_path(x.get("w")), _name_key(x["l"], country_words)
         q = by_web.get(hw) if x.get("w") and wc[hw] == 1 else None
         # the same site under another path: one body on each side using it
+        # — and only when the two names share a word: an Ontario agency
+        # and the ministry it sits in can use one host between them
         if not q and x.get("w"):
             h = hw.split("/")[0]
-            if hc[h] == 1 and len(by_host.get(h, ())) == 1: q = next(iter(by_host[h]))
+            if hc[h] == 1 and len(by_host.get(h, ())) == 1:
+                cand = next(iter(by_host[h]))
+                w1 = {t for t in re.findall(r"[a-zà-ÿ]{5,}", x["l"].lower())}
+                w2 = {t for t in re.findall(r"[a-zà-ÿ]{5,}", N[cand]["l"].lower())}
+                if w1 & w2 - {"ministry", "department", "office", "government", "national", "federal"}: q = cand
         if not q and nk and nc[nk] == 1: q = by_name.get(nk)
         if q: match[x["id"]] = q; claimed[q] += 1
     # and a chart body two entries both claim is matched to neither
@@ -644,6 +650,41 @@ def dir_br():
                     "b": "exe", "top": "@min" if is_min else "@agencies", "live": True})
     return out
 
+def _ckan_latest(base, pkg, pick):
+    res = _get_json(f"{base}/api/3/action/package_show?id={pkg}")["result"]["resources"]
+    res = [r for r in res if pick(r)]
+    return sorted(res, key=lambda r: r.get("last_modified") or r.get("created") or "")[-1]["url"]
+
+def dir_on():
+    """Ontario's own lists (data.ontario.ca): current and former ministries,
+    from the government's official names reference, and every provincial
+    agency with the ministry it reports to and its website."""
+    import csv, io, openpyxl
+    murl = _ckan_latest("https://data.ontario.ca", "government-official-names",
+                        lambda r: "ministries" in (r.get("name") or "").lower() and r["url"].endswith("en-utf8-" + r["url"].rsplit("en-utf8-", 1)[-1]) and "-en-" in r["url"])
+    mins = list(csv.DictReader(io.StringIO(_get_bytes(murl).decode("utf-8-sig"))))
+    out, short = [], {}
+    for r in mins:
+        nm = r["English"].strip()
+        out.append({"id": "m:" + nm, "l": nm, "w": "", "parent": None, "b": "exe", "top": "@min",
+                    "live": r["Current/former ministry"].strip().lower().startswith("current")})
+        if out[-1]["live"]: short[(r.get("Short form (English)") or "").strip().lower()] = "m:" + nm
+    aurl = _ckan_latest("https://data.ontario.ca", "list-of-provincial-agencies",
+                        lambda r: (r.get("format") or "").upper() == "XLSX")
+    ws = openpyxl.load_workbook(io.BytesIO(_get_bytes(aurl)), read_only=True).active
+    rows = list(ws.iter_rows(values_only=True))
+    h = next(i for i, r in enumerate(rows) if r and r[0] == "Agency Name")
+    head = list(rows[h])
+    for r in rows[h + 1:]:
+        if not r or not r[0]: continue
+        x = dict(zip(head, r))
+        nm = str(x["Agency Name"]).strip()
+        b = "jud" if re.search(r"(?i)\btribunal|\bcourt|board of review", nm) else "exe"
+        out.append({"id": "a:" + nm, "l": nm, "w": str(x.get("Website") or "").strip(),
+                    "parent": short.get(str(x.get("Ministry") or "").strip().lower()),
+                    "b": b, "top": "@agencies", "live": True})
+    return out
+
 DIRECTORIES = [
     ("Q145", "GOV.UK organisations register", dir_uk, ["united kingdom", "uk "], True, "en"),
     ("Q30", "US Government Manual", dir_us, ["united states", "u.s.", "federal"], False, "en"),
@@ -651,6 +692,8 @@ DIRECTORIES = [
      ["république française", "france", "français", "française"], False, "fr"),
     ("Q16", "Government of Canada organization names and codes", dir_ca, ["government of canada", "canada", "canadian"], True, "en"),
     ("Q408", "Australian Government Organisations Register", dir_au, ["australian government", "australia", "australian"], False, "en"),
+    ("Q1904", "Government of Ontario ministries and provincial agencies lists (data.ontario.ca)", dir_on,
+     ["ontario", "government of ontario"], False, "en"),
     ("Q155", "SIORG, the federal organisational register (dados.gov.br)", dir_br,
      ["república federativa do brasil", "brasil", "brazil", "federal"], False, "pt"),
 ]
