@@ -247,6 +247,10 @@ licence and holders/ must come off.
   ("Judge, Sofia District Court"), else on the box where the same person
   already sits under another title, else under the branch in a group
   "Posts named in public records", gathered by the body the title names.
+  A register's council list ("Municipal council", `src` set) goes on the
+  level's own council box — a legislative body or office whose label
+  says council, conseil or assembly, preferring the body over the
+  "councillor of" office.
   Holders are listed in the box's info line; the box shows a one-line
   count or the names.
 

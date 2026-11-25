@@ -10213,17 +10213,25 @@ function holdCredit(ps){
    otherwise under the branch, gathered by the body the title names. */
 function govHolders(T, add, link, top, pre, alias, posts, lv){
   if(!posts || !posts.length) return;
-  const byName={};
+  const byName={}; let council=null;
   Object.keys(T).forEach(k=>{ const n=T[k];
     if(n.t!=='body' && n.t!=='office') return;
     const mine = n.t==='office' ? n.lv===lv : (pre ? k.indexOf(pre)===0 : k.indexOf('L:')!==0);
     if(!mine) return;
     const nk=holdKey(n.l); if(nk.length>=6 && !byName[nk]) byName[nk]=k;
+    /* the level's own council, for a register that lists its members
+       under "Municipal council" without the place's name */
+    if((n.br==='leg' || n.t==='office') && /\b(council|conseil|assembl)/i.test(n.l)){
+      const r=/councillor|member|conseiller|membre/i.test(n.l) ? 2 : 1;
+      if(!council || r<council.r) council={k:k, r:r};
+    }
   });
   const put=(k,p)=>{ (T[k].hold=T[k].hold||[]).push(p); };
+  const asCouncil=p=>p.src && council && /council|assembly/i.test(p.l) ? council.k : null;
   const where=p=>{ let k=(p.q && (alias[p.q] || (GOV_OFF[p.q] && GOV_OFF[p.q].k))) || null;
     if(!k && p.o) k=byName[holdKey(p.o)];
     if(!k) k=byName[holdKey(p.l)];
+    if(!k) k=asCouncil(p);
     return k && T[k] ? k : null; };
   /* The same person under a second title — "Fed. President" from one
      list, "president of Germany" from another — goes on the box the
