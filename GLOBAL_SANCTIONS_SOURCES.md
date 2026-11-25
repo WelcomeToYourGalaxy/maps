@@ -1,72 +1,108 @@
-# Global sanctions and designation lists — sources
+# Global sanctions and designation lists — sources and method
 
-Source catalogue for `global_sanctions.html`. Data files live in `global_sanctions_data/`.
+Source catalogue and method notes for `global_sanctions.html`. Data files live in `global_sanctions_data/`.
 
-The map carries **421,241 mapped listings** from **217 official lists** published by governments,
-the UN Security Council, the EU and financial regulators. Lists are aggregated through OpenSanctions,
-which pulls each from its issuing authority's own published file. Nothing is added, inferred or edited here.
+The map carries **421,241 mapped listings** from **217 official lists** published by governments, the UN Security
+Council, the EU and financial regulators. Lists are aggregated through OpenSanctions, which pulls each from its
+issuing authority's own published file. Nothing is added, inferred or edited in the records themselves.
 
-**54,355** designated targets publish neither an address nor a country — mostly crypto wallets,
-securities and aircraft — and cannot be placed on a map.
+**54,355** designated targets publish neither an address nor a country — mostly crypto wallets, securities and
+aircraft — and cannot be placed on a map.
+
+## What period the data covers
+
+These are the lists **as they stand now**, not an archive. When an authority delists a party, that record generally
+disappears from its published file and so from this map. Of 529,801 source records checked, only 221 carried a
+status other than active; the rest are live listings.
+
+Where a list publishes when a designation began, those dates run from **1951 to the current year**, and the bulk
+fall after 2014 — 2022 is the single biggest year, reflecting the Russian invasion of Ukraine. Roughly a third of
+listings publish no date at all. The map does not yet filter by year; the dates are in the data if that is wanted.
 
 ## Kinds of list
 
-| Kind | Listings | What it is |
-|---|---:|---|
-| Sanctions | 96,592 | Asset freezes, travel bans and trade restrictions imposed by governments or the UN Security Council. A listing is an executive decision by an authority, not a court verdict. |
-| Warrants & criminal entities | 207,525 | People and companies wanted by police or prosecutors, including Interpol notices and national most-wanted lists. A warrant is an accusation that has not been tested in court. |
-| Debarment | 188,392 | Companies and people barred from public contracts or development-bank funding, usually after a finding of fraud, corruption or collusion. |
-| Regulatory watchlists | 134,486 | Firms and individuals flagged by financial regulators — unauthorised firms, investor warnings and licence refusals. |
-| Wanted lists | 63,069 | Police most-wanted and fugitive notices. |
-| Special-interest watchlists | 20,215 | Lists compiled for one specific concern, such as forced labour in supply chains or companies tied to a military. |
-| Enforcement actions | 4,363 | Penalties, prosecutions and regulatory notices already issued against a party. |
+| Kind | Listings | Share | What it is |
+|---|---:|---:|---|
+| Sanctions | 96,592 | 23% | Asset freezes, travel bans and trade restrictions imposed by governments or the UN Security Council. A listing is an executive decision by an authority, not a court verdict. |
+| Warrants & criminal entities | 207,525 | 49% | People and companies wanted by police or prosecutors, including Interpol notices and national most-wanted lists. A warrant is an accusation that has not been tested in court. |
+| Debarment | 188,392 | 45% | Companies and people barred from public contracts or development-bank funding, usually after a finding of fraud, corruption or collusion. |
+| Regulatory watchlists | 134,486 | 32% | Firms and individuals flagged by financial regulators — unauthorised firms, investor warnings and licence refusals. |
+| Wanted lists | 63,069 | 15% | Police most-wanted and fugitive notices. |
+| Special-interest watchlists | 20,215 | 4.8% | Lists compiled for one specific concern, such as forced labour in supply chains or companies tied to a military. |
+| Enforcement actions | 4,363 | 1.0% | Penalties, prosecutions and regulatory notices already issued against a party. |
 
-The sanctions layer loads with the map. The others load when their box is ticked.
+A party can sit in more than one kind, so the shares add to more than 100%.
+
+## What the listing is for — our classification
+
+The lists do not publish a comparable field for *why* a party is designated. This classification is read from the
+programme each listing cites — the executive order, regulation, resolution or register it names — and, where a
+listing cites nothing, from the stated purpose of the list it sits on. **It is our reading, not a field any
+authority publishes, and no source endorses it.** The rules are in the repository so they can be checked.
+
+| What it is for | Listings | Share | Band | Definition |
+|---|---:|---:|---:|---|
+| Debarment & procurement exclusion | 198,607 | 47% | 1 | The party is barred from public contracts, development-bank funding or a public health programme, usually after a finding of fraud or non-performance. |
+| Arrest warrant, offence not stated | 58,468 | 14% | 3 | A police or prosecution body wants the party arrested but the list does not publish what for. Red notices and national wanted registers mostly fall here. |
+| War & territorial aggression | 40,158 | 9.5% | 5 | The listing responds to an armed invasion or the annexation of territory — most of these are Russia-Ukraine measures. |
+| Export control & military-industrial | 23,521 | 5.6% | 2 | The listing restricts what may be sold to the party: export-control entity lists, military end users and military-linked companies. |
+| Terrorism & armed groups | 23,376 | 5.5% | 5 | The listing is made under a counter-terrorism power: a designated terrorist organisation or financier, a proscription order, or a UN 1267/1373 listing. |
+| Financial crime & fraud | 21,818 | 5.2% | 3 | The listing concerns fraud, money laundering, sanctions evasion or securities offences. |
+| Regulatory & licensing action | 16,859 | 4.0% | 1 | A financial or professional regulator has warned about, suspended or refused to authorise the party. |
+| Country programme | 14,026 | 3.3% | 2 | A broad country sanctions programme — the party is listed because of where it operates or who it belongs to, not for a named offence. |
+| Human trafficking & forced labour | 11,814 | 2.8% | 4 | The listing concerns forced labour, trafficking in persons, or goods made with forced labour. |
+| Weapons & proliferation | 6,917 | 1.6% | 5 | The listing concerns nuclear, chemical, biological or missile programmes, or arms embargoes and arms trafficking. |
+| Drugs & narcotics | 4,940 | 1.2% | 4 | The listing is made under a narcotics power: kingpins, cartels, traffickers and their companies. |
+| Human rights abuses & atrocities | 2,430 | <1% | 4 | The listing is made under a human-rights power: killings, torture, repression, ethnic cleansing or genocide. |
+| Counter-sanctions & retaliation | 2,071 | <1% | 2 | A government has listed the party in retaliation for sanctions imposed on it, rather than for conduct of the party’s own. |
+| Organised crime & violence | 1,813 | <1% | 4 | The listing concerns an organised criminal group, or a warrant for a violent offence. |
+| Corruption & kleptocracy | 1,005 | <1% | 3 | The listing concerns bribery, embezzlement, kleptocracy or the theft of state assets. |
+| Cyber attacks & ransomware | 667 | <1% | 4 | The listing concerns malicious cyber activity: intrusion, ransomware or election interference by digital means. |
+| Reason not stated | 17,101 | 4.1% | — | Neither the listing nor the list it sits on says what the designation is for. |
+
+## How grave — our severity bands
+
+A 1-to-5 band assigned from the classification above. Each listing takes the highest band of its reasons. The lists
+do not rank themselves against each other, so this scale is ours alone and exists to make the map filterable.
+
+| Band | Listings | Share | What falls in it |
+|---|---:|---:|---|
+| Not stated | 17,101 | 4.1% | The lists this party is on do not say what the designation is for, so no band is assigned. |
+| 1 — Exclusion from contracts or a licence | 211,912 | 50% | Barred from public contracts, a funding programme or a licence. An administrative penalty, usually about money or performance rather than violence. |
+| 2 — Restricted trade | 23,806 | 5.7% | Export controls, military-industrial listings and broad country programmes. The restriction is on what may be sold to the party, or on where it operates. |
+| 3 — Financial crime, corruption or an untested warrant | 79,189 | 19% | Fraud, laundering, bribery, or an arrest warrant whose offence the list does not publish. |
+| 4 — Grave harm to people | 20,702 | 4.9% | Drugs, organised crime and violence, trafficking and forced labour, human-rights abuses, cyber attacks. |
+| 5 — Terrorism, war or weapons of mass destruction | 68,531 | 16% | Counter-terrorism designations, war and territorial aggression, and nuclear, chemical, biological or missile proliferation. |
 
 ## Location precision
 
-Each point says in its popup how precisely it is placed.
+| Precision | Listings | Share | What it means |
+|---|---:|---:|---|
+| Street address | 7,716 | 1.8% | The list publishes a street address and it resolves to that address. |
+| City or locality | 197,844 | 47% | The list publishes a town, city or district; the point sits at its centre, not at the entity’s address. |
+| Country only | 215,681 | 51% | The list publishes only a country, or an address nothing could resolve; the point sits at the country’s centre. |
 
-| Precision | Listings | What it means |
-|---|---:|---|
-| Street address | 7,716 | The list publishes a street address and it resolves to that address. |
-| City or locality | 197,844 | The list publishes a town, city or district; the point sits at its centre, not at the entity’s address. |
-| Country only | 215,681 | The list publishes only a country, or an address nothing could resolve; the point sits at the country’s centre. |
+City-level and country-level points are **not** the entity's address. Street-level points come from the geocoded
+address set built for the original OFAC map or from a street geocoder; city points are resolved against the
+GeoNames gazetteer (237,395 places with multilingual name variants) constrained to the country the list names.
 
-City-level and country-level points are **not** the entity's address. Street-level points come either from
-the geocoded address set built for the original OFAC map or from a street geocoder; city points are resolved
-against the GeoNames gazetteer (237,395 places, with multilingual name variants) constrained to the country
-the list names.
+To improve this, run `refine_sanctions_geocoding.py` (in this repository). It walks the addresses that are not yet
+at street level through a street geocoder, saves progress as it goes, and writes replacement data files. It takes
+hours, so run it in the background and copy the output over `global_sanctions_data/` when it finishes.
 
 ## How the files fit together
 
 - `global_sanctions.html` — the map. Loads MapLibre GL and the Culprits basemap module, then fetches the data below.
-- `global_sanctions_data/meta.json` — list names, descriptions, groupings, counts.
+- `global_sanctions_data/meta.json` — list names, descriptions, groupings, counts, classifications.
 - `global_sanctions_data/<kind>.json.gz` — one gzipped shard per kind of list.
+- `global-sanctions-atlas-plate.webp` — the Atlas basemap plate, cartouche repainted for this map.
+- `refine_sanctions_geocoding.py` — the geocoding refinement script described above.
 
-## Lists carried
+## Lists carried, by issuing authority
 
-### Multilateral — UN and other global bodies
+### United States — 248,738 listings (59%)
 
-- Companies Operating in the Uyghur Region — 8,848 mapped listings
-- INTERPOL Red Notices — 6,238 mapped listings
-- C4ADS Long Shadows (Xinjiang) — 3,375 mapped listings
-- UN Security Council Consolidated Sanctions — 2,289 mapped listings
-- Asian Development Bank Sanctions — 1,947 mapped listings
-- WorldBank Debarred Providers — 1,897 mapped listings
-- African Development Bank Debarred Entities — 1,873 mapped listings
-- Inter-American Development Bank Sanctions — 1,741 mapped listings
-- EBRD Ineligible Entities — 1,717 mapped listings
-- OHCHR List of Companies Linked to Illegal Settlement in the West Bank — 211 mapped listings
-- Global Energy Ownership Tracker — 170 mapped listings
-- The Sentry Atlas — 76 mapped listings
-- UN Security Council 1718 Designated Vessels List — 61 mapped listings
-- C4ADS Fractured Veins (Xinjiang Mining Industry) — 53 mapped listings
-- Wikidata Entities of Interest — 11 mapped listings
-- Netherlands National "Sanctionlist Terrorism — 5 mapped listings
-- Russian Oligarch/Billionaires Database — 1 mapped listings
-
-### United States
+US federal lists: Treasury (OFAC) sanctions, Commerce export controls, State Department designations, plus federal and state exclusion registers for public programmes.
 
 - US SAM Procurement Exclusions — 88,917 mapped listings
 - US Trade Consolidated Screening List (CSL) — 36,191 mapped listings
@@ -149,36 +185,9 @@ the list names.
 - US NFA Enforcement and Regulatory Actions — 4 mapped listings
 - US Immigration and Customs Enforcement Most Wanted Fugitives — 3 mapped listings
 
-### European Union institutions
+### Europe — national lists — 78,500 listings (19%)
 
-- EU Council Official Journal Sanctioned Entities — 14,138 mapped listings
-- EU Financial Sanctions Files (FSF) — 9,507 mapped listings
-- EU Consolidated Travel Bans — 4,770 mapped listings
-- EU Sanctions Map — 2,201 mapped listings
-- EU ESMA Suspensions and Removals — 2,022 mapped listings
-- Europe Most Wanted Fugitives — 57 mapped listings
-- EU ESMA Sanctions — 22 mapped listings
-- EU Early Detection and Exclusion System (EDES) — 5 mapped listings
-
-### United Kingdom
-
-- UK FCDO Sanctions List — 9,586 mapped listings
-- UK Companies House Disqualified Directors — 5,885 mapped listings
-- UK National Crime Agency Press Releases — 87 mapped listings
-- UK HMT/OFSI Investment Bans — 39 mapped listings
-- DPRK Reports — 5 mapped listings
-
-### Russia & Ukraine
-
-- Ukraine NSDC State Register of Sanctions — 27,280 mapped listings
-- Russian PMC Wagner mercenaries (Myrotvorets list) — 3,928 mapped listings
-- Ukraine War and Sanctions — 2,477 mapped listings
-- Ukraine SFMS Blacklist — 2,286 mapped listings
-- Russia Personal Sanctions Targeting US Citizens — 2,140 mapped listings
-- ACF List of War Enablers — 33 mapped listings
-- Russian Persons of Interest published by Dossier Center — 12 mapped listings
-
-### Europe — national lists
+Lists each European country keeps in addition to the EU’s: national asset freezes, terror-financing registers and company restrictions.
 
 - Poland Wanted Persons — 54,220 mapped listings
 - Monaco National Fund Freezing List — 12,105 mapped listings
@@ -216,25 +225,9 @@ the list names.
 - France AMF Regulatory sanctions — 3 mapped listings
 - Lithuania Illegal Financial Services — 1 mapped listings
 
-### Middle East & North Africa
+### Asia & Pacific — 45,715 listings (11%)
 
-- Egypt Domestic Terrorist List — 3,654 mapped listings
-- Türkiye Asset Freezing Sanctions List (MASAK) — 3,223 mapped listings
-- Qatar Unified Record of Persons and Entities on Sanction List — 2,147 mapped listings
-- Türkiye Ministry Of Interior Terrorist Wanted List — 1,607 mapped listings
-- Israel Terrorists Organizations and Unauthorized Associations lists — 1,517 mapped listings
-- Saudi Arabia National Terrorism List (UNSCR 1373) — 771 mapped listings
-- Israel Prevention of Distribution and Financing of WMDs designations — 606 mapped listings
-- United Arab Emirates Local Terrorist List — 509 mapped listings
-- Türkiye Capital Markets Board Banned List — 337 mapped listings
-- Iran Sanctions List — 307 mapped listings
-- Tunisia National Counter-Terrorism List — 169 mapped listings
-- Kingdom of Jordan National Sanctions List — 61 mapped listings
-- Palestine National Terrorist Designations (UNSCR 1373) — 59 mapped listings
-- Iraq Terrorist Fund Freezing Lists — 33 mapped listings
-- Israel Sanctioned Crypto Wallets List — 7 mapped listings
-
-### Asia & Pacific
+National sanctions, export-control and terror lists across Asia and the Pacific, including Japan’s end-user lists and Taiwan’s high-tech controls.
 
 - Taiwan Strategic High-Tech Commodities Entity List — 20,169 mapped listings
 - India National Stock Exchange Debarred Entities — 14,419 mapped listings
@@ -270,22 +263,43 @@ the list names.
 - Malaysia Financial Consumer Alert List — 5 mapped listings
 - Taiwan MOJ Counter-Terrorism Financing Act Sanctions — 4 mapped listings
 
-### Canada
+### Russia & Ukraine — 37,895 listings (9.0%)
 
-- Canadian Consolidated Autonomous Sanctions List — 7,532 mapped listings
-- Canadian Named Research Organizations list — 230 mapped listings
-- Canadian Listed Terrorist Entities — 144 mapped listings
-- Canadian Consolidated Autonomous Sanctions List on the Russian invasion of Ukraine — 62 mapped listings
-- Canadian Freezing Assets of Corrupt Foreign Officials Act — 8 mapped listings
+Ukraine’s national sanctions register and blacklist, built mainly around the invasion, together with Russia’s own retaliatory listings.
 
-### Africa
+- Ukraine NSDC State Register of Sanctions — 27,280 mapped listings
+- Russian PMC Wagner mercenaries (Myrotvorets list) — 3,928 mapped listings
+- Ukraine War and Sanctions — 2,477 mapped listings
+- Ukraine SFMS Blacklist — 2,286 mapped listings
+- Russia Personal Sanctions Targeting US Citizens — 2,140 mapped listings
+- ACF List of War Enablers — 33 mapped listings
+- Russian Persons of Interest published by Dossier Center — 12 mapped listings
 
-- South Africa Targeted Financial Sanctions — 2,289 mapped listings
-- South Africa Wanted Persons — 456 mapped listings
-- Nigeria Sanctions List — 55 mapped listings
-- Kenya FRC Domestic Terrorism List — 17 mapped listings
+### Multilateral — UN and other global bodies — 22,294 listings (5.3%)
 
-### Latin America & Caribbean
+Lists issued by the UN Security Council and other bodies that are not a single country. UN listings bind every member state, which then copies them into its own law.
+
+- Companies Operating in the Uyghur Region — 8,848 mapped listings
+- INTERPOL Red Notices — 6,238 mapped listings
+- C4ADS Long Shadows (Xinjiang) — 3,375 mapped listings
+- UN Security Council Consolidated Sanctions — 2,289 mapped listings
+- Asian Development Bank Sanctions — 1,947 mapped listings
+- WorldBank Debarred Providers — 1,897 mapped listings
+- African Development Bank Debarred Entities — 1,873 mapped listings
+- Inter-American Development Bank Sanctions — 1,741 mapped listings
+- EBRD Ineligible Entities — 1,717 mapped listings
+- OHCHR List of Companies Linked to Illegal Settlement in the West Bank — 211 mapped listings
+- Global Energy Ownership Tracker — 170 mapped listings
+- The Sentry Atlas — 76 mapped listings
+- UN Security Council 1718 Designated Vessels List — 61 mapped listings
+- C4ADS Fractured Veins (Xinjiang Mining Industry) — 53 mapped listings
+- Wikidata Entities of Interest — 11 mapped listings
+- Netherlands National "Sanctionlist Terrorism — 5 mapped listings
+- Russian Oligarch/Billionaires Database — 1 mapped listings
+
+### Latin America & Caribbean — 20,652 listings (4.9%)
+
+National registers from Latin America, including Argentina’s terrorism register and Brazil’s register of suspended companies.
 
 - Brazil National Register of Disreputable and Suspended Companies — 16,788 mapped listings
 - Argentina RePET Sanctions — 2,423 mapped listings
@@ -295,11 +309,75 @@ the list names.
 - Brazil List of Debarred Bidders — 81 mapped listings
 - Brazil Entities Prohibited from Offering Auditing Services — 2 mapped listings
 
-### Other authorities
+### European Union institutions — 16,314 listings (3.9%)
+
+Lists adopted by the Council of the EU and published in the Official Journal. They apply across all member states directly.
+
+- EU Council Official Journal Sanctioned Entities — 14,138 mapped listings
+- EU Financial Sanctions Files (FSF) — 9,507 mapped listings
+- EU Consolidated Travel Bans — 4,770 mapped listings
+- EU Sanctions Map — 2,201 mapped listings
+- EU ESMA Suspensions and Removals — 2,022 mapped listings
+- Europe Most Wanted Fugitives — 57 mapped listings
+- EU ESMA Sanctions — 22 mapped listings
+- EU Early Detection and Exclusion System (EDES) — 5 mapped listings
+
+### United Kingdom — 15,565 listings (3.7%)
+
+UK lists since it left the EU sanctions regime: the FCDO sanctions list and the Treasury’s investment bans.
+
+- UK FCDO Sanctions List — 9,586 mapped listings
+- UK Companies House Disqualified Directors — 5,885 mapped listings
+- UK National Crime Agency Press Releases — 87 mapped listings
+- UK HMT/OFSI Investment Bans — 39 mapped listings
+- DPRK Reports — 5 mapped listings
+
+### Middle East & North Africa — 10,615 listings (2.5%)
+
+National terror-financing and asset-freeze registers across the region, several of them implementing UN Security Council Resolution 1373.
+
+- Egypt Domestic Terrorist List — 3,654 mapped listings
+- Türkiye Asset Freezing Sanctions List (MASAK) — 3,223 mapped listings
+- Qatar Unified Record of Persons and Entities on Sanction List — 2,147 mapped listings
+- Türkiye Ministry Of Interior Terrorist Wanted List — 1,607 mapped listings
+- Israel Terrorists Organizations and Unauthorized Associations lists — 1,517 mapped listings
+- Saudi Arabia National Terrorism List (UNSCR 1373) — 771 mapped listings
+- Israel Prevention of Distribution and Financing of WMDs designations — 606 mapped listings
+- United Arab Emirates Local Terrorist List — 509 mapped listings
+- Türkiye Capital Markets Board Banned List — 337 mapped listings
+- Iran Sanctions List — 307 mapped listings
+- Tunisia National Counter-Terrorism List — 169 mapped listings
+- Kingdom of Jordan National Sanctions List — 61 mapped listings
+- Palestine National Terrorist Designations (UNSCR 1373) — 59 mapped listings
+- Iraq Terrorist Fund Freezing Lists — 33 mapped listings
+- Israel Sanctioned Crypto Wallets List — 7 mapped listings
+
+### Canada — 7,887 listings (1.9%)
+
+Canadian lists: autonomous sanctions under the Special Economic Measures Act, listed terrorist entities, and named research organisations.
+
+- Canadian Consolidated Autonomous Sanctions List — 7,532 mapped listings
+- Canadian Named Research Organizations list — 230 mapped listings
+- Canadian Listed Terrorist Entities — 144 mapped listings
+- Canadian Consolidated Autonomous Sanctions List on the Russian invasion of Ukraine — 62 mapped listings
+- Canadian Freezing Assets of Corrupt Foreign Officials Act — 8 mapped listings
+
+### Africa — 2,809 listings (<1%)
+
+National sanctions and terrorism-financing lists published by African states.
+
+- South Africa Targeted Financial Sanctions — 2,289 mapped listings
+- South Africa Wanted Persons — 456 mapped listings
+- Nigeria Sanctions List — 55 mapped listings
+- Kenya FRC Domestic Terrorism List — 17 mapped listings
+
+### Other authorities — 15 listings (<1%)
+
+Lists whose publisher is not tied to one country.
 
 - Netherlands Police Nationale Opsporingslijst — 15 mapped listings
 
 ---
 
-Entities appear on several lists at once, so the per-list figures sum to more than the total.
-Each popup links the record back to its source lists for checking.
+Entities appear on several lists at once, so the per-list figures sum to more than the total. Each popup links the
+record back to its source lists for checking.
