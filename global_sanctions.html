@@ -60,6 +60,21 @@
 #wtyg .tags{display:flex;flex-wrap:wrap;gap:4px;margin:5px 0}
 #wtyg .tag{font-size:9.5px;padding:2px 6px;border-radius:2px;background:#262d34;color:#b0aaa2;border:1px solid #333a41}
 #wtyg .f{font-size:11px;color:#a8a29a;margin:3px 0}#wtyg .f b{color:#857f76;font-weight:500}#wtyg .f a{color:#8fa0bf}
+#wtyg .tag.tq{cursor:pointer}
+#wtyg .tag.tq:after{content:'?';margin-left:4px;color:#6f6a63;font-size:8.5px;vertical-align:super}
+#wtyg .tag.tq:hover{background:#2f373f;color:#e8e4dc}
+#wtyg .gi{font-size:10.5px;line-height:1.5;color:#9d978f}
+#wtyg .gi:not(:empty){margin:4px 0 6px;padding:7px 8px;background:#191f25;border-left:2px solid #4a535c;border-radius:0 3px 3px 0}
+#wtyg .gi b{display:block;color:#ddd8d0;font-size:11px;font-weight:600;margin-bottom:2px}
+#wtyg .gi a{color:#8fa0bf}
+#wtyg .gx{margin:4px 0 2px;padding-left:8px;border-left:1px solid #2b3238}
+#wtyg .gxh{font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:#6f6a63;margin-bottom:3px}
+#wtyg .gr{font-size:10.5px;line-height:1.5;color:#98928a;margin:0 0 4px}
+#wtyg .gr i{font-style:normal;font-weight:600;color:#c8c3bb;margin-right:4px}
+#wtyg .gr code{font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#b9b3ab;background:#1d2329;padding:1px 4px;border-radius:2px;margin-right:4px}
+#wtyg .gr a{color:#8fa0bf}
+#wtyg .gr.nb,#wtyg .nb{color:#746e66;font-style:italic}
+#wtyg .hint{color:#6f6a63;font-size:10px}
 #wtyg .ld{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:9px;
  background:#0d1013;z-index:60;color:#9a948b;font-size:12px}
 #wtyg .bar{width:180px;height:2px;background:#2c3339;overflow:hidden}
@@ -997,6 +1012,149 @@ window.CulpritsBasemaps = { list: LIST.map((x) => x.slice()), create };
 
 </script>
 <script>
+/* ---------- plain-language glossary for the wording the lists publish ---------- */
+var GLOSS=(function(){
+var T=[
+/* multilateral development banks */
+[/CROSS[\s-]?DEBARMENT/i,'Cross-debarment','One development bank barred this party and the others applied the same ban. Under an agreement signed in 2010 the World Bank, African Development Bank, Asian Development Bank, EBRD and Inter-American Development Bank recognise each other’s debarments.'],
+[/\bIDB\b/,'IDB','The Inter-American Development Bank, which lends to governments across Latin America and the Caribbean.'],
+[/\bAfDB\b/i,'AfDB','The African Development Bank.'],
+[/\bADB\b/,'ADB','The Asian Development Bank.'],
+[/\bEBRD\b/,'EBRD','The European Bank for Reconstruction and Development, which invests in central and eastern Europe, central Asia and north Africa.'],
+[/\bWBG\b|\bWorld Bank\b/i,'World Bank Group','The World Bank and its affiliated institutions.'],
+[/Corrupt(?:ion|\s*Practice)/i,'Corruption / corrupt practice','Offering, giving or taking anything of value to sway someone’s part in a bank-funded contract. This is the banks’ own category and a finding by the bank’s own tribunal, not a criminal conviction.'],
+[/Fraud(?:ulent)?/i,'Fraud / fraudulent practice','Misleading, or hiding something from, the bank or a project in order to gain a benefit or escape an obligation — inflated invoices and forged documents are the usual cases.'],
+[/Coerci(?:on|ve\s*Practice)/i,'Coercion / coercive practice','Harming or threatening a person or their property to influence their part in a project.'],
+[/Collu(?:sion|sive\s*Practice)/i,'Collusion / collusive practice','A private arrangement between bidders, or between a bidder and an official, to fix a price or steer an award.'],
+[/Obstruct(?:ion|ive\s*Practice)/i,'Obstruction / obstructive practice','Destroying or withholding evidence, or otherwise interfering with the bank’s investigation.'],
+[/Conditional Non[\s-]?Debarment/i,'Conditional non-debarment','Not barred, so long as stated conditions — usually a compliance programme — are met by a deadline.'],
+[/Debarment with Conditional Release/i,'Debarment with conditional release','Barred for a minimum period, and eligible again only once the bank’s conditions are met.'],
+[/\bReprimand\b/i,'Reprimand','A formal written censure, with no bar on future contracts.'],
+[/\bRestitution\b/i,'Restitution','Repayment the institution has ordered.'],
+[/Ineligib/i,'Ineligible','May not be awarded contracts or funding by this institution.'],
+/* US federal and state exclusion registers */
+[/NonProcurement/i,'Non-procurement exclusion','Barred from US federal grants, loans, insurance and benefit programmes. This is separate from the bar on federal contracts.'],
+[/Procurement Exclusion|\bProcurement\b\s*-/i,'Procurement exclusion','Barred from being awarded US federal contracts.'],
+[/\bReciprocal\b/i,'Reciprocal','This authority is mirroring another body’s exclusion rather than making a finding of its own.'],
+[/\bOIG\b/,'OIG','The Office of Inspector General at the US Department of Health and Human Services. It bars providers from billing Medicare and Medicaid.'],
+[/Statutorily Debarred/i,'Statutorily debarred','Barred automatically by statute after a conviction, without a separate administrative decision.'],
+[/\bITAR\b/,'ITAR','The US International Traffic in Arms Regulations, which control defence exports. Debarment means a bar on handling defence articles and services.'],
+[/Entity List|\bBIS\b/,'Entity List','A US Commerce Department list. Suppliers need a licence — usually refused — to send listed goods or technology to this party.'],
+[/\bEAR\b/,'EAR','The US Export Administration Regulations, the rules setting which goods, software and technology may leave the country and to whom.'],
+[/Denied Person/i,'Denied Persons List','Export privileges have been withdrawn; it is an offence to take part in an export involving this party.'],
+[/Unverified List/i,'Unverified List','The US Commerce Department could not confirm who the end user is, so extra checks apply. It is not a finding of wrongdoing.'],
+[/Medicaid/i,'Medicaid','The US public health insurance programme for people on low incomes, run state by state. These entries bar a provider from billing it.'],
+[/Medicare/i,'Medicare','The US public health insurance programme for people over 65 and some younger disabled people.'],
+[/\bIAC\b/,'IAC','The Iowa Administrative Code — the state rule book cited by Iowa’s Medicaid provider exclusions.'],
+[/\bR\.?S\.?\s*\d/i,'R.S.','Revised Statutes: the compiled law of a US state. The numbers that follow are the chapter and section.'],
+[/\bDSW\b/,'DSW','Direct service worker — a paid care worker. A “DSW finding” is an entry against that person in a state care registry.'],
+[/\bCNA\b/,'CNA','Certified nursing assistant. A finding here is an entry in the state register for that role.'],
+[/\bNMAP\b/,'NMAP','The Nebraska Medical Assistance Program, that state’s Medicaid programme.'],
+[/\bCFR\b/,'CFR','The Code of Federal Regulations, the US federal rule book. The numbers either side are the title and the section.'],
+/* OFAC programmes */
+[/\bSDGT\b/,'SDGT','Specially Designated Global Terrorist, under Executive Order 13224. US persons may not deal with them and any US assets are frozen.'],
+[/\bFTO\b/,'FTO','Foreign Terrorist Organization, designated by the US Secretary of State. Giving material support is a federal crime.'],
+[/\bSDNTK\b/,'SDNTK','Designated under the Foreign Narcotics Kingpin Designation Act, which targets major drug traffickers and the companies they use.'],
+[/\bSDNT\b/,'SDNT','Specially Designated Narcotics Trafficker, under the earlier Colombia-focused drug programme.'],
+[/\bNPWMD\b/,'NPWMD','Designated for taking part in spreading weapons of mass destruction, under Executive Order 13382.'],
+[/\bIFSR\b/,'IFSR','The Iranian Financial Sanctions Regulations, used against parties tied to Iran’s financial system or the Revolutionary Guard.'],
+[/\bIRGC\b/,'IRGC','Iran’s Islamic Revolutionary Guard Corps.'],
+[/\bGLOMAG\b/,'GLOMAG','The Global Magnitsky programme, Executive Order 13818, used for serious human rights abuse and corruption anywhere in the world.'],
+[/\bTCO\b/,'TCO','Transnational criminal organisation, under Executive Order 13581.'],
+[/\bSDT\b/,'SDT','Specially Designated Terrorist, under the older Middle East peace-process programme.'],
+[/\bCAATSA\b/,'CAATSA','The US Countering America’s Adversaries Through Sanctions Act of 2017, which requires the President to sanction certain Russian, Iranian and North Korean parties.'],
+[/\bSDN\b/,'SDN','The Specially Designated Nationals list, the main US sanctions list. US persons may not deal with anyone on it and their US assets are frozen.'],
+[/\bSSI\b|Sectoral Sanctions/i,'Sectoral sanctions','Limits on particular dealings — new lending, share issues, certain oil projects — rather than a full freeze on the party’s money.'],
+[/\bE\.?O\.?\s?1[0-9]{4}\b|Executive Order/i,'Executive Order','A written order from the US President. It creates the sanctions programme and says what conduct it targets; the number identifies the order.'],
+/* UN and EU instruments */
+[/\bRCSNU\b/,'RCSNU','Resolução do Conselho de Segurança das Nações Unidas — a UN Security Council resolution. These bind every member state, which then writes them into its own law.'],
+[/\bUNSCR?\b|S\/RES/,'UN Security Council resolution','A decision of the Security Council. Member states are obliged to give it effect in national law.'],
+[/1267\s*\(|\bRes(?:olution)?\.?\s*1267\b/i,'Resolution 1267','The UN Security Council’s ISIL (Da’esh) and Al-Qaida list. Every member state must freeze the party’s assets, ban their travel and stop arms reaching them.'],
+[/Official Journal/i,'Official Journal','Where the European Union publishes its legal acts. An EU listing takes effect when it appears there.'],
+[/Regulation\b|Regulamento/i,'Regulation','An EU law that applies directly in every member state without national legislation.'],
+[/\bArt(?:icle|\.|\b)\s*\d+/i,'Article','The numbered clause of the law the authority is relying on. It names the legal power used, not the conduct alleged.'],
+/* Brazil — a large share of the procurement registers */
+[/LEI\s*8\.?666/i,'Law 8.666/1993 (Brazil)','Brazil’s former public procurement law. Article 87 sets the penalties for failing to perform a public contract, up to a bar on contracting.'],
+[/LEI\s*14\.?133/i,'Law 14.133/2021 (Brazil)','Brazil’s current public procurement law. Article 156 lists the penalties: warning, fine, a bar on bidding, and a declaration of unfitness.'],
+[/LEI\s*10\.?520/i,'Law 10.520/2002 (Brazil)','Brazil’s reverse-auction procurement law. Article 7 covers a winning bidder who then refuses to sign, delays, or fails to deliver.'],
+[/LEI\s*8\.?429/i,'Law 8.429/1992 (Brazil)','Brazil’s administrative improbity law, covering enrichment in office, loss to the public purse and breach of public duty. Article 12 lists the penalties.'],
+[/LEI\s*13\.?303/i,'Law 13.303/2016 (Brazil)','Brazil’s law for state-owned companies. Article 83 carries the procurement penalties over to their contracts.'],
+[/LEI\s*12\.?846/i,'Law 12.846/2013 (Brazil)','Brazil’s Clean Company Act, which makes a company itself liable for bribing officials, whoever did it.'],
+[/LEI\s*9\.?433/i,'Law 9.433/2005 (Bahia)','The procurement law of the Brazilian state of Bahia.'],
+[/\bTCU\b/,'TCU','Tribunal de Contas da União, Brazil’s federal audit court. It can bar people from public office and from public contracts.'],
+[/\bCEIS\b/,'CEIS','Brazil’s National Register of Disreputable and Suspended Companies — parties barred from public contracts.'],
+[/\bCNEP\b/,'CNEP','Brazil’s National Register of Punished Companies, for penalties under the Clean Company Act.'],
+[/\bCEPIM\b/,'CEPIM','Brazil’s register of non-profit bodies barred from partnerships with the federal government.'],
+[/IMPEDIMENTO DE LICITAR/i,'Impedimento de licitar e contratar','Barred from bidding for and signing public contracts.'],
+[/INEXECU[ÇC][ÃA]O TOTAL OU PARCIAL/i,'Inexecução total ou parcial','Complete or partial failure to perform the contract.'],
+[/INIDONEIDADE/i,'Declaração de inidoneidade','A declaration that the party is unfit to contract with government — Brazil’s heaviest procurement penalty.'],
+[/SUSPENS[ÃA]O/i,'Suspensão','Suspended from bidding for a fixed period.'],
+[/\bMULTA\b/i,'Multa','A fine.'],
+[/ADVERT[Ê E]NCIA/i,'Advertência','A formal warning, the lightest penalty on the scale.'],
+/* United Kingdom */
+[/Company Directors Disqualification Act/i,'Company Directors Disqualification Act 1986','The UK law under which a court order, or an undertaking given instead, stops a person running or controlling a company — usually for between 2 and 15 years.'],
+[/section:?\s*2\b/i,'Section 2','Disqualification after conviction for a serious offence connected with running a company.'],
+[/section:?\s*6\b/i,'Section 6','Disqualification for conduct that makes someone unfit to run a company, following its insolvency.'],
+[/section:?\s*8\b/i,'Section 8','Disqualification for unfitness found through a government investigation of the company.'],
+[/section:?\s*11\b/i,'Section 11','An automatic bar: an undischarged bankrupt may not act as a company director.'],
+[/undertaking/i,'Undertaking','A written promise not to act as a director, given to avoid a court hearing. It has the same effect as an order.'],
+/* ships and aircraft */
+[/\bIMO\b/,'IMO number','A seven-digit number that stays with a ship for its whole life, even after a change of name, owner or flag.'],
+[/\bMMSI\b/,'MMSI','The nine-digit radio identity a ship broadcasts, used to follow its movements.'],
+[/Call Sign/i,'Call sign','The ship’s or aircraft’s radio identifier.'],
+/* status words */
+[/\bactive\b/i,'Active','The measure is in force.'],
+[/\bexpired\b/i,'Expired','The stated period has run out. The record is still published, but the measure has lapsed.'],
+[/\bupdated\b/i,'Updated','The authority has amended this entry since it was first published.'],
+[/\bexcluded\b/i,'Excluded','Recorded by the authority as removed or set aside.'],
+[/\bWAIVER\b/i,'Waiver','The authority has set the measure aside for this party, in whole or in part.'],
+[/\bdelisted\b/i,'Delisted','The authority has lifted the designation.']
+];
+var DATE2=/(\d{4}-\d{2}-\d{2})\s*[-–]\s*(\d{4}-\d{2}-\d{2})/;
+var DATE1=/\b\d{4}-\d{2}-\d{2}\b/;
+/* returns [[term,definition],...] for the wording in one or more strings */
+function find(strs,cap){
+  var joined=(strs||[]).join(' · '),out=[],seen={},i;
+  if(!joined) return out;
+  for(i=0;i<T.length;i++){
+    if(T[i][0].test(joined)&&!seen[T[i][1]]){ seen[T[i][1]]=1; out.push([T[i][1],T[i][2]]); }
+  }
+  if(DATE2.test(joined)) out.push(['The two dates','Where a pair of dates appears, the first is when the measure began and the second when it is due to end.']);
+  else if(DATE1.test(joined)) out.push(['The date','When the authority recorded or began the measure. No end date is published.']);
+  return cap?out.slice(0,cap):out;
+}
+/* identifier numbers: label only what a check digit can confirm, never a guess */
+function lei(s){ if(!/^[A-Z0-9]{20}$/.test(s)) return false;
+  var n='',i,v; for(i=0;i<20;i++){ v=parseInt(s.charAt(i),36); n+=String(v); }
+  var r=0; for(i=0;i<n.length;i++) r=(r*10+ +n.charAt(i))%97; return r===1; }
+function imo(s){ var m=/^(?:IMO[\s:]?)?([1-9]\d{6})$/i.exec(s); if(!m) return false;
+  var d=m[1],t=0,i; for(i=0;i<6;i++) t+= +d.charAt(i)*(7-i); return t%10=== +d.charAt(6); }
+function digits(s){ return s.replace(/\D/g,''); }
+function cpf(s){ var d=digits(s),i,k,t; if(d.length!==11||/^(\d)\1+$/.test(d)) return false;
+  for(k=9;k<=10;k++){ t=0; for(i=0;i<k;i++) t+= +d.charAt(i)*(k+1-i); t=t*10%11; if(t===10)t=0;
+    if(t!== +d.charAt(k)) return false; } return true; }
+function cnpj(s){ var d=digits(s); if(d.length!==14||/^(\d)\1+$/.test(d)) return false;
+  var W=[[5,4,3,2,9,8,7,6,5,4,3,2],[6,5,4,3,2,9,8,7,6,5,4,3,2]],j,i,t;
+  for(j=0;j<2;j++){ t=0; for(i=0;i<W[j].length;i++) t+= +d.charAt(i)*W[j][i]; t=11-t%11; if(t>9)t=0;
+    if(t!== +d.charAt(12+j)) return false; } return true; }
+function inn(s){ var d=s.replace(/\s/g,''); if(!/^(\d{10}|\d{12})$/.test(d)) return false;
+  function c(w){ var t=0,i; for(i=0;i<w.length;i++) t+= +d.charAt(i)*w[i]; return t%11%10; }
+  if(d.length===10) return c([2,4,10,3,5,9,4,6,8])=== +d.charAt(9);
+  return c([7,2,4,10,3,5,9,4,6,8])=== +d.charAt(10)&&c([3,7,2,4,10,3,5,9,4,6,8])=== +d.charAt(11); }
+var INNC=/\b(ru|ua|by|kz|kg|uz|tj|am|az|md|ge)\b/;
+function ident(v,countries){
+  var s=(v||'').trim(),cs=(countries||'').toLowerCase();
+  if(lei(s)) return ['Legal Entity Identifier (LEI)','A 20-character code that identifies a company anywhere in the world, issued under rules the G20 set after the 2008 crash. It checks out against the LEI formula.','https://search.gleif.org/#/record/'+encodeURIComponent(s)];
+  if(imo(s)) return ['IMO number','The seven-digit number a ship keeps for life, through any change of name or flag. It checks out against the IMO formula.',''];
+  if(/^0x[0-9a-fA-F]{40}$/.test(s)) return ['Ethereum address','A cryptocurrency wallet on the Ethereum network. Authorities publish these so exchanges can block transfers to them.',''];
+  if(cs.indexOf('br')>-1&&cnpj(s)) return ['Brazilian company number (CNPJ)','The tax registration number of a Brazilian company. It checks out against the CNPJ formula.',''];
+  if(cs.indexOf('br')>-1&&cpf(s)) return ['Brazilian personal tax number (CPF)','The tax number of an individual in Brazil. It checks out against the CPF formula.',''];
+  if(INNC.test(cs)&&inn(s)) return ['Tax number (INN)','The taxpayer number used in Russia and several neighbouring states — 10 digits for a company, 12 for a person. It checks out against the INN formula.',''];
+  return null;
+}
+return {find:find,ident:ident};
+})();
+
 (function(){
 "use strict";
 var BASE='https://welcometoyourgalaxy.github.io/maps/global_sanctions_data/';
@@ -1215,24 +1373,61 @@ function at(sxp,syp){
   return best.length?best:null;
 }
 /* ---------- popup ---------- */
+var POPN=0;
+function defOf(k){
+  var i=+k.slice(3);
+  if(k.indexOf('sch')===0) return [META.sch[i],META.schd[i]||'',''];
+  if(k.indexOf('nat')===0) return [META.nat[i][1],META.nat[i][3]||'',''];
+  if(k.indexOf('src')===0){ var L=META.src[i];
+    return [L[0],(L[1]||'')+(L[2]?' Issued by '+L[2]+'.':''),L[3]||'']; }
+  return ['',''];
+}
 function showPop(list,sxp,syp){
   var pop=$('pop'),p0=rowsAll[list[0]];
   $('pt').textContent=list.length>1?fmt(list.length)+' listings here':p0[5];
-  $('ps').textContent=(p0[6]||'No address published')+'  ·  '+p0[0].toFixed(5)+', '+p0[1].toFixed(5);
+  $('ps').innerHTML=esc(p0[6]||'No address published')+'  ·  '+p0[0].toFixed(5)+', '+p0[1].toFixed(5)+
+    '<br><span class="hint">Click any tag below to read what it is.</span>';
   var h='',show=list.slice(0,50);
   show.forEach(function(ix){
-    var p=rowsAll[ix];
+    var p=rowsAll[ix],gid='gi'+(++POPN);
     h+='<div class="ent"><div class="en">'+esc(p[5])+'</div><div class="tags">';
-    h+='<span class="tag">'+esc(META.sch[p[3]])+'</span>';
-    (p[15]||[]).forEach(function(ni){h+='<span class="tag" style="border-color:#6e6961">'+esc(META.nat[ni][1])+'</span>';});
+    h+='<span class="tag tq" data-i="sch'+p[3]+'" data-g="'+gid+'">'+esc(META.sch[p[3]])+'</span>';
+    (p[15]||[]).forEach(function(ni){
+      h+='<span class="tag tq" data-i="nat'+ni+'" data-g="'+gid+'" style="border-color:#6e6961">'+esc(META.nat[ni][1])+'</span>';});
     p[4].forEach(function(si){
-      h+='<span class="tag" style="border-color:'+META.grp[g2s[si]===undefined?0:g2s[si]][1]+'">'+esc(META.src[si][0])+'</span>';});
-    h+='</div>';
+      h+='<span class="tag tq" data-i="src'+si+'" data-g="'+gid+'" style="border-color:'+META.grp[g2s[si]===undefined?0:g2s[si]][1]+'">'+esc(META.src[si][0])+'</span>';});
+    h+='</div><div class="gi" id="'+gid+'"></div>';
     if(list.length>1&&p[6]) h+='<div class="f"><b>Address:</b> '+esc(p[6])+'</div>';
     if(p[10]) h+='<div class="f"><b>Country:</b> '+esc(p[10].toUpperCase())+'</div>';
-    if(p[9]&&p[9].length) h+='<div class="f"><b>Measure:</b> '+esc(p[9].join(' · '))+'</div>';
+    if(p[9]&&p[9].length){
+      h+='<div class="f"><b>Listed under:</b> '+esc(p[9].join(' · '))+'</div>';
+      var gl=GLOSS.find(p[9],6);
+      if(gl.length){
+        h+='<div class="gx"><div class="gxh">What that wording means</div>';
+        gl.forEach(function(g){h+='<div class="gr"><i>'+esc(g[0])+'</i> '+esc(g[1])+'</div>';});
+        h+='</div>';
+      } else h+='<div class="gx"><div class="gr nb">The authority publishes this as its own reference and does not explain it further.</div></div>';
+    }
     if(p[7]&&p[7].length) h+='<div class="f"><b>Also known as:</b> '+esc(p[7].join(' · '))+'</div>';
-    if(p[8]&&p[8].length) h+='<div class="f"><b>Identifiers:</b> '+esc(p[8].join(' · '))+'</div>';
+    var ids=(p[8]||[]).filter(function(v){return v&&String(v).trim();});
+    if(ids.length){
+      h+='<div class="f"><b>Reference numbers:</b></div><div class="gx">';
+      var plain=[];
+      ids.forEach(function(v){
+        var d=GLOSS.ident(v,p[10]);
+        if(d) h+='<div class="gr"><code>'+esc(v)+'</code> <i>'+esc(d[0])+'</i> '+esc(d[1])+
+               (d[2]?' <a href="'+esc(d[2])+'" target="_blank" rel="noopener">look it up &rarr;</a>':'')+'</div>';
+        else plain.push(v);
+      });
+      if(plain.length){
+        h+='<div class="gr">';
+        plain.forEach(function(v){h+='<code>'+esc(v)+'</code> ';});
+        h+='</div><div class="gr nb">The list prints '+(plain.length>1?'these':'this')+
+           ' without saying what '+(plain.length>1?'they are':'it is')+
+           ' — a company registry number, a tax number, a passport or a vessel number, depending on the authority.</div>';
+      }
+      h+='</div>';
+    }
     if(p[11]) h+='<div class="f"><b>Date of birth:</b> '+esc(p[11])+'</div>';
     if(p[12]) h+='<div class="f"><b>List last changed:</b> '+esc(p[12])+'</div>';
     var sv=0;(p[15]||[]).forEach(function(ni){if(META.nat[ni][2]>sv)sv=META.nat[ni][2];});
@@ -1248,6 +1443,18 @@ function showPop(list,sxp,syp){
   var pw=Math.min(370,W-24),ph=pop.offsetHeight||300;
   pop.style.left=Math.max(12,Math.min(sxp+14,W-pw-12))+'px';
   pop.style.top=Math.max(12,Math.min(syp+14,H-ph-12))+'px';
+}
+/* a tag in the popup explains itself when clicked */
+function popTagClick(e){
+  var t=e.target;
+  if(!t||!t.getAttribute||t.className.indexOf('tq')<0) return;
+  var box=$(t.getAttribute('data-g')),k=t.getAttribute('data-i');
+  if(!box) return;
+  if(box.getAttribute('data-open')===k){ box.innerHTML=''; box.removeAttribute('data-open'); return; }
+  var d=defOf(k);
+  box.innerHTML='<b>'+esc(d[0])+'</b>'+esc(d[1])+
+    (d[2]?' <a href="'+esc(d[2])+'" target="_blank" rel="noopener">the list itself &rarr;</a>':'');
+  box.setAttribute('data-open',k);
 }
 /* ---------- UI ---------- */
 var T={
@@ -1346,6 +1553,11 @@ function buildUI(){
   var tm;$('q').addEventListener('input',function(e){clearTimeout(tm);var v=e.target.value.trim().toLowerCase();
     tm=setTimeout(function(){query=v;refresh();},220);});
   $('px').onclick=function(){$('pop').style.display='none';};
+  $('pbb').addEventListener('click',popTagClick);
+  $('pbb').addEventListener('mouseover',function(e){var t=e.target;
+    if(!t||!t.className||String(t.className).indexOf('tq')<0){tipOff();return;}
+    var d=defOf(t.getAttribute('data-i'));tipShow(d[0],d[1],t.getBoundingClientRect());});
+  $('pbb').addEventListener('mouseleave',tipOff);
   $('tg').onclick=function(){$('pnl').classList.toggle('closed');};
   $('bmlist').innerHTML=CulpritsBasemaps.list.map(function(b){
     return '<label><input type="radio" name="wbm" value="'+b[0]+'"'+(b[0]==='night'?' checked':'')+'> '+esc(b[1])+'</label>';}).join('')+

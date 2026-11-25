@@ -74,6 +74,52 @@ do not rank themselves against each other, so this scale is ours alone and exist
 | 4 — Grave harm to people | 20,702 | 4.9% | Drugs, organised crime and violence, trafficking and forced labour, human-rights abuses, cyber attacks. |
 | 5 — Terrorism, war or weapons of mass destruction | 68,531 | 16% | Counter-terrorism designations, war and territorial aggression, and nuclear, chemical, biological or missile proliferation. |
 
+## Plain-language glosses in the popup
+
+The lists publish their reasons in their own shorthand. A World Bank
+debarment reads `CROSS-DEBARMENT: IDB - 2020-12-23 - 2029-12-22 ·
+Corrupt Practice, Fraudulent Practice`; an OFAC listing reads `SDNTK`;
+a Brazilian procurement bar cites `LEI 8666 - ART. 87`. None of that
+means anything to a reader meeting it for the first time.
+
+The popup therefore prints the authority's wording unchanged, and
+underneath it a short "what that wording means" block. The glossary
+holds about ninety terms, each one checked against the issuing body's
+own published description: the five sanctionable practices the
+development banks define, the cross-debarment agreement of 2010, OFAC
+programme tags, the US export-control registers, US state Medicaid
+exclusions, UN Security Council instruments, the Brazilian procurement
+and improbity laws, and the UK Company Directors Disqualification Act.
+Of the 287,611 listings that carry any wording, 91.8% match at least
+one term. Where nothing matches, the popup says the authority does not
+explain the entry further rather than inventing a reading.
+
+The glossary explains vocabulary. It does not add facts to a record,
+and it is held separately in the page source so it can be checked line
+by line.
+
+### Reference numbers
+
+The lists publish identifying numbers without saying what they are.
+The consolidated source carries them as one undifferentiated field, so
+the type is not recoverable from the data. Rather than guess, the map
+runs each value against the check-digit formula of the formats that
+have one, and names the format only when the value satisfies it:
+
+| Format | Listings labelled |
+|---|---:|
+| Tax number (INN) — Russia and neighbouring states | 21,453 |
+| Brazilian company number (CNPJ) | 9,837 |
+| Brazilian personal tax number (CPF) | 8,108 |
+| IMO ship number | 3,660 |
+| Legal Entity Identifier (LEI) | 441 |
+
+The INN, CNPJ and CPF checks are additionally restricted to records
+whose country field matches, which removes most coincidental passes. A
+LEI is also given a link to the GLEIF register so the company can be
+looked up. The remaining four-fifths of values are shown as published,
+with a note that the list does not state what they are.
+
 ## Location precision
 
 | Precision | Listings | Share | What it means |
