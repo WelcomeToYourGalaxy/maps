@@ -1211,7 +1211,8 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .holds.long{max-height:240px;overflow:auto;padding-right:4px}
 .holds .hp{margin-bottom:3px}
 .holds .hpn{color:var(--faint);margin-right:8px}
-.holds .hn{color:var(--ink);margin-right:10px;text-decoration:none;border-bottom:1px dotted var(--faint);display:inline-block;white-space:nowrap;word-break:normal}
+.holds .hn{color:var(--ink);margin-right:10px;text-decoration:none;display:inline-block;white-space:nowrap;word-break:normal}
+.holds a.hn{border-bottom:1px dotted var(--faint)}
 .holds .hs{color:var(--faint);font-size:11px;margin-right:10px}
 .holds .hcred{font-size:11px;color:var(--faint);font-style:italic;margin-top:5px}
 .holds .hcred a{color:var(--faint)}
@@ -10190,10 +10191,22 @@ async function holdLoad(){
   Object.values(HOLD.lv).forEach(ps=>ps.forEach(p=>{ if(p.q) (HOLD.byQ[p.q]=HOLD.byQ[p.q]||[]).push(p); }));
 }
 function holdWhen(){ const x=HOLD.ix||{}; return String(x.data||x.built||'').slice(0,10); }
-function holdLink(x){ return 'https://www.opensanctions.org/entities/'+encodeURIComponent(x[1])+'/'; }
-function holdCredit(){
-  return 'Listed as current by <a href="https://www.opensanctions.org/datasets/peps/" target="_blank" rel="noopener">OpenSanctions</a>'+
-    ' (CC BY-NC 4.0), '+esc(holdWhen())+'. Check a name with the office before relying on it.';
+/* A name from OpenSanctions links to its record there; a councillor
+   from France's register has no record of their own to link to. */
+function holdName(x, cls){
+  const c=cls?' class="'+cls+'"':'';
+  if(!x[1]) return '<span'+c+'>'+esc(x[0])+'</span>';
+  return '<a'+c+' href="https://www.opensanctions.org/entities/'+encodeURIComponent(x[1])+'/" target="_blank" rel="noopener">'+esc(x[0])+'</a>';
+}
+function holdCredit(ps){
+  const out=[];
+  if(!ps || ps.some(p=>!p.src))
+    out.push('Listed as current by <a href="https://www.opensanctions.org/datasets/peps/" target="_blank" rel="noopener">OpenSanctions</a>'+
+      ' (CC BY-NC 4.0), '+esc(holdWhen()));
+  const also=(HOLD.ix && HOLD.ix.also) || [];
+  also.forEach(a=>{ if(ps && ps.some(p=>p.src===a.src))
+    out.push('Councillors from the <a href="'+esc(a.url)+'" target="_blank" rel="noopener">'+esc(a.n)+'</a> ('+esc(a.lic)+')'); });
+  return out.join('; ')+'. Check a name with the office before relying on it.';
 }
 /* The posts of one level, hung on the chart: on the body or office the
    post belongs to where the record or the title says which, and
@@ -10248,9 +10261,8 @@ function govHoldLine(n){
 function govHoldHtml(n){
   const ps=n.hold||[]; if(!ps.length) return '';
   return '<div class="gholds">'+ps.map(p=>'<div><span>'+esc(p.l)+'</span> '+
-    p.h.map(x=>'<a href="'+esc(holdLink(x))+'" target="_blank" rel="noopener">'+esc(x[0])+'</a>'+
-      (x[2]?' <i>since '+esc(x[2].slice(0,10))+'</i>':'')).join(', ')+'</div>').join('')+
-    '<div class="gcred">'+holdCredit()+'</div></div>';
+    p.h.map(x=>holdName(x)+(x[2]?' <i>since '+esc(x[2].slice(0,10))+'</i>':'')).join(', ')+'</div>').join('')+
+    '<div class="gcred">'+holdCredit(ps)+'</div></div>';
 }
 /* the panel's office card: the posts on its box in the chart, or the
    posts filed under its own record */
@@ -10263,9 +10275,8 @@ function holdHtml(id){
   const ps=holdPosts(id); if(!ps.length) return '';
   let c=0; ps.forEach(p=>c+=p.h.length);
   return '<div class="holds'+(c>8?' long':'')+'">'+ps.map(p=>'<div class="hp"><span class="hpn">'+esc(p.l)+'</span>'+
-    p.h.map(x=>'<a class="hn" href="'+esc(holdLink(x))+'" target="_blank" rel="noopener">'+esc(x[0])+'</a>'+
-      (x[2]?'<span class="hs">since '+esc(x[2].slice(0,4))+'</span>':'')).join('')+'</div>').join('')+
-    '<div class="hcred">'+holdCredit()+'</div></div>';
+    p.h.map(x=>holdName(x,'hn')+(x[2]?'<span class="hs">since '+esc(x[2].slice(0,4))+'</span>':'')).join('')+'</div>').join('')+
+    '<div class="hcred">'+holdCredit(ps)+'</div></div>';
 }
 function holdFill(){
   if(typeof SEL==='undefined' || !SEL) return;

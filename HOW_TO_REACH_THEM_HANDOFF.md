@@ -250,6 +250,19 @@ licence and holders/ must come off.
   Holders are listed in the box's info line; the box shows a one-line
   count or the names.
 
+### France's register of elected officials
+
+`rne()` in the builder adds every municipal, departmental and regional
+councillor and the single assemblies (Corsica, Martinique, Guiana) from
+the Répertoire national des élus (data.gouv.fr, Licence Ouverte 2.0).
+Places are keyed by Wikidata items found through their INSEE codes
+(P374, P2586, P2585), with the folded name as fallback. Posts from it
+carry `src: "rne"`; their holders have no record id, so names are not
+links, and the credit line names the register. The sandbox this was
+written in could not reach static.data.gouv.fr; the GitHub Action can,
+and its log prints each file's columns. If the register's columns are
+not recognised, the step prints so and the rest of the build stands.
+
 ### Not integrated, and why
 
 - Paid services (World-Check, Dow Jones, ComplyAdvantage, Sayari, Orbis,

@@ -176,6 +176,105 @@ def countries():
     if "nl" in m and "Q55" in gov: m["nl"] = "Q55"
     return m
 
+# ---------- France: every elected councillor, from the Répertoire national
+# des élus (Ministry of the Interior, Licence Ouverte 2.0). OpenSanctions
+# carries France's mayors and parliament; the register adds every
+# municipal, departmental and regional councillor and the assemblies of
+# Corsica, Martinique and Guiana. Places are found by their INSEE codes
+# (P374 commune, P2586 department, P2585 region), which Wikidata holds.
+RNE_DS = "https://www.data.gouv.fr/api/1/datasets/repertoire-national-des-elus-1/"
+RNE_PAGE = "https://www.data.gouv.fr/fr/datasets/repertoire-national-des-elus-1/"
+RNE_FILES = [  # title words, post label, INSEE property, code column, name column
+    ("conseillers-municipaux", "Municipal council", "P374", "commune", "commune"),
+    ("conseillers-departementaux", "Departmental council", "P2586", "departement", "departement"),
+    ("conseillers-regionaux", "Regional council", "P2585", "region", "region"),
+    ("membres-assemblee", "Assembly", None, "collectivite", "collectivite"),
+]
+
+def _hfold(h):
+    h = unicodedata.normalize("NFD", h.lower())
+    return "".join(c for c in h if c.isalpha())
+
+def _insee(prop):
+    out = {}
+    rows = G.ask("SELECT ?x ?c WHERE { ?x wdt:%s ?c . FILTER NOT EXISTS { ?x wdt:P576 [] } "
+                 "FILTER NOT EXISTS { ?x wdt:P1366 [] } }" % prop, timeout=600)
+    for r in rows:
+        c = (G.v(r, "c") or "").upper().lstrip("0") or "0"
+        x = G.v(r, "x")
+        if isq(x) and c not in out: out[c] = x
+    return out
+
+def _fr_date(s):
+    m = re.match(r"(\d{2})/(\d{2})/(\d{4})", s or "")
+    return f"{m.group(3)}-{m.group(2)}-{m.group(1)}" if m else (s or "")[:10]
+
+def rne(area):
+    import csv, io
+    with urllib.request.urlopen(urllib.request.Request(RNE_DS, headers=UA), timeout=120) as r:
+        ds = json.loads(r.read())
+    total = 0
+    for words, label, prop, codecol, namecol in RNE_FILES:
+        res = next((x for x in ds["resources"] if words in x["title"].lower()), None)
+        if not res:
+            print("RNE: no file for", words); continue
+        with urllib.request.urlopen(urllib.request.Request(res["url"], headers=UA), timeout=900) as r:
+            raw = r.read()
+        try: text = raw.decode("utf-8-sig")
+        except UnicodeDecodeError: text = raw.decode("latin-1")
+        first = text.split("\n", 1)[0]
+        delim = max(";,\t", key=first.count)
+        rd = csv.reader(io.StringIO(text), delimiter=delim)
+        head = [_hfold(h) for h in next(rd)]
+        print("RNE", words, "columns:", head, flush=True)
+        def col(*need, avoid=()):
+            for i, h in enumerate(head):
+                if all(n in h for n in need) and not any(a in h for a in avoid): return i
+            return None
+        c_last = col("nom", avoid=("prenom", "libelle", "code", "usage"))
+        c_first = col("prenom")
+        c_code = col("code", codecol, avoid=("libelle",))
+        c_name = col("libelle", namecol)
+        c_dept = col("libelle", "departement")
+        c_start = col("date", "debut", "mandat")
+        c_end = col("date", "fin", "mandat")
+        c_fn = col("libelle", "fonction")
+        if c_last is None or c_first is None or c_name is None:
+            print("RNE: columns not recognised in", words); continue
+        codes = _insee(prop) if prop else {}
+        posts = {}
+        for row in rd:
+            if len(row) < len(head): continue
+            if c_end is not None and row[c_end].strip() and _fr_date(row[c_end]) < TODAY: continue
+            place = row[c_name].strip()
+            code = (row[c_code].strip().upper().lstrip("0") or "0") if c_code is not None else ""
+            # a commune code is department + commune; Wikidata holds the
+            # five-character form, the register sometimes the three
+            if prop == "P374" and c_dept is not None and len(code) <= 3:
+                dc = row[col("code", "departement", avoid=("libelle",))].strip() if col("code", "departement", avoid=("libelle",)) is not None else ""
+                code = (dc + row[c_code].strip().zfill(3)).upper().lstrip("0")
+            key = codes.get(code) or ("n:" + place_key(place) if place_key(place) else None)
+            if not key: continue
+            fn = row[c_fn].strip() if c_fn is not None else ""
+            name = (row[c_first].strip() + " " + row[c_last].strip()).strip()
+            if fn: name += " (" + fn + ")"
+            p = posts.get(key)
+            if not p:
+                p = posts[key] = {"l": label, "b": "leg", "src": "rne", "h": []}
+                if key.startswith("n:"):
+                    if prop != "P374": p["lv"] = "s"
+                    else:
+                        p["lv"] = "m"
+                        if c_dept is not None and place_key(row[c_dept]): p["in"] = place_key(row[c_dept])
+            p["h"].append([name, "", _fr_date(row[c_start]) if c_start is not None else ""])
+        for key, p in posts.items():
+            # the head of the council first, then everyone by name
+            p["h"].sort(key=lambda x: (0 if re.search(r"\((maire|pr[ée]sident)", x[0], re.I) else 1, x[0]))
+            area[key].append(p)
+            total += len(p["h"])
+        print(f"RNE {words}: {len(posts)} places, {sum(len(p['h']) for p in posts.values())} councillors", flush=True)
+    return total
+
 def main():
     a = sys.argv[1:]
     if "--file" in a: path, built = a[a.index("--file") + 1], ""
@@ -228,12 +327,21 @@ def main():
         else:
             nat[cq].append(rec)
 
+    also = []
+    if "--no-rne" not in a:
+        try:
+            n_rne = rne(area["Q142"])
+            if n_rne: also.append({"src": "rne", "n": "Répertoire national des élus",
+                                   "url": RNE_PAGE, "lic": "Licence Ouverte 2.0", "h": n_rne})
+        except Exception as e:
+            print("RNE skipped:", e, flush=True)
+
     if os.path.isdir(OUT): shutil.rmtree(OUT)
     os.makedirs(OUT)
     ix = {"built": TODAY, "data": built,
           "src": "OpenSanctions, Politically Exposed Persons",
           "url": "https://www.opensanctions.org/datasets/peps/",
-          "lic": "CC BY-NC 4.0", "c": {}}
+          "lic": "CC BY-NC 4.0", "also": also, "c": {}}
     every = set(nat) | set(area)
     for cq in sorted(every):
         n = sorted(nat.get(cq, []), key=lambda r: (0 if r.get("hd") else 1, r["l"]))
