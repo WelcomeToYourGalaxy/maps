@@ -33,11 +33,11 @@ listings publish no date at all. The map does not yet filter by year; the dates 
 
 A party can sit in more than one kind, so the shares add to more than 100%.
 
-## What the listing is for — our classification
+## What the listing is for — how this map classifies it
 
 The lists do not publish a comparable field for *why* a party is designated. This classification is read from the
 programme each listing cites — the executive order, regulation, resolution or register it names — and, where a
-listing cites nothing, from the stated purpose of the list it sits on. **It is our reading, not a field any
+listing cites nothing, from the stated purpose of the list it sits on. **It is this map’s reading, not a field any
 authority publishes, and no source endorses it.** The rules are in the repository so they can be checked.
 
 | What it is for | Listings | Share | Band | Definition |
@@ -60,7 +60,7 @@ authority publishes, and no source endorses it.** The rules are in the repositor
 | Cyber attacks & ransomware | 667 | <1% | 4 | The listing concerns malicious cyber activity: intrusion, ransomware or election interference by digital means. |
 | Reason not stated | 17,101 | 4.1% | — | Neither the listing nor the list it sits on says what the designation is for. |
 
-## How grave — our severity bands
+## How grave — this map’s severity bands
 
 A 1-to-5 band assigned from the classification above. Each listing takes the highest band of its reasons. The lists
 do not rank themselves against each other, so this scale is ours alone and exists to make the map filterable.

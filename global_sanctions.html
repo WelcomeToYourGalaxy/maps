@@ -1431,7 +1431,7 @@ function showPop(list,sxp,syp){
     if(p[11]) h+='<div class="f"><b>Date of birth:</b> '+esc(p[11])+'</div>';
     if(p[12]) h+='<div class="f"><b>List last changed:</b> '+esc(p[12])+'</div>';
     var sv=0;(p[15]||[]).forEach(function(ni){if(META.nat[ni][2]>sv)sv=META.nat[ni][2];});
-    h+='<div class="f"><b>Severity band:</b> '+esc(META.sev[sv][0])+' <span style="color:#6f6a63">(our reading, not the list’s)</span></div>';
+    h+='<div class="f"><b>Severity band:</b> '+esc(META.sev[sv][0])+' <span style="color:#6f6a63">(this map’s reading, not the list’s)</span></div>';
     h+='<div class="f"><b>Placed by:</b> '+META.prec[p[2]][0].toLowerCase()+'</div>';
     if(p[13]&&p[13].indexOf('ofac:')!==0)
       h+='<div class="f"><a href="https://www.opensanctions.org/entities/'+encodeURIComponent(p[13])+'/" target="_blank" rel="noopener">Check this record against its source lists &rarr;</a></div>';
@@ -1460,8 +1460,8 @@ function popTagClick(e){
 var T={
  cat:['Kind of list','Each row is a family of official lists that work the same way. A party can sit in more than one.'],
  auth:['Issuing authority','Who published the list. Grouped by the government, union or international body behind it; open a row to pick individual lists.'],
- nat:['What the listing is for','Why the authority says it acted, read from the programme each listing cites. Where a list publishes no reason, the kind of list is used instead. Our reading, not a field the lists publish.'],
- sev:['How grave','A 1-to-5 band we assign from the reason above. The lists do not rank themselves, so this is our scale and nothing in the sources endorses it.'],
+ nat:['What the listing is for','Why the authority says it acted, read from the programme each listing cites. Where a list publishes no reason, the kind of list is used instead. This map’s reading, not a field the lists publish.'],
+ sev:['How grave','A 1-to-5 band this map assigns from the reason above. The lists do not rank themselves, so the scale is the map’s own and nothing in the sources endorses it.'],
  typ:['Entity type','What kind of thing is listed — a person, a company, a ship, an aircraft, a crypto wallet.'],
  prec:['Location precision','How exactly a point sits where the listing says. Most lists publish a city or a country rather than a street.']
 };
@@ -1526,7 +1526,7 @@ function buildUI(){
   $('prec').innerHTML=h;wire($('prec'));
   $('note').innerHTML='Lists are aggregated from each issuing authority’s own published file through '+
     '<a href="https://www.opensanctions.org/" target="_blank" rel="noopener">OpenSanctions</a>; nothing is added or edited here. '+
-    'What a listing is for, and how grave it is, are our readings of the programme each listing cites — the lists publish neither. '+
+    'What a listing is for, and how grave it is, are this map’s readings of the programme each listing cites — the lists publish neither. '+
     fmt(META.unmapped)+' designated targets publish neither an address nor a country and cannot be placed. Built '+esc(META.built)+'.';
 
   $('cats').addEventListener('change',function(e){
