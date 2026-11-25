@@ -417,6 +417,42 @@ current; regions unchanged at 1,612 charted.
 Next register rounds, in order of size: France (api-lannuaire.service-public.fr),
 Canada, Australia, Germany, India, Japan, Brazil — about two or three a round.
 
+### Register round two: France, Canada, Australia
+
+`DIRECTORIES` now reads five registers; each entry carries the
+register's language, used to match the chart's bodies by their label in
+that language as well as in English:
+
+| Country | Register | Applied this round |
+| --- | --- | --- |
+| France | annuaire de l'administration (DILA, api-lannuaire.service-public.fr) | 151 confirmed, 2,651 added, 20 former ministries off |
+| Canada | Government of Canada organization names and codes (TBS) | 282 confirmed, 254 added, 10 off |
+| Australia | Australian Government Organisations Register (Finance, data.gov.au) | 1,031 confirmed, 8 more added on a second pass |
+| United Kingdom | GOV.UK organisations register | 670 confirmed |
+| United States | US Government Manual (GPO) | 92 confirmed |
+
+Rules learned this round, all in `_apply`:
+- **A key shared by several register entries identifies none of them.**
+  Every sub-directorate of a French ministry gives the ministry's own
+  site, and most ministries have a "secrétariat général": matching on
+  those had joined 950 entries to a handful of bodies. Websites and names
+  are used only where unique on both sides; the same site under another
+  path counts when one body on each side uses that host.
+- **Where a register lists a country's ministries, a ministry on the
+  chart that it does not list comes off** (Wikidata rarely closes them:
+  France had the Ministère de la Marine), and the bodies under it move to
+  the country's other bodies rather than going with it.
+- **The register's name replaces Wikidata's** for an English-language
+  register (the old one is kept as `wd`): a department renamed since
+  Wikidata was last edited shows under the name the government now uses.
+- France is drawn three tiers deep (ministry, directorate,
+  sub-directorate). The annuaire holds about five thousand bureaux below
+  that; one Mermaid chart cannot lay them out in a browser.
+
+National bodies now: 23,787, of which 16,109 (68%) are confirmed
+current. Next: Germany, India, Japan, Brazil, then the large regional
+governments (US states, Canadian provinces, Australian states).
+
 ### The diagrams kept current, and towards complete
 
 Everything below the regions is read live when a place is searched.

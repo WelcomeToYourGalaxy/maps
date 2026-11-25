@@ -351,7 +351,7 @@ def _name_key(s, country_words):
     s = (s or "").lower()
     s = re.sub(r"[\u2019']", "", s)
     for w in country_words: s = s.replace(w, " ")
-    s = re.sub(r"\b(the|of|and|for|u\.s\.|us|hm|his majesty's|her majesty's)\b", " ", s)
+    s = re.sub(r"\b(the|of|and|for|u\.s\.|us|hm|his majesty's|her majesty's|de|du|des|la|le|les|l|et|d)\b", " ", s)
     return re.sub(r"[^a-z0-9]+", "", s)
 
 def _get_json(url):
@@ -360,22 +360,49 @@ def _get_json(url):
     with urllib.request.urlopen(rq, timeout=120) as r:
         return json.loads(r.read())
 
-def _apply(path, entries, src, country_words, drop_closed=True):
+def _labels_in(qs, lang):
+    out = defaultdict(set)
+    qs = [q for q in qs if re.match(r"^Q\d+$", q)]
+    for ch in chunks(qs, 400):
+        for r in ask(f"""SELECT ?X ?l WHERE {{ VALUES ?X {{ {vals(ch)} }}
+                         ?X rdfs:label|skos:altLabel ?l FILTER(LANG(?l)="{lang}") }}""".replace(
+                         "skos:altLabel", "<http://www.w3.org/2004/02/skos/core#altLabel>")):
+            out[v(r, "X")].add(r["l"]["value"])
+    return out
+
+def _apply(path, entries, src, country_words, drop_closed=True, lang="en", complete_min=False):
     """entries: dicts with id, l, w, parent (entry id or None), b, top
     ('@min', '@agencies', '@courts' or None), live (bool)"""
     d = json.load(open(path))
     N = d["n"]
-    by_web, by_name = {}, {}
+    by_web, by_name, by_host = {}, {}, defaultdict(set)
+    other = _labels_in(list(N), lang) if lang != "en" else {}
     for q, e in N.items():
-        if e.get("w"): by_web.setdefault(_host_path(e["w"]), q)
+        if e.get("w"):
+            by_web.setdefault(_host_path(e["w"]), q); by_host[_host_path(e["w"]).split("/")[0]].add(q)
         by_name.setdefault(_name_key(e["l"], country_words), q)
+        for l in other.get(q, ()): by_name.setdefault(_name_key(l, country_words), q)
     for h in d.get("heads", []):
         by_name.setdefault(_name_key(h["l"], country_words), h["q"])
-    match = {}
+    # A website or a name shared by several entries of the directory (every
+    # sub-directorate of a French ministry gives the ministry's site; most
+    # ministries have a "general secretariat") identifies none of them.
+    wc = defaultdict(int); nc = defaultdict(int); hc = defaultdict(int)
     for x in entries:
-        q = by_web.get(_host_path(x.get("w"))) if x.get("w") else None
-        if not q: q = by_name.get(_name_key(x["l"], country_words))
-        if q: match[x["id"]] = q
+        if x.get("w"): wc[_host_path(x["w"])] += 1; hc[_host_path(x["w"]).split("/")[0]] += 1
+        nc[_name_key(x["l"], country_words)] += 1
+    match, claimed = {}, defaultdict(int)
+    for x in entries:
+        hw, nk = _host_path(x.get("w")), _name_key(x["l"], country_words)
+        q = by_web.get(hw) if x.get("w") and wc[hw] == 1 else None
+        # the same site under another path: one body on each side using it
+        if not q and x.get("w"):
+            h = hw.split("/")[0]
+            if hc[h] == 1 and len(by_host.get(h, ())) == 1: q = next(iter(by_host[h]))
+        if not q and nk and nc[nk] == 1: q = by_name.get(nk)
+        if q: match[x["id"]] = q; claimed[q] += 1
+    # and a chart body two entries both claim is matched to neither
+    for xid in [i for i, q in match.items() if claimed[q] > 1]: match.pop(xid)
     added = confirmed = dropped = 0
     # closed bodies go, with whatever sits under them that the directory
     # does not list as live
@@ -390,13 +417,28 @@ def _apply(path, entries, src, country_words, drop_closed=True):
                 if e.get("p") in gone and q not in live_ids: gone.add(q); changed = True
         for q in gone:
             if q in N: N.pop(q); dropped += 1
+    # Where the directory is the whole list of a country's ministries, a
+    # ministry on the chart it does not list is a former one (Wikidata
+    # rarely closes them): it comes off, and what sat under it is kept
+    # among the country's other bodies rather than lost with it.
+    if complete_min:
+        listed = set(match.values())
+        for q in [q for q, e in N.items() if e.get("p") == "@min" and q not in listed and re.match(r"^Q\d+$", q)]:
+            for k, e in N.items():
+                if e.get("p") == q: e["p"] = "@agencies"
+            N.pop(q); dropped += 1
     for x in entries:
         if not x["live"]: continue
         q = match.get(x["id"])
         if q and q in N:
             N[q].pop("u", None); N[q]["src"] = src; confirmed += 1
+            # the directory's own name is the current one (a department
+            # renamed in 2023 still carries its old name on Wikidata)
+            if lang == "en" and x["l"] and x["l"] != N[q]["l"]:
+                N[q].setdefault("wd", N[q]["l"]); N[q]["l"] = x["l"]
             if not N[q].get("w") and x.get("w"): N[q]["w"] = x["w"]
-    key = lambda x: match.get(x["id"]) or (src.split()[0].lower() + ":" + str(x["id"]))
+    tag = re.sub(r"[^a-z]", "", src.split()[0].lower())[:8] or "dir"
+    key = lambda x: match.get(x["id"]) or (tag + ":" + str(x["id"]))
     for x in entries:
         if not x["live"] or x["id"] in match: continue
         k = key(x)
@@ -469,20 +511,136 @@ def dir_us():
                     "b": b, "top": top, "live": True})
     return out
 
+def _get_bytes(url, timeout=300):
+    rq = urllib.request.Request(url, headers={"User-Agent": "HowToReachThem-govtree/1.0 (welcometoyourgalaxy.com)"})
+    with urllib.request.urlopen(rq, timeout=timeout) as r:
+        return r.read()
+
+FR_TYPES = ["Administration centrale (ou Ministère)", "Autorité administrative indépendante",
+            "Autorité publique indépendante", "Institution", "Juridiction",
+            "Service à compétence nationale", "Conseil, comité, commission (organisme consultatif)",
+            "Établissement public"]
+
+def dir_fr():
+    """L'annuaire de l'administration (DILA, api-lannuaire.service-public.fr):
+    the French state's own live directory of its services. National
+    services only (catégorie SI); ministries, independent authorities,
+    institutions, national courts, national services, advisory councils and
+    public establishments, three tiers deep (a ministry, its directorates
+    and their sub-directorates). The bureaux below that are in the
+    directory too and are left off the chart: five thousand more boxes
+    than a browser can lay out in one diagram."""
+    where = " or ".join('type_organisme="%s"' % t for t in FR_TYPES)
+    q = urllib.parse.urlencode({"select": "id,nom,type_organisme,hierarchie,site_internet,categorie",
+                                "where": where})
+    rows = json.loads(_get_bytes("https://api-lannuaire.service-public.fr/api/explore/v2.1/catalog/"
+                                 "datasets/api-lannuaire-administration/exports/json?" + q))
+    rows = [r for r in rows if r.get("categorie") == "SI" and not DIPLO.search(r.get("nom") or "")
+            and not re.search(r"(?i)\b(délégation|représentation) permanente|\bambassad", r.get("nom") or "")]
+    by = {r["id"]: r for r in rows}
+    par = {}
+    for r in rows:
+        h = r.get("hierarchie")
+        if isinstance(h, str):
+            try: h = json.loads(h)
+            except Exception: h = []
+        for x in h or []:
+            if x.get("type_hierarchie") == "Service Fils" and x.get("service") in by:
+                par.setdefault(x["service"], r["id"])
+    def depth(i):
+        n = 0
+        while i in par and n < 30: i = par[i]; n += 1
+        return n
+    out = []
+    for r in rows:
+        if depth(r["id"]) > 2: continue
+        nm = (r.get("nom") or "").strip()
+        web = ""
+        try:
+            si = r.get("site_internet")
+            si = json.loads(si) if isinstance(si, str) else si
+            if si: web = si[0].get("valeur") or ""
+        except Exception: pass
+        t = r.get("type_organisme") or ""
+        b = ("leg" if re.search(r"(?i)assemblée nationale|\bsénat\b|parlement", nm) else
+             "jud" if (t == "Juridiction" or re.search(r"(?i)\bcour\b|conseil d.état|tribunal|conseil constitutionnel", nm)) else "exe")
+        top = ("@min" if nm.lower().startswith("ministère") else
+               "@courts" if b == "jud" else (None if b == "leg" else "@agencies"))
+        out.append({"id": r["id"], "l": nm, "w": web, "parent": par.get(r["id"]),
+                    "b": b, "top": top, "live": True})
+    return out
+
+def dir_ca():
+    """The Treasury Board's reference list of Government of Canada
+    organization names and codes: every federal organization with its
+    status (active, or wound down) and the department it reports through."""
+    import csv, io
+    t = _get_bytes("https://open.canada.ca/data/dataset/57180b36-3428-4a7f-afe3-2161a6b44ec5/"
+                   "resource/cb5b5566-f599-4d12-abae-8279a0230928/download/gc_org_info.csv").decode("utf-8-sig")
+    rows = list(csv.DictReader(io.StringIO(t)))
+    name_id = {r["harmonized_name"]: r["gc_orgID"] for r in rows}
+    out = []
+    for r in rows:
+        nm = r["harmonized_name"].strip()
+        lead = (r.get("lead_department") or "").strip()
+        parent = name_id.get(lead) if lead and lead != nm else None
+        b = "leg" if re.search(r"(?i)parliament|senate|house of commons|library of parliament", nm) else \
+            ("jud" if re.search(r"(?i)\bcourt|tribunal|judicial|judges", nm) else "exe")
+        is_dept = lead == nm
+        out.append({"id": r["gc_orgID"], "l": nm, "w": "", "parent": parent, "b": b,
+                    "top": "@min" if is_dept and b == "exe" else ("@courts" if b == "jud" else (None if b == "leg" else "@agencies")),
+                    "live": (r.get("status_statut") or "").strip().lower() == "a"})
+    return out
+
+def dir_au():
+    """The Australian Government Organisations Register (Department of
+    Finance, directory.gov.au), newest quarterly snapshot on data.gov.au:
+    every Commonwealth body with its portfolio, parent and website. Joint
+    ventures and companies the government holds an interest in (type L),
+    and international and inter-jurisdictional bodies (type J), are not
+    parts of the Australian Government and are not drawn."""
+    import csv, io
+    pk = _get_json("https://data.gov.au/data/api/3/action/package_show?id=c77cface-69aa-4dd0-b99f-b065dc33c8e6")
+    res = [r for r in pk["result"]["resources"] if (r.get("format") or "").upper() == "CSV"]
+    url = sorted(res, key=lambda r: r.get("name", ""))[-1]["url"]
+    t = _get_bytes(url).decode("cp1252", errors="replace").lstrip("\ufeff")
+    rows = list(csv.DictReader(io.StringIO(t)))
+    rows = [r for r in rows if not (r.get("Type of Body") or "").startswith(("J.", "L."))]
+    by_title = {}
+    for r in rows: by_title.setdefault(r["Title"].strip(), r["Id"])
+    dept_of = {r["Portfolio"]: r["Id"] for r in rows if (r.get("Portfolio Dept?") or "").strip().lower().startswith("y")}
+    out = []
+    for r in rows:
+        nm = r["Title"].strip()
+        is_dept = (r.get("Portfolio Dept?") or "").strip().lower().startswith("y")
+        parent = by_title.get((r.get("Parent Organisation") or "").strip()) or (None if is_dept else dept_of.get(r.get("Portfolio")))
+        if parent == r["Id"]: parent = None
+        b = "leg" if re.search(r"(?i)parliament|senate|house of representatives", nm) else \
+            ("jud" if re.search(r"(?i)\bcourt\b|tribunal", nm) else "exe")
+        out.append({"id": r["Id"], "l": nm, "w": (r.get("Website Address") or "").strip(), "parent": parent,
+                    "b": b, "top": None if b == "leg" else ("@min" if is_dept else ("@courts" if b == "jud" else "@agencies")), "live": True})
+    return out
+
 DIRECTORIES = [
-    ("Q145", "GOV.UK organisations register", dir_uk, ["united kingdom", "uk "], True),
-    ("Q30", "US Government Manual", dir_us, ["united states", "u.s.", "federal"], False),
+    ("Q145", "GOV.UK organisations register", dir_uk, ["united kingdom", "uk "], True, "en"),
+    ("Q30", "US Government Manual", dir_us, ["united states", "u.s.", "federal"], False, "en"),
+    ("Q142", "annuaire de l'administration (service-public.fr)", dir_fr,
+     ["république française", "france", "français", "française"], False, "fr"),
+    ("Q16", "Government of Canada organization names and codes", dir_ca, ["government of canada", "canada", "canadian"], True, "en"),
+    ("Q408", "Australian Government Organisations Register", dir_au, ["australian government", "australia", "australian"], False, "en"),
 ]
 
-def directories():
-    for q, src, fn, words, drop in DIRECTORIES:
+def directories(only=None):
+    for q, src, fn, words, drop, lang in DIRECTORIES:
+        if only and q not in only: continue
         path = os.path.join(OUT, q + ".json")
         if not os.path.exists(path): continue
         try:
             entries = fn()
         except Exception as e:
             print(f"  {src}: not reachable ({e}); chart left as built", file=sys.stderr); continue
-        _apply(path, entries, src, words, drop)
+        _apply(path, entries, src, words, drop, lang,
+               complete_min=any(x.get("top") == "@min" for x in entries))
 
 def patch_coords():
     """Add coordinates to every chart already on disk without rebuilding
@@ -518,7 +676,7 @@ def main():
     if args[:1] == ["--coextensive"]:
         return coextensive()
     if args[:1] == ["--directories"]:
-        return directories()
+        return directories(set(args[1:]))
     if args[:1] == ["--regions"]:
         REGIONS = True; P17C = ""; args = args[1:]
     only = set(a for a in args if re.match(r"^Q\d+$", a))
