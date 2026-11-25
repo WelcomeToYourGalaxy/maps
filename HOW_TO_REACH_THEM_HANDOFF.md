@@ -453,6 +453,25 @@ National bodies now: 23,787, of which 16,109 (68%) are confirmed
 current. Next: Germany, India, Japan, Brazil, then the large regional
 governments (US states, Canadian provinces, Australian states).
 
+### Register round three: Brazil, and the ones that would not open
+
+- **Brazil**: SIORG, the federal executive's register of its own structure
+  (estruturaorganizacional.dados.gov.br, one request, 96,539 units). Drawn:
+  every órgão and entidade and the units directly under each órgão — 64
+  confirmed, 1,045 added, 16 former ministries off. Matched on Portuguese
+  labels as well as English.
+- **Germany**: no machine-readable federal register of authorities found
+  on GovData or at the Bundesverwaltungsamt. The chart stays on Wikidata
+  (which covers the federal courts and ministries well).
+- **India**: igod.gov.in did not answer from here and data.gov.in returned
+  503. Try both from an ordinary connection before writing India off.
+- **Japan**: the corporate-number register (houjin-bangou.nta.go.jp)
+  classes national government organs as type 101, which is exactly the
+  list wanted, but its full download sits behind a form token. A small
+  script run locally could fetch it.
+
+National bodies now: 24,798, 17,141 (69%) confirmed current. The first weekly rebuild ran on GitHub on 25 November and committed every chart with the filters, coordinates and registers above.
+
 ### The diagrams kept current, and towards complete
 
 Everything below the regions is read live when a place is searched.

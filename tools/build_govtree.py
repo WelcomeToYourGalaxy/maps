@@ -621,6 +621,29 @@ def dir_au():
                     "b": b, "top": None if b == "leg" else ("@min" if is_dept else ("@courts" if b == "jud" else "@agencies")), "live": True})
     return out
 
+def dir_br():
+    """SIORG, the federal government's own register of its organisational
+    structure (Ministério da Gestão, estruturaorganizacional.dados.gov.br):
+    the executive branch, current version. Drawn: every órgão and entidade,
+    and the units directly under each órgão (its secretariats); the ninety
+    thousand units below those are in SIORG too and left off the chart."""
+    d = json.loads(_get_bytes("https://estruturaorganizacional.dados.gov.br/doc/estrutura-organizacional/"
+                              "resumida?codigoPoder=1&codigoEsfera=1", timeout=600))
+    idf = lambda x: (x or "").rsplit("/", 1)[-1]
+    U = {idf(x["codigoUnidade"]): x for x in d["unidades"] if not x.get("dataFinalVersaoConsulta")}
+    typ = lambda x: idf(x["codigoTipoUnidade"])
+    org = {k for k, x in U.items() if typ(x) in ("orgao", "entidade", "ente")}
+    keep = set(org) | {k for k, x in U.items() if typ(x) == "unidade-administrativa"
+                       and idf(x["codigoUnidadePai"]) in org and typ(U[idf(x["codigoUnidadePai"])]) == "orgao"}
+    out = []
+    for k in keep:
+        x = U[k]; nm = (x.get("nome") or "").strip()
+        p = idf(x["codigoUnidadePai"])
+        is_min = typ(x) == "orgao" and nm.startswith("Ministério")
+        out.append({"id": k, "l": nm, "w": "", "parent": None if is_min or p not in keep else p,
+                    "b": "exe", "top": "@min" if is_min else "@agencies", "live": True})
+    return out
+
 DIRECTORIES = [
     ("Q145", "GOV.UK organisations register", dir_uk, ["united kingdom", "uk "], True, "en"),
     ("Q30", "US Government Manual", dir_us, ["united states", "u.s.", "federal"], False, "en"),
@@ -628,6 +651,8 @@ DIRECTORIES = [
      ["république française", "france", "français", "française"], False, "fr"),
     ("Q16", "Government of Canada organization names and codes", dir_ca, ["government of canada", "canada", "canadian"], True, "en"),
     ("Q408", "Australian Government Organisations Register", dir_au, ["australian government", "australia", "australian"], False, "en"),
+    ("Q155", "SIORG, the federal organisational register (dados.gov.br)", dir_br,
+     ["república federativa do brasil", "brasil", "brazil", "federal"], False, "pt"),
 ]
 
 def directories(only=None):
