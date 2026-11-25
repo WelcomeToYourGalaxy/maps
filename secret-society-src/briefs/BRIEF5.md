@@ -27,6 +27,8 @@ These are not hypothetical. Every one cost a record in the November 2026 rounds.
 8. **Read the currency and the unit.** "About 250,000 colones" where the source said US$250,000 is an error of roughly 500 times.
 9. **Cite the page that carries the facts.** Wikipedia footnoting a DOJ release is not the source; the release is. A staging mirror, a content farm, an aggregator copy and an unlinked second citation are all failures — and one record attributed its central claims to an article that did not contain them.
 
+10. **Never write a record whose own text says the test is unmet.** Five records in one round closed with a sentence saying no official was ever paid, or that the official reported the offer and refused it, or that the body itself called the police. That is limb 2 or limb 3 failing, written down by the agent in the act of writing the record. Influence peddling where nothing reached a decision-maker, a fixer selling access he did not have, a rejected offer, and an institution that was the victim rather than the route all belong in your leads file. If you find yourself drafting the caveat, you have found the reason not to write the record.
+
 If a fact matters enough to write, it is on a page you opened. If it is not, leave it out and say so in your report.
 
 ## Record format (JSON array of objects), exactly these fields
@@ -43,6 +45,7 @@ If a fact matters enough to write, it is on a page you opened. If it is not, lea
 - "bk": office reached, one of exec (heads of state/government), cabinet, legis (parliament, parties, local office), court (judges, prosecutors), security (military, intelligence, police, prisons, customs), finance (central banks, state banks, regulators, finance ministry), intl (international bodies), company
 - "tgt": gov | intl | company
 - "inf": who infiltrated, one of state, crime, corp, money, lodge, faith, elite, movement, lender
+  **Your prompt gives you a numeric cap for this value, not just a target. Respect it.** Deviation is twice the sum of the POSITIVE gaps between the map's mix and the field estimate, so a class already at its estimate gets WORSE with every record added to it, however good the case. Round 32 added 96 `corp` records to a class 0.5 points under target and pushed it 0.5 over: 131 records closed 0.6 points where 99 of them would have closed 1.17. If your scope only yields cases in a capped value, stop at the cap and report the rest as leads.
 - "who": short name of who infiltrated
 - "rank": the post or body reached (e.g. "Minister of Security", "central bank board")
 - "status": investigation | alleged | convicted | inquiry | acknowledged | designated | settled | indicted | reported | annulled | acquitted

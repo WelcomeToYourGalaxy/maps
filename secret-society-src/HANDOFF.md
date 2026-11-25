@@ -15,6 +15,374 @@ and HANDOFF-ROUND30.md is the current one. DO NOT STATE A HELD-COUNT ANYWHERE IN
 them went stale between rounds and cost an agent four finished records. State the rate and let
 findheld.py answer the count when the brief is written.)
 
+## READ THIS BEFORE PLANNING A ROUND, 24 November 2026 (round 32)
+
+**ROUND 32 CLOSED ONLY 0.6 POINTS WITH 131 MERGED RECORDS, AGAINST ROUND 31'S 1.5 WITH 114. The
+cause was a planning error and it is the most important thing on this page.**
+
+Round 31's brief said, correctly, that the deviation had become entirely the five over-represented
+classes and that every permitted cell was therefore worth the same per case. Round 32's brief repeated
+that and **gave no cap on `inf: corp`**. Agents went where the documents are, and **96 of the 131
+survivors were `corp`.** Corp entered the round at -0.5, which is near target, and 96 records pushed
+it **over, to +0.5** — so they stopped diluting the deviation and started composing it. Measured:
+
+| merged | deviation | closes |
+|---|---|---|
+| all 131 | 14.70 | +0.62 |
+| the same batch with `corp` capped at 64 | 14.15 | +1.17 |
+| the 35 non-corp records alone | 14.90 | +0.42 |
+
+**All 131 were merged anyway, deliberately.** They are verified, test-passing cases, and choosing
+which 32 of 96 to hold back would have been an arbitrary editorial cut of the owner's data. The cost
+is 0.55 points of potential, not a loss — the records keep their value and the arithmetic changes as
+the map grows. **The fix belongs in the next round's quotas, not in this round's merge.**
+
+**So: trap 1 is not optional, and "every permitted cell is worth the same" is only true until you
+fill one.** Before briefing, compute each permitted class's room — `(mid/100) * (held + N) - held` for
+a round of size N — and give every agent a numeric cap, not just a target. For a 200-case round at
+3,768 held, the rooms are roughly: `corp` 0 (it is now over), `crime` 101, `movement` 59, `faith` 17,
+`money` 9, `lender` 6, `elite` 4 on the infiltrator axis; `company` 146, `security` 95, `legis` 60,
+`cabinet` 54, `court` 33 on the body axis. **`inf: corp` is now a barred value for the next round.**
+Re-run `shape.py` before setting any quota; do not trust this paragraph alone.
+
+## WHAT ROUND 32 MEASURED — SEAMS, WITH THEIR COST
+
+**Taiwan's Central News Agency is the densest free source on this map.** Two agents, 45 records
+between them, and the second spent **zero WebSearch and zero WebFetch** — 47 plain curl calls for 21
+records, one record per article opened. The route: `https://www.cna.com.tw/search/hysearchws.aspx?q=`
+, and **the results sit in the page's JSON-LD `ItemList`, not in the HTML anchors**. **Three-term
+queries AND correctly; four-term queries return nothing; two-term queries return more.** Every article
+carries the court, the instance, the conduct years, the exact sums and whether the defendant confessed.
+`focustaiwan.tw` is the English service. **Taiwan public-sector procurement was genuinely unworked
+before this round** — 41 of 43 held Taiwan records were espionage or private-sector. The hospital
+seam is now close to worked out at the level of named final judgments; **what is left is county and
+city bureaux, district offices and the Water Resources Agency's river management offices.** A planner's
+warning from the agent that did it: a large share of what remains is elected councillors and county
+speakers, which is `bk: legis`, so a round pointed at `cabinet` will come in short unless it is aimed
+at agency and bureau staff specifically.
+
+**The party-machine seam is a Western Balkans and South Africa seam, not a global one.** Round 31
+found it by accident and called it unsaturated. Round 32 put two agents on it and measured the limit.
+Europe produced 12 records, **all from seven Western Balkan countries plus Romania and none from the
+ten EU members in scope** — not because patronage is absent there but because **only the Balkans
+produces a document that names the party organ**: prosecutors charge party officers by their party
+office, local investigative outlets publish recordings of party bodies, and courts track cases to a
+final instance in public. In Central Europe the same conduct is charged as abuse of office by a
+minister with the party a parenthesis after a name, which fails limb 2. Africa produced 10, eight of
+them South African, and **Zondo is the only African commission that found a party organ controlling a
+state body — round 31 already took its three best findings.** Two further measurements from that agent,
+which cost it 1,146 pages of OCR: the **Free State volumes return zero**, and **Part V Vol. 1 (State
+Security Agency, 472 pages) carries only the reverse shape** — agency money moving *to* a party, with
+no party organ found directing it, which fails limb 1 every time. **Do not write Waterkloof:** Part V
+Vol. 2 paragraph 1708 says in terms that the evidence does not justify a finding that any official
+acted as a result of the capture of any officer or institution of the State.
+
+A second finding about that seam, for whoever plans a round on it: **the outcome usually goes the other
+way.** Of the European cases documented, Pronto ended in acquittal, one conviction was quashed and
+terminated on the defendant's death, another survives as a single count sent back again, the Asim
+affair was acquitted on an inadmissible recording, Talir and Trezor collapsed, and trafiky was
+acquitted. Only two produced a final enforced judgment. **Expect `lik: probable` and
+`status: annulled`/`acquitted` as the norm, and check the appellate chain before writing** — the
+English-language reporting routinely stops at the first-instance verdict while the local-language
+outlet carries the whole chain.
+
+**The unipublic finding generalises round 31's Asia finding and is worth more than its ten records.**
+Nine of ten came from **a single newspaper, eight from one reporting strand** — Prothom Alo's
+named-institution series on hall and hostel allocation, which supplies per article exactly what BRIEF11
+asks for, at zero search cost. **Fourteen of its eighteen countries produced nothing**, not for want of
+the same campus politics but because what reaches print there anonymises the body or reports the fight
+instead of the decision. Pakistan is the clearest case: Dawn's own report of political placement at
+Karachi University names the institution and the decisions but names the outside party only as "a
+political party that was a coalition partner". **So the seam is not a property of public universities;
+it is a property of that newspaper.** Round 31 found cell thinness tracking the presence of a
+prosecutors' case feed; this is the same law with a reporting strand in place of the feed. A round
+committed to **Bangladesh alone** should get 20 to 30 records, across both eras — Chhatra League to
+August 2024, then Chhatra Dal and Islami Chhatra Shibir, which is where `inf: faith` would come from.
+
+**The FCPA seam is mined out, and this was established mechanically rather than guessed.** An agent
+pulled **1,652 DOJ releases with full bodies for zero searches**, then extracted every named foreign
+counterparty with two regex passes: about 45 distinct named bodies, and **all but eleven already on
+the map** — Thailand Tobacco Monopoly, Hondutel, PLN/Tarahan, Ignalina, CFE, Andhra Pradesh, ICBL,
+NIOC/Total, Alcoa/Alba, Dallas Airmotive's four bodies, several of them invisible from their titles.
+Its remaining value is as a free duplicate-check and detail source. **22 enforcement actions were
+discarded for want of a named body, two drops for every record written**, and they cluster in two
+places: **China** (Maxwell, RAE Systems, UTStarcom, Nordam, Diebold, General Cable) and **medical-device
+payments to public doctors** (Olympus Latin America, Smith & Nephew, Biomet, Balt). Olympus is worse
+than round 31 recorded: it anonymises the countries as well as the facilities.
+
+**Italy's dissolution-decree seam is the richest Italian ground left, with three cautions.** 412 enti
+have been dissolved under art. 143 since 1991 and a held-file grep found **zero records for twenty-one
+comuni in the Minister's 2021 commissariamento table alone** (Nocera Terinese, Villaricca, Carmiano,
+Scanzano Jonico, Saint-Pierre, Pizzo, Crucoli, Palizzi, Stilo, Africo, Delianuova, Careri, San Giorgio
+Morgeto, San Cipirello, Orta di Atella, Cerignola, Orta Nova, Pachino, San Biagio Platani, Mezzojuso,
+Mistretta). The cost structure is good: **the decree date comes free from the Minister of the
+Interior's annual report on the extraordinary commissions**, and one wp-json call to the right regional
+outlet usually returns the prefectural report's grounds verbatim — four councils came from a single
+`livesicilia.it` call. The cautions: **(1) the decree alone is never enough and about a third give only
+"acclarate ingerenze"** — the grounds live in the prefectural relazione as quoted by local press or by
+the **TAR Lazio judgment on the ex-administrators' appeal, which is the single best source because it
+restates the report's findings in order**; **(2) check the criminal case separately, because it diverges
+from the administrative finding about a third of the time** — measured at 27 per cent of those reached,
+with acquittals at Carovigno, Torretta, Ostuni and Vittoria and annulments at Leonia and Guardavalle
+while the dissolutions stood; **(3) Italian press reports the relazione in the conditional** (*sarebbe,
+avrebbe, ritenute, presunte*) because the report itself is hedged — keep it. **The municipal in-house
+company seam outside Campania and Calabria is NOT worth a round**: of nine candidates worked, two were
+held, four named no public body or decision, one was a full acquittal at Cassation, and one had the
+company recorded by the prevention judges as the clan's *victim*.
+
+## THE READER STEP EARNED ITS KEEP THREE TIMES IN ONE ROUND
+
+Round 31 established that corrections are applied by a reader and never by a script. Round 32 shows why
+the reader must also be free to overrule the checker:
+
+- A reader **fetched the Norwegian Supreme Court judgments itself** and found the checker had given the
+  newspaper's publication date, not the judgment date (HR-2016-01834-A and HR-2016-01835-A were
+  delivered 30 August 2016). It then **deleted three defendants' sentences** because the appeal court
+  re-set them in January 2016 and no reachable source gives the new figures — restating the
+  first-instance numbers would have repeated the fault being corrected. And it found a year fault
+  nobody had flagged: the judgment dates the payments from November 2002, not 2011.
+- A reader **removed an unsourced claim rather than repair it.** A Polish record called PESA Mińsk
+  Mazowiecki state-owned; the agent verified the state fund bought *PESA Bydgoszcz* in 2018 but found
+  no non-Wikipedia source tying the Mińsk Mazowiecki works to that group, so the ownership claim is
+  gone and the record claims nothing about ownership.
+- A reader **overruled an instruction to restore a hedge, with better evidence.** A Palagonia record
+  said the decree cited "established" interference where a cited page said "presunte". But the record's
+  *other* cited page quotes the measure itself: "In considerazione delle **accertate** forme di
+  ingerenza…" — ascertained. It was the later TAR report that wrote "presunte". Restoring "alleged"
+  would have been wrong in the other direction, so the record now gives the decree's own wording,
+  attributed, and says a later report of the judgment called the interference alleged.
+
+## A FREE OUTCOME CHECK BIGGER THAN LAST ROUND'S
+
+Round 31 established that `dna.ro/comunicat.xhtml?id=N` carries an **`Actualizare`** block at the foot
+with the final outcome. Round 32 found that **three of its four stale-outcome faults came from a
+different block on the same page: "Alte legături de la această informație"**, which links DNA's later
+conviction-decision releases. **Read both blocks on every DNA page.** What they caught, all final:
+a Sopotu Nou mayor **acquitted** ("nu există probe că o persoană a săvârșit infracțiunea", DEFINITIVĂ —
+record dropped); a record titled "up to the ministry" where the county school inspector general, the
+chief accountant and a ministry director general were **all acquitted**; a police-uniform case convicted
+**only on the forgery offences** with the accountant acquitted and the 542,497 lei abuse-of-office count
+producing no conviction; and a labour-inspectorate case where the named official was convicted of
+**only** the non-public-information offence and the bribe-taking survives solely through her
+subordinates' plea agreements.
+
+## THE INVERTED DENIAL, THIRD CONSECUTIVE MEASUREMENT
+
+Round 32: **fourteen omitted denials and one possible invented one.** The asymmetry round 31 found
+holds. The possible invention is worth recording because of how it was handled: a Dragnea record ended
+"Dragnea denied the charges" and the cited page carried **only** that his supporters called the
+proceedings politically motivated. The reader traced it, could not find it, and **replaced it with a
+real sourced statement** it did find — his telling the High Court at an extraordinary appeal that he was
+completely innocent. That is the right repair: not deletion into silence, and not keeping an unsourced
+sentence because it reads as fairness.
+
+Fault rates, with the sequencing fix applied: **51 per cent** on the Taiwan and court-reporting batch
+with **zero central claims failed**, **70 per cent (43 per cent medium-or-worse)** on hospitals and
+Romania, **88 per cent (60 per cent medium-or-worse)** on the Italy/FCPA/party/inquiry batch. Against
+39, 42, 48, 70, 88, 91 before. **Read the medium-or-worse figure**; the headline is inflated by
+low-severity notes.
+
+## SEQUENCE THE PASSES. THE FIX WORKED
+
+Round 31 ran the cold review and the source-checks in parallel and **eight of nine named corrections
+landed on records the reviewer had already killed.** Round 32 ran the review first and source-checked
+only the 132 survivors. Do that. It cut roughly a third of the checking work and it is why the reader
+briefs could be as specific as they were.
+
+## ONE ASSIGNMENT FAULT, FOUR RECORDS LOST
+
+**Two agents were given South Africa's state capture commission and both worked Part 1. Four of one
+agent's ten records were the same events as the other's** — the Regiments/ACSA treasurer case, BNP
+Capital/SAA, Ghana's GACL/Evatex, and the "R3m from Luthuli House" case, which neither survives. The
+tell was figures identical to the rand: R9,132,490 and R5,173,013 in both. **Give one agent a report and
+give the other a different report, not a different theme in the same report.**
+
+## THE OPEN RULING THE ROUND PRODUCED — IT NEEDS THE OWNER
+
+**Pure influence peddling, where the record's own text says no official was paid, fails limb 2 — but the
+held set carries about eight of them.** The round-32 reviewer failed three Romanian records on this
+ground: the outside party's money, people and control never got inside the body, which is precisely why
+prosecutors charge influence peddling rather than bribery, and no decision of the named bodies served
+anyone — **the payers are the people defrauded.** But held **3448, 3451, 3453, 3457 (a post that never
+came), 3519, 3442, 3515 and 3614** are all that shape at `inf: crime` / `bk: company`, and the Romania
+agent cited them as its precedent. **Either limb 2 is being read loosely and this seam is open — in
+which case three records come back and the agent reports the seam productive — or those eight held
+records should come off.** It cannot be both.
+
+A related pattern the reviewer named as a drafting fault, which is cheaper to fix: **five of its sixteen
+failures were records whose own closing sentence says the test is unmet** — no official was paid, the
+offer was refused, the body reported it. **A record that honestly records limb 2 as unmet should be
+banked as a lead, not written.**
+
+## SETTLED THIS ROUND
+
+- **Splitting: one record per country is right.** Every record carries one `c`, one city and one
+  lat/lng, so a country is the finest unit the schema can place; per-enterprise would put six markers on
+  one city for a single guilty plea. Held precedents agree (ABB covers CFE and Luz y Fuerza in one
+  record; Dallas Airmotive's Brazil record covers the air force and the Roraima governor's office).
+  **But the held Albemarle record runs the other way — one record spanning three countries leaves two
+  of them with no marker at all, so it should be split into three.**
+- **Dependencies file under the metropolitan state, and no country-list change is needed.**
+  `countries.txt` is 195 sovereign states plus Kosovo and Taiwan and holds **no dependent territory at
+  all**, which is a consistent design. The map already resolves this: four held Hong Kong records at
+  `c: China`, three held Puerto Rico records at `c: United States`. An Aruba case therefore files at
+  `c: Netherlands` / Oranjestad with its status explained in the record's own text.
+- **Ruling 3 does not reach a payer who is an insider of the same institution.** Ruling 1 bites first
+  and is prior: an insider of the body is not an outside party. Ruling 3's "applicant" is a stranger to
+  the body that decides — a litigant, a suspect, an admission applicant, an outside candidate for a
+  post, a student or family paying for a grade, which the map already holds. **Staff paying staff is
+  out.**
+- **A patient paying a doctor IS an outside party** at `inf: crime` / `bk: company`. The reviewer
+  provisionally failed five such records, then found **eight held records** settle it. Likewise a
+  kickback demanded by the state itself in oil-for-food: **six held Iraq records** settle that. Both
+  reversals came from reading `cases.json` rather than reasoning from the test — **run the review with
+  the data open.**
+- **Code a body by what it is, not by who runs it.** A public authority that governs and spends is
+  `tgt: gov`; a single establishment it runs is `tgt: company`. So a state health department is
+  `cabinet`/`gov`, an elected school district is `legis`/`gov`, and an individual hospital, university
+  or school stays `company`/`company`.
+
+## TWO PRE-EXISTING DUPLICATE PAIRS AND SIX STALE HELD RECORDS
+
+Found incidentally across rounds 31 and 32. None is this round's to fix; all are the owner's call.
+
+- **Duplicate pairs in `cases.json`:** **2821 / 2994** (the same Caltagirone prison officer warning the
+  same mafia heir of the same raid) and **2449 / 2505** (the same Artibonite police unit, same 5.56mm
+  boxes, same 10,000 gourdes, same annex 19).
+- **Held 2157 (Bardejov hospital) has `y: 2022`**, the year its trial opened, while its own text dates
+  the bribes to 2008–2009. Ruling 16 puts it at the first conduct year. The duplicate that revealed it
+  had the year right.
+- **"Leaked 2010 civil-service exam questions helped place Gülen followers"** (Türkiye) — the Ankara 2nd
+  High Criminal Court **acquitted** former ÖSYM head Ali Demir of the membership charge and convicted
+  him only of chain misconduct in office: one year 15 days, deferred five years. He denied the charges.
+- **"Guardavalle dissolved over direct awards to a Gallace-linked businessman"** (Italy) — the Minister
+  of the Interior's own 2021 report footnotes that DPR of 23 February 2021 as **annulled by the
+  Consiglio di Stato, judgment 5460 of 30 June 2022.**
+- **"Roma Energy owner convicted of bribing Pemex and PEP officials for contracts"** — says *convicted*
+  where the DOJ release of August 2025 says *indicted*.
+- **The Czech "Lobbyist Redl's group allegedly steered Prague transport company contracts"** record is
+  stale: nine people are now indicted, and a guilty plea and September 2025 testimony put the
+  **placement limb** on the record for the first time — the official asked two men to find people for
+  transport-company posts, they supplied the economic director and recommended the head of IT, and kept
+  a share because they financed two parties.
+
+## FREE ROUTES — CORRECTIONS AND ADDITIONS, 24 November 2026
+
+- **Taiwan CNA**, as above. The densest free source found.
+- **The DOJ API paginates and `pagesize` caps at 50.** Rounds that took one page got a fraction.
+  `?pagesize=50&page=N&title=<words>`. **Query the body by name, not the offence** — `bribery|kickback`
+  returns mostly private Medicare matters.
+- **`balkaninsight.com/wp-json/wp/v2/posts?search=<term>&_fields=title,link,date,content` DOES honour
+  the search parameter — but only for a single distinctive keyword.** Multi-word queries silently
+  degrade to the latest posts, which is what produced the earlier "ignores search" note. Confirmed
+  twice.
+- **The same trap on other hosts:** on `citinewsroom.com` the `search` parameter is ignored when
+  `_fields=content` is requested. **Query titles first, then fetch by `?slug=`.**
+- **Quintype's API, new:** `https://en.prothomalo.com/api/v1/advanced-search?q=<terms>&limit=25&fields=headline,slug,last-published-at`
+  then `https://<host>/api/v1/stories-by-slug?slug=<slug>` returns **complete article text**, free. The
+  Bangla host `www.prothomalo.com` has several times the archive. Works on
+  `thenewsminute.com`, `deccanherald.com`, `thequint.com`, `newslaundry.com`. **Its search is
+  relevance-ranked and weights recent posts heavily — search by institution name, not by event.**
+- **Transparency International's CEPI case files:** `transparency.org/en/sitemaps-1-section-cepiCase-1-sitemap.xml`
+  gives 119 case URLs, about 65 of them full case files carrying the named institution, every person
+  **with their party office spelled out**, the court, the laws, the sums and the final sanction. Western
+  Balkans and Türkiye only. Extracted in round 32's scratch.
+- **`gov.za/sitemap.xml?page=1..4`** then grep `state-capture-report` is the way into the Zondo volumes;
+  `statecapture.org.za` is behind a Cloudflare challenge. **Part 1 (874 pages) has a real text layer;
+  every other volume is image-only** (`pdftoppm -r 200 -gray` then `tesseract --psm 6`, ~1.3 s a page).
+  Still unmined inside Part 1: the **SA Express / Koreneka / Valotech** strand (report pp 394–436) and
+  the **SAA auditors** chapter (pp 346–393).
+- **`cba.gov.pl` is the densest source in the hospitals cell and is fully walkable** — no search
+  endpoint, but `/pl/aktualnosci?page=1..150` lists every item with a title-bearing slug (1,792 links
+  for ~150 cheap fetches) and `/<id>,<slug>.pdf` is clean text. **Walk the index, not the ids.** Uniform
+  weakness: it names the hospital, the ward and the sum and usually gives **neither a conduct start date
+  nor any outcome**.
+- **`osp.gov.gh` is fully scrapeable** — `/case_files/{prosecutions,investigation,closed,referred}` then
+  `/case_files/case_profile/<id>/cases`, which needs `-L`. **Now closed for the health and education
+  cell**: a full re-scrape found 33 case files, three touching health or education, none writable.
+- **`cfa.nhs.uk/about-nhscfa/latest-news/`** fetches with plain curl and carries the trust, the supplier
+  companies, the sums and the sentence — two records from two fetches.
+- **`entscheidsuche.ch`** serves Swiss judgments as free text PDFs; **`rechtspraak.nl`** court-news slugs
+  carry the instance; **`asiae.co.kr/en/article/<id>`** carries full Korean court reports in English but
+  needs `curl -L` and its `/en/search` ignores the query.
+- **`documenti.camera.it` 403s at the root but serves PDFs by direct path.** Gazzetta Ufficiale document
+  pages work by ELI path or per-issue sommario even though its full-text search is rejected.
+- **`occrp.org` works** with `curl -sSL` on the `www.` host — but **its on-site search is JavaScript and
+  returns "0 results" to curl**, so find the article by web search then curl the URL. Russian archive
+  frozen at 20 March 2025.
+- Also working: `detektor.ba` (BIRN BiH follows each hearing to the final instance), `en.mans.co.me/?p=`,
+  `insajderi.com`, `messinaantiusura.it`'s `wp/v2/search` plus `estratto` (**reprints are often two-line
+  excerpts — check length before planning a record on one**), `premiumtimesng.com/...?_fields=content`,
+  `orda.kz`, `ministeriopublico.gob.pa/wp-json`, `lawphil.net`, `livesicilia.it`, `immediato.net`,
+  `avvisopubblico.it/home`, `amabhungane.org`, `techcentral.co.za`, `corruptionwatch.org.za`,
+  `island.lk`, `dailynewsegypt.com`, and Laws.Africa LII **search** APIs (`/search/api/documents/?search=`)
+  on a dozen African hosts.
+- **Refusing:** `sec.gov` (403), `sfo.gov.uk` (**declines the TLS handshake outright, not a 403**),
+  `stf.jus.br` (403 from an F5 front end), `washingtoninstitute.org` (403), `chanrobles.com` (403),
+  `poderjudicial.es` news index (**not walkable** — WebSearch to the nota de prensa, then curl),
+  `lecceprima.it`, `brindisireport.it`, `dailymaverick.co.za`, `mg.co.za`, `groundup.org.za`,
+  `saflii.org`, `polity.org.za`, `itv.com`, `mondaq.com`, `elperiodico.com.gt` (no public DNS),
+  `thebriberyact.com`, `fcpablog.com`, and **every document page on the Laws.Africa hosts** (403 or
+  empty — the search API is a discovery tool only). **Never send a browser user agent past a 403.**
+- **Structurally empty, now confirmed repeatedly:** Transparency International helpdesk papers, EIA
+  country reports, Global Witness and GI-TOC narrative reports, anti-corruption **agency annual
+  reports**, SOE and utility "crackdown" announcements, **Italy's DIA half-yearly reports** (a sweep of
+  the 2024 volume for four institution types returned two hits, one a bibliography line), **SIU media
+  statements**, Nigeria's **ICPC** output (60 posts read, one writable case, body a ministry), and
+  **Sweden's Konkurrensverket 2019 report**, anonymised end to end.
+
+## CELLS AND SCOPES MEASURED CLOSED — CUMULATIVE
+
+Do not re-research these. Each is a measurement, not a failure to look. **New in round 32 marked ✱.**
+
+- ✱ **`crime -> company` in developed states** — means port and airport insiders, and the 82 held
+  `-> company` records already occupy it (Antwerp ×5, Rotterdam ×4, Schiphol, Le Havre, Roissy, Hamburg,
+  Valencia, Barcelona, Leixões, Vlissingen). Every live candidate found was **the verdict in an event
+  the map already holds at the arrest stage.** Spend a future round refreshing those records' outcomes
+  instead.
+- ✱ **Türkiye's university sector is structurally wrong, not thin** — everything it yields is the state
+  acting *on* universities (presidential rector appointments, Law 7243, the post-2016 purge). `inf:
+  state`, barred, and not infiltration.
+- ✱ **North Macedonia's party-financing seam is closed by outcome**, not sourcing: Gruevski acquitted in
+  "Talir 2", confirmed on appeal August 2026; "Trezor" quashed then rejected on limitation; "Titanik"
+  already held and largely time-barred.
+- ✱ **Austria is effectively closed** — both held Austrian records sit in the party-inside-state-firm
+  cell and the remaining ÖVP material reaches the finance ministry, which is barred.
+- ✱ **Zimbabwe `inf: movement` is empty** — no reachable inquiry, audit or judgment names a ZANU-PF
+  organ and a decision inside a named state firm. **Party-owned business is not this seam**: Ethiopia's
+  EFFORT and equivalents fail limb 2.
+- ✱ **Ghana's OSP feed is mined** for health and education; **Nigeria and Kenya re-confirmed thin**
+  (EFCC/ICPC health and university output is internal fraud).
+- ✱ **France is thin, not unsearched** — the CHU Nîmes director was *acquitted* of corruption and
+  convicted only of favouritism.
+- Haiti `crime -> security`; Yemen `inf: crime` in the Panel corpus; CAR `movement -> company`
+  (structurally — the company hires the militia, so limb 3 runs the wrong way) while CAR
+  `movement -> security` is saturated; Latin America `crime -> legis` (a shape problem — the politician
+  charged as a *member* of the group, which fails limb 2); Sudan S/2025/239 and Somalia S/2025/777
+  (new Somali cases need S/2021/849, S/2023/724, S/2024/748); Italy `crime -> court`; **US
+  labour-racketeering prosecutions for `inf: movement`** (in all 24 civil RICO cases the union is the
+  captured entity and La Cosa Nostra the infiltrator, so the corpus codes `inf: crime` with a union as
+  the body — and a union is not a qualifying institution); DRC for the movement cells.
+- **The law behind most of these, now measured twice:** a cell's thinness tracks **the presence of a
+  case feed or a reporting strand**, not the presence of cases. Asia's `corp -> company` runs down to a
+  bank branch manager taking 5,000 rupees wherever a national case feed exists, and costs two to four
+  calls a record where one does not.
+
+## THE LEAD BANK IS A POINTER TO DOCUMENTS, NOT A QUEUE OF CASES
+
+`data/candidates.json` holds 691 leads and this file carried "about 25% conversion" from round 14.
+**Measured three times in round 31: near zero.** Libya, 43 banked leads from its main report, none
+produced a record; Yemen none of 39; CAR none of 37. Every record came from full-text reading, and six
+of Yemen's ten came from annexes the paragraph extraction never reaches.
+
+## USE appendround.py. merge.py WILL DESTROY cases.json
+
+`merge.py`'s docstring says it merges research files into `data/cases.json`. **It does not — it rebuilds
+the file from the research directory and overwrites everything else.** Run on round 31's twelve files it
+took `cases.json` from 3,523 records to 536. `appendround.py` is the tool. It does **not** set `added`
+or `batch`, which step 3 of "How to add cases" requires — set them by hand after appending. Back
+`cases.json` up before any merge step regardless.
+
 ## READ THIS BEFORE PLANNING A ROUND, 20 November 2026 (round 31)
 
 **The deviation is now made entirely of the over-represented classes, and that changes how to plan
