@@ -9,6 +9,27 @@ issuing authority's own published file. Nothing is added, inferred or edited in 
 **54,355** designated targets publish neither an address nor a country — mostly crypto wallets, securities and
 aircraft — and cannot be placed on a map.
 
+## How complete this is
+
+No government or body keeps a census of every official designation list in
+the world, so completeness can only be measured against the fullest public
+catalogue of them, which is OpenSanctions. Across the seven collections that
+hold designation lists it publishes 226 sources that carry entries; this
+build downloaded 228 lists in all.
+
+| | Count |
+|---|---:|
+| Lists downloaded | 228 |
+| Lists with at least one listing that could be placed | 217 (95%) |
+| Lists publishing nothing placeable | 11 |
+| Listings after de-duplication | 475,596 |
+| Listings placed on the map | 421,241 (89%) |
+| Listings with no usable country or address | 54,355 |
+
+The eleven lists that carry nothing placeable publish entries with no
+geography at all: crypto wallet addresses, proscribed organisation names,
+broadcast equipment on the US FCC covered list, and similar.
+
 ## What period the data covers
 
 These are the lists **as they stand now**, not an archive. When an authority delists a party, that record generally
