@@ -183,7 +183,21 @@ with a note that the list does not state what they are.
 |---|---:|---:|---|
 | Street address | 7,716 | 1.8% | The list publishes a street address and it resolves to that address. |
 | City or locality | 197,844 | 47% | The list publishes a town, city or district; the point sits at its centre, not at the entity’s address. |
-| Country only | 215,681 | 51% | The list publishes only a country, or an address nothing could resolve; the point sits at the country’s centre. |
+| State or province | 5,315 | 1.3% | The list publishes no town, but the address names a state or province; the point sits at the centre of that state. |
+| Country only | 210,366 | 50% | The list publishes only a country, or an address nothing could resolve; the point sits at the centre of the country’s main landmass. |
+
+Country points were taken from the median position of that country's towns, which the dense east of the
+United States dragged as far as Indiana — 53,477 listings sat there. They are now the area centroid of the
+country's largest landmass, computed from Natural Earth: 39.50N 99.06W for the United States, in northern
+Kansas, within about 40 km of the published geographic centre of the contiguous states. Distant territories no
+longer pull the point, so France sits in France rather than mid-Atlantic. A few city-states and small island
+states are not in the Natural Earth country file; their original point already stood on the country and was
+left alone.
+
+A state tier was added at the same time. Where a list gives no town but the address ends in a state or
+province — `NV`, `(MD)`, `Arenzville, IL`, `CABO VERDE/MG` — the point now sits at the centre of that state
+rather than the centre of the country. Natural Earth's admin-1 file covers the United States, Brazil, Russia,
+Canada, India, Indonesia, China, Australia and South Africa, which is where almost all of these addresses are.
 
 City-level and country-level points are **not** the entity's address. Street-level points come from the geocoded
 address set built for the original OFAC map or from a street geocoder; city points are resolved against the
