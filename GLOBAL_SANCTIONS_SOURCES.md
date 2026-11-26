@@ -74,6 +74,63 @@ do not rank themselves against each other, so this scale is ours alone and exist
 | 4 — Grave harm to people | 20,702 | 4.9% | Drugs, organised crime and violence, trafficking and forced labour, human-rights abuses, cyber attacks. |
 | 5 — Terrorism, war or weapons of mass destruction | 68,531 | 16% | Counter-terrorism designations, war and territorial aggression, and nuclear, chemical, biological or missile proliferation. |
 
+## What comes from the lists, and what this map adds
+
+Every popup is split. Above the dashed rule, each line is as the authority
+publishes it: the name, the entity type, which lists the party is on, the
+address, the country, the wording of the measure, aliases, reference
+numbers, date of birth, and when the list last changed. The coordinates are
+this map's geocoding of the published address.
+
+Below the dashed rule, marked "not from the list", are four things no
+authority publishes and that this map works out:
+
+| Added by this map | How it is derived |
+|---|---|
+| What it is for | Keyword rules over the programme each listing cites; failing that, the stated purpose of the list it sits on |
+| How grave | A 1-5 band mapped from the category above |
+| Most likely in practice | A sentence written per category, further split for health-programme and development-bank exclusions. Where the authority publishes the offence itself, the map says so and offers no guess |
+| Placed by | Whether the point sits on a street, a town centre, or a country centre |
+
+"Most likely in practice" describes what listings of that kind usually
+concern. It is not a statement about the individual party, and it never
+draws on anything beyond the category and the kind of list.
+
+## Corrections made after an accuracy audit
+
+Every classification rule was run against all 421,241 listings and its
+matches inspected. Four rules were matching text they were never meant to:
+
+| Rule | What it hit by mistake | Effect | Fix |
+|---|---|---|---|
+| `1988` in the terrorism rule, for UN Resolution 1988 | the date 1988 in `1988-05-09` | 711 listings, mostly US state Medicaid pharmacies and care homes, were labelled terrorism and graded severity 5 | resolution numbers must now be cited as resolutions |
+| `SDT` for Specially Designated Terrorist | the letters inside `USDT`, a crypto address | 12 listings labelled terrorism | word boundary on both sides |
+| `gang` | the end of names such as Namgang | 31 listings labelled organised crime | word boundary on both sides |
+| `311` for the FinCEN provision | any number ending 311 | 417 listings labelled financial crime | must now read "section 311" |
+
+A fifth was a judgement error rather than a coding one. Three Xinjiang
+datasets — one from Sheffield Hallam University and two from the Center for
+Advanced Defense Studies — name companies that operate in a region or are
+linked to a state corporation. They allege no offence, and treating them as
+forced-labour findings put 10,982 companies in that category. They now sit
+in a category of their own, "named for where it operates or who owns it".
+The US UFLPA list, which is a government finding of forced labour, stays
+where it was.
+
+After these corrections the terrorism category holds 22,870 listings, down
+from 23,376, and every sample checked sits on a list that is explicitly a
+counter-terrorism register.
+
+## A caveat on the Atlas basemap
+
+The Atlas painting is artwork, not a survey. Its continents are drawn at
+sizes and positions of the artist's choosing — Australia, for instance, is
+painted larger than it is and slightly out of place. The plate is now
+stretched across 83.16 degrees north and south rather than 85.05, which is
+the extent at which its pixels are square and which brings Africa, Europe
+and the Americas onto the relief beneath. Australia and the far north will
+still not register exactly, and no single setting can make them.
+
 ## Plain-language glosses in the popup
 
 The lists publish their reasons in their own shorthand. A World Bank

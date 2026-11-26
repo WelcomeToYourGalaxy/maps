@@ -67,13 +67,15 @@
 #wtyg .gi:not(:empty){margin:4px 0 6px;padding:7px 8px;background:#191f25;border-left:2px solid #4a535c;border-radius:0 3px 3px 0}
 #wtyg .gi b{display:block;color:#ddd8d0;font-size:11px;font-weight:600;margin-bottom:2px}
 #wtyg .gi a{color:#8fa0bf}
-#wtyg .gx{margin:4px 0 2px;padding-left:8px;border-left:1px solid #2b3238}
-#wtyg .gxh{font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:#6f6a63;margin-bottom:3px}
-#wtyg .gr{font-size:10.5px;line-height:1.5;color:#98928a;margin:0 0 4px}
-#wtyg .gr i{font-style:normal;font-weight:600;color:#c8c3bb;margin-right:4px}
-#wtyg .gr code{font-family:ui-monospace,Menlo,monospace;font-size:10px;color:#b9b3ab;background:#1d2329;padding:1px 4px;border-radius:2px;margin-right:4px}
-#wtyg .gr a{color:#8fa0bf}
-#wtyg .gr.nb,#wtyg .nb{color:#746e66;font-style:italic}
+#wtyg .gx{color:#78726b;font-size:10px;line-height:1.45}
+#wtyg .gx i{font-style:normal;color:#9a948c;font-weight:600}
+#wtyg .gx a{color:#7e8da8}
+#wtyg .gx2{color:#8d877f;font-style:italic}
+#wtyg .f code{font-family:ui-monospace,Menlo,monospace;font-size:9.5px;color:#b9b3ab;background:#1d2329;padding:1px 4px;border-radius:2px}
+#wtyg .mine{margin:7px 0 2px;padding:6px 0 0;border-top:1px dashed #333a41}
+#wtyg .mh{font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:#6a645d;margin-bottom:4px}
+#wtyg .mine .tag{cursor:pointer}
+#wtyg .nb{color:#746e66;font-style:italic}
 #wtyg .hint{color:#6f6a63;font-size:10px}
 #wtyg .ld{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:9px;
  background:#0d1013;z-index:60;color:#9a948b;font-size:12px}
@@ -151,7 +153,10 @@ var LIST = [["satellite", "Jurassic"], ["atlas", "Atlas"],
 
 /* ---------- settings, as in Culprits ---------- */
 var PLATE = { url: ROOT + "atlas-plate.webp?v=207",
-  top: 85.05112877980659, bottom: -85.05112877980659, fadeIn: 3, fadeOut: 5 };
+  /* the plate is 1600x1435; its pixels are only square across +-83.1615 deg of
+     Mercator, so stretching it to +-85.05 pushed the painted coastlines off the
+     relief beneath and off the data points. */
+  top: 83.1615, bottom: -83.1615, fadeIn: 3, fadeOut: 5 };
 var ATLAS_TUNE = { sat: .15, con: .05, lift: .03, hue: -6, sea: .55, green: .30, warm: .22 };
 var BASE_GRADE = {
   atlas: { "raster-brightness-min": ATLAS_TUNE.lift, "raster-brightness-max": 1,
@@ -339,6 +344,7 @@ async function platePiece(z, x, y) {
   }
   const img = await plateBitmap;
   const n = Math.pow(2, z), top = plateMerc(PLATE.top), bot = plateMerc(PLATE.bottom);
+  x = ((x % n) + n) % n;   /* repeat the painted world when panning past the edge */
   const ctx = canvas2d(256, 256);
   const y0 = y / n, y1 = (y + 1) / n;
   const a = Math.max(y0, top), b = Math.min(y1, bot);
@@ -1263,6 +1269,50 @@ function resize(){
   cellC=new Int32Array(gw*gh);cellR=new Int32Array(gw*gh);
   draw();
 }
+/* ---------- marker palette, retuned for each basemap ---------- */
+/* the groups keep their hues so a colour means the same thing on every basemap;
+   only lightness and saturation move, so points stay off the background. */
+var THEME={
+ satellite:{lo:.52,hi:.76,sm:2.0,smin:.12,smax:.45,stroke:'rgba(8,10,13,.60)'},
+ atlas:    {lo:.22,hi:.42,sm:2.6,smin:.18,smax:.55,stroke:'rgba(247,239,222,.80)'},
+ night:    {lo:.58,hi:.82,sm:1.8,smin:.10,smax:.40,stroke:'rgba(6,8,12,.60)'},
+ hell:     {lo:.62,hi:.86,sm:1.1,smin:.05,smax:.26,stroke:'rgba(10,6,6,.60)'},
+ outlines: {lo:.46,hi:.70,sm:2.0,smin:.12,smax:.45,stroke:'rgba(8,10,13,.60)'}
+};
+var theme='satellite',palCache={},LRANGE=null;
+function hex2hsl(x){var h=x.replace('#',''),r=parseInt(h.substr(0,2),16)/255,
+  g=parseInt(h.substr(2,2),16)/255,b=parseInt(h.substr(4,2),16)/255,
+  mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,d=mx-mn,hu=0,sa=0;
+  if(d){sa=l>.5?d/(2-mx-mn):d/(mx+mn);
+    hu=mx===r?((g-b)/d+(g<b?6:0)):mx===g?((b-r)/d+2):((r-g)/d+4);hu*=60;}
+  return [hu,sa,l];}
+function hsl2hex(h,s,l){h=((h%360)+360)%360;
+  var c=(1-Math.abs(2*l-1))*s,x=c*(1-Math.abs((h/60)%2-1)),m=l-c/2,r,g,b;
+  if(h<60){r=c;g=x;b=0;}else if(h<120){r=x;g=c;b=0;}else if(h<180){r=0;g=c;b=x;}
+  else if(h<240){r=0;g=x;b=c;}else if(h<300){r=x;g=0;b=c;}else{r=c;g=0;b=x;}
+  function q(v){v=Math.round((v+m)*255);v=v<0?0:v>255?255:v;return (v<16?'0':'')+v.toString(16);}
+  return '#'+q(r)+q(g)+q(b);}
+function palette(k){
+  if(palCache[k]) return palCache[k];
+  var T=THEME[k]||THEME.satellite,base=META.grp.map(function(g){return hex2hsl(g[1]);});
+  if(!LRANGE){var ls=base.map(function(c){return c[2];});
+    LRANGE=[Math.min.apply(null,ls),Math.max.apply(null,ls)];}
+  var span=(LRANGE[1]-LRANGE[0])||1;
+  palCache[k]=base.map(function(c){
+    var hu=c[0],sa=c[1];
+    if(hu>=25&&hu<=70){hu=22;sa=Math.min(sa,.30);}   /* keep browns brown, never orange or yellow */
+    sa=Math.max(T.smin,Math.min(T.smax,sa*T.sm));
+    var l=T.lo+(T.hi-T.lo)*((c[2]-LRANGE[0])/span);
+    return hsl2hex(hu,sa,l);});
+  return palCache[k];
+}
+function gcol(i){var p=palette(theme);return p[i]||p[0];}
+function setTheme(k){
+  if(!THEME[k]) k='satellite';
+  theme=k;
+  if(map&&map.getLayer('wpts')) map.setPaintProperty('wpts','circle-stroke-color',THEME[k].stroke);
+  if(META){ if(proj==='globe') globeData(); else draw(); }
+}
 function draw(){
   if(!map||!META) return;
   ctx.clearRect(0,0,W,H);
@@ -1288,8 +1338,8 @@ function draw(){
     var px=(gi%gw)*CELL+CELL/2,py=((gi/gw)|0)*CELL+CELL/2;
     var rad=n>1?Math.min(2.1+Math.sqrt(n)*.62,11):2.2;
     ctx.beginPath();ctx.arc(px,py,rad,0,6.2832);
-    ctx.fillStyle=G[grp[cellR[gi]]][1];ctx.fill();
-    if(rad>4.5){ctx.lineWidth=.8;ctx.strokeStyle='rgba(10,12,14,.6)';ctx.stroke();}
+    ctx.fillStyle=gcol(grp[cellR[gi]]);ctx.fill();
+    if(rad>(theme==='atlas'?2.9:4.5)){ctx.lineWidth=.8;ctx.strokeStyle=THEME[theme].stroke;ctx.stroke();}
   }
   ctx.globalAlpha=1;
 }
@@ -1313,7 +1363,7 @@ function globeData(){
   }
   var f=[];
   for(var k2 in m){var e=m[k2];
-    f.push({type:'Feature',geometry:{type:'Point',coordinates:[e[0],e[1]]},properties:{n:e[2],c:META.grp[e[3]][1]}});}
+    f.push({type:'Feature',geometry:{type:'Point',coordinates:[e[0],e[1]]},properties:{n:e[2],c:gcol(e[3])}});}
   map.getSource('wpts').setData({type:'FeatureCollection',features:f});
 }
 function addGlobeLayer(){
@@ -1378,6 +1428,7 @@ function defOf(k){
   var i=+k.slice(3);
   if(k.indexOf('sch')===0) return [META.sch[i],META.schd[i]||'',''];
   if(k.indexOf('nat')===0) return [META.nat[i][1],META.nat[i][3]||'',''];
+  if(k.indexOf('sev')===0) return [META.sev[i][0],META.sev[i][1]||'',''];
   if(k.indexOf('src')===0){ var L=META.src[i];
     return [L[0],(L[1]||'')+(L[2]?' Issued by '+L[2]+'.':''),L[3]||'']; }
   return ['',''];
@@ -1385,56 +1436,59 @@ function defOf(k){
 function showPop(list,sxp,syp){
   var pop=$('pop'),p0=rowsAll[list[0]];
   $('pt').textContent=list.length>1?fmt(list.length)+' listings here':p0[5];
-  $('ps').innerHTML=esc(p0[6]||'No address published')+'  ·  '+p0[0].toFixed(5)+', '+p0[1].toFixed(5)+
-    '<br><span class="hint">Click any tag below to read what it is.</span>';
+  $('ps').innerHTML=esc(p0[6]||'No address published')+'  \u00b7  '+p0[0].toFixed(5)+', '+p0[1].toFixed(5)+
+    '<br><span class="hint">Plain text is as the list publishes it. Click a tag to read what it is.</span>';
   var h='',show=list.slice(0,50);
   show.forEach(function(ix){
     var p=rowsAll[ix],gid='gi'+(++POPN);
     h+='<div class="ent"><div class="en">'+esc(p[5])+'</div><div class="tags">';
     h+='<span class="tag tq" data-i="sch'+p[3]+'" data-g="'+gid+'">'+esc(META.sch[p[3]])+'</span>';
-    (p[15]||[]).forEach(function(ni){
-      h+='<span class="tag tq" data-i="nat'+ni+'" data-g="'+gid+'" style="border-color:#6e6961">'+esc(META.nat[ni][1])+'</span>';});
     p[4].forEach(function(si){
-      h+='<span class="tag tq" data-i="src'+si+'" data-g="'+gid+'" style="border-color:'+META.grp[g2s[si]===undefined?0:g2s[si]][1]+'">'+esc(META.src[si][0])+'</span>';});
+      h+='<span class="tag tq" data-i="src'+si+'" data-g="'+gid+'" style="border-color:'+gcol(g2s[si]===undefined?0:g2s[si])+'">'+esc(META.src[si][0])+'</span>';});
     h+='</div><div class="gi" id="'+gid+'"></div>';
     if(list.length>1&&p[6]) h+='<div class="f"><b>Address:</b> '+esc(p[6])+'</div>';
     if(p[10]) h+='<div class="f"><b>Country:</b> '+esc(p[10].toUpperCase())+'</div>';
     if(p[9]&&p[9].length){
-      h+='<div class="f"><b>Listed under:</b> '+esc(p[9].join(' · '))+'</div>';
-      var gl=GLOSS.find(p[9],6);
-      if(gl.length){
-        h+='<div class="gx"><div class="gxh">What that wording means</div>';
-        gl.forEach(function(g){h+='<div class="gr"><i>'+esc(g[0])+'</i> '+esc(g[1])+'</div>';});
-        h+='</div>';
-      } else h+='<div class="gx"><div class="gr nb">The authority publishes this as its own reference and does not explain it further.</div></div>';
+      h+='<div class="f"><b>Listed under:</b> '+esc(p[9].join(' \u00b7 '));
+      var gl=GLOSS.find(p[9],6),g2='';
+      gl.forEach(function(g){g2+=' <i>'+esc(g[0])+'</i> '+esc(g[1]);});
+      h+=g2?'<span class="gx">'+g2+'</span>':'';
+      h+='</div>';
     }
-    if(p[7]&&p[7].length) h+='<div class="f"><b>Also known as:</b> '+esc(p[7].join(' · '))+'</div>';
+    if(p[7]&&p[7].length) h+='<div class="f"><b>Also known as:</b> '+esc(p[7].join(' \u00b7 '))+'</div>';
     var ids=(p[8]||[]).filter(function(v){return v&&String(v).trim();});
     if(ids.length){
-      h+='<div class="f"><b>Reference numbers:</b></div><div class="gx">';
-      var plain=[];
+      h+='<div class="f"><b>Reference numbers:</b> ';
+      var plain=[],typed='';
       ids.forEach(function(v){
         var d=GLOSS.ident(v,p[10]);
-        if(d) h+='<div class="gr"><code>'+esc(v)+'</code> <i>'+esc(d[0])+'</i> '+esc(d[1])+
-               (d[2]?' <a href="'+esc(d[2])+'" target="_blank" rel="noopener">look it up &rarr;</a>':'')+'</div>';
+        if(d) typed+='<code>'+esc(v)+'</code><span class="gx"> <i>'+esc(d[0])+'</i> '+esc(d[1])+
+               (d[2]?' <a href="'+esc(d[2])+'" target="_blank" rel="noopener">look it up &rarr;</a>':'')+'</span> ';
         else plain.push(v);
       });
-      if(plain.length){
-        h+='<div class="gr">';
-        plain.forEach(function(v){h+='<code>'+esc(v)+'</code> ';});
-        h+='</div><div class="gr nb">The list prints '+(plain.length>1?'these':'this')+
-           ' without saying what '+(plain.length>1?'they are':'it is')+
-           ' — a company registry number, a tax number, a passport or a vessel number, depending on the authority.</div>';
-      }
+      plain.forEach(function(v){h+='<code>'+esc(v)+'</code> ';});
+      h+=typed;
+      if(plain.length) h+='<span class="gx">The list prints '+(plain.length>1?'those':'that')+
+        ' without saying what '+(plain.length>1?'they are':'it is')+' \u2014 a registry, tax, passport or vessel number, depending on the authority.</span>';
       h+='</div>';
     }
     if(p[11]) h+='<div class="f"><b>Date of birth:</b> '+esc(p[11])+'</div>';
     if(p[12]) h+='<div class="f"><b>List last changed:</b> '+esc(p[12])+'</div>';
-    var sv=0;(p[15]||[]).forEach(function(ni){if(META.nat[ni][2]>sv)sv=META.nat[ni][2];});
-    h+='<div class="f"><b>Severity band:</b> '+esc(META.sev[sv][0])+' <span style="color:#6f6a63">(this map’s reading, not the list’s)</span></div>';
-    h+='<div class="f"><b>Placed by:</b> '+META.prec[p[2]][0].toLowerCase()+'</div>';
     if(p[13]&&p[13].indexOf('ofac:')!==0)
       h+='<div class="f"><a href="https://www.opensanctions.org/entities/'+encodeURIComponent(p[13])+'/" target="_blank" rel="noopener">Check this record against its source lists &rarr;</a></div>';
+    /* everything below this line is added by the map, not published by any list */
+    var sv=0;(p[15]||[]).forEach(function(ni){if(META.nat[ni][2]>sv)sv=META.nat[ni][2];});
+    h+='<div class="mine"><div class="mh">Not from the list \u2014 added by this map</div>';
+    h+='<div class="f"><b>What it is for:</b> ';
+    if((p[15]||[]).length) (p[15]||[]).forEach(function(ni){
+      h+='<span class="tag tq" data-i="nat'+ni+'" data-g="'+gid+'" style="border-color:#6e6961">'+esc(META.nat[ni][1])+'</span> ';});
+    else h+='<span class="nb">not stated by the list, and nothing in the wording identifies it</span>';
+    h+='</div>';
+    if((p[15]||[]).length)
+      h+='<div class="f"><b>How grave:</b> <span class="tag tq" data-i="sev'+sv+'" data-g="'+gid+'">'+esc(META.sev[sv][0])+'</span></div>';
+    var lk=likely(p);
+    if(lk) h+='<div class="f"><b>Most likely in practice:</b> <span class="gx2">'+esc(lk)+'</span></div>';
+    h+='<div class="f"><b>Placed by:</b> '+META.prec[p[2]][0].toLowerCase()+'</div></div>';
     h+='</div>';
   });
   if(list.length>show.length) h+='<div class="f" style="padding:9px 0">'+fmt(list.length-show.length)+' further listings here. Zoom in or narrow the filters.</div>';
@@ -1443,6 +1497,41 @@ function showPop(list,sxp,syp){
   var pw=Math.min(370,W-24),ph=pop.offsetHeight||300;
   pop.style.left=Math.max(12,Math.min(sxp+14,W-pw-12))+'px';
   pop.style.top=Math.max(12,Math.min(syp+14,H-ph-12))+'px';
+}
+/* what the listing most likely means in practice \u2014 read from the reason and the
+   kind of list, never from anything the authority states about the party */
+var OFFENCE=/murder|manslaughter|homicide|theft|robbery|burglar|assault|rape|abduct|kidnap|arson|forger|counterfeit|embezzl|bribery|extortion|smuggl|traffick|fraud|launder/i;
+var ACT={
+ terror:'Named under a counter-terrorism power. In practice that usually means membership of a designated armed group, or raising, moving or providing money for one.',
+ war:'Named over the invasion of Ukraine or the annexation of territory. In practice that usually means holding office, supplying the armed forces, or profiting from occupied assets.',
+ wmd:'Named over weapons programmes. In practice that usually means supplying parts, technology or finance to a nuclear, missile or chemical programme, or breaking an arms embargo.',
+ atrocity:'Named under a human-rights power. In practice that usually means command or personal responsibility for killings, torture, or the repression of protest.',
+ traffick:'Named over forced labour. In practice that usually means making goods with forced labour, or moving people for it.',
+ drugs:'Named under a narcotics power. In practice that usually means trafficking, or running a business used to hold or wash the money.',
+ orgcrime:'Named over organised crime or a violent offence.',
+ cyber:'Named over computer intrusion, ransomware, or interference carried out online.',
+ corrupt:'Named over corruption. In practice that usually means paying or taking bribes, or taking public money.',
+ fincrime:'Named over money. In practice that usually means fraud, laundering, or breaking the rules a financial regulator enforces.',
+ export:'Restricted as a buyer: sellers need a licence to supply it. This restricts trade with the party and alleges no crime.',
+ regulat:'A regulator has warned about, disciplined, or refused to authorise this party. Often it was found operating without a licence.',
+ warrant:'A police or prosecution body wants this party arrested. The list does not publish what for, and an arrest warrant is not a conviction.',
+ counter:'Listed in retaliation for sanctions imposed on the listing state, rather than for anything the party itself did.',
+ region:'Named for where it operates, what it makes, or who owns it. No offence is alleged against it.',
+ country:'Caught by a country-wide programme, for operating in or belonging to the targeted state or sector rather than for a named offence.'
+};
+function likely(p){
+  var keys=(p[15]||[]).map(function(i){return META.nat[i][0];});
+  if(!keys.length) return 'The list gives no reason, and nothing in its wording identifies one. Nothing can be said about what this party is alleged to have done.';
+  if(OFFENCE.test((p[9]||[]).join(' '))) return 'The list states the offence itself, in the wording above.';
+  var k=keys[0],names=(p[4]||[]).map(function(i){return META.src[i][0];}).join(' ');
+  if(k==='procure'){
+    if(/medicaid|medicare|health|provider/i.test(names))
+      return 'Barred from billing a public health programme. Registers of this kind record billing fraud, a licence suspension, or a conviction \u2014 this entry does not say which.';
+    if(/bank|IDB|EBRD|African Develop|Asian Develop|WorldBank|World Bank/i.test(names))
+      return 'Barred from contracts funded by a development bank, after the bank\u2019s own tribunal found a sanctionable practice. Where the practice is named, it is in the wording above.';
+    return 'Barred from public contracts. In practice that usually means failing to perform a contract, or a finding of fraud or collusion in bidding.';
+  }
+  return ACT[k]||'';
 }
 /* a tag in the popup explains itself when clicked */
 function popTagClick(e){
@@ -1465,6 +1554,29 @@ var T={
  typ:['Entity type','What kind of thing is listed — a person, a company, a ship, an aircraft, a crypto wallet.'],
  prec:['Location precision','How exactly a point sits where the listing says. Most lists publish a city or a country rather than a street.']
 };
+var SHORT={terror:'terrorism and armed groups',war:'the war in Ukraine and annexed territory',
+ wmd:'weapons and proliferation',atrocity:'human rights abuses',traffick:'forced labour and trafficking',
+ drugs:'drugs',orgcrime:'organised crime and violence',cyber:'cyber attacks',corrupt:'corruption',
+ fincrime:'financial crime and fraud',export:'export control',procure:'bars from public contracts and public programmes',
+ regulat:'regulatory and licensing action',warrant:'arrest warrants with no offence given',
+ counter:'counter-sanctions',region:'where a party operates or who owns it',country:'country-wide programmes'};
+function shares(){
+  var tot=META.total,rows=[],i,rest=0;
+  for(i=0;i<META.nat.length;i++) rows.push([META.natcnt[i]||0,META.nat[i][0]]);
+  rows.sort(function(a,b){return b[0]-a[0];});
+  var out=[];
+  for(i=0;i<rows.length;i++){
+    var share=100*rows[i][0]/tot;
+    if(i<7&&share>=1) out.push('<b>'+(share>=10?share.toFixed(0):share.toFixed(1))+'%</b> '+(SHORT[rows[i][1]]||rows[i][1]));
+    else rest+=rows[i][0];
+  }
+  var none=META.natnone||0;
+  return 'What the listings are for: '+out.join(', ')+
+   (rest? ', and '+(100*rest/tot).toFixed(1)+'% across the remaining categories':'')+'. '+
+   'For '+(100*none/tot).toFixed(1)+'% no reason can be read from what the list publishes. '+
+   '<span style="color:#6f6a63">A listing can count under more than one, so these add to more than 100%. '+
+   'The categories are this map\u2019s reading of the programme each listing cites, not a field the lists publish.</span>';
+}
 function buildUI(){
   var tot=META.total;
   $('intro').innerHTML=
@@ -1472,6 +1584,7 @@ function buildUI(){
    '<b>designated</b> — named as subject to a penalty such as a freeze on their money, a ban on trading with them, a bar '+
    'from public contracts, or a warrant for their arrest. This map puts <b>'+fmt(tot)+' listings from '+META.nlists+
    ' of those official lists</b> on the ground, at the addresses the lists publish.</p>'+
+   '<p>'+shares()+'</p>'+
    '<p id="m2" style="display:none"><b>A listing is not a conviction.</b> Most are decisions taken by a government department, '+
    'not a court, and the listed party often has no hearing first. The same party usually appears on several countries’ '+
    'lists at once; each point names every list it is on and links back to them.</p>'+
@@ -1564,7 +1677,7 @@ function buildUI(){
     '<div class="vsec">View</div><div class="seg"><button type="button" data-proj="globe">Globe</button>'+
     '<button type="button" class="on" data-proj="mercator">Flat</button></div>'+
     '<button type="button" id="wbtn" class="wide">Whole world</button>';
-  $('bmlist').addEventListener('change',function(e){if(e.target.name==='wbm') BM.set(e.target.value);});
+  $('bmlist').addEventListener('change',function(e){if(e.target.name==='wbm'){BM.set(e.target.value);setTheme(e.target.value);}});
   $('bmlist').addEventListener('click',function(e){
     var b=e.target.closest('[data-proj]'); if(b){setProj(b.dataset.proj);return;}
     if(e.target.id==='wbtn') wholeWorld();});
@@ -1616,7 +1729,7 @@ fetch(BASE+'meta.json').then(function(r){
   natOn=new Uint8Array(META.nat.length+1).fill(1);
   sevOn=new Uint8Array(6).fill(1);
   BM=CulpritsBasemaps.create('map',{initial:'night',projection:'mercator',center:[10,20],zoom:1.4,
-    plate:META.plate,onReady:function(){map.setMaxZoom(18);addGlobeLayer();freeFlat();}});
+    plate:META.plate,onReady:function(){map.setMaxZoom(18);addGlobeLayer();freeFlat();try{setTheme(BM.current());}catch(e){}}});
   map=BM.maplibre;
   map.addControl(new maplibregl.NavigationControl({showCompass:false}),'bottom-right');
   map.on('render',draw);map.on('move',draw);map.on('resize',resize);
