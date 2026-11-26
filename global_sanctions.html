@@ -1309,7 +1309,7 @@ var THEME={
  hell:     {lo:.50,hi:.72,sm:0.9,smin:.04,smax:.20,hue:-14,tint:'#efe2dc',mix:.24,stroke:'rgba(14,7,7,.60)'},
  outlines: {lo:.33,hi:.51,sm:1.5,smin:.10,smax:.34,hue:4,tint:'#a9bccd',mix:.16,stroke:'rgba(8,10,13,.55)'}
 };
-var theme='satellite',palCache={},LRANGE=null;
+var theme='atlas',palCache={},LRANGE=null;
 function hex2hsl(x){var h=x.replace('#',''),r=parseInt(h.substr(0,2),16)/255,
   g=parseInt(h.substr(2,2),16)/255,b=parseInt(h.substr(4,2),16)/255,
   mx=Math.max(r,g,b),mn=Math.min(r,g,b),l=(mx+mn)/2,d=mx-mn,hu=0,sa=0;
@@ -1418,27 +1418,59 @@ function draw(){
   }
   ctx.globalAlpha=1;
 }
-/* ---------- globe: aggregated points drawn by maplibre ---------- */
+/* ---------- globe: points drawn by maplibre ---------- */
+/* The globe groups points the way the flat map does: by a cell a few pixels
+   across, so the cell shrinks as you zoom and each point ends up alone at its
+   own coordinates. A fixed grid in degrees did not shrink, so one blob could
+   stand for thousands of listings however far in you went. */
+var GSTEP=0.6,GMAX=60000;
+function globeBin(step,box,lim,clat,clon){
+  var R=Math.PI/180,sc=Math.sin(clat),cc=Math.cos(clat);
+  var m={},ks=[],a,i,la,lo,lar,kx,ky,e,k;
+  for(a=0;a<actN;a++){
+    i=actList[a]; la=plat[i]; lo=plon[i];
+    if(box){
+      if(la<box[0]-step||la>box[1]+step) continue;
+      if(box[3]<360&&((lo-(box[2]-step))%360+360)%360>box[3]+2*step) continue;
+    }
+    if(lim>-1){ lar=la*R;
+      if(sc*Math.sin(lar)+cc*Math.cos(lar)*Math.cos(lo*R-clon)<lim) continue; }
+    ky=Math.round(la/step); kx=Math.round(lo/step); k=ky+'|'+kx;
+    e=m[k];
+    /* a lone point keeps its own coordinates; a cell with several sits at their
+       mean, never at the cell centre, which would show as a lattice */
+    if(e){ e.n++; e.sx+=lo; e.sy+=la; }
+    else { m[k]={sx:lo,sy:la,n:1,g:grp[i],i:i,kx:kx,ky:ky}; ks.push(k); }
+  }
+  return {m:m,ks:ks};
+}
 function globeData(){
   if(!map.getSource('wpts')) return;
-  var step=0.6,m={};
+  var z=map.getZoom(),R=Math.PI/180;
+  var c=map.getCenter(),clat=c.lat*R,clon=c.lng*R;
   // the far side of the globe must not draw through it
-  var c=map.getCenter(),R=Math.PI/180;
-  var clat=c.lat*R,clon=c.lng*R,sc=Math.sin(clat),cc=Math.cos(clat);
-  var z=map.getZoom(),lim=z>3?-1:0.04;
-  for(var a=0;a<actN;a++){
-    var i=actList[a];
-    if(lim>-1){
-      var la=plat[i]*R;
-      if(sc*Math.sin(la)+cc*Math.cos(la)*Math.cos(plon[i]*R-clon)<lim) continue;
-    }
-    var la=Math.round(plat[i]/step),lo=Math.round(plon[i]/step),k=la*100000+lo;
-    var e=m[k];
-    if(e) e[2]++; else m[k]=[lo*step,la*step,1,grp[i]];
+  var lim=z>3?-1:0.04;
+  /* once the cells are fine, keep only what the camera can see, or a close zoom
+     would hand maplibre one feature per listing for the whole world */
+  var box=null;
+  if(z>1.6) try{ var b=map.getBounds();
+    var w=b.getWest(),sp=b.getEast()-w;
+    if(!(sp>0)) sp+=360;                 /* the view may straddle the date line */
+    box=[b.getSouth(),b.getNorth(),w,Math.min(360,sp)];
+  }catch(e){ box=null; }
+  /* cells a few pixels across, as on the flat map; coarsened only if one view
+     would otherwise hand maplibre more circles than it can draw smoothly */
+  var step=Math.min(2.8125,360*CELL/(512*Math.pow(2,z))),r;
+  for(var g=0;g<6;g++){
+    r=globeBin(step,box,lim,clat,clon);
+    if(r.ks.length<=GMAX) break;
+    step*=2;
   }
-  var f=[];
-  for(var k2 in m){var e=m[k2];
-    f.push({type:'Feature',geometry:{type:'Point',coordinates:[e[0],e[1]]},properties:{n:e[2],c:gcol(e[3])}});}
+  GSTEP=step;
+  var f=[],e;
+  for(var a=0;a<r.ks.length;a++){ e=r.m[r.ks[a]];
+    f.push({type:'Feature',geometry:{type:'Point',coordinates:[e.sx/e.n,e.sy/e.n]},
+      properties:{n:e.n,c:gcol(e.g),i:e.i,kx:e.kx,ky:e.ky}});}
   map.getSource('wpts').setData({type:'FeatureCollection',features:f});
 }
 function addGlobeLayer(){
@@ -1471,7 +1503,9 @@ function freeFlat(){
 }
 function frameWorld(instant){
   var pad={left:Math.min(352,W*0.3),right:0,top:0,bottom:0},v;
-  if(proj==='globe') v={center:[12,25],zoom:Math.max(0.2,Math.log2(0.86*Math.max(220,Math.min(H-40,W-380))*Math.PI/512)),padding:pad};
+  /* the globe sits in the middle of the frame: no padding, so it is not pushed
+     off to one side by the panel's width */
+  if(proj==='globe') v={center:[0,0],zoom:Math.max(0.2,Math.log2(0.82*Math.max(220,Math.min(H-40,W-40))*Math.PI/512)),padding:{left:0,right:0,top:0,bottom:0}};
   else v={center:[10,22],zoom:Math.max(0,Math.log2(Math.min(W-380,(H-40)*1.55)/512)),padding:pad};
   if(instant) map.jumpTo(v); else map.flyTo(Object.assign(v,{duration:1100}));
 }
@@ -1481,10 +1515,12 @@ function at(sxp,syp){
   if(proj==='globe'){
     var fs=map.queryRenderedFeatures([[sxp-6,syp-6],[sxp+6,syp+6]],{layers:['wpts']});
     if(!fs.length) return null;
-    var c=fs[0].geometry.coordinates,step=0.6,out=[];
+    var pr=fs[0].properties;
+    if(!(pr.n>1)) return [pr.i];
+    var st=GSTEP,out=[];
     for(var a=0;a<actN;a++){var i=actList[a];
-      if(Math.abs(plon[i]-c[0])<=step/2+1e-6&&Math.abs(plat[i]-c[1])<=step/2+1e-6) out.push(i);}
-    return out.length?out:null;
+      if(Math.round(plat[i]/st)===pr.ky&&Math.round(plon[i]/st)===pr.kx) out.push(i);}
+    return out.length?out:[pr.i];
   }
   var z=map.getZoom(),ws=512*Math.pow(2,z),o0;
   try{ o0=map.project([0,0]); }catch(e){ return null; }
@@ -1836,7 +1872,7 @@ function buildUI(){
   $('pbb').addEventListener('mouseleave',tipOff);
   $('tg').onclick=function(){$('pnl').classList.toggle('closed');};
   $('bmlist').innerHTML=CulpritsBasemaps.list.map(function(b){
-    return '<label><input type="radio" name="wbm" value="'+b[0]+'"'+(b[0]==='satellite'?' checked':'')+'> '+esc(b[1])+'</label>';}).join('')+
+    return '<label><input type="radio" name="wbm" value="'+b[0]+'"'+(b[0]==='atlas'?' checked':'')+'> '+esc(b[1])+'</label>';}).join('')+
     '<div class="vsec">View</div><div class="seg"><button type="button" class="on" data-proj="globe">Globe</button>'+
     '<button type="button" data-proj="mercator">Flat</button></div>'+
     '<button type="button" id="wbtn" class="wide">Whole world</button>';
@@ -1891,7 +1927,7 @@ fetch(BASE+'meta.json').then(function(r){
   catOn=new Uint8Array(META.cats.length).fill(1);
   natOn=new Uint8Array(META.nat.length+1).fill(1);
   sevOn=new Uint8Array(6).fill(1);
-  BM=CulpritsBasemaps.create('map',{initial:'satellite',projection:'globe',center:[10,20],zoom:1.4,
+  BM=CulpritsBasemaps.create('map',{initial:'atlas',projection:'globe',center:[10,20],zoom:1.4,
     plate:META.plate,onReady:function(){map.setMaxZoom(18);addGlobeLayer();setProj(proj);frameWorld(true);try{setTheme(BM.current());}catch(e){}}});
   map=BM.maplibre;
   map.addControl(new maplibregl.NavigationControl({showCompass:false}),'bottom-right');
