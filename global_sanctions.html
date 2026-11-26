@@ -1515,12 +1515,25 @@ function at(sxp,syp){
   if(proj==='globe'){
     var fs=map.queryRenderedFeatures([[sxp-6,syp-6],[sxp+6,syp+6]],{layers:['wpts']});
     if(!fs.length) return null;
-    var pr=fs[0].properties;
-    if(!(pr.n>1)) return [pr.i];
-    var st=GSTEP,out=[];
-    for(var a=0;a<actN;a++){var i=actList[a];
-      if(Math.round(plat[i]/st)===pr.ky&&Math.round(plon[i]/st)===pr.kx) out.push(i);}
-    return out.length?out:[pr.i];
+    /* Gather the same way the flat map does: everything drawn within a few
+       pixels of the pointer, not just the one cell that was hit. Listings often
+       share an exact coordinate, and two that sit either side of a cell edge are
+       still one circle on screen, so neither must be left out of the list. */
+    var st=GSTEP,want={},q,a,dx,dy;
+    for(a=0;a<fs.length;a++){ q=fs[a].properties;
+      for(dy=-1;dy<=1;dy++) for(dx=-1;dx<=1;dx++) want[(q.ky+dy)+'|'+(q.kx+dx)]=1; }
+    var near=[],i,pt,d;
+    for(a=0;a<actN;a++){ i=actList[a];
+      if(!want[Math.round(plat[i]/st)+'|'+Math.round(plon[i]/st)]) continue;
+      try{ pt=map.project([plon[i],plat[i]]); }catch(e){ continue; }
+      d=Math.hypot(pt.x-sxp,pt.y-syp);
+      if(d<=18) near.push([d,i]);
+    }
+    if(!near.length) return null;
+    near.sort(function(A,B){return A[0]-B[0];});
+    var lim2=Math.max(near[0][0]+1,6),out=[];
+    for(a=0;a<near.length;a++){ if(near[a][0]>lim2) break; out.push(near[a][1]); }
+    return out.length?out:null;
   }
   var z=map.getZoom(),ws=512*Math.pow(2,z),o0;
   try{ o0=map.project([0,0]); }catch(e){ return null; }
