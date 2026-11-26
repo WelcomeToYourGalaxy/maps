@@ -1760,7 +1760,7 @@ function slideHtml(s) {
   const ser = s.data && D.series[s.data];
   return '<button type="button" class="bx" data-x="1" title="Close this box">&times;</button>' +
     '<div class="s-y">Chapter ' + (p.i + 1) + " · " + esc(p.t) + " · " + (s.si + 1) + " of " + p.steps.length + "</div>" +
-    '<div class="s-h">' + esc(s.cap) + "</div>" + (s.link ? '<div class="s-l">' + esc(s.link) + "</div>" : "") + '<div class="s-t">' + esc(s.t) + "</div>" +
+    '<div class="s-h">' + esc(s.cap) + "</div>" + '<div class="s-t">' + esc([s.link, s.t].filter(Boolean).join(" ")) + "</div>" +
     (ser ? '<div class="lg"><b>' + esc(ser.name) + "</b>" + ser.lab.map((l, i) => '<span><i style="background:' + SEQ[(ser.ci || [0, 1, 2, 3, 4])[i]] + '"></i>' + esc(l) + "</span>").join("") + "</div>" : "") +
     (s.tiers ? '<div class="lg"><b>Colour of each point: its level in the industry</b>' + TIERS.map((t, i) => '<span><i style="background:' + P.t[i] + ';border-radius:50%;width:10px"></i>' + esc(t[1]) + "</span>").join("") + "</div>" : "") +
     (s.m ? '<div class="s-m"><b>On the map.</b> ' + esc(s.m) + "</div>" : "") +
