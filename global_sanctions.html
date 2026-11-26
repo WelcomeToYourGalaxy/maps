@@ -1372,26 +1372,19 @@ function draw(){
   var j,k;
   /* the halo: wide, faint, added light, so crowded places glow rather than blotch */
   ctx.globalCompositeOperation='lighter';
-  ctx.globalAlpha=theme==='atlas'?.07:.10;
+  ctx.globalAlpha=theme==='atlas'?.06:.09;
   for(j=0,k=0;k<nc;k++,j+=3){
-    ctx.beginPath();ctx.arc(ord[j],ord[j+1],ord[j+2]*1.7,0,6.2832);
+    ctx.beginPath();ctx.arc(ord[j],ord[j+1],ord[j+2]*1.55,0,6.2832);
     ctx.fillStyle=colv[k];ctx.fill();
   }
   /* the orb itself */
   ctx.globalCompositeOperation='source-over';
-  ctx.globalAlpha=.92;
+  ctx.globalAlpha=.88;
   for(j=0,k=0;k<nc;k++,j+=3){
     var r0=ord[j+2];
     ctx.beginPath();ctx.arc(ord[j],ord[j+1],r0,0,6.2832);
     ctx.fillStyle=colv[k];ctx.fill();
-    if(r0>2.6){ctx.lineWidth=.7;ctx.strokeStyle=THEME[theme].stroke;ctx.stroke();}
-  }
-  /* a small off-centre highlight reads as a sphere rather than a sticker */
-  ctx.globalAlpha=theme==='atlas'?.16:.22;
-  ctx.fillStyle=theme==='atlas'?'#2a2117':'#f3efe7';
-  for(j=0,k=0;k<nc;k++,j+=3){
-    var rr=ord[j+2]; if(rr<5.5) continue;
-    ctx.beginPath();ctx.arc(ord[j]-rr*.3,ord[j+1]-rr*.32,rr*.34,0,6.2832);ctx.fill();
+    if(r0>2.0){ctx.lineWidth=.6;ctx.strokeStyle=THEME[theme].stroke;ctx.stroke();}
   }
   ctx.globalAlpha=1;
 }
@@ -1422,8 +1415,8 @@ function addGlobeLayer(){
   if(map.getSource('wpts')) return;
   map.addSource('wpts',{type:'geojson',data:{type:'FeatureCollection',features:[]}});
   map.addLayer({id:'wglow',type:'circle',source:'wpts',layout:{visibility:'none'},
-    paint:{'circle-color':['get','c'],'circle-opacity':.32,'circle-blur':1.1,
-      'circle-radius':['interpolate',['linear'],['sqrt',['get','n']],1,5,6,11,30,19,140,27]}});
+    paint:{'circle-color':['get','c'],'circle-opacity':.22,'circle-blur':1.0,
+      'circle-radius':['interpolate',['linear'],['sqrt',['get','n']],1,4,6,9,30,15,140,22]}});
   map.addLayer({id:'wpts',type:'circle',source:'wpts',layout:{visibility:'none'},
     paint:{'circle-color':['get','c'],'circle-opacity':.8,
       'circle-radius':['interpolate',['linear'],['sqrt',['get','n']],1,2.2,6,5,30,9,140,13],
@@ -1489,6 +1482,7 @@ function defOf(k){
   if(k.indexOf('sch')===0) return [META.sch[i],META.schd[i]||'',''];
   if(k.indexOf('nat')===0) return [META.nat[i][1],META.nat[i][3]||'',''];
   if(k.indexOf('sev')===0) return [META.sev[i][0],META.sev[i][1]||'',''];
+  if(k.indexOf('cat')===0) return [META.cats[i][1],META.cats[i][2]||'',''];
   if(k.indexOf('src')===0){ var L=META.src[i];
     return [L[0],(L[1]||'')+(L[2]?' Issued by '+L[2]+'.':''),L[3]||'']; }
   return ['',''];
@@ -1532,6 +1526,12 @@ function showPop(list,sxp,syp){
         ' without saying what '+(plain.length>1?'they are':'it is')+' \u2014 a registry, tax, passport or vessel number, depending on the authority.</span>';
       h+='</div>';
     }
+    if((p[14]||[]).length){
+      h+='<div class="f"><b>Kind of list:</b> ';
+      (p[14]||[]).forEach(function(ci){
+        h+='<span class="tag tq" data-i="cat'+ci+'" data-g="'+gid+'">'+esc(META.cats[ci][1])+'</span> ';});
+      h+='</div>';
+    }
     if(p[11]) h+='<div class="f"><b>Date of birth:</b> '+esc(p[11])+'</div>';
     if(p[12]) h+='<div class="f"><b>List last changed:</b> '+esc(p[12])+'</div>';
     if(p[13]&&p[13].indexOf('ofac:')!==0)
@@ -1539,11 +1539,14 @@ function showPop(list,sxp,syp){
     /* everything below this line is added by the map, not published by any list */
     var sv=0;(p[15]||[]).forEach(function(ni){if(META.nat[ni][2]>sv)sv=META.nat[ni][2];});
     h+='<div class="mine"><div class="mh">Extrapolated by this map \u2014 not published by any list</div>';
-    h+='<div class="f"><b>Why they are listed:</b> ';
-    if((p[15]||[]).length) (p[15]||[]).forEach(function(ni){
-      h+='<span class="tag tq" data-i="nat'+ni+'" data-g="'+gid+'" style="border-color:#6e6961">'+esc(META.nat[ni][1])+'</span> ';});
-    else h+='<span class="nb">not stated by the list, and nothing in the wording identifies it</span>';
-    h+='</div>';
+    var why='',did='';
+    (p[15]||[]).forEach(function(ni){
+      var tg='<span class="tag tq" data-i="nat'+ni+'" data-g="'+gid+'" style="border-color:#6e6961">'+esc(META.nat[ni][1])+'</span> ';
+      if(MEASURE[META.nat[ni][0]]) did+=tg; else why+=tg;});
+    h+='<div class="f"><b>Why they are listed:</b> '+(why||
+      '<span class="nb">'+(did?'not stated \u2014 the wording records the action taken, not the conduct behind it'
+                              :'not stated by the list, and nothing in the wording identifies it')+'</span>')+'</div>';
+    if(did) h+='<div class="f"><b>What the listing does:</b> '+did+'</div>';
     if((p[15]||[]).length)
       h+='<div class="f"><b>How grave, 1 to 5:</b> <span class="tag tq" data-i="sev'+sv+'" data-g="'+gid+'">'+esc(META.sev[sv][0])+'</span></div>';
     var lk=likely(p);
@@ -1560,6 +1563,7 @@ function showPop(list,sxp,syp){
 }
 /* what the listing most likely means in practice \u2014 read from the reason and the
    kind of list, never from anything the authority states about the party */
+var MEASURE={export:1,procure:1,regulat:1};
 var OFFENCE=/murder|manslaughter|homicide|theft|robbery|burglar|assault|rape|abduct|kidnap|arson|forger|counterfeit|embezzl|bribery|extortion|smuggl|traffick|fraud|launder/i;
 var ACT={
  terror:'Named under a counter-terrorism power. In practice that usually means membership of a designated armed group, or raising, moving or providing money for one.',
@@ -1614,28 +1618,34 @@ var T={
  typ:['Entity type','What kind of thing is listed — a person, a company, a ship, an aircraft, a crypto wallet.'],
  prec:['Location precision','How exactly a point sits where the listing says. Most lists publish a city or a country rather than a street.']
 };
-var SHORT={terror:'terrorism and armed groups',war:'the war in Ukraine and annexed territory',
- wmd:'weapons and proliferation',atrocity:'human rights abuses',traffick:'forced labour and trafficking',
- drugs:'drugs',orgcrime:'organised crime and violence',cyber:'cyber attacks',corrupt:'corruption',
- fincrime:'financial crime and fraud',export:'export control',procure:'bars from public contracts and public programmes',
- regulat:'regulatory and licensing action',warrant:'arrest warrants with no offence given',
- counter:'counter-sanctions',region:'where a party operates or who owns it',country:'country-wide programmes'};
+var SHORT={terror:'terrorism or support for an armed group',
+ war:'acts in the war on Ukraine or in annexed territory',
+ wmd:'spreading weapons or breaking an arms embargo',
+ atrocity:'human rights abuses',
+ traffick:'forced labour or trafficking people',
+ drugs:'drug trafficking',
+ orgcrime:'organised crime or violence',
+ cyber:'cyber attacks',
+ corrupt:'corruption',
+ fincrime:'fraud, laundering or other financial crime'};
 function shares(){
-  var tot=META.total,rows=[],i,rest=0;
-  for(i=0;i<META.nat.length;i++) rows.push([META.natcnt[i]||0,META.nat[i][0]]);
-  rows.sort(function(a,b){return b[0]-a[0];});
-  var out=[];
-  for(i=0;i<rows.length;i++){
-    var share=100*rows[i][0]/tot;
-    if(i<7&&share>=1) out.push('<b>'+(share>=10?share.toFixed(0):share.toFixed(1))+'%</b> '+(SHORT[rows[i][1]]||rows[i][1]));
-    else rest+=rows[i][0];
-  }
-  var none=META.natnone||0;
-  return 'What the listings are for: '+out.join(', ')+
-   (rest? ', and '+(100*rest/tot).toFixed(1)+'% across the remaining categories':'')+'. '+
-   'For '+(100*none/tot).toFixed(1)+'% no reason can be read from what the list publishes. '+
-   '<span style="color:#6f6a63">A listing can count under more than one, so these add to more than 100%. '+
-   'The categories are this map\u2019s reading of the programme each listing cites, not a field the lists publish.</span>';
+  var tot=META.total,i,pcts={};
+  for(i=0;i<META.nat.length;i++) pcts[META.nat[i][0]]=100*(META.natcnt[i]||0)/tot;
+  function f(x){return x>=10?x.toFixed(0):x.toFixed(1);}
+  var CONDUCT=['war','terror','fincrime','drugs','wmd','atrocity','orgcrime','corrupt','traffick','cyber'];
+  var rows=CONDUCT.map(function(k){return [pcts[k]||0,k];}).sort(function(a,b){return b[0]-a[0];});
+  var named=rows.map(function(r){return '<b>'+f(r[0])+'%</b> '+SHORT[r[1]];}).join(', ');
+  return 'What they are accused of doing: '+named+'. '+
+    'The rest of the listings record what is being done to the party rather than what they did: '+
+    '<b>'+f(pcts.procure)+'%</b> a bar from public contracts or public programmes, '+
+    '<b>'+f(pcts.export)+'%</b> a restriction on what may be sold to them, '+
+    '<b>'+f(pcts.regulat)+'%</b> a regulator\u2019s action. '+
+    'A further <b>'+f(pcts.warrant)+'%</b> are arrest warrants where the offence is not published, '+
+    '<b>'+f(pcts.country+pcts.region)+'%</b> are named for a country-wide programme, a location or an owner, '+
+    '<b>'+f(pcts.counter)+'%</b> are retaliation for sanctions imposed on the listing state, and for '+
+    '<b>'+f(100*(META.natnone||0)/tot)+'%</b> nothing can be read at all. '+
+    '<span style="color:#6f6a63">A listing can count under more than one. Which category a listing falls in is '+
+    'this map\u2019s reading of the programme it cites, not a field the lists publish.</span>';
 }
 /* a short index so the panel can be jumped through rather than scrolled */
 var IDX=[['h-cat','Kinds of list'],['h-nat','What for'],['h-sev','How grave'],
@@ -1655,7 +1665,7 @@ function results(){
   var box=$('res');
   if(!query){ box.innerHTML=''; return; }
   if(!actN){ box.innerHTML='<div class="rh">No match</div>'; return; }
-  /* one entry per party: the same name at the same spot is usually the same
+  /* one entry per party: the same name in the same country is usually the same
      party carried on several lists, and a wall of repeats hides the rest */
   var seen={},list=[],i,ix,r,k;
   for(i=0;i<actN&&list.length<RESMAX;i++){
