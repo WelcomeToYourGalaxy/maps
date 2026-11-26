@@ -15,7 +15,17 @@
  background:rgba(18,21,25,.95);border:1px solid #333a41;border-radius:4px;display:flex;flex-direction:column;backdrop-filter:blur(4px)}
 #wtyg .hd{padding:12px 14px 11px;border-bottom:1px solid #2c3339}
 #wtyg .hd h2{font-size:14px;font-weight:600;color:#e8e4dc}
-#wtyg .intro{font-size:11.5px;color:#a49e95;margin-top:7px}
+#wtyg .idx{display:flex;flex-wrap:wrap;gap:4px 6px;margin:7px 0 2px}
+#wtyg .idx a{font-size:10px;color:#8a94a6;cursor:pointer;border-bottom:1px dotted #4a535c;padding-bottom:1px}
+#wtyg .idx a:hover{color:#d7d3cc;border-bottom-color:#8a94a6}
+#wtyg .res{margin-top:8px}
+#wtyg .res:not(:empty){border-top:1px solid #2c3339;padding-top:7px}
+#wtyg .rh{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#7f796f;margin-bottom:5px}
+#wtyg .ri{padding:5px 6px;margin:0 -6px;border-radius:3px;cursor:pointer;border-bottom:1px solid #22282e}
+#wtyg .ri:hover{background:#1d232a}
+#wtyg .ri b{display:block;font-size:11.5px;color:#ddd8d0;font-weight:600}
+#wtyg .ri span{font-size:10px;color:#847e76}
+#wtyg .intro{font-size:11.5px;color:#a49e95;margin:0 0 11px}
 #wtyg .intro p{margin-top:6px}
 #wtyg .intro b{color:#c6c0b7;font-weight:600}
 #wtyg .more{color:#8fa0bf;cursor:pointer;text-decoration:underline;font-size:11px}
@@ -114,13 +124,15 @@
   <div class="pnl" id="pnl">
     <div class="hd">
       <h2>Global Sanctions &amp; Designation Lists</h2>
-      <div class="intro" id="intro"></div>
       <div class="stat" id="stat">Loading…</div>
       <div class="busy" id="busy"></div>
       <button class="tg" id="tg">Filters</button>
     </div>
     <div class="bd" id="bd">
+      <div class="intro" id="intro"></div>
       <input type="text" id="q" placeholder="Search name or alias…" autocomplete="off">
+      <div class="idx" id="idx"></div>
+      <div class="res" id="res"></div>
       <div class="btns"><button id="ball">All lists</button><button id="bnone">No lists</button><button id="breset">Reset view</button></div>
       <div class="sec"><h3 id="h-cat"></h3><div id="cats"></div></div>
       <div class="sec"><h3 id="h-nat"></h3><div id="nats"></div></div>
@@ -1168,10 +1180,10 @@ var META=null,N=0,CAP=0;
 var mx=null,my=null,plat=null,plon=null,grp=null,sch=null,qq=null,sev=null;
 var rowsAll=[],lname=[],cats=[],nats=[];
 var act=null,actList=null,actN=0;
-var srcOn=null,schOn=null,qOn=[1,1,1],catOn=null,natOn=null,sevOn=null,query='';
+var srcOn=null,schOn=null,qOn=[1,1,1,1],catOn=null,natOn=null,sevOn=null,query='';
 var loaded={},loading={};
 var map=null,BM=null,cv=null,ctx=null,W=0,H=0,DPR=1;
-var cellC=null,cellR=null,gw=0,gh=0,CELL=5,proj='mercator',g2s={};
+var cellC=null,cellR=null,cellX=null,cellY=null,cellSX=null,cellSY=null,ord=null,colv=null,gw=0,gh=0,CELL=5,proj='mercator',g2s={};
 function $(i){return document.getElementById(i);}
 function fmt(n){return (n||0).toLocaleString('en-US');}
 function pct(n,t){ if(!t) return ''; var p=100*n/t; return p>=10?p.toFixed(0)+'%':(p>=1?p.toFixed(1)+'%':(p>0?'<1%':'0%')); }
@@ -1257,6 +1269,7 @@ function refresh(){
   actN=n;
   $('stat').innerHTML='<b>'+fmt(n)+'</b> of '+fmt(N)+' loaded points shown'+
     (N<META.total?' · loading the rest…':'');
+  results();
   if(proj==='globe') globeData(); else draw();
 }
 /* ---------- flat drawing ---------- */
@@ -1267,17 +1280,25 @@ function resize(){
   ctx.setTransform(DPR,0,0,DPR,0,0);
   gw=Math.ceil(W/CELL)+1;gh=Math.ceil(H/CELL)+1;
   cellC=new Int32Array(gw*gh);cellR=new Int32Array(gw*gh);
+  cellX=new Float32Array(gw*gh);cellY=new Float32Array(gw*gh);
+  cellSX=new Float64Array(gw*gh);cellSY=new Float64Array(gw*gh);
+  ord=new Float32Array(gw*gh*3);colv=new Array(gw*gh);
   draw();
 }
 /* ---------- marker palette, retuned for each basemap ---------- */
 /* the groups keep their hues so a colour means the same thing on every basemap;
    only lightness and saturation move, so points stay off the background. */
+/* the group colours the map draws with: one muted tone per issuing authority,
+   kept deliberately low in saturation so a dense cluster never reads as candy */
+var BASEHEX=['#7d8ea3','#a8584f','#5f6f9e','#7b6188','#9a6b58','#6f8296',
+             '#857a5d','#5d8375','#4f7c88','#8c6f82','#6f7c58','#8a8279'];
+function baseCol(i){return BASEHEX[i%BASEHEX.length];}
 var THEME={
- satellite:{lo:.52,hi:.76,sm:2.0,smin:.12,smax:.45,stroke:'rgba(8,10,13,.60)'},
- atlas:    {lo:.22,hi:.42,sm:2.6,smin:.18,smax:.55,stroke:'rgba(247,239,222,.80)'},
- night:    {lo:.58,hi:.82,sm:1.8,smin:.10,smax:.40,stroke:'rgba(6,8,12,.60)'},
- hell:     {lo:.62,hi:.86,sm:1.1,smin:.05,smax:.26,stroke:'rgba(10,6,6,.60)'},
- outlines: {lo:.46,hi:.70,sm:2.0,smin:.12,smax:.45,stroke:'rgba(8,10,13,.60)'}
+ satellite:{lo:.33,hi:.51,sm:1.5,smin:.10,smax:.34,stroke:'rgba(8,10,13,.60)'},
+ atlas:    {lo:.22,hi:.40,sm:2.0,smin:.16,smax:.48,stroke:'rgba(247,239,222,.80)'},
+ night:    {lo:.35,hi:.53,sm:1.4,smin:.10,smax:.34,stroke:'rgba(6,8,12,.60)'},
+ hell:     {lo:.46,hi:.68,sm:0.9,smin:.04,smax:.20,stroke:'rgba(10,6,6,.60)'},
+ outlines: {lo:.32,hi:.50,sm:1.5,smin:.10,smax:.34,stroke:'rgba(8,10,13,.60)'}
 };
 var theme='satellite',palCache={},LRANGE=null;
 function hex2hsl(x){var h=x.replace('#',''),r=parseInt(h.substr(0,2),16)/255,
@@ -1294,7 +1315,7 @@ function hsl2hex(h,s,l){h=((h%360)+360)%360;
   return '#'+q(r)+q(g)+q(b);}
 function palette(k){
   if(palCache[k]) return palCache[k];
-  var T=THEME[k]||THEME.satellite,base=META.grp.map(function(g){return hex2hsl(g[1]);});
+  var T=THEME[k]||THEME.satellite,base=META.grp.map(function(g,i){return hex2hsl(baseCol(i));});
   if(!LRANGE){var ls=base.map(function(c){return c[2];});
     LRANGE=[Math.min.apply(null,ls),Math.max.apply(null,ls)];}
   var span=(LRANGE[1]-LRANGE[0])||1;
@@ -1318,28 +1339,59 @@ function draw(){
   ctx.clearRect(0,0,W,H);
   if(proj==='globe') return;
   var z=map.getZoom(),ws=512*Math.pow(2,z);
-  var c=map.getCenter(),cm=merc(c.lat,c.lng);
-  var ox=cm[0]*ws-W/2,oy=cm[1]*ws-H/2;
-  cellC.fill(0);cellR.fill(-1);
-  var i,sx,sy,gi;
+  /* anchor on maplibre's own projection of 0,0 rather than re-deriving the camera:
+     that keeps the points on the basemap when the camera carries padding, which
+     the whole-world and reset buttons both set. */
+  var o0;
+  try{ o0=map.project([0,0]); }catch(e){ return; }
+  var ax=o0.x-0.5*ws, ay=o0.y-0.5*ws;
+  cellC.fill(0);cellR.fill(-1);cellX.fill(0);cellY.fill(0);cellSX.fill(0);cellSY.fill(0);
+  var i,sx,sy,gi,kk;
   for(var a=0;a<actN;a++){
     i=actList[a];
-    sx=mx[i]*ws-ox; if(sx<-14||sx>W+14) continue;
-    sy=my[i]*ws-oy; if(sy<-14||sy>H+14) continue;
+    sy=my[i]*ws+ay; if(sy<-14||sy>H+14) continue;
+    sx=mx[i]*ws+ax;
+    /* the flat map may be panned into a repeated world; draw in the nearest copy */
+    if(sx<-14){ kk=Math.ceil((-14-sx)/ws); sx+=kk*ws; }
+    else if(sx>W+14){ kk=Math.ceil((sx-(W+14))/ws); sx-=kk*ws; }
+    if(sx<-14||sx>W+14) continue;
     gi=((sy/CELL)|0)*gw+((sx/CELL)|0);
     if(gi<0||gi>=cellC.length) continue;
-    if(cellC[gi]===0){cellR[gi]=i;}
-    cellC[gi]++;
+    if(cellC[gi]===0){cellR[gi]=i;cellX[gi]=sx;cellY[gi]=sy;}
+    cellSX[gi]+=sx;cellSY[gi]+=sy;cellC[gi]++;
   }
-  var G=META.grp;
-  ctx.globalAlpha=.8;
+  var no=0,nc=0;
   for(gi=0;gi<cellC.length;gi++){
     var n=cellC[gi]; if(!n) continue;
-    var px=(gi%gw)*CELL+CELL/2,py=((gi/gw)|0)*CELL+CELL/2;
-    var rad=n>1?Math.min(2.1+Math.sqrt(n)*.62,11):2.2;
-    ctx.beginPath();ctx.arc(px,py,rad,0,6.2832);
-    ctx.fillStyle=gcol(grp[cellR[gi]]);ctx.fill();
-    if(rad>(theme==='atlas'?2.9:4.5)){ctx.lineWidth=.8;ctx.strokeStyle=THEME[theme].stroke;ctx.stroke();}
+    /* a point sits where it is; a cluster sits at the mean of the points in it,
+       never at the centre of the counting grid, which would show as a lattice */
+    var px=n===1?cellX[gi]:cellSX[gi]/n, py=n===1?cellY[gi]:cellSY[gi]/n;
+    var rad=n>1?Math.min(2.1+Math.sqrt(n)*.62,11):2.4,col=gcol(grp[cellR[gi]]);
+    ord[no++]=px;ord[no++]=py;ord[no++]=rad;colv[nc++]=col;
+  }
+  var j,k;
+  /* the halo: wide, faint, added light, so crowded places glow rather than blotch */
+  ctx.globalCompositeOperation='lighter';
+  ctx.globalAlpha=theme==='atlas'?.07:.10;
+  for(j=0,k=0;k<nc;k++,j+=3){
+    ctx.beginPath();ctx.arc(ord[j],ord[j+1],ord[j+2]*1.7,0,6.2832);
+    ctx.fillStyle=colv[k];ctx.fill();
+  }
+  /* the orb itself */
+  ctx.globalCompositeOperation='source-over';
+  ctx.globalAlpha=.92;
+  for(j=0,k=0;k<nc;k++,j+=3){
+    var r0=ord[j+2];
+    ctx.beginPath();ctx.arc(ord[j],ord[j+1],r0,0,6.2832);
+    ctx.fillStyle=colv[k];ctx.fill();
+    if(r0>2.6){ctx.lineWidth=.7;ctx.strokeStyle=THEME[theme].stroke;ctx.stroke();}
+  }
+  /* a small off-centre highlight reads as a sphere rather than a sticker */
+  ctx.globalAlpha=theme==='atlas'?.16:.22;
+  ctx.fillStyle=theme==='atlas'?'#2a2117':'#f3efe7';
+  for(j=0,k=0;k<nc;k++,j+=3){
+    var rr=ord[j+2]; if(rr<5.5) continue;
+    ctx.beginPath();ctx.arc(ord[j]-rr*.3,ord[j+1]-rr*.32,rr*.34,0,6.2832);ctx.fill();
   }
   ctx.globalAlpha=1;
 }
@@ -1369,6 +1421,9 @@ function globeData(){
 function addGlobeLayer(){
   if(map.getSource('wpts')) return;
   map.addSource('wpts',{type:'geojson',data:{type:'FeatureCollection',features:[]}});
+  map.addLayer({id:'wglow',type:'circle',source:'wpts',layout:{visibility:'none'},
+    paint:{'circle-color':['get','c'],'circle-opacity':.32,'circle-blur':1.1,
+      'circle-radius':['interpolate',['linear'],['sqrt',['get','n']],1,5,6,11,30,19,140,27]}});
   map.addLayer({id:'wpts',type:'circle',source:'wpts',layout:{visibility:'none'},
     paint:{'circle-color':['get','c'],'circle-opacity':.8,
       'circle-radius':['interpolate',['linear'],['sqrt',['get','n']],1,2.2,6,5,30,9,140,13],
@@ -1378,7 +1433,8 @@ function setProj(p){
   proj=p;
   try{map.setProjection({type:p});}catch(e){}
   freeFlat();
-  if(map.getLayer('wpts')) map.setLayoutProperty('wpts','visibility',p==='globe'?'visible':'none');
+  ['wglow','wpts'].forEach(function(id){ if(map.getLayer(id))
+    map.setLayoutProperty(id,'visibility',p==='globe'?'visible':'none'); });
   cv.style.display=p==='globe'?'none':'block';
   document.querySelectorAll('#wtyg [data-proj]').forEach(function(b){b.classList.toggle('on',b.dataset.proj===p);});
   if(p==='globe') globeData(); else draw();
@@ -1405,19 +1461,23 @@ function at(sxp,syp){
       if(Math.abs(plon[i]-c[0])<=step/2+1e-6&&Math.abs(plat[i]-c[1])<=step/2+1e-6) out.push(i);}
     return out.length?out:null;
   }
-  var z=map.getZoom(),ws=512*Math.pow(2,z);
-  var ce=map.getCenter(),cm=merc(ce.lat,ce.lng),ox=cm[0]*ws-W/2,oy=cm[1]*ws-H/2;
+  var z=map.getZoom(),ws=512*Math.pow(2,z),o0;
+  try{ o0=map.project([0,0]); }catch(e){ return null; }
+  var ax=o0.x-0.5*ws, ay=o0.y-0.5*ws;
+  function px(i){ var v=mx[i]*ws+ax,k;
+    if(v<-14){k=Math.ceil((-14-v)/ws);v+=k*ws;} else if(v>W+14){k=Math.ceil((v-(W+14))/ws);v-=k*ws;}
+    return v; }
   var bd=1e9,bc=null;
   for(var a2=0;a2<actN;a2++){
     var j=actList[a2];
-    var sx=mx[j]*ws-ox; if(sx<sxp-18||sx>sxp+18) continue;
-    var sy=my[j]*ws-oy; if(sy<syp-18||sy>syp+18) continue;
+    var sy=my[j]*ws+ay; if(sy<syp-18||sy>syp+18) continue;
+    var sx=px(j); if(sx<sxp-18||sx>sxp+18) continue;
     var d=Math.hypot(sx-sxp,sy-syp); if(d<bd){bd=d;bc=[sx,sy];}
   }
   if(!bc||bd>16) return null;
   var best=[];
   for(var a3=0;a3<actN;a3++){
-    var k=actList[a3],jx=mx[k]*ws-ox,jy=my[k]*ws-oy;
+    var k=actList[a3],jx=px(k),jy=my[k]*ws+ay;
     if(Math.abs(jx-bc[0])<=4&&Math.abs(jy-bc[1])<=4) best.push(k);
   }
   return best.length?best:null;
@@ -1478,14 +1538,14 @@ function showPop(list,sxp,syp){
       h+='<div class="f"><a href="https://www.opensanctions.org/entities/'+encodeURIComponent(p[13])+'/" target="_blank" rel="noopener">Check this record against its source lists &rarr;</a></div>';
     /* everything below this line is added by the map, not published by any list */
     var sv=0;(p[15]||[]).forEach(function(ni){if(META.nat[ni][2]>sv)sv=META.nat[ni][2];});
-    h+='<div class="mine"><div class="mh">Not from the list \u2014 added by this map</div>';
-    h+='<div class="f"><b>What it is for:</b> ';
+    h+='<div class="mine"><div class="mh">Extrapolated by this map \u2014 not published by any list</div>';
+    h+='<div class="f"><b>Why they are listed:</b> ';
     if((p[15]||[]).length) (p[15]||[]).forEach(function(ni){
       h+='<span class="tag tq" data-i="nat'+ni+'" data-g="'+gid+'" style="border-color:#6e6961">'+esc(META.nat[ni][1])+'</span> ';});
     else h+='<span class="nb">not stated by the list, and nothing in the wording identifies it</span>';
     h+='</div>';
     if((p[15]||[]).length)
-      h+='<div class="f"><b>How grave:</b> <span class="tag tq" data-i="sev'+sv+'" data-g="'+gid+'">'+esc(META.sev[sv][0])+'</span></div>';
+      h+='<div class="f"><b>How grave, 1 to 5:</b> <span class="tag tq" data-i="sev'+sv+'" data-g="'+gid+'">'+esc(META.sev[sv][0])+'</span></div>';
     var lk=likely(p);
     if(lk) h+='<div class="f"><b>Most likely in practice:</b> <span class="gx2">'+esc(lk)+'</span></div>';
     h+='<div class="f"><b>Placed by:</b> '+META.prec[p[2]][0].toLowerCase()+'</div></div>';
@@ -1577,6 +1637,52 @@ function shares(){
    '<span style="color:#6f6a63">A listing can count under more than one, so these add to more than 100%. '+
    'The categories are this map\u2019s reading of the programme each listing cites, not a field the lists publish.</span>';
 }
+/* a short index so the panel can be jumped through rather than scrolled */
+var IDX=[['h-cat','Kinds of list'],['h-nat','What for'],['h-sev','How grave'],
+         ['h-auth','Authorities'],['h-typ','Entity types'],['h-prec','Precision']];
+function buildIndex(){
+  $('idx').innerHTML='<span style="color:#6f6a63;font-size:10px;margin-right:2px">Jump to</span>'+
+    IDX.map(function(x){return '<a data-go="'+x[0]+'">'+esc(x[1])+'</a>';}).join('');
+  $('idx').addEventListener('click',function(e){
+    var g=e.target.getAttribute&&e.target.getAttribute('data-go'); if(!g) return;
+    var el=$(g),bd=$('bd');
+    if(el) bd.scrollTo({top:el.offsetTop-bd.offsetTop-8,behavior:'smooth'});
+  });
+}
+/* the names behind a search, listed, not only plotted */
+var RESMAX=60;
+function results(){
+  var box=$('res');
+  if(!query){ box.innerHTML=''; return; }
+  if(!actN){ box.innerHTML='<div class="rh">No match</div>'; return; }
+  /* one entry per party: the same name at the same spot is usually the same
+     party carried on several lists, and a wall of repeats hides the rest */
+  var seen={},list=[],i,ix,r,k;
+  for(i=0;i<actN&&list.length<RESMAX;i++){
+    ix=actList[i]; r=rowsAll[ix];
+    k=r[5].toLowerCase()+'|'+(r[10]||'');
+    if(seen[k]!==undefined){ list[seen[k]][1]++; continue; }
+    seen[k]=list.length; list.push([ix,1]);
+  }
+  var h='<div class="rh">'+fmt(actN)+' listing'+(actN===1?'':'s')+
+        (list.length<actN?' \u00b7 '+list.length+' part'+(list.length===1?'y':'ies')+' shown':'')+'</div>';
+  for(i=0;i<list.length;i++){
+    ix=list[i][0]; r=rowsAll[ix];
+    h+='<div class="ri" data-ix="'+ix+'"><b>'+esc(r[5])+
+       (list[i][1]>1?' <span style="color:#7f796f;font-weight:400">\u00d7'+list[i][1]+'</span>':'')+'</b><span>'+
+       esc(META.sch[r[3]])+(r[10]?' \u00b7 '+esc(r[10].toUpperCase()):'')+
+       (r[6]?' \u00b7 '+esc(r[6].slice(0,52)):'')+'</span></div>';
+  }
+  box.innerHTML=h;
+}
+function gotoRow(ix){
+  var r=rowsAll[ix];
+  map.flyTo({center:[r[1],r[0]],zoom:Math.max(map.getZoom(),9),duration:900});
+  map.once('moveend',function(){
+    var pt=map.project([r[1],r[0]]);
+    showPop([ix],pt.x,pt.y);
+  });
+}
 function buildUI(){
   var tot=META.total;
   $('intro').innerHTML=
@@ -1599,6 +1705,11 @@ function buildUI(){
     ['m2','m3','m4'].forEach(function(id){$(id).style.display=open?'none':'block';});
     this.textContent=open?'What counts as a listing?':'Show less';};
   function head(id,k){ $(id).innerHTML=esc(T[k][0])+qi(T[k][0],T[k][1]); wire($(id)); }
+  buildIndex();
+  $('res').addEventListener('click',function(e){
+    var t=e.target; while(t&&t!==this&&!t.getAttribute('data-ix')) t=t.parentNode;
+    if(t&&t.getAttribute) { var ix=t.getAttribute('data-ix'); if(ix!==null&&ix!==undefined) gotoRow(+ix); }
+  });
   head('h-cat','cat');head('h-auth','auth');head('h-nat','nat');head('h-sev','sev');head('h-typ','typ');head('h-prec','prec');
   var h='';
   META.cats.forEach(function(c,i){
