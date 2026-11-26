@@ -173,10 +173,11 @@ var LIST = [["satellite", "Jurassic"], ["atlas", "Atlas"],
 
 /* ---------- settings, as in Culprits ---------- */
 var PLATE = { url: ROOT + "atlas-plate.webp?v=207",
-  /* the plate is 1600x1435; its pixels are only square across +-83.1615 deg of
-     Mercator, so stretching it to +-85.05 pushed the painted coastlines off the
-     relief beneath and off the data points. */
-  top: 83.1615, bottom: -83.1615, fadeIn: 3, fadeOut: 5 };
+  /* the plate is 1600x1435 and it is NOT symmetric: it is a Mercator strip from
+     +85.05112877980659 down to -80.55, which is exactly where 1435 square pixels
+     land under a 1600px-wide world. Reading it as +-83.1615 (symmetric) slid the
+     painted coastlines off the relief beneath and off the data points. */
+  top: 85.05112877980659, bottom: -80.55, fadeIn: 3, fadeOut: 5 };
 var ATLAS_TUNE = { sat: .15, con: .05, lift: .03, hue: -6, sea: .55, green: .30, warm: .22 };
 var BASE_GRADE = {
   atlas: { "raster-brightness-min": ATLAS_TUNE.lift, "raster-brightness-max": 1,
@@ -1191,7 +1192,7 @@ var act=null,actList=null,actN=0;
 var srcOn=null,schOn=null,qOn=[1,1,1,1],catOn=null,natOn=null,sevOn=null,query='';
 var loaded={},loading={};
 var map=null,BM=null,cv=null,ctx=null,W=0,H=0,DPR=1;
-var cellC=null,cellR=null,cellX=null,cellY=null,cellSX=null,cellSY=null,ord=null,grpv=null,gw=0,gh=0,CELL=5,proj='mercator',g2s={};
+var cellC=null,cellR=null,cellX=null,cellY=null,cellSX=null,cellSY=null,ord=null,grpv=null,gw=0,gh=0,CELL=5,proj='globe',g2s={};
 function $(i){return document.getElementById(i);}
 function fmt(n){return (n||0).toLocaleString('en-US');}
 function pct(n,t){ if(!t) return ''; var p=100*n/t; return p>=10?p.toFixed(0)+'%':(p>=1?p.toFixed(1)+'%':(p>0?'<1%':'0%')); }
@@ -1468,11 +1469,13 @@ function freeFlat(){
     else map.setTransformConstrain(null);
   }catch(e){}
 }
-function wholeWorld(){
-  var pad={left:Math.min(352,W*0.3),right:0,top:0,bottom:0};
-  if(proj==='globe') map.flyTo({center:[12,25],zoom:Math.max(0.2,Math.log2(0.86*Math.max(220,Math.min(H-40,W-380))*Math.PI/512)),padding:pad,duration:1100});
-  else map.flyTo({center:[10,22],zoom:Math.max(0,Math.log2(Math.min(W-380,(H-40)*1.55)/512)),padding:pad,duration:1100});
+function frameWorld(instant){
+  var pad={left:Math.min(352,W*0.3),right:0,top:0,bottom:0},v;
+  if(proj==='globe') v={center:[12,25],zoom:Math.max(0.2,Math.log2(0.86*Math.max(220,Math.min(H-40,W-380))*Math.PI/512)),padding:pad};
+  else v={center:[10,22],zoom:Math.max(0,Math.log2(Math.min(W-380,(H-40)*1.55)/512)),padding:pad};
+  if(instant) map.jumpTo(v); else map.flyTo(Object.assign(v,{duration:1100}));
 }
+function wholeWorld(){ frameWorld(false); }
 /* ---------- hit test ---------- */
 function at(sxp,syp){
   if(proj==='globe'){
@@ -1833,9 +1836,9 @@ function buildUI(){
   $('pbb').addEventListener('mouseleave',tipOff);
   $('tg').onclick=function(){$('pnl').classList.toggle('closed');};
   $('bmlist').innerHTML=CulpritsBasemaps.list.map(function(b){
-    return '<label><input type="radio" name="wbm" value="'+b[0]+'"'+(b[0]==='night'?' checked':'')+'> '+esc(b[1])+'</label>';}).join('')+
-    '<div class="vsec">View</div><div class="seg"><button type="button" data-proj="globe">Globe</button>'+
-    '<button type="button" class="on" data-proj="mercator">Flat</button></div>'+
+    return '<label><input type="radio" name="wbm" value="'+b[0]+'"'+(b[0]==='satellite'?' checked':'')+'> '+esc(b[1])+'</label>';}).join('')+
+    '<div class="vsec">View</div><div class="seg"><button type="button" class="on" data-proj="globe">Globe</button>'+
+    '<button type="button" data-proj="mercator">Flat</button></div>'+
     '<button type="button" id="wbtn" class="wide">Whole world</button>';
   $('bmlist').addEventListener('change',function(e){if(e.target.name==='wbm'){BM.set(e.target.value);setTheme(e.target.value);}});
   $('bmlist').addEventListener('click',function(e){
@@ -1888,8 +1891,8 @@ fetch(BASE+'meta.json').then(function(r){
   catOn=new Uint8Array(META.cats.length).fill(1);
   natOn=new Uint8Array(META.nat.length+1).fill(1);
   sevOn=new Uint8Array(6).fill(1);
-  BM=CulpritsBasemaps.create('map',{initial:'night',projection:'mercator',center:[10,20],zoom:1.4,
-    plate:META.plate,onReady:function(){map.setMaxZoom(18);addGlobeLayer();freeFlat();try{setTheme(BM.current());}catch(e){}}});
+  BM=CulpritsBasemaps.create('map',{initial:'satellite',projection:'globe',center:[10,20],zoom:1.4,
+    plate:META.plate,onReady:function(){map.setMaxZoom(18);addGlobeLayer();setProj(proj);frameWorld(true);try{setTheme(BM.current());}catch(e){}}});
   map=BM.maplibre;
   map.addControl(new maplibregl.NavigationControl({showCompass:false}),'bottom-right');
   map.on('render',draw);map.on('move',draw);map.on('resize',resize);
