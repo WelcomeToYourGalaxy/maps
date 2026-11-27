@@ -290,7 +290,19 @@ o("bwa","Baptist World Alliance","intl","United States","Falls Church, Virginia"
 o("vicevirtue","Ministry for the Propagation of Virtue and the Prevention of Vice","state","Afghanistan","Kabul",34.5281,69.1723,2021,"","Council on Foreign Relations",
   "The Taliban government's ministry for enforcing its reading of Islamic law. The Taliban re-established it after returning to power in 2021.")
 
+# --- seventh edition
+o("epf","European Parliamentary Forum for Sexual and Reproductive Rights","watch","Belgium","Brussels",50.8467,4.3525,2000,"https://www.epfweb.org/","Tip of the Iceberg, 15 June 2021",
+  "A network of members of parliaments across Europe. Its 2021 report traced 707.2 million dollars spent in Europe from 2009 to 2018 by organisations campaigning against abortion and against rights for gay people.",sm=1)
+o("citizengo","CitizenGO and Hazte Oír","pol","Spain","Madrid",40.4168,-3.7038,None,"https://citizengo.org/","European Parliamentary Forum, Tip of the Iceberg, 2021",
+  "Two linked Spanish campaign groups. The European Parliamentary Forum's research found they spent 32.7 million dollars in Europe between 2009 and 2018.")
+o("tfp","Tradition, Family and Property network","pol","Brazil","São Paulo",-23.5505,-46.6333,1960,"","European Parliamentary Forum, Tip of the Iceberg, 2021",
+  "A network of Catholic campaign groups in many countries that began in Brazil. The European Parliamentary Forum's research found the network raised 113 million dollars between 2009 and 2018.")
+o("propublica2","ProPublica, Credibly Accused","watch","United States","New York",40.7200,-74.0000,2019,"https://projects.propublica.org/credibly-accused/","ProPublica",
+  "A searchable collection of the lists of accused clergy that Catholic dioceses and orders in the United States have published: 6,770 names from 178 dioceses and orders.",sm=1)
+o("floodlit","FLOODLIT","watch","United States","Salt Lake City",40.7608,-111.8910,None,"https://floodlit.org/","FLOODLIT",
+  "A volunteer project that documents reports of sexual abuse in the Church of Jesus Christ of Latter-day Saints: 4,388 reports and 153 accused former bishops when read for this map.",sm=1)
+
 # the bodies shown on the closing slide and by the "most responsible" switch
-import story7 as _S7
-TOP=set(_S7.TOP)
+import story8 as _S8
+TOP=set(_S8.TOP)
 for _o in O: _o["top"]=1 if _o["k"] in TOP else 0

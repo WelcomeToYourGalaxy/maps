@@ -242,6 +242,14 @@ r("iraq2025","Iraq lets couples place marriage under a code written by religious
   "An amendment to Iraq's Personal Status Law entered into force on 17 February 2025. It lets couples choose between the 1959 civil law and a code developed by the Shia Ja'afari school. The original draft would have allowed religious authorities to set the age of marriage; the final text keeps the civil minimum of 18, or 15 with a judge's approval. Human Rights Watch reported that the code passed on 27 August 2025 favours men in marriage, divorce, inheritance and the care of children.",
   "Family law for part of the population was handed to clergy in 2025.",
   "Human Rights Watch, 10 March 2025","https://www.hrw.org/news/2025/03/10/iraq-personal-status-law-amendment-sets-back-womens-rights","hrw")
+r("abusedb2026","Public lists of accused clergy and leaders in other churches and countries","United States",40.7608,-111.8910,2026,"study",
+  "Read on 27 November 2026: BishopAccountability.org's global list named 114 Catholic bishops publicly accused of sexual crimes against children and 54 accused over adults, in 44 countries and territories. ProPublica's Credibly Accused held 6,770 names released by 178 United States dioceses and orders, with 41 not having released. FLOODLIT had documented 4,388 reports of sexual abuse or sex crimes in the Church of Jesus Christ of Latter-day Saints and 153 accused former bishops. The Houston Chronicle's Abuse of Faith database listed 263 Southern Baptist offenders over 20 years in 30 states.",
+  "Most of the counting has been done by outsiders.",
+  "BishopAccountability.org; ProPublica; FLOODLIT; Houston Chronicle","https://www.bishop-accountability.org/bishops/global-list-of-accused-bishops/","bishopacc")
+r("epf2021","707 million dollars traced to campaigns against abortion and gay rights in Europe","Belgium",50.8467,4.3525,2021,"study",
+  "The European Parliamentary Forum for Sexual and Reproductive Rights reported on 15 June 2021 that 54 organisations had spent 707.2 million dollars in Europe from 2009 to 2018 on what it calls anti-gender campaigns, with yearly spending rising from 22.2 million to 96 million. About 437.7 million came from within Europe, about 180 million from Russia and 81.3 million from the United States.",
+  "The money behind religious lobbying is large and mostly hidden.",
+  "European Parliamentary Forum, Tip of the Iceberg","https://www.epfweb.org/node/837","epf")
 for _k in ("bounty2023","csgc2025","pence2024","cara2025","secfine","indulgence1517"): R.pop(_k)
 GLOSS={
  "caste":"One of the hereditary groups, ranked from high to low, into which Hindu society is traditionally divided.",

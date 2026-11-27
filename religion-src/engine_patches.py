@@ -114,3 +114,15 @@ sub("""One circle for each of ' + D.ba.n + ' dioceses, sized by its number of en
     """One circle for each of ' + D.ba.n + ' United States dioceses, sized by its number of entries in the public database of BishopAccountability.org, read on ' + D.ba.date + ', and one circle each for the archive\\'s lists for Argentina, Chile, Ireland and the Philippines. The United States is crowded because that is where the archive has counted most fully. A country with no circle has no published list. An accusation is not a conviction.""")
 sub("""Bodies that command a very large membership from one centre or hold a government\\'s power over a religion. A judgement from this map\\'s evidence, not a ranking.""",
     """Bodies that direct a very large membership from one centre, hold a government\\'s power over a religion, or link such bodies across borders, whether or not the story names them.""")
+
+# seventh edition
+sub("""map((d) => ptF([d[0], d[1]], { c: d[2], n: d[3] }))) });""", """map((d) => ptF([d[0], d[1]], { c: d[2], n: d[3], d: d[4] || "" }))) });""")
+sub("""tip('<b>' + esc(p.n) + '</b><br><span class="mute">' + Number(p.c).toLocaleString("en") + ' entries in the BishopAccountability.org database of publicly accused clergy. An accusation is not a conviction.</span>', oe.clientX, oe.clientY);""",
+    """tip('<b>' + esc(p.n) + '</b><br><span class="mute">' + (p.d ? esc(p.d) : Number(p.c).toLocaleString("en") + ' entries in the BishopAccountability.org database of publicly accused clergy. An accusation is not a conviction.') + '</span>', oe.clientX, oe.clientY);""")
+sub("""["get", "c"], 1, 3, 50, 8, 150, 14, 400, 24],""", """["get", "c"], 1, 2.5, 50, 8, 150, 14, 400, 24, 5000, 34],""")
+sub("""Accused Catholic clergy, from one public database <span""", """Accused clergy and church leaders, from public databases <span""")
+sub("""and one circle each for the archive\\'s lists for Argentina, Chile, Ireland and the Philippines.""", """and one circle each for the archive\\'s lists for Argentina, Chile, Ireland and the Philippines. Small circles mark the 44 countries on its list of accused bishops. Other circles are counts for the Latter-day Saints (FLOODLIT), the Southern Baptists (Houston Chronicle) and Australia (royal commission).""")
+sub("""Bodies that direct a very large membership from one centre, hold a government\\'s power over a religion, or link such bodies across borders, whether or not the story names them.""",
+    """Bodies that direct a very large membership from one centre, hold a government\\'s power over a religion, link such bodies across borders, or pay and lobby for their aims, whether or not the story names them.""")
+sub("""  TL.phase = "outro"; TL.playing = false; $("#slide").classList.remove("on"); chapBox("end"); drawTL();
+  const n = STORY.steps.length; if (n) paintStory(n - 1, 1); TL.free = false; fitFlow(f);""", """  TL.playing = false; setPlayIcon(); drawTL();""")
