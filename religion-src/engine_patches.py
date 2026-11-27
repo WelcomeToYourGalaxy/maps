@@ -106,3 +106,11 @@ sub("""    } catch (e) { console.warn("schools layer unavailable", e); }
 
 sub("""  if (map.getLayer("schools")) map.setPaintProperty("schools", "circle-color", P.sch[0]);""", """  if (map.getLayer("schools")) map.setPaintProperty("schools", "circle-color", P.sch[0]);
   if (map.getLayer("ba")) { map.setPaintProperty("ba", "circle-color", P.ln); map.setPaintProperty("ba", "circle-stroke-color", P.ln); }""")
+
+# sixth edition: the bridge passage is shown only when a chapter has one
+sub("""(f.steps.length ? '<div class="cb-br"><b>What the Slides Show.</b> ' + esc(f.bridge) + '</div>' : '')""", """(f.steps.length && f.bridge ? '<div class="cb-br"><b>What the Slides Show.</b> ' + esc(f.bridge) + '</div>' : '')""")
+sub("""Accused Catholic clergy by United States diocese <span""", """Accused Catholic clergy, from one public database <span""")
+sub("""One circle for each of ' + D.ba.n + ' dioceses, sized by its number of entries in the public database of BishopAccountability.org, read on ' + D.ba.date + '. The database lists public accusations; an accusation is not a conviction.""",
+    """One circle for each of ' + D.ba.n + ' United States dioceses, sized by its number of entries in the public database of BishopAccountability.org, read on ' + D.ba.date + ', and one circle each for the archive\\'s lists for Argentina, Chile, Ireland and the Philippines. The United States is crowded because that is where the archive has counted most fully. A country with no circle has no published list. An accusation is not a conviction.""")
+sub("""Bodies that command a very large membership from one centre or hold a government\\'s power over a religion. A judgement from this map\\'s evidence, not a ranking.""",
+    """Bodies that direct a very large membership from one centre, hold a government\\'s power over a religion, or link such bodies across borders, whether or not the story names them.""")

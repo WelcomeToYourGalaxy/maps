@@ -67,7 +67,7 @@ o("presb_ca","Presbyterian Church in Canada","nat","Canada","Toronto",43.7290,-7
 o("cnbb","National Conference of Bishops of Brazil","nat","Brazil","Brasília",-15.8200,-47.9000,1952,"https://www.cnbb.org.br/","Organisation's own website",
   "The national body of Catholic bishops in Brazil, the country with the world's largest Catholic population.")
 o("nu","Nahdlatul Ulama","nat","Indonesia","Jakarta",-6.1880,106.8450,1926,"https://www.nu.or.id/","Organisation's own website",
-  "One of the largest Muslim membership organisations in the world, based in Indonesia.")
+  "The largest Muslim membership organisation in the world, based in Indonesia, with more than 40 million members in 2023.")
 o("muhammadiyah","Muhammadiyah","nat","Indonesia","Yogyakarta",-7.8010,110.3640,1912,"https://muhammadiyah.or.id/","Organisation's own website",
   "A large Indonesian Muslim organisation that runs schools, universities and hospitals.")
 o("ou","Orthodox Union","nat","United States","New York",40.7060,-74.0130,1898,"https://www.ou.org/","Organisation's own website",
@@ -177,9 +177,9 @@ o("wcc","World Council of Churches","intl","Switzerland","Geneva",46.2330,6.1360
 o("lwf","Lutheran World Federation","intl","Switzerland","Geneva",46.2320,6.1350,1947,"https://lutheranworld.org/","Organisation's own website",
   "A worldwide communion of Lutheran churches, based in Geneva.")
 o("oic","Organisation of Islamic Cooperation","intl","Saudi Arabia","Jeddah",21.5433,39.1728,1969,"https://www.oic-oci.org/","Organisation's own website",
-  "An organisation of governments of countries with large Muslim populations, based in Jeddah.")
+  "An organisation of 57 governments, 48 of them of Muslim-majority countries, based in Jeddah. It describes itself as the collective voice of the Muslim world.")
 o("mwl","Muslim World League","intl","Saudi Arabia","Mecca",21.4200,39.8250,1962,"https://themwl.org/","Organisation's own website",
-  "An international Islamic organisation based in Mecca.")
+  "An international Islamic organisation based in Mecca, founded in 1962 to spread Islam. Encyclopaedia Britannica records that it is funded by the government of Saudi Arabia.")
 o("wjc","World Jewish Congress","intl","United States","New York",40.7640,-73.9710,1936,"https://www.worldjewishcongress.org/","Organisation's own website",
   "An international federation of Jewish communities and organisations.")
 o("dphd","Dicastery for Promoting Integral Human Development","intl","Vatican City","Vatican City",41.9010,12.4600,2016,"https://www.humandevelopment.va/","Vatican News, 30 March 2023",
@@ -274,6 +274,23 @@ LINKS={  # who owns, controls or funds whom
  "uckg":[["record","founder owns"]],
 }
 
+# --- sixth edition: bodies added for the closing list
+o("ecupat","Ecumenical Patriarchate of Constantinople","hq","Turkiye","Istanbul",41.0292,28.9517,None,"https://ec-patr.org/","Wikipedia, List of Christian denominations by number of members",
+  "The see of the Ecumenical Patriarch, who ranks first among the leaders of the Eastern Orthodox churches. Eastern Orthodoxy is estimated at 210 to 230 million people.")
+o("wea","World Evangelical Alliance","intl","United States","New York",40.7410,-73.9896,1846,"https://worldea.org/","Wikipedia, List of the largest Protestant denominations",
+  "An international alliance of evangelical Protestant churches, founded in London in 1846, which says it represents 600 million Christians.")
+o("wagf","World Assemblies of God Fellowship","intl","United States","Springfield, Missouri",37.2190,-93.2860,1988,"https://worldagfellowship.org/","Wikipedia, List of the largest Protestant denominations",
+  "The world body of the Assemblies of God, the largest Pentecostal denomination, reporting about 69 million members.")
+o("wcrc","World Communion of Reformed Churches","intl","Germany","Hanover",52.3759,9.7320,2010,"https://wcrc.eu/","Wikipedia, List of the largest Protestant denominations",
+  "A world body of Reformed, Presbyterian and Congregational churches, reporting more than 70 million members.")
+o("wmc","World Methodist Council","intl","United States","Lake Junaluska, North Carolina",35.5270,-82.9590,1881,"https://worldmethodistcouncil.org/","Wikipedia, List of Protestant denominations",
+  "A world association of Methodist churches that reports representing 80 million members.")
+o("bwa","Baptist World Alliance","intl","United States","Falls Church, Virginia",38.8823,-77.1711,1905,"https://baptistworld.org/","Wikipedia, List of Christian denominations by number of members",
+  "A world fellowship of Baptist churches.")
+o("vicevirtue","Ministry for the Propagation of Virtue and the Prevention of Vice","state","Afghanistan","Kabul",34.5281,69.1723,2021,"","Council on Foreign Relations",
+  "The Taliban government's ministry for enforcing its reading of Islamic law. The Taliban re-established it after returning to power in 2021.")
+
 # the bodies shown on the closing slide and by the "most responsible" switch
-TOP={"holysee","roc","sbc","lds","jw","ag","uckg","ffwpu","rss","jinja","hajjmin","experts","setad","awqaf","diyanet","sara","sangha","rabbinate"}
+import story7 as _S7
+TOP=set(_S7.TOP)
 for _o in O: _o["top"]=1 if _o["k"] in TOP else 0

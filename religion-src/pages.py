@@ -15,7 +15,7 @@ ABOUT="""
 
 <h3>One Story in %(parts)s Parts</h3>
 
-<p>The story has %(chapters)s chapters and runs from the top of the system down. It opens with a short overview that has no slides. Part 2 shows what governments do for religion: official status, first imposed by rulers and still held in more than 80 countries, tax money, laws against insulting or leaving a religion, and the use of churches to end Indigenous religions. Part 3 shows how the top positions are filled, by clerics choosing clerics or by governments, and who controls the pilgrimage to Mecca. Part 4 shows what rulers and parties get back: votes, and enemies named for them, including minorities, women and gay people. Part 5 follows the money: the duty to pay, the selling of blessings, the closed accounts and the land. Part 6 reaches the member: marriage and divorce under religious law, membership from childhood and through school, and what the organisation does when a child is abused inside it. The last chapter puts the whole chain in one place and ends on a slide that leaves only the bodies most responsible on the map.</p>
+<p>The story has %(chapters)s chapters and runs from the top of the system down. It opens with a short overview that has no slides. Part 2 shows what governments do for religion and who is put in charge of it: official status, first imposed by rulers and still held in more than 80 countries; leaders chosen by other clerics, by rulers or by birth; tax money; police for religious rules; laws against insulting or leaving a religion; bans on books and speech; and the use of churches to end Indigenous religions. Part 3 shows what rulers and parties get back: votes, and enemies named for them, including minorities, women and gay people. Part 4 follows the money: the duty to pay, the selling of blessings, the closed accounts and the land. Part 5 reaches the member: marriage and divorce under religious law, the marriage of girls, membership from childhood and through school, and what the organisation does when a child is abused inside it. The last chapter puts the whole chain in one place and ends on three slides that leave on the map only the bodies most responsible, including ones the story does not name.</p>
 
 <p>The map has no chapter on reforms or on people who resisted. That is deliberate. Its purpose is to show the system as it is.</p>
 
@@ -60,14 +60,14 @@ ABOUT="""
 %(pow_about)s
 
 
-<h3>Accused Clergy in the United States</h3>
+<h3>Accused Clergy</h3>
 
-<p>The open circles are the %(ba_n)s Catholic dioceses of the United States that appear in the public database kept by BishopAccountability.org. Each circle is sized by the number of priests, nuns, brothers, deacons and seminarians from that diocese who are listed as publicly accused of sexually abusing children: %(ba_total)s entries in all. The circles appear during the chapter on crime inside the institution and can be switched on from the key at any time. The database records public accusations and their sources. An accusation is not a conviction, and the map shows counts only and names no individual.</p>
+<p>The open circles come from the public database kept by BishopAccountability.org. In the United States there is one circle for each of %(ba_n)s Catholic dioceses, sized by the number of priests, nuns, brothers, deacons and seminarians from that diocese who are listed as publicly accused of sexually abusing children: %(ba_total)s entries in all. The archive's lists for Argentina, Chile, Ireland and the Philippines are each shown as one circle for the country. The map is crowded in the United States because that is where the archive has counted most fully. A country with no circle is a country for which no list has been published, and nothing should be read into its being empty. The circles appear during the chapter on crime inside the institution and can be switched on from the key at any time. An accusation is not a conviction, and the map shows counts only and names no individual.</p>
 
 
 <h3>The Bodies Most Responsible</h3>
 
-<p>The directory holds every organisation the story names, large or small. A switch in the key, under Organisations, hides all but %(top_n)s of them: the bodies that command a very large membership from one centre or hold a government's power over a religion. The story's last slide shows the same selection. It is a judgement made from the evidence on this map, and it is not a ranking.</p>
+<p>The directory holds every organisation the story names, large or small. A switch in the key, under Organisations, hides all but %(top_n)s: the bodies that direct a very large membership from one centre, hold a government's power over a religion, or link such bodies across borders. Many of them are not named in the story. The story's last three slides show the same selection, group by group.</p>
 
 
 <h3>How to Read It</h3>
@@ -98,7 +98,7 @@ METHOD="""
 
 <h2>How the Story Is Ordered</h2>
 
-<p>The story opens with a short overview. It then starts with the power that stands behind religious bodies and goes down: how governments enforce belief, who commands the religious bodies themselves, what those in power receive in return, where the money goes, and what happens to the person at the bottom. The final chapter is a written summary, and its one slide shows the bodies most responsible.</p>
+<p>The story opens with a short overview. It then starts with the power that stands behind religious bodies and goes down: how governments make a faith official, who is put in charge of it and how, how it is paid for and enforced, what those in power receive in return, where the money goes, and what happens to the person at the bottom. The final chapter is a written summary, and its three slides show the bodies most responsible.</p>
 
 <p>Every chapter begins with an introduction and a short bridge explaining what the slides add. Each slide then picks up from the one before. A one-line recap appears at the top of the next chapter's box.</p>
 
@@ -136,7 +136,9 @@ METHOD="""
 
 <h2>The Database of Accused Clergy</h2>
 
-<p>The circles come from the Database of Publicly Accused Roman Catholic Priests, Nuns, Brothers, Deacons and Seminarians kept by BishopAccountability.org. Its 26 alphabetical lists for the United States were read on %(ba_date)s. Every entry names one diocese, and the entries were counted by diocese: %(ba_total)s entries in %(ba_n)s dioceses. Nothing was left out and no entry was judged. Each circle is placed at the city the diocese is named for, located with OpenStreetMap's Nominatim search, so a circle marks the seat of a diocese and not the places where abuse was reported. The database also covers religious orders and has separate lists for Argentina, Chile, Ireland and the Philippines. Those are not on the map yet. The map shows counts only. For the names, sources and status of each case, use the database itself.</p>
+<p>The circles come from the Database of Publicly Accused Roman Catholic Priests, Nuns, Brothers, Deacons and Seminarians kept by BishopAccountability.org. Its 26 alphabetical lists for the United States were read on %(ba_date)s. Every entry names one diocese, and the entries were counted by diocese: %(ba_total)s entries in %(ba_n)s dioceses. Nothing was left out and no entry was judged. Each circle is placed at the city the diocese is named for, located with OpenStreetMap's Nominatim search, so a circle marks the seat of a diocese and not the places where abuse was reported.</p>
+
+<p>The archive keeps four other country lists, and each is drawn as a single circle at the capital. The archive states 122 clergy for Chile, 96 with ties to the Philippines, and 93 for Ireland, where its list is limited to those convicted or documented in official reports. For Argentina the archive gives no total and the 95 rows of its table were counted. These lists do not name a diocese in a form that could be mapped reliably, which is why they are not broken down. The four lists are built on different rules from the United States database and from one another, so the circles should not be compared as rates. There is no list for most countries. The map shows counts only. For the names, sources and status of each case, use the database itself.</p>
 
 
 <h2>The Book Holy Homicide</h2>
@@ -146,7 +148,9 @@ METHOD="""
 
 <h2>The Bodies Most Responsible</h2>
 
-<p>The closing slide and the switch in the key show %(top_n)s organisations. A body is included if the evidence on this map shows that it commands a very large membership from one centre, or that it holds a government's power over a religion. The selection is a judgement and not a measurement. Bodies that the map has not yet examined cannot appear in it, so it leans toward the religions the map covers best.</p>
+<p>The closing slides and the switch in the key show %(top_n)s organisations. They were chosen by asking which bodies do most to hold organised religion in place worldwide, whether or not the story uses them as examples. Three tests were applied. The first is command of a very large membership from one centre, measured by the membership each body reports for itself, as collected in Wikipedia's lists of Christian denominations by number of members and in the bodies' own statements. The second is a government's power over a religion: ministries, directorates and state councils that appoint clergy, license worship, run holy places or police religious rules. The third is an international body that links the others, such as the Organisation of Islamic Cooperation with its 57 member governments.</p>
+
+<p>The list is a judgement and not a measurement. Membership figures are the bodies' own claims and are counted in different ways. Hinduism and Buddhism have few central bodies of this kind, so they are represented mainly by state bodies and by the largest national organisations. Where no checked figure was found, a body is listed with a plain description and no number.</p>
 
 
 <h2>Records</h2>
@@ -160,10 +164,10 @@ METHOD="""
 
 <table class="cov">
 <tr><th>Religion and what the story currently covers</th><th>Depth</th></tr>
-<tr><td><b>Christianity</b><div class="mute">Appointment of bishops; the edict of 380, the English royal supremacy and tithes; church tax; the Doctrine of Discovery and the boarding schools; television ministries; closed accounts and property tax; church land; abuse inquiries and the United States database of accused clergy; the bar on ordaining women; endorsements, the evangelical bloc in Brazil, money sent abroad; the Russian church and the war. Missing: Orthodox churches outside Russia, African and Asian churches, religious orders.</div></td><td>Deepest</td></tr>
-<tr><td><b>Islam</b><div class="mute">Zakat and khums; the Safavid and Saudi foundations; Iran's supreme leader, his overseers and the Setad holding; Egypt's state sermon; control of Mecca and the Hajj permit; Turkey's religious directorate; waqf land; blasphemy and apostasy law; religious family courts in Lebanon; death sentences for gay people under religious law. Missing: religious police, clerical establishments in the Gulf, religious parties, state zakat collection country by country.</div></td><td>Moderate</td></tr>
-<tr><td><b>Hinduism</b><div class="mute">Tirumala's unpublished wealth; temple land and state control of temples in Tamil Nadu; the RSS and the governing party; cow protection attacks. Missing: caste and the priesthood, temple entry, gurus and their organisations, religious personal law.</div></td><td>Thin</td></tr>
-<tr><td><b>Buddhism</b><div class="mute">The king's appointment of Thailand's head monk; China's control of reincarnation; the monks' association and the 2015 laws in Myanmar. Missing: temple finances, Sri Lanka, state Buddhism elsewhere, the commercial merit-making trade.</div></td><td>Thin</td></tr>
+<tr><td><b>Christianity</b><div class="mute">Appointment of bishops; the edict of 380, the English royal supremacy and tithes; church tax; the Doctrine of Discovery and the boarding schools; television ministries; closed accounts and property tax; church land; abuse inquiries and the United States database of accused clergy; the bar on ordaining women; the Index of Prohibited Books; endorsements, the evangelical bloc in Brazil, money sent abroad; the Russian church and the war. Missing: Orthodox churches outside Russia, African and Asian churches, religious orders.</div></td><td>Deepest</td></tr>
+<tr><td><b>Islam</b><div class="mute">Zakat and khums; the Safavid and Saudi foundations; Iran's supreme leader, his overseers and the Setad holding; Egypt's state sermon; control of Mecca and the Hajj permit; Turkey's religious directorate; waqf land; blasphemy and apostasy law; religious family courts in Lebanon; death sentences for gay people under religious law; religious police; Iraq's 2025 marriage code. Missing: religious police, clerical establishments in the Gulf, religious parties, state zakat collection country by country.</div></td><td>Moderate</td></tr>
+<tr><td><b>Hinduism</b><div class="mute">Tirumala's unpublished wealth; temple land and state control of temples in Tamil Nadu; hereditary Brahmin priesthood; the RSS and the governing party; cow protection attacks. Missing: caste and the priesthood, temple entry, gurus and their organisations, religious personal law.</div></td><td>Thin</td></tr>
+<tr><td><b>Buddhism</b><div class="mute">The king's appointment of Thailand's head monk; China's control of reincarnation; the monks' association and the 2015 laws in Myanmar; a writer jailed there for insulting religion. Missing: temple finances, Sri Lanka, state Buddhism elsewhere, the commercial merit-making trade.</div></td><td>Thin</td></tr>
 <tr><td><b>Judaism</b><div class="mute">The Chief Rabbinate's control of marriage in Israel; coalition funds for seminaries. Missing: religious courts and divorce refusal, certification, communities outside Israel.</div></td><td>Thin</td></tr>
 <tr><td><b>Shinto</b><div class="mute">State Shinto from 1868 to 1945; the shrine association and its political arm. Missing: shrine finances and tax status.</div></td><td>Thin</td></tr>
 <tr><td><b>Newer movements</b><div class="mute">The Unification Church in Japan; the Jehovah's Witnesses in the Australian inquiry. Missing: Scientology, large guru movements, movements in Africa and Latin America.</div></td><td>Thin</td></tr>
@@ -198,7 +202,7 @@ METHOD="""
 
 <h2>What Is Missing</h2>
 
-<p>The map does not yet cover caste and hereditary priesthoods; fees charged for rites such as weddings, funerals and prayers for the dead; religious police; shunning and other costs of leaving that fall outside the criminal law; religious orders and their finances; missionary organisations working today; certification industries; clergy pay and housing privileges; or the rulers who backed Hinduism and Buddhism. These are gaps in the research, not evidence that the subjects are unimportant.</p>
+<p>The map does not yet cover caste beyond the priesthood in one Indian state; hereditary priesthoods in other religions; fees charged for rites such as weddings, funerals and prayers for the dead; shunning and other costs of leaving that fall outside the criminal law; religious orders and their finances; missionary organisations working today; certification industries; clergy pay and housing privileges; or the rulers who backed Hinduism and Buddhism. These are gaps in the research, not evidence that the subjects are unimportant.</p>
 
 
 <h2>Corrections</h2>

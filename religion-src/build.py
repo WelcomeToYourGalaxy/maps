@@ -3,7 +3,7 @@
 Run:  python3 build.py   (from this folder; needs ../ref/maps/school.html and its discrimination_data folder)"""
 import json, re, sys, datetime, collections, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import story6 as S            # fifth edition
+import story7 as S            # sixth edition
 import orgs as OG, records as RC, pages as PG
 
 REPO = "/home/claude/ref/maps/"
@@ -169,7 +169,8 @@ DATA = {"meta": {"built": "2026-11-27", "title": PG.TITLE}, "types": OG.TYPES, "
         "cty": CTY, "gloss": RC.GLOSS, "cen": CEN, "series": SER}
 if POW: DATA["pow"] = POW
 BA = json.load(open("/home/claude/ba/dioceses.json")) if os.path.exists("/home/claude/ba/dioceses.json") else []
-DATA["ba"] = {"total": sum(x["c"] for x in BA), "n": len(BA), "date": "27 November 2026", "pts": [[x["lng"], x["lat"], x["c"], x["n"]] for x in BA]}
+BA_INTL = [[-70.6693, -33.4489, 122, "Chile (country list)"], [120.9842, 14.5995, 96, "Philippines (country list: clergy with ties to the Philippines)"], [-58.3816, -34.6037, 95, "Argentina (country list)"], [-6.2603, 53.3498, 93, "Ireland (country list: convicted or documented in official reports)"]]
+DATA["ba"] = {"total": sum(x["c"] for x in BA), "n": len(BA), "date": "27 November 2026", "pts": [[x["lng"], x["lat"], x["c"], x["n"]] for x in BA] + BA_INTL}
 nslides = sum(len(f["steps"]) for f in FLOWS)
 print(len(S.PARTS), "parts", len(FLOWS), "chapters", nslides, "slides", len(PLAY), "organisations", len(EX), "records", len(SER), "country series")
 words = sum(len(re.sub(r"<[^>]+>", " ", f["sum"] + " " + f["bridge"] + " " + f["out"]).split()) + sum(len(s["t"].split()) for s in f["steps"]) for f in FLOWS)
@@ -214,7 +215,7 @@ sub("""contract: "Contract", adopted: "Adopted policy", acknowledged: "Acknowled
     """contract: "Contract", adopted: "Adopted budget or policy", acknowledged: "Acknowledged", reported: "Reported", alleged: "Alleged",
   vote: "Public vote", official: "Official figures", study: "Research study" };""")
 sub("""It starts with the bodies that steer the world\\'s schools and works down, layer by layer, to the pupil. Each chapter shows what one layer does and why the layer above makes it possible.""",
-    """It starts with a short overview, then works down: how governments enforce belief, who commands, what those in power get back, where the money goes, and what happens to the member.""")
+    """It starts with a short overview, then works down: how governments enforce belief and choose the leaders, what those in power get back, where the money goes, and what happens to the member.""")
 sub("It is the same 26 chapters as above, sorted", "It is the same ' + FLOWS.length + ' chapters as above, sorted")
 sub("the dashes run the way money, curricula, owners or students move.", "the dashes run the way money, authority or people move.")
 sub("The major organisations in education, good or bad, each in its headquarters city. They were chosen as the largest or most powerful of their kind in each region; the About box explains how.",

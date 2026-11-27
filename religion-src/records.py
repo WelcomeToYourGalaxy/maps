@@ -223,11 +223,31 @@ r("ilga2025","65 countries criminalise same-sex acts and seven prescribe death",
   "Where religious law is state law, a ruling on private life can carry a death sentence.",
   "ILGA World, reported by The Brussels Times and GCN","https://ilga.org/news/pride-month-2026-lgbti-maps-data/","")
 r("ba2026","A public database lists more than 8,000 accused Catholic clergy in the United States","United States",42.3765,-71.2356,2026,"study",
-  "BishopAccountability.org maintains a public Database of Publicly Accused Roman Catholic Priests, Nuns, Brothers, Deacons and Seminarians. Its alphabetical lists for the United States were read for this map on 27 November 2026 and held 8,120 entries across 176 dioceses. The database records public accusations and their sources. It does not state that each person is guilty.",
+  "BishopAccountability.org maintains a public Database of Publicly Accused Roman Catholic Priests, Nuns, Brothers, Deacons and Seminarians. Its alphabetical lists for the United States were read for this map on 27 November 2026 and held 8,120 entries across 176 dioceses. The archive's separate lists name 122 clergy in Chile, 96 with ties to the Philippines, 95 in Argentina and 93 in Ireland. The database records public accusations and their sources. It does not state that each person is guilty.",
   "The names are spread across the whole country, diocese by diocese.",
   "BishopAccountability.org, Database of Accused","https://www.bishop-accountability.org/accused/","bishopacc")
+r("archaka2021","Non-Brahmin temple priests kept from the inner shrine","India",13.0827,80.2707,2021,"reported",
+  "Tamil Nadu abolished the hereditary appointment of temple priests by law in 1971 and ordered in 2006 that trained Hindus of any caste could be appointed. Of 207 non-Brahmin priests trained by the state, two had been appointed after thirteen years. In 2021 the state appointed about two dozen more, and ten of 24 later alleged that hereditary priests had not allowed them into the sanctum.",
+  "A priesthood passed from father to son within one caste has outlasted fifty years of law against it.",
+  "The Caravan, 1 January 2015; Outlook; Scroll.in","https://caravanmagazine.in/perspectives/sacred-rights","hrce")
+r("relpolice2022","Police forces that enforce religious rules","Iran",35.6892,51.3890,2022,"study",
+  "The Council on Foreign Relations describes police forces that enforce Islamic moral codes in Iran, Saudi Arabia, Afghanistan, the Indonesian province of Aceh and northern Nigeria, among other places. Iran and Saudi Arabia each dedicate thousands of officers to the work. Mahsa Amini died in September 2022 after Iran's morality police detained her over her headscarf. Saudi Arabia sharply reduced its religious police's powers in 2016.",
+  "A religious rule on dress or behaviour is enforced by officers with the power to detain.",
+  "Council on Foreign Relations","https://www.cfr.org/articles/iran-isnt-only-country-morality-police","")
+r("index1966","The Catholic Index of Prohibited Books, 1559 to 1966","Vatican City",41.9029,12.4534,1966,"acknowledged",
+  "The Index Librorum Prohibitorum was a list of books forbidden to Catholics by church authority. The first edition was published in 1559 by the office of the Roman Inquisition, and publication ceased in 1966. Its last edition held about four thousand titles.",
+  "For four centuries one church decided what its members were allowed to read.",
+  "Encyclopaedia Britannica","https://www.britannica.com/topic/Index-Librorum-Prohibitorum","holysee")
+r("iraq2025","Iraq lets couples place marriage under a code written by religious authorities","Iraq",33.3152,44.3661,2025,"adopted",
+  "An amendment to Iraq's Personal Status Law entered into force on 17 February 2025. It lets couples choose between the 1959 civil law and a code developed by the Shia Ja'afari school. The original draft would have allowed religious authorities to set the age of marriage; the final text keeps the civil minimum of 18, or 15 with a judge's approval. Human Rights Watch reported that the code passed on 27 August 2025 favours men in marriage, divorce, inheritance and the care of children.",
+  "Family law for part of the population was handed to clergy in 2025.",
+  "Human Rights Watch, 10 March 2025","https://www.hrw.org/news/2025/03/10/iraq-personal-status-law-amendment-sets-back-womens-rights","hrw")
 for _k in ("bounty2023","csgc2025","pence2024","cara2025","secfine","indulgence1517"): R.pop(_k)
 GLOSS={
+ "caste":"One of the hereditary groups, ranked from high to low, into which Hindu society is traditionally divided.",
+ "Brahmin":"A member of the highest of the traditional Hindu castes, from which priests are drawn.",
+ "sharia":"The body of Islamic religious law.",
+ "Index of Prohibited Books":"The list of books that the Catholic Church forbade its members to read, published from 1559 to 1966.",
  "zakat":"A yearly payment that Islam requires of Muslims who have the means, by custom one fortieth of a person's wealth.",
  "khums":"A further payment of one fifth owed by Shia Muslims of the largest branch to the Hidden Imam and his deputies, a role claimed by senior clerics.",
  "supreme leader":"The highest office in Iran, held by a Shia cleric who has the final say over the government, the courts and the armed forces.",
