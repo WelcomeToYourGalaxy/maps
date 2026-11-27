@@ -3,7 +3,7 @@
 Run:  python3 build.py   (from this folder; needs ../ref/maps/school.html and its discrimination_data folder)"""
 import json, re, sys, datetime, collections, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import story5 as S            # fourth edition (story4 reframed)
+import story6 as S            # fifth edition
 import orgs as OG, records as RC, pages as PG
 
 REPO = "/home/claude/ref/maps/"
@@ -145,7 +145,7 @@ for f in S.FLOWS:
             for p in s["pins"]: xs.append(p[0]); ys.append(p[1])
             for c in s["add"]: regs.add(CTY[c]["r"])
         steps.append({"y": s["y"], "p": s["p"], "ll": s["ll"], "z": s["z"], "cap": s["cap"], "t": s["t"], "w": s["w"], "nosrc": False, "reg": s["reg"], "m": m, "plt": None,
-                      "add": s["add"], "arcs": s["arcs"], "an": s["an"], "pins": s["pins"], "pl": [] if s["data"] else s["pl"], "ex": exi, "src": s["src"], "net": None, "data": s["data"]})
+                      "add": s["add"], "arcs": s["arcs"], "an": s["an"], "pins": s["pins"], "pl": [] if s["data"] else s["pl"], "ex": exi, "src": s["src"], "net": None, "data": s["data"], "top": s.get("top", 0)})
         assert bool(s["reg"]) == s["t"].startswith("Regional Example: "), s["cap"]
         for c, r in s["add"].items(): fcty[c] = r
         for k in s["pl"]:
@@ -168,6 +168,8 @@ for f in FLOWS: assert f["scope"] == "world" or f["scope"] in REGBOX, f["scope"]
 DATA = {"meta": {"built": "2026-11-27", "title": PG.TITLE}, "types": OG.TYPES, "regions": REG, "parts": S.PARTS, "flows": FLOWS, "players": PLAY, "ex": EX,
         "cty": CTY, "gloss": RC.GLOSS, "cen": CEN, "series": SER}
 if POW: DATA["pow"] = POW
+BA = json.load(open("/home/claude/ba/dioceses.json")) if os.path.exists("/home/claude/ba/dioceses.json") else []
+DATA["ba"] = {"total": sum(x["c"] for x in BA), "n": len(BA), "date": "27 November 2026", "pts": [[x["lng"], x["lat"], x["c"], x["n"]] for x in BA]}
 nslides = sum(len(f["steps"]) for f in FLOWS)
 print(len(S.PARTS), "parts", len(FLOWS), "chapters", nslides, "slides", len(PLAY), "organisations", len(EX), "records", len(SER), "country series")
 words = sum(len(re.sub(r"<[^>]+>", " ", f["sum"] + " " + f["bridge"] + " " + f["out"]).split()) + sum(len(s["t"].split()) for s in f["steps"]) for f in FLOWS)
@@ -175,9 +177,10 @@ print("story words", words)
 
 # ---------------------------------------------------------------- the page: school.html's engine with this map's text and data
 PN = dict(N); PN.update(parts=len(S.PARTS), chapters=len(FLOWS), orgs=len(PLAY), small=sum(1 for p in PLAY if p["sm"]), records=len(EX), built=BUILT)
+PN.update(ba_n=DATA["ba"]["n"], ba_total=format(DATA["ba"]["total"], ","), ba_date=DATA["ba"]["date"], top_n=sum(1 for p in PLAY if p.get("top")))
 if POW:
-    PN["pow_about"] = "<p>The small dots are the %s places of worship that volunteers have mapped in OpenStreetMap: churches, mosques, temples, synagogues, gurdwaras and shrines. Zoom in to separate nearby ones, and hover over a dot to see its name and religion. They are on the map so that the story can be set against the places it is about. The first chapter describes what is collected at each one.</p><p>OpenStreetMap is built by volunteers, so coverage is uneven. A region with few dots may simply be a region that has been mapped less.</p>" % format(POW["total"], ",")
-    PN["pow_method"] = "<p>The layer holds every OpenStreetMap feature tagged as a place of worship, downloaded on %s through the Overpass API: %s points. Buildings mapped as outlines are placed at their centre. As asked for this map, features whose building is tagged as a school, kindergarten, college, university or town hall, and features whose name contains the words school, kindergarten, town hall, city hall or village hall, were removed: %s in all. Nothing else was filtered. Each dot carries the name, religion and denomination recorded in OpenStreetMap, which are left as the volunteers entered them. At wide zooms, places that fall on the same point of the screen are thinned so the map stays readable; from zoom %s every place is drawn. The data is © OpenStreetMap contributors and is available under the Open Database Licence.</p>" % (POW["date"], format(POW["total"], ","), format(POW["dropped"], ","), POW["full_zoom"])
+    PN["pow_about"] = "<p>The small dots are the %s places of worship that volunteers have mapped in OpenStreetMap: churches, mosques, temples, synagogues, gurdwaras and shrines. They are drawn at every zoom level. Zoom in to separate nearby ones, and from a regional view hover over a dot to see its name and religion. They are on the map so that the story can be set against the places it is about. </p><p>OpenStreetMap is built by volunteers, so coverage is uneven. A region with few dots may simply be a region that has been mapped less.</p>" % format(POW["total"], ",")
+    PN["pow_method"] = "<p>The layer holds every OpenStreetMap feature tagged as a place of worship, downloaded on %s through the Overpass API: %s points. Buildings mapped as outlines are placed at their centre. As asked for this map, features whose building is tagged as a school, kindergarten, college, university or town hall, and features whose name contains the words school, kindergarten, town hall, city hall or village hall, were removed: %s in all. Nothing else was filtered. Each dot carries the name, religion and denomination recorded in OpenStreetMap, which are left as the volunteers entered them. The dots are drawn at every zoom level. At wide zooms the most crowded clusters are thinned so the map stays fast, but every area that has places keeps its dots, and names appear on hover from zoom 7. From zoom %s every place is drawn. The data is © OpenStreetMap contributors and is available under the Open Database Licence.</p>" % (POW["date"], format(POW["total"], ","), format(POW["dropped"], ","), POW["full_zoom"])
 else:
     PN["pow_about"] = "<p>This build has no places-of-worship layer.</p>"; PN["pow_method"] = "<p>This build has no places-of-worship layer.</p>"
 h = tpl
@@ -211,7 +214,7 @@ sub("""contract: "Contract", adopted: "Adopted policy", acknowledged: "Acknowled
     """contract: "Contract", adopted: "Adopted budget or policy", acknowledged: "Acknowledged", reported: "Reported", alleged: "Alleged",
   vote: "Public vote", official: "Official figures", study: "Research study" };""")
 sub("""It starts with the bodies that steer the world\\'s schools and works down, layer by layer, to the pupil. Each chapter shows what one layer does and why the layer above makes it possible.""",
-    """It starts with the hold that organised religion has on its members, then works down: who commands, how governments enforce it, what they get back, where the money goes, and what happens to the member.""")
+    """It starts with a short overview, then works down: how governments enforce belief, who commands, what those in power get back, where the money goes, and what happens to the member.""")
 sub("It is the same 26 chapters as above, sorted", "It is the same ' + FLOWS.length + ' chapters as above, sorted")
 sub("the dashes run the way money, curricula, owners or students move.", "the dashes run the way money, authority or people move.")
 sub("The major organisations in education, good or bad, each in its headquarters city. They were chosen as the largest or most powerful of their kind in each region; the About box explains how.",

@@ -210,6 +210,22 @@ r("jw2015","Files on 1,006 accused members, none reported to police","Australia"
   "Australia's Royal Commission into Institutional Responses to Child Sexual Abuse heard in July 2015 that the Jehovah's Witnesses organisation had recorded allegations of child sexual abuse against 1,006 members since 1950 and had not reported one of them to the police. It heard that the rule requiring two witnesses had prevented at least 125 allegations from proceeding to an internal hearing.",
   "The allegation went up the organisation and stopped there.",
   "NPR, 27 July 2015","https://www.npr.org/sections/thetwo-way/2015/07/27/426756849/australias-jehovahs-witnesses-failed-to-report-1-006-alleged-child-sex-abuses","royalcomm")
+r("holyhomicide1998","An encyclopedia of killing in a religion's name","United States",48.1170,-122.7604,1998,"study",
+  "Michael Newton's Holy Homicide: An Encyclopedia of Those Who Go With Their God and Kill, published by Loompanics Unlimited in 1998, collects cases of homicide with a religious motive, from individuals to armies. Its entries include the Crusades, the Inquisition, religious wars, the Sand Creek massacre, the Mountain Meadows massacre, the Black Hundreds and Aum Shinrikyo. The figures on this map's slide are Newton's.",
+  "One reference book fills 280 pages with cases of this kind.",
+  "Michael Newton, Holy Homicide (Loompanics Unlimited, 1998)","https://archive.org/details/isbn_9781559501644","")
+r("womenordain2014","Many of the largest religious bodies do not ordain women","United States",38.9072,-77.0369,2014,"study",
+  "Pew Research Center reported in 2014 that many of the largest denominations in the United States, including Roman Catholics, Southern Baptists, Latter-day Saints and the Orthodox Church in America, do not ordain women or allow them to lead congregations.",
+  "The posts that decide teaching, money and discipline are closed to half the membership.",
+  "Pew Research Center, 9 September 2014","https://www.pewresearch.org/short-reads/2014/09/09/the-divide-over-ordaining-women/","pew")
+r("ilga2025","65 countries criminalise same-sex acts and seven prescribe death","Switzerland",46.2044,6.1432,2025,"study",
+  "ILGA World reported that the number of countries criminalising consensual same-sex sexual acts rose to 65 in 2025. The death penalty is prescribed in seven: Brunei, Mauritania, Iran, Nigeria, Saudi Arabia, Uganda and Yemen. In Afghanistan, Pakistan, Qatar, Somalia and the United Arab Emirates it is possible but legally uncertain.",
+  "Where religious law is state law, a ruling on private life can carry a death sentence.",
+  "ILGA World, reported by The Brussels Times and GCN","https://ilga.org/news/pride-month-2026-lgbti-maps-data/","")
+r("ba2026","A public database lists more than 8,000 accused Catholic clergy in the United States","United States",42.3765,-71.2356,2026,"study",
+  "BishopAccountability.org maintains a public Database of Publicly Accused Roman Catholic Priests, Nuns, Brothers, Deacons and Seminarians. Its alphabetical lists for the United States were read for this map on 27 November 2026 and held 8,120 entries across 176 dioceses. The database records public accusations and their sources. It does not state that each person is guilty.",
+  "The names are spread across the whole country, diocese by diocese.",
+  "BishopAccountability.org, Database of Accused","https://www.bishop-accountability.org/accused/","bishopacc")
 for _k in ("bounty2023","csgc2025","pence2024","cara2025","secfine","indulgence1517"): R.pop(_k)
 GLOSS={
  "zakat":"A yearly payment that Islam requires of Muslims who have the means, by custom one fortieth of a person's wealth.",

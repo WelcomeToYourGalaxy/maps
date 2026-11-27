@@ -273,3 +273,7 @@ LINKS={  # who owns, controls or funds whom
  "cofe":[["commissioners","is served by"]],
  "uckg":[["record","founder owns"]],
 }
+
+# the bodies shown on the closing slide and by the "most responsible" switch
+TOP={"holysee","roc","sbc","lds","jw","ag","uckg","ffwpu","rss","jinja","hajjmin","experts","setad","awqaf","diyanet","sara","sangha","rabbinate"}
+for _o in O: _o["top"]=1 if _o["k"] in TOP else 0

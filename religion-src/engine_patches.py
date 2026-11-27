@@ -58,3 +58,51 @@ sub("""p: ["#c2706a", "#6a9fd4", "#8d86b8", "#7fae6a", "#a8806a", "#4fb0a8", "#a
                fl: ["#dfe5ea", "#b9c9da", "#c6c4d8", "#cdd9dc", "#aebfd2", "#d6dce6", "#bccbd0", "#c2bed6", "#e3e7ec", "#a9bad0", "#cfd8df", "#b6c6d6"],
                role: ["#8aa4bd", "#5f7896", "#b8c4cf"], ln: "#e2e5e8", fo: 0.5, dim: 0.5, sch: ["#93a7ba", "#d49c9c", "#a4adb6"],""")
 sub("""<div class="psec">The Story, From the Top of the System Down</div>""", """<div class="psec">The Story, From the Top of the System Down</div>""")
+
+
+# ================= fifth edition
+# wider slide text box (two thirds wider than 356px) while a slide is showing
+sub("#rcol{bottom:150px!important;width:356px}", "#rcol{bottom:150px!important;width:356px}\n#rcol:has(#slide.on){width:min(594px,calc(100vw - 24px))}")
+# places of worship: visible at every zoom
+sub("""paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 1, 0.8, 4, 1.1, 7, 1.5, 9, 2.3, 13, 4],""", """paint: { "circle-radius": ["interpolate", ["linear"], ["zoom"], 0, 0.55, 3, 0.7, 5, 1.0, 7, 1.5, 9, 2.3, 13, 4],""")
+sub("""["interpolate", ["linear"], ["zoom"], 1, 0.55, 6, 0.7, 10, 0.9], "circle-pitch-alignment": "map" } });""", """["interpolate", ["linear"], ["zoom"], 0, 0.4, 4, 0.5, 7, 0.7, 10, 0.9], "circle-pitch-alignment": "map" } });""")
+# a chapter with no slides in the middle of the story runs on into the next chapter
+sub("""(f.steps.length ? 'Go to the slides &#9656;' : 'Back to the map')""", """(f.steps.length ? 'Go to the slides &#9656;' : (FLOWS[f.i + 1] ? 'Continue &#9656;' : 'Back to the map'))""")
+sub("""const go = () => { if (kind === "end" || !f.steps.length) closeFlow(); else beginSlides(); };
+  $("#chapGo").addEventListener("click", go); $("#chapX").addEventListener("click", go);""",
+    """const go = () => { if (kind === "end") closeFlow(); else if (!f.steps.length) { const nx = FLOWS[f.i + 1]; if (nx) openFlow(nx.id, true, TL.playing); else closeFlow(); } else beginSlides(); };
+  $("#chapGo").addEventListener("click", go); $("#chapX").addEventListener("click", (kind !== "end" && !f.steps.length) ? closeFlow : go);""")
+sub("""if (!f.steps.length) { TL.playing = false; setPlayIcon(); return; }""",
+    """if (!f.steps.length) { const nx = FLOWS[f.i + 1]; if (TL.playing && nx) STORY.timer = setTimeout(() => { if (STORY.f === f && TL.playing) openFlow(nx.id, true, true); }, readMs(f.sum)); else { TL.playing = false; setPlayIcon(); } return; }""")
+# the bodies most responsible: a switch in the key, and the closing slide
+sub("""const vis = PLAY.filter((p) => !S.off[p.t] && !(S.bigOnly && p.sm && !STORY.f));""",
+    """const vis = PLAY.filter((p) => !S.off[p.t] && !(S.bigOnly && p.sm && !STORY.f) && !(((S.topOnly && !STORY.f) || TOPSTEP) && !p.top));""")
+sub("""function playerFeatures() {""", """let TOPSTEP = false;
+function playerFeatures() {""")
+sub("""  TL.seg = k; const s = STORY.steps[k]; lastPaint = "";""", """  TL.seg = k; const s = STORY.steps[k]; lastPaint = "";
+  if (!!s.top !== TOPSTEP) { TOPSTEP = !!s.top; setPlayers(); }""")
+sub("""  STEPDATA.k = null; STEPDATA.net = null; $("#slide").classList.remove("on");""", """  STEPDATA.k = null; STEPDATA.net = null; $("#slide").classList.remove("on");
+  if (TOPSTEP) { TOPSTEP = false; setPlayers(); }""")
+sub("""    '<label class="chk sub2"><input type="checkbox" data-lay="bigOnly"'""", """    '<label class="chk sub2"><input type="checkbox" data-lay="topOnly"' + (S.topOnly ? " checked" : "") + '>Show only the bodies most responsible <span class="n" style="margin-left:auto">' + PLAY.filter((p) => p.top).length + '</span></label>' +
+    '<div class="desc" style="margin:0 0 4px 22px">Bodies that command a very large membership from one centre or hold a government\\'s power over a religion. A judgement from this map\\'s evidence, not a ranking.</div>' +
+    '<label class="chk sub2"><input type="checkbox" data-lay="bigOnly"'""")
+# accused clergy by diocese (BishopAccountability.org)
+sub("""  map.addSource("players", { type: "geojson", data: FC([]) });""", """  map.addSource("players", { type: "geojson", data: FC([]) });
+  map.addSource("ba", { type: "geojson", data: FC(((D.ba && D.ba.pts) || []).map((d) => ptF([d[0], d[1]], { c: d[2], n: d[3] }))) });""")
+sub("""  vis("ex", S.ex); vis("schools", S.schools);""", """  vis("ex", S.ex); vis("schools", S.schools); vis("ba", !!S.ba || !!(STORY.f && STORY.f.id === "institution"));""")
+sub("""  const hoverable = ["players", "arcs-hit", "ex", "ex-story", "arcs-now", "dots", "schools"];""", """  const hoverable = ["players", "arcs-hit", "ex", "ex-story", "arcs-now", "dots", "ba", "schools"];""")
+sub("""    else if (f.layer.id === "schools") tip(schoolHtml(p), oe.clientX, oe.clientY);""", """    else if (f.layer.id === "ba") tip('<b>' + esc(p.n) + '</b><br><span class="mute">' + Number(p.c).toLocaleString("en") + ' entries in the BishopAccountability.org database of publicly accused clergy. An accusation is not a conviction.</span>', oe.clientX, oe.clientY);
+    else if (f.layer.id === "schools") tip(schoolHtml(p), oe.clientX, oe.clientY);""")
+sub("""  h += '<label class="chk"><input type="checkbox" data-lay="ex\"""", """  if (D.ba && D.ba.n) h += '<label class="chk"><input type="checkbox" data-lay="ba"' + (S.ba ? " checked" : "") + '><span class="sw dot" style="background:transparent;border:1.5px solid ' + P.ln + '"></span>Accused Catholic clergy by United States diocese <span class="n" style="margin-left:auto">' + D.ba.total.toLocaleString("en") + '</span></label>' +
+    '<div class="desc">One circle for each of ' + D.ba.n + ' dioceses, sized by its number of entries in the public database of BishopAccountability.org, read on ' + D.ba.date + '. The database lists public accusations; an accusation is not a conviction.</div>';
+  h += '<label class="chk"><input type="checkbox" data-lay="ex\"""")
+
+sub("""    } catch (e) { console.warn("schools layer unavailable", e); }
+  }""", """    } catch (e) { console.warn("schools layer unavailable", e); }
+  }
+  addL({ id: "ba", type: "circle", source: "ba", layout: { visibility: "none" },
+    paint: { "circle-radius": ["interpolate", ["linear"], ["get", "c"], 1, 3, 50, 8, 150, 14, 400, 24], "circle-color": P.ln, "circle-opacity": 0.26,
+             "circle-stroke-color": P.ln, "circle-stroke-width": 1.2, "circle-pitch-alignment": "map" } });""")
+
+sub("""  if (map.getLayer("schools")) map.setPaintProperty("schools", "circle-color", P.sch[0]);""", """  if (map.getLayer("schools")) map.setPaintProperty("schools", "circle-color", P.sch[0]);
+  if (map.getLayer("ba")) { map.setPaintProperty("ba", "circle-color", P.ln); map.setPaintProperty("ba", "circle-stroke-color", P.ln); }""")
