@@ -1,30 +1,27 @@
 # -*- coding: utf-8 -*-
 # About and Method text. %(...)s values are filled in by build.py from the data.
 TITLE="The Business of Belief"
-LEDE="What organised religion takes from you and what it gives back. One story, told on the map: the deal you are offered, how it was built, who sits above you, what governments get from it, who sells the blessing, who owns the land, and what your vote is traded for."
+LEDE="An investigation of organised religion as a single system, across Christianity, Islam, Hinduism, Buddhism, Judaism and Shinto. One story, told on the map from the top down: what every religion has in common, who commands it, how governments enforce it, what they get back, where the money goes, and what happens to the member."
 
 ABOUT="""
 <h2>About This Map</h2>
 
-<p class="big">Three people in four belong to a religion, and most were enrolled as children. This map asks what they are asked to give, what they get back, and who gains from the arrangement. Its answer, taken from the religious institutions' own figures, is that the member is being cheated.</p>
+<p class="big">Three people in four belong to an organised religion. This map investigates the organisations they belong to as one system. It asks who runs that system, who protects it, what it takes in, and what it does to the people inside it.</p>
 
-<p>The map is about organisations, not about God. It does not ask whether any belief is true, and nothing in it says that prayer is worthless. Its subject is the system that stands between a believer and what they believe, and charges for it: the money asked for, the promise given in exchange, the leaders nobody elected, the governments that enforce the arrangement, the accounts that stay closed, and the votes that are traded.</p>
+<p>The map is about organisations and not about belief. It does not ask whether any religion's teaching is true. Its subject is the churches, councils, ministries, temple boards and bodies of clergy that stand between people and what they believe. Its finding is that, under their different names, these organisations are built the same way: a class of specialists, a duty to pay them, membership from birth, a cost for leaving, and an alliance with whoever governs.</p>
 
-
-<h3>If You Are a Believer</h3>
-
-<p>Most people who read this map belong to a religion, and some will take it as an insult to their faith. Three things are built in for that reader. First, an early slide gives the passages in Christian, Jewish, Muslim and Buddhist scripture that warn against turning religion into a way of taking money, so that the map's argument can be checked against the reader's own book. Second, every chapter box carries a short passage headed <i>If You Doubt This</i>. It says who produced the chapter's figures. In nearly every case it was the religious body itself, a court, a government, or researchers who are themselves religious. Third, every slide links to its source. Nothing here asks to be taken on trust.</p>
+<p>The evidence is drawn from every major religion: Christianity, Islam, Hinduism, Buddhism, Judaism and Shinto, and from several newer movements. A slide is included because it shows how the system works, and for no other reason. The map is a dissection of one structure, so it does not try to describe each religion in turn.</p>
 
 
 <h3>One Story in %(parts)s Parts</h3>
 
-<p>The story has %(chapters)s chapters. Part 1 sets out the deal: what a member gives, what is promised, and where the institutions' own accounts show the money going. It then shows that the arrangement is centuries old. Part 2 shows who sits at the top and why members cannot remove them. Part 3 looks at governments: the ones that make a faith official, pay for it from taxes and punish disbelief, and the ones that worked with churches to end Indigenous religions. Part 4 follows the people who sell the blessing directly. Part 5 examines closed accounts, tax exemptions and land. Part 6 shows what happens to crime inside the institution and how children are enrolled through school. Part 7 follows religion into politics and ends with a chapter that puts the whole chain in one place. That last chapter has no slides. It is a summary to read.</p>
+<p>The story has %(chapters)s chapters and runs from the top of the system down. Part 1 defines the system and shows how rulers assembled it. Part 2 shows how the top positions are filled, by clerics choosing clerics or by governments. Part 3 shows what the state adds: official status, tax money, laws against insulting or leaving a religion, and the use of churches to end Indigenous religions. Part 4 shows what rulers and parties get back, which is votes and enemies. Part 5 follows the money: the selling of blessings and pilgrimages, the closed accounts and the land. Part 6 reaches the member: marriage and divorce under religious law, the enrolment of children through school, and what the organisation does when a child is abused inside it. The last chapter puts the whole chain in one place. It has no slides and is a summary to read.</p>
 
-<p>The map does not include a chapter on reforms or on people who pushed back. That is deliberate. Its purpose is to show the system as it is.</p>
+<p>The map has no chapter on reforms or on people who resisted. That is deliberate. Its purpose is to show the system as it is.</p>
 
-<p>To follow the story in order, press Play the story. You can also select any chapter from the list on the left. Each chapter begins with a box containing a one-line recap of the chapter before, followed by the new chapter's introduction, a passage headed <i>What the Slides Show</i>, and the passage headed <i>If You Doubt This</i>. The box fades as the slides begin to play on the map, with the full text displayed in the panel on the right.</p>
+<p>To follow the story in order, press Play the story. You can also select any chapter from the list on the left. Each chapter begins with a box containing a one-line recap of the chapter before, followed by the new chapter's introduction and a passage headed <i>What the Slides Show</i>. The box fades as the slides begin to play on the map, with the full text displayed in the panel on the right.</p>
 
-<p>Each slide picks up from the one before and says what its facts mean for an ordinary member. You can close any box using its ×. The controls at the bottom allow you to play or pause, move one slide forward or back, switch chapters, change the reading speed, show or hide the slide text, and see your position in the complete story.</p>
+<p>Each slide picks up from the one before and says what its facts mean. You can close any box using its ×. The controls at the bottom allow you to play or pause, move one slide forward or back, switch chapters, change the reading speed, show or hide the slide text, and see your position in the complete story.</p>
 
 <p>Slides marked <i>Regional Example</i> show how a wider pattern appears in a particular country. Other slides compare every country a source reports on. Those countries are shaded according to the key, and hovering over one reveals its finding and the year.</p>
 
@@ -80,21 +77,18 @@ METHOD="""
 
 <h2>What Counts as a Chapter</h2>
 
-<p>A chapter has to meet two tests. First, does it describe how the religion system works as a system, and not one event or one bad actor? Second, does it matter to an ordinary member: does it show what is taken from them, what is kept from them, or what is decided over their heads? A fact about how rich a religious body is does not qualify on its own. It belongs when it shows where a member's money went or what the member was not told.</p>
+<p>A chapter has to describe how the religion system works as a system. One event, one conviction or one bad actor does not qualify. A case appears only as an example inside a chapter, and only when it shows a structure that recurs. A fact about how rich a religious body is does not qualify on its own either. It belongs when it shows who controls the money and whether the givers can see it.</p>
 
-<p>A single conviction, ruling or news report is not a chapter. It is used as an example inside a chapter when it shows a recurring structure. The map does not judge beliefs, rituals or private practice.</p>
+<p>A second test is breadth. Each feature the map claims is shared by all major religions has to be shown in more than one of them. Where the evidence for a chapter comes from one religion only, the chapter says so and says why.</p>
+
+<p>The map does not judge beliefs, rituals or private practice.</p>
 
 
 <h2>How the Story Is Ordered</h2>
 
-<p>The story opens with the deal offered to the member and the evidence on where the money goes, because that is the point of the whole map. The second chapter shows the same arrangement in history. The parts that follow explain why it holds: leaders appointed from above, governments that enforce and fund it, sellers who work directly on believers, closed accounts and untaxed land, crimes handled internally, children enrolled through school, and votes traded for laws. The final chapter is a written summary with no slides.</p>
+<p>The story is ordered the way an investigator would work through an organisation. It first defines the thing being examined and asks how it came to exist. It then starts at the top and goes down: who commands, who enforces, what the enforcers receive in return, where the money goes, and what happens to the person at the bottom. The final chapter is a written summary with no slides.</p>
 
-<p>Every chapter begins with an introduction, a short bridge explaining what the slides add, and a passage saying who produced the evidence. Each slide then picks up from the one before. A one-line recap appears at the top of the next chapter's box.</p>
-
-
-<h2>The Scripture Slide</h2>
-
-<p>One slide has no web source. It refers to passages of scripture by book, chapter and verse: Matthew 10:8 and 21:12-13, Micah 3:11, Quran 9:34 and 36:21, and the rule in the Buddhist monastic code that forbids monks to accept gold and silver. The slide describes these passages in plain words and does not quote a translation, so that readers can open their own edition and compare.</p>
+<p>Every chapter begins with an introduction and a short bridge explaining what the slides add. Each slide then picks up from the one before. A one-line recap appears at the top of the next chapter's box.</p>
 
 
 <h2>How the Slides Are Built</h2>
@@ -135,36 +129,49 @@ METHOD="""
 
 <h2>Coverage</h2>
 
-<p>The map is far from complete. As a judgement and not a measured count, it gathers perhaps 3 to 6 per cent of the available evidence on how organised religion takes from and controls its members. The world maps cover nearly every country. The story's own examples do not. The table shows where they are set and what is missing.</p>
+<p>The map is far from complete. As a judgement and not a measured count, it gathers perhaps 3 to 6 per cent of the available evidence on how organised religion controls and collects from its members. The world maps cover nearly every country. The story's own examples do not. The first table shows how each religion is covered and the second shows each region.</p>
 
 <table class="cov">
-<tr><th>Region and what the story currently covers</th><th>Depth</th></tr>
-<tr><td><b>North America</b><div class="mute">The hidden church investment fund; closed accounts and church status; television ministries; boarding and residential schools; abuse costs and the Southern Baptist inquiry; endorsements; money sent abroad. Missing: megachurch networks one by one, clergy housing and pay privileges, Mexico.</div></td><td>Deepest</td></tr>
-<tr><td><b>Europe</b><div class="mute">The Pope's collection; indulgences; tithes; the Church of England's fund, its origins and its land; German church tax; Italian property tax; France's abuse commission. Missing: Orthodox churches, church-state treaties, state-paid clergy outside Germany.</div></td><td>Moderate</td></tr>
-<tr><td><b>East Asia</b><div class="mute">The Unification Church in Japan and its party ties. Missing: state control of religion in China, Korean megachurches, Buddhist institutions.</div></td><td>Thin</td></tr>
-<tr><td><b>South Asia</b><div class="mute">Tirumala's unpublished wealth; waqf and temple land; Pakistan's blasphemy cases. Missing: temple boards, religious parties, the history of temple and monastery landholding.</div></td><td>Thin</td></tr>
-<tr><td><b>Middle East and North Africa</b><div class="mute">The Hajj permit system; Turkey's religious directorate. Missing: religious endowments and foundations, clerical rule in Iran, religious taxes, religious parties.</div></td><td>Thin</td></tr>
-<tr><td><b>Latin America</b><div class="mute">The Universal Church and its television network. Missing: evangelical blocs in parliaments, the Catholic Church's land, church-state agreements, the colonial mission system.</div></td><td>Very thin</td></tr>
-<tr><td><b>Oceania</b><div class="mute">Australia's royal commission. Missing: church property, mission history in the Pacific.</div></td><td>Very thin</td></tr>
-<tr><td><b>Sub-Saharan Africa</b><div class="mute">World maps only. Missing: prosperity churches, mission land, foreign religious funding country by country, religious courts.</div></td><td>Not yet covered</td></tr>
-<tr><td><b>Southeast Asia, Central Asia and the Caucasus</b><div class="mute">World maps only. Missing: state Buddhism, pilgrimage funds and waiting lists, state Islam, halal certification.</div></td><td>Not yet covered</td></tr>
+<tr><th>Religion and what the story currently covers</th><th>Depth</th></tr>
+<tr><td><b>Christianity</b><div class="mute">Appointment of bishops; the edict of 380, indulgences and tithes; church tax; the Doctrine of Discovery and the boarding schools; television ministries; closed accounts and property tax; church land; abuse inquiries; endorsements, the evangelical bloc in Brazil, money sent abroad; the Russian church and the war. Missing: Orthodox churches outside Russia, African and Asian churches, religious orders.</div></td><td>Deepest</td></tr>
+<tr><td><b>Islam</b><div class="mute">Zakat and khums; Iran's supreme leader, his overseers and the Setad holding; Egypt's state sermon; control of Mecca and the Hajj permit; Turkey's religious directorate; waqf land; blasphemy and apostasy law; religious family courts in Lebanon. Missing: religious police, clerical establishments in the Gulf, religious parties, state zakat collection country by country.</div></td><td>Moderate</td></tr>
+<tr><td><b>Hinduism</b><div class="mute">Tirumala's unpublished wealth; temple land and state control of temples in Tamil Nadu; the RSS and the governing party; cow protection attacks. Missing: caste and the priesthood, temple entry, gurus and their organisations, religious personal law.</div></td><td>Thin</td></tr>
+<tr><td><b>Buddhism</b><div class="mute">The king's appointment of Thailand's head monk; China's control of reincarnation; the monks' association and the 2015 laws in Myanmar. Missing: temple finances, Sri Lanka, state Buddhism elsewhere, the commercial merit-making trade.</div></td><td>Thin</td></tr>
+<tr><td><b>Judaism</b><div class="mute">The Chief Rabbinate's control of marriage in Israel; coalition funds for seminaries. Missing: religious courts and divorce refusal, certification, communities outside Israel.</div></td><td>Thin</td></tr>
+<tr><td><b>Shinto</b><div class="mute">State Shinto from 1868 to 1945; the shrine association and its political arm. Missing: shrine finances and tax status.</div></td><td>Thin</td></tr>
+<tr><td><b>Newer movements</b><div class="mute">The Unification Church in Japan; the Jehovah's Witnesses in the Australian inquiry. Missing: Scientology, large guru movements, movements in Africa and Latin America.</div></td><td>Thin</td></tr>
+<tr><td><b>Sikhism, Jainism, the Baha'i faith, folk and Indigenous religions</b><div class="mute">Not examined as organisations. Indigenous religions appear only as the target of the boarding schools.</div></td><td>Not yet covered</td></tr>
 </table>
 
-<p>The history chapter draws only on Christian Europe, because that is where the churches themselves have published the records. That is a limit of this edition and not a claim that other religions have no such history.</p>
+<table class="cov">
+<tr><th>Region and where the story's examples are set</th><th>Depth</th></tr>
+<tr><td><b>North America</b><div class="mute">Boarding and residential schools; television ministries; closed accounts and church status; the Southern Baptist inquiry; endorsements; money sent abroad.</div></td><td>Deepest</td></tr>
+<tr><td><b>Europe</b><div class="mute">The Holy See; the edict of 380, indulgences and tithes; German church tax; Italian property tax; France's abuse commission; England's church land; the Russian church.</div></td><td>Moderate</td></tr>
+<tr><td><b>Middle East and North Africa</b><div class="mute">Iran; Egypt; Saudi Arabia and the Hajj; Turkey; Israel; Lebanon.</div></td><td>Moderate</td></tr>
+<tr><td><b>South Asia</b><div class="mute">India's temples, waqf land, the RSS and cow protection attacks; Pakistan's blasphemy cases.</div></td><td>Moderate</td></tr>
+<tr><td><b>East and Southeast Asia</b><div class="mute">Japan; China and Tibet; Thailand; Myanmar.</div></td><td>Thin</td></tr>
+<tr><td><b>Latin America</b><div class="mute">Brazil's Universal Church and evangelical bloc.</div></td><td>Very thin</td></tr>
+<tr><td><b>Oceania</b><div class="mute">Australia's royal commission.</div></td><td>Very thin</td></tr>
+<tr><td><b>Sub-Saharan Africa, Central Asia and the Caucasus</b><div class="mute">World maps only.</div></td><td>Not yet covered</td></tr>
+</table>
+
+<p>The chapter on abuse inside religious bodies draws only on Christian organisations, because that is where inquiries with legal powers have published their findings. The history chapter draws on the Roman Empire, Western Europe and Japan. Both are limits of this edition. Neither is a claim that other religions lack such a record.</p>
 
 
 <h2>What Was Left Out on Purpose</h2>
 
-<p>The map leaves out claims that could not be tied to a source checked for it. That is why several widely repeated figures are absent, among them estimates of total church wealth and landholding, of money spent by governments to spread a faith abroad, and of the size of the halal and kosher certification trades. Organisations for which no checked claim was available appear with a neutral one-line description only.</p>
+<p>The map leaves out claims that could not be tied to a source checked for it. That is why several widely repeated figures are absent, among them estimates of total religious wealth and landholding, of money spent by governments to spread a faith abroad, and of the size of the halal and kosher certification trades. Organisations for which no checked claim was available appear with a neutral one-line description only.</p>
 
-<p>The map leaves out charity. Religious bodies run hospitals, schools and food programmes on a large scale. That work is real. It is not the subject here, and the first chapter shows why a gift to a religious body cannot be assumed to reach it.</p>
+<p>The map leaves out single scandals. A fine, a conviction or a misused fund is not included unless it shows how the system is built.</p>
+
+<p>The map leaves out charity. Religious bodies run hospitals, schools and food programmes on a large scale. That work is real, and it is not the subject here.</p>
 
 <p>The map leaves out reforms, apologies and campaigns against the practices it describes, except where a slide needs one to explain a figure.</p>
 
 
 <h2>What Is Missing</h2>
 
-<p>The map does not yet cover fees charged for rites such as weddings, funerals and prayers for the dead; religious orders and their finances; missionary organisations working among uncontacted peoples today; religious publishing and music licensing; certification industries; clergy pay and housing privileges; shunning and other costs of leaving outside the criminal law; or the history of religious payment outside Christian Europe. These are gaps in the research, not evidence that the subjects are unimportant.</p>
+<p>The map does not yet cover caste and hereditary priesthoods; fees charged for rites such as weddings, funerals and prayers for the dead; religious police; shunning and other costs of leaving that fall outside the criminal law; religious orders and their finances; missionary organisations working today; certification industries; clergy pay and housing privileges; or the history of religious payment and state backing outside the Roman Empire, Western Europe and Japan. These are gaps in the research, not evidence that the subjects are unimportant.</p>
 
 
 <h2>Corrections</h2>

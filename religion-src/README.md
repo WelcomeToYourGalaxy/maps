@@ -2,7 +2,7 @@
 
 Source for `religion.html`, built on the engine of `school.html`.
 
-- `story1.py`, `story2.py`, `story3.py` — chapter and slide text (`story3.py` is the current edition and reuses parts of the other two)
+- `story1.py` to `story4.py` — chapter and slide text (`story4.py` is the current edition and reuses slides from the earlier ones)
 - `records.py`, `orgs.py`, `pages.py` — documented records, organisation directory, About and Method text
 - `engine_patches.py` — changes made to the school.html engine
 - `build.py` — assembles everything into `religion.html` (paths inside are those of the build machine and need adjusting)

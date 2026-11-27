@@ -139,10 +139,89 @@ r("bounty2023","The Church of England traced part of its fund to the slave trade
   "Church Commissioners' report, reported by Church Times","https://www.churchtimes.co.uk/articles/2023/13-january/news/uk/church-commissioners-to-set-aside-100-million-to-compensate-for-slave-trade-links","commissioners")
 for _k in ("becciu","ireland2018","exits2022"): R.pop(_k)
 
+
+
+# --- third edition
+r("pewswitch2025","In 35 of 36 countries most adults hold the religion they were raised in","United States",38.9072,-77.0369,2025,"study",
+  "Pew Research Center surveyed nearly 80,000 adults in 36 countries and compared the religion each was raised in with the one they hold now. South Korea had the highest rate of change, at 50 per cent. Spain followed at 40 per cent and Canada at 38 per cent. In the United States it was 28 per cent and in Brazil 21 per cent.",
+  "For most people, membership of a religion is decided in childhood by someone else.",
+  "Pew Research Center, 26 March 2025","https://www.pewresearch.org/religion/2025/03/26/around-the-world-many-people-are-leaving-their-childhood-religions/","pew")
+r("iranexperts2024","366 of 510 clerics barred from the body that oversees Iran's supreme leader","Iran",35.6880,51.3990,2024,"reported",
+  "For the March 2024 election to the 88-seat Assembly of Experts, 510 clerics registered as candidates. The Council of Guardians disqualified 366 of them and left 144 to compete. The supreme leader appoints the council's clerical jurists directly.",
+  "The body that is meant to supervise the leader is filled from a list his appointees approved.",
+  "Middle East Institute, March 2024","https://mei.edu/?p=36989","experts")
+r("setad2013","Reuters values a holding under Iran's supreme leader at about 95 billion dollars","Iran",35.7000,51.4200,2013,"reported",
+  "A six-month Reuters investigation published in November 2013 estimated the assets of Setad at about 95 billion dollars: roughly 52 billion in property and 43 billion in company holdings. Reuters reported that Setad had acquired property by claiming in court, sometimes falsely, that it was abandoned. It said the total was hard to fix because the accounts are secret, and that it found no evidence the leader used the assets to enrich himself. Iranian officials called the reporting incorrect.",
+  "A fortune built partly on seized property answers to one cleric and publishes no accounts.",
+  "Reuters, Assets of the Ayatollah, November 2013","https://www.reuters.com/investigates/iran/","setad")
+r("thaisangha2017","Thailand's king given sole power to appoint the head of the monks","Thailand",13.7600,100.5000,2017,"adopted",
+  "An amendment to section 7 of the Sangha Act, passed on 29 December 2016 by the assembly appointed by the military government, provides that the king appoints the Supreme Patriarch and the prime minister countersigns. The Sangha Supreme Council lost its say in the nomination. A 2018 amendment gave the king the power to appoint the council's members.",
+  "The head of a religion followed by most Thais is chosen by the palace.",
+  "Bangkok Post, 2017","https://www.bangkokpost.com/thailand/general/1175909/king-now-has-sole-power-to-appoint-supreme-patriarch","sangha")
+r("chinaorder5","China requires government approval for Tibetan Buddhist reincarnations","China",39.9330,116.3740,2007,"adopted",
+  "State Religious Affairs Bureau Order No. 5 took effect on 1 September 2007. It requires an application and government approval before a reincarnated teacher is recognised, with the most important cases going to the State Council, and declares unapproved recognitions illegal and invalid.",
+  "A government that does not hold the belief claims the right to appoint the religion's leaders.",
+  "Congressional-Executive Commission on China, 5 May 2008","https://www.cecc.gov/publications/commission-analysis/new-legal-measures-assert-unprecedented-control-over-tibetan","sara")
+r("egyptsermon2016","Egypt's ministry orders one Friday sermon for every mosque","Egypt",30.0460,31.2400,2016,"adopted",
+  "In January 2014 the Ministry of Religious Endowments set a single Friday sermon topic for all Egyptian mosques. In July 2016 it ordered imams to read one identical written sermon. After objections from senior clerics of Al-Azhar it said imams must at least keep to the topic and to a length of 15 to 20 minutes.",
+  "What tens of millions of worshippers hear each Friday is chosen by a government department.",
+  "Al-Monitor, July 2016","https://www.al-monitor.com/originals/2016/07/egypt-unified-text-friday-sermon-criticism-mosques.html","awqaf")
+r("brazilfpe2023","Three churches account for 58 per cent of evangelical members sworn in to Brazil's congress","Brazil",-15.7997,-47.8645,2023,"reported",
+  "Agência Pública examined the 93 evangelical parliamentarians sworn in for the legislature that began in 2023. The Assemblies of God, Baptist churches and the Universal Church of the Kingdom of God together accounted for 58 per cent of them. The Evangelical Parliamentary Front had expected 132 deputies and 14 senators to join it.",
+  "A bloc that crosses party lines answers to a small number of churches.",
+  "Agência Pública, 2 February 2023","https://apublica.org/2023/02/as-igrejas-que-dominam-a-nova-ala-evangelica-na-camara/","fpe")
+r("israelbudget2023","3.7 billion shekels of coalition funds for seminary students","Israel",31.7767,35.2052,2023,"adopted",
+  "Israel's budget for 2023 and 2024, passed in May 2023, contained 13.7 billion shekels of discretionary coalition funds, up from 1.2 billion in 2022. Of that, 3.7 billion shekels went to raise stipends for full-time ultra-Orthodox seminary students, who are exempt from military service.",
+  "Religious parties' seats in the coalition were paid for from the public budget.",
+  "The Times of Israel, 24 May 2023","https://www.timesofisrael.com/knesset-approves-2023-2024-budget-in-all-night-vote-patching-coalition-rift/","")
+r("rss2025","The RSS reports 83,129 daily branches","India",21.1466,79.0889,2025,"official",
+  "The Rashtriya Swayamsevak Sangh's weekly, Organiser, reported 83,129 shakhas across India in March 2025, up from 73,117 in March 2024. AFP describes the RSS as the ideological and organisational backbone of the governing Bharatiya Janata Party.",
+  "A governing party draws on a religious organisation that meets every day in tens of thousands of places.",
+  "Organiser, 28 September 2025; AFP","https://organiser.org/2025/09/28/317718/bharat/rss-a-century-of-seva-a-future-of-sankalp/amp/","rss")
+r("shinto2015","302 members of Japan's parliament affiliated with a Shinto political association","Japan",35.6745,139.6995,2015,"reported",
+  "The Christian Science Monitor reported in October 2015 that 302 members of parliament were affiliated with Shinto Seiji Renmei, the political arm of the Association of Shinto Shrines, compared with 44 two decades earlier, and that the prime minister and many cabinet ministers were members.",
+  "A shrine association enrols the legislators who write the laws on education and the constitution.",
+  "The Christian Science Monitor, 5 October 2015","https://www.csmonitor.com//World/Asia-Pacific/2015/1005/Reviving-Shinto-Prime-Minister-Abe-tends-special-place-in-Japan-s-soul","sseiren")
+r("cow2019","At least 44 people killed in cow protection attacks in India","India",28.6139,77.2090,2019,"study",
+  "Human Rights Watch reported that between May 2015 and December 2018 at least 44 people, 36 of them Muslims, were killed across 12 Indian states in attacks linked to cow protection, and about 280 were injured in more than 100 incidents. It found that police often stalled investigations and that some governing-party politicians defended the attackers.",
+  "A religious symbol was enforced on a minority by mobs while officials looked away.",
+  "Human Rights Watch, 18 February 2019","https://www.hrw.org/report/2019/02/18/violent-cow-protection-india/vigilante-groups-attack-minorities","hrw")
+r("mabatha2015","Four laws proposed by Buddhist abbots become law in Myanmar","Myanmar",16.8400,96.1600,2015,"adopted",
+  "Four race and religion protection laws were signed in Myanmar between May and August 2015. They cover religious conversion, marriages of Buddhist women to men of other faiths, monogamy and population control. Human Rights Watch reported that Ma Ba Tha proposed them and collected nearly 1.5 million signatures.",
+  "Clergy drafted the law against a minority and politicians passed it before an election.",
+  "Human Rights Watch, 16 June 2015","https://hrw.org/news/2015/06/16/religious-extremism-looms-over-myanmar","mabatha")
+r("kirill2022","Britain sanctions the head of the Russian Orthodox Church for supporting the war","Russia",55.7108,37.6292,2022,"adopted",
+  "On 16 June 2022 the British government sanctioned Patriarch Kirill for his prominent support of Russian military aggression in Ukraine. A proposal to sanction him across the European Union was blocked by Hungary. The Russian Orthodox Church called the sanctions absurd.",
+  "The head of a church gave a war a religious justification.",
+  "RFE/RL, 16 June 2022","https://www.rferl.org/a/russia-britain-sanctions-kirill-ukraine/31901261.html","roc")
+r("tnhrce2024","One state department controls 44,121 temples and 478,000 acres","India",13.0600,80.2500,2024,"official",
+  "Tamil Nadu's Hindu Religious and Charitable Endowments Department manages and controls 44,121 temples. The temples under it own 4.78 lakh acres, about 478,000. The state government said it had recovered about 7,400 acres from encroachment since 2021.",
+  "Gifts from generations of worshippers have become an estate run from a government office.",
+  "Deccan Herald","https://www.deccanherald.com/india/tamil-nadu/tamil-nadu-government-retrieves-temple-land-worth-rs-7132-crore-from-encroachments-3382852","hrce")
+r("israelmarriage2016","About 660,000 Israelis unable to marry legally in Israel","Israel",31.7860,35.2000,2016,"study",
+  "The campaign group Hiddush calculated in January 2016 that 660,000 Israelis could not legally marry in Israel, among them 364,000 immigrants from the former Soviet Union, because the state recognises only Jewish marriages performed under the Orthodox Chief Rabbinate.",
+  "A body of clergy decides who may marry.",
+  "JTA, 11 January 2016","https://www.jta.org/2016/01/11/israel/report-660000-jewish-israelis-cant-legally-marry-in-israel","hiddush")
+r("lebanon2015","Lebanon's 15 religious family codes found to discriminate against women","Lebanon",33.8938,35.5018,2015,"study",
+  "Human Rights Watch reviewed 447 judgments of Lebanon's religious courts. It reported that the country has 15 separate personal status laws and no civil code for divorce, property or the care of children, that the courts have little or no state oversight, and that across all religions the laws put greater barriers before women than men who wish to end a marriage.",
+  "A woman's rights in a divorce depend on the religion she was born into.",
+  "Human Rights Watch, 19 January 2015","https://www.hrw.org/news/2015/01/19/lebanon-laws-discriminate-against-women","hrw")
+r("jw2015","Files on 1,006 accused members, none reported to police","Australia",-33.8688,151.2093,2015,"inquiry",
+  "Australia's Royal Commission into Institutional Responses to Child Sexual Abuse heard in July 2015 that the Jehovah's Witnesses organisation had recorded allegations of child sexual abuse against 1,006 members since 1950 and had not reported one of them to the police. It heard that the rule requiring two witnesses had prevented at least 125 allegations from proceeding to an internal hearing.",
+  "The allegation went up the organisation and stopped there.",
+  "NPR, 27 July 2015","https://www.npr.org/sections/thetwo-way/2015/07/27/426756849/australias-jehovahs-witnesses-failed-to-report-1-006-alleged-child-sex-abuses","royalcomm")
+for _k in ("bounty2023","csgc2025","pence2024","cara2025","secfine"): R.pop(_k)
 GLOSS={
+ "zakat":"A yearly payment that Islam requires of Muslims who have the means, by custom one fortieth of a person's wealth.",
+ "khums":"A further payment of one fifth owed by Shia Muslims of the largest branch to the Hidden Imam and his deputies, a role claimed by senior clerics.",
+ "supreme leader":"The highest office in Iran, held by a Shia cleric who has the final say over the government, the courts and the armed forces.",
+ "Supreme Patriarch":"The head of the order of Buddhist monks in Thailand.",
+ "State Shinto":"The official religion of Japan from 1868 to 1945, in which the government ran the shrines and promoted the belief that the emperor was divine.",
+ "shakha":"A local branch of India's Rashtriya Swayamsevak Sangh, where members meet for drill and instruction.",
+ "yeshiva":"A Jewish religious seminary.",
+ "civil marriage":"A marriage conducted and registered by the state, with no religious body involved.",
+ "sanctions":"Penalties one government places on a person or organisation abroad, usually freezing their assets and barring them from entry.",
  "indulgence":"In Catholic teaching, a grant by the Church that reduces the punishment a soul is due after death. In the 1500s they were sold for money.",
- "ecclesiastical crime":"The term used by the Center for the Study of Global Christianity for money stolen from churches and Christian organisations, mostly by embezzlement.",
- "Peter's Pence":"A yearly collection taken in Catholic parishes worldwide and sent to the Pope.",
  "Holy See":"The government of the Catholic Church, led by the Pope. It is treated as a state in international law and is based in Vatican City.",
  "APSA":"The Administration of the Patrimony of the Apostolic See, the Vatican office that manages the Holy See's buildings and investments.",
  "papal bull":"A formal decree issued by a pope.",

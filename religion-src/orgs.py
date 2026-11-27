@@ -236,7 +236,38 @@ o("au","Americans United for Separation of Church and State","watch","United Sta
 o("csgc","Center for the Study of Global Christianity","watch","United States","South Hamilton, Massachusetts",42.6143,-70.8698,None,"https://omsc.ptsem.edu/world-christianity-its-annual-statistical-table-time/","Status of Global Christianity 2025, reported by the Overseas Ministries Study Center",
   "A research centre at Gordon-Conwell Theological Seminary, a Christian seminary. Its yearly statistical table on world Christianity includes an estimate of money stolen from churches, which it put at 92 billion dollars for 2025.")
 
+
+# --- third edition: bodies outside Christianity, and the researchers the new chapters rest on
+o("experts","Assembly of Experts","state","Iran","Tehran",35.6880,51.3990,1983,"","Encyclopaedia Britannica, Assembly of Experts",
+  "A body of 88 Shia clerics that the constitution charges with choosing, supervising and removing Iran's supreme leader. Candidates must be approved by the Council of Guardians, half of whose jurists the supreme leader appoints.")
+o("setad","Setad (Headquarters for Executing the Order of the Imam)","fin","Iran","Tehran",35.7000,51.4200,1989,"","Reuters, Assets of the Ayatollah, November 2013",
+  "An organisation under the control of Iran's supreme leader. A Reuters investigation in 2013 estimated its property and company holdings at about 95 billion dollars and found that part of its property had been acquired through court-ordered seizures.")
+o("sangha","Sangha Supreme Council of Thailand","nat","Thailand","Bangkok",13.7600,100.5000,1963,"","Bangkok Post, 2017 and 2018",
+  "The governing council of Thailand's Buddhist monks, headed by the Supreme Patriarch. Since amendments made in 2016 and 2018, the king appoints both the Supreme Patriarch and the council's members.")
+o("awqaf","Ministry of Religious Endowments (Awqaf)","state","Egypt","Cairo",30.0460,31.2400,None,"","Al-Monitor, 2015 and 2016",
+  "The Egyptian government department that administers mosques. Since 2014 it has set one Friday sermon topic for every mosque in the country.")
+o("rabbinate","Chief Rabbinate of Israel","state","Israel","Jerusalem",31.7860,35.2000,1921,"","United States Department of State, International Religious Freedom reports",
+  "A state body of Orthodox rabbis with authority over marriage, divorce and conversion for Jewish citizens of Israel.")
+o("jinja","Association of Shinto Shrines (Jinja Honcho)","nat","Japan","Tokyo",35.6740,139.6990,1946,"https://www.jinjahoncho.or.jp/","Christian Science Monitor, 5 October 2015; Nippon.com",
+  "The body that administers about 80,000 of Japan's Shinto shrines. Shrine priests pass part of their offerings to it.")
+o("sseiren","Shinto Association of Spiritual Leadership (Shinto Seiji Renmei)","pol","Japan","Tokyo",35.6745,139.6995,1969,"","Christian Science Monitor, 5 October 2015",
+  "The political arm of the Association of Shinto Shrines. In 2015, 302 members of Japan's parliament were reported to be affiliated with it.")
+o("mabatha","Ma Ba Tha (Association for the Protection of Race and Religion)","pol","Myanmar","Yangon",16.8400,96.1600,2013,"","Human Rights Watch, 2015",
+  "An association of Buddhist abbots in Myanmar that proposed the four race and religion laws passed in 2015.",sm=1)
+o("hrce","Tamil Nadu Hindu Religious and Charitable Endowments Department","state","India","Chennai",13.0600,80.2500,1959,"https://hrce.tn.gov.in/","Deccan Herald",
+  "The state government department that manages and controls 44,121 Hindu temples in Tamil Nadu and the 478,000 acres they own.")
+o("bjp","Bharatiya Janata Party","pol","India","New Delhi",28.6280,77.2310,1980,"https://www.bjp.org/","AFP",
+  "India's governing party since 2014. AFP describes the Rashtriya Swayamsevak Sangh as its ideological and organisational backbone.")
+o("fpe","Evangelical Parliamentary Front","pol","Brazil","Brasília",-15.7997,-47.8645,2003,"","Agência Pública, 2 February 2023",
+  "A group of evangelical members of Brazil's congress drawn from many parties.")
+o("hrw","Human Rights Watch","watch","United States","New York",40.7484,-73.9857,1978,"https://www.hrw.org/","Organisation's own reports",
+  "A human rights research organisation. Its reports on Lebanon's religious courts, India's cow protection attacks and Myanmar's race and religion laws are used in this map.")
+o("hiddush","Hiddush","watch","Israel","Jerusalem",31.7800,35.2200,2009,"https://hiddush.org/","JTA, 11 January 2016",
+  "An Israeli campaign group for religious freedom. In 2016 it calculated that about 660,000 Israelis could not legally marry in Israel.",sm=1)
+
 LINKS={  # who owns, controls or funds whom
+ "rss":[["bjp","is the parent body of"]],
+ "jinja":[["sseiren","set up"]],
  "holysee":[["apsa","runs"],["ior","runs"],["dphd","runs"]],
  "lds":[["ensign","owns"]],
  "cofe":[["commissioners","is served by"]],

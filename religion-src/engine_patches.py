@@ -4,12 +4,12 @@
 sub("""      '<div class="cb-br"><b>What the Slides Show.</b> ' + esc(f.bridge) + '</div>' + more +
       '<div class="cb-f"><button type="button" class="btn" id="chapGo">Go to the slides &#9656;</button></div>';""",
     """      (f.steps.length ? '<div class="cb-br"><b>What the Slides Show.</b> ' + esc(f.bridge) + '</div>' : '') +
-      (f.doubt ? '<div class="cb-br"><b>If You Doubt This.</b> ' + esc(f.doubt) + '</div>' : '') + (f.steps.length ? more : '') +
+      (f.steps.length ? more : '') +
       '<div class="cb-f"><button type="button" class="btn" id="chapGo">' + (f.steps.length ? 'Go to the slides &#9656;' : 'Back to the map') + '</button></div>';""")
 sub("""const go = () => { if (kind === "end") closeFlow(); else beginSlides(); };""", """const go = () => { if (kind === "end" || !f.steps.length) closeFlow(); else beginSlides(); };""")
 sub("""  if (TL.playing) STORY.timer = setTimeout(() => { if (STORY.f === f && TL.phase === "intro" && TL.playing) beginSlides(); }, readMs(f.sum + " " + f.bridge + " " + (FLOWS[f.i - 1] ? FLOWS[f.i - 1].rec : "")));""",
     """  if (!f.steps.length) { TL.playing = false; setPlayIcon(); return; }
-  if (TL.playing) STORY.timer = setTimeout(() => { if (STORY.f === f && TL.phase === "intro" && TL.playing) beginSlides(); }, readMs(f.sum + " " + f.bridge + " " + (f.doubt || "") + " " + (FLOWS[f.i - 1] ? FLOWS[f.i - 1].rec : "")));""")
+  if (TL.playing) STORY.timer = setTimeout(() => { if (STORY.f === f && TL.phase === "intro" && TL.playing) beginSlides(); }, readMs(f.sum + " " + f.bridge + " " + (FLOWS[f.i - 1] ? FLOWS[f.i - 1].rec : "")));""")
 sub("""function beginSlides() {
   clearTimeout(STORY.timer); hideChap(); TL.phase = "steps";""", """function beginSlides() {
   if (!STORY.steps.length) { pauseTL(); return; }
@@ -57,4 +57,4 @@ sub("""p: ["#c2706a", "#6a9fd4", "#8d86b8", "#7fae6a", "#a8806a", "#4fb0a8", "#a
     """p: ["#e4e8ec", "#b9c6d3", "#9fb2c6", "#c9c7d6", "#d5dbe0", "#a9bcc4", "#b7b2c8", "#8fa5bb", "#c2cad3", "#aab3c2", "#99adc2", "#dcdfe6", "#b0c0cf", "#a2a9b4"],
                fl: ["#dfe5ea", "#b9c9da", "#c6c4d8", "#cdd9dc", "#aebfd2", "#d6dce6", "#bccbd0", "#c2bed6", "#e3e7ec", "#a9bad0", "#cfd8df", "#b6c6d6"],
                role: ["#8aa4bd", "#5f7896", "#b8c4cf"], ln: "#e2e5e8", fo: 0.5, dim: 0.5, sch: ["#93a7ba", "#d49c9c", "#a4adb6"],""")
-sub("""<div class="psec">The Story, From the Top of the System Down</div>""", """<div class="psec">The Story, in Order</div>""")
+sub("""<div class="psec">The Story, From the Top of the System Down</div>""", """<div class="psec">The Story, From the Top of the System Down</div>""")

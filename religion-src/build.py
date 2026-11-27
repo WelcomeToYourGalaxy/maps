@@ -3,7 +3,7 @@
 Run:  python3 build.py   (from this folder; needs ../ref/maps/school.html and its discrimination_data folder)"""
 import json, re, sys, datetime, collections, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import story3 as S            # second edition (builds on story1 + story2)
+import story4 as S            # third edition (reuses slides of story1-3)
 import orgs as OG, records as RC, pages as PG
 
 REPO = "/home/claude/ref/maps/"
@@ -11,7 +11,7 @@ TEMPLATE = REPO + "school.html"
 POW = json.load(open("/home/claude/pow/pow_meta.json")) if os.path.exists("/home/claude/pow/pow_meta.json") else None
 DD = REPO + "discrimination_data/"
 OUT = "/home/claude/out/religion.html"
-BUILT = "26 November 2026"
+BUILT = "27 November 2026"
 
 tpl = open(TEMPLATE, encoding="utf-8").read()
 lines = tpl.split("\n")
@@ -156,7 +156,7 @@ for f in S.FLOWS:
     if not steps: regs.update(r["k"] for r in REG)
     order = [r["k"] for r in REG]
     FLOWS.append({"id": f["id"], "part": f["part"], "scope": f["scope"], "title": f["title"], "kick": f["kick"], "sum": f["sum"], "out": f["out"], "roles": f["roles"], "steps": steps,
-                  "players": fpl, "src": f["src"], "rec": f["rec"], "bridge": f["bridge"], "doubt": f.get("doubt", ""), "cty": fcty, "ex": fex, "bb": bb, "regs": [k for k in order if k in regs]})
+                  "players": fpl, "src": f["src"], "rec": f["rec"], "bridge": f["bridge"], "cty": fcty, "ex": fex, "bb": bb, "regs": [k for k in order if k in regs]})
     for k in fpl: PBY[k]["flows"].append(f["id"])
     for c, r in fcty.items(): CTY[c]["flows"].append([f["id"], r])
 assert used_ex == set(EXK), ("records not used in any slide", set(EXK) - used_ex)
@@ -165,7 +165,7 @@ for i, e in enumerate(EX): CTY[e["c"]]["ex"].append(i)
 ids = [f["id"] for f in FLOWS]; assert len(ids) == len(set(ids))
 for f in FLOWS: assert f["scope"] == "world" or f["scope"] in REGBOX, f["scope"]
 
-DATA = {"meta": {"built": "2026-11-26", "title": PG.TITLE}, "types": OG.TYPES, "regions": REG, "parts": S.PARTS, "flows": FLOWS, "players": PLAY, "ex": EX,
+DATA = {"meta": {"built": "2026-11-27", "title": PG.TITLE}, "types": OG.TYPES, "regions": REG, "parts": S.PARTS, "flows": FLOWS, "players": PLAY, "ex": EX,
         "cty": CTY, "gloss": RC.GLOSS, "cen": CEN, "series": SER}
 if POW: DATA["pow"] = POW
 nslides = sum(len(f["steps"]) for f in FLOWS)
@@ -211,7 +211,7 @@ sub("""contract: "Contract", adopted: "Adopted policy", acknowledged: "Acknowled
     """contract: "Contract", adopted: "Adopted budget or policy", acknowledged: "Acknowledged", reported: "Reported", alleged: "Alleged",
   vote: "Public vote", official: "Official figures", study: "Research study" };""")
 sub("""It starts with the bodies that steer the world\\'s schools and works down, layer by layer, to the pupil. Each chapter shows what one layer does and why the layer above makes it possible.""",
-    """It starts with the deal a member is offered and what the institutions\\' own figures show about it. The parts after that explain why the deal holds: who sits at the top, what governments add, who sells, who owns, and what happens to the member.""")
+    """It starts with what every major religion has in common and how that was built, then works down: who commands, how governments enforce it, what they get back, where the money goes, and what happens to the member.""")
 sub("It is the same 26 chapters as above, sorted", "It is the same ' + FLOWS.length + ' chapters as above, sorted")
 sub("the dashes run the way money, curricula, owners or students move.", "the dashes run the way money, authority or people move.")
 sub("The major organisations in education, good or bad, each in its headquarters city. They were chosen as the largest or most powerful of their kind in each region; the About box explains how.",
