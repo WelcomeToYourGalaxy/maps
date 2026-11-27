@@ -210,7 +210,7 @@ r("jw2015","Files on 1,006 accused members, none reported to police","Australia"
   "Australia's Royal Commission into Institutional Responses to Child Sexual Abuse heard in July 2015 that the Jehovah's Witnesses organisation had recorded allegations of child sexual abuse against 1,006 members since 1950 and had not reported one of them to the police. It heard that the rule requiring two witnesses had prevented at least 125 allegations from proceeding to an internal hearing.",
   "The allegation went up the organisation and stopped there.",
   "NPR, 27 July 2015","https://www.npr.org/sections/thetwo-way/2015/07/27/426756849/australias-jehovahs-witnesses-failed-to-report-1-006-alleged-child-sex-abuses","royalcomm")
-for _k in ("bounty2023","csgc2025","pence2024","cara2025","secfine"): R.pop(_k)
+for _k in ("bounty2023","csgc2025","pence2024","cara2025","secfine","indulgence1517"): R.pop(_k)
 GLOSS={
  "zakat":"A yearly payment that Islam requires of Muslims who have the means, by custom one fortieth of a person's wealth.",
  "khums":"A further payment of one fifth owed by Shia Muslims of the largest branch to the Hidden Imam and his deputies, a role claimed by senior clerics.",
@@ -221,7 +221,6 @@ GLOSS={
  "yeshiva":"A Jewish religious seminary.",
  "civil marriage":"A marriage conducted and registered by the state, with no religious body involved.",
  "sanctions":"Penalties one government places on a person or organisation abroad, usually freezing their assets and barring them from entry.",
- "indulgence":"In Catholic teaching, a grant by the Church that reduces the punishment a soul is due after death. In the 1500s they were sold for money.",
  "Holy See":"The government of the Catholic Church, led by the Pope. It is treated as a state in international law and is based in Vatican City.",
  "APSA":"The Administration of the Patrimony of the Apostolic See, the Vatican office that manages the Holy See's buildings and investments.",
  "papal bull":"A formal decree issued by a pope.",

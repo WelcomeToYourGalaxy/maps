@@ -3,7 +3,7 @@
 Run:  python3 build.py   (from this folder; needs ../ref/maps/school.html and its discrimination_data folder)"""
 import json, re, sys, datetime, collections, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import story4 as S            # third edition (reuses slides of story1-3)
+import story5 as S            # fourth edition (story4 reframed)
 import orgs as OG, records as RC, pages as PG
 
 REPO = "/home/claude/ref/maps/"
@@ -211,7 +211,7 @@ sub("""contract: "Contract", adopted: "Adopted policy", acknowledged: "Acknowled
     """contract: "Contract", adopted: "Adopted budget or policy", acknowledged: "Acknowledged", reported: "Reported", alleged: "Alleged",
   vote: "Public vote", official: "Official figures", study: "Research study" };""")
 sub("""It starts with the bodies that steer the world\\'s schools and works down, layer by layer, to the pupil. Each chapter shows what one layer does and why the layer above makes it possible.""",
-    """It starts with what every major religion has in common and how that was built, then works down: who commands, how governments enforce it, what they get back, where the money goes, and what happens to the member.""")
+    """It starts with the hold that organised religion has on its members, then works down: who commands, how governments enforce it, what they get back, where the money goes, and what happens to the member.""")
 sub("It is the same 26 chapters as above, sorted", "It is the same ' + FLOWS.length + ' chapters as above, sorted")
 sub("the dashes run the way money, curricula, owners or students move.", "the dashes run the way money, authority or people move.")
 sub("The major organisations in education, good or bad, each in its headquarters city. They were chosen as the largest or most powerful of their kind in each region; the About box explains how.",
