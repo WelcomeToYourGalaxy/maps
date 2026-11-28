@@ -113,3 +113,13 @@ cs = FB["command"]["steps"][4]; assert cs["cap"].startswith("Every Country")
 cs["t"] = ("Before setting the laws beside their results, this map shows the laws themselves. Behind it sits a full law atlas of more than 213,000 environmental and environment-related instruments, drawn from the Food and Agriculture Organization's FAOLEX database and from Climate Change Laws of the World. %s are national laws, regulations and policies from %s countries and territories, the oldest dated 1878. A further %s come from states and provinces, and %s are international or regional. The atlas is close to complete for international treaties and national legislation. It holds some state and provincial law, where the source recorded one, and is sparse on local and municipal law, which neither database collects systematically. Each country is shaded by its count: Peru has the most on record, with 7,609, then Russia with 5,899 and Colombia with 4,649. The count shows how much has been written down. It says nothing about whether any of it is applied. Outside the story, click any country and scroll down its box to the section Environmental Law on Record, where all of its laws can be listed and searched." % (format(NAT_N, ","), LAWS["tot"][3], format(SUB_N, ","), format(LAWS["glob"]["n"], ",")))
 cs["src"] = "https://www.fao.org/faolex/en/"
 LAWSER["src"] = "https://www.fao.org/faolex/en/"; LAWSER["srcname"] = "FAOLEX (FAO) and Climate Change Laws of the World"
+
+# ================= seventh edition: the remaining fields of the earlier map
+FLD = {"found": "Foundations", "climate": "Climate", "bio": "Biodiversity", "ocean": "Oceans", "chem": "Chemicals", "energy": "Energy", "forest": "Forests", "mining": "Mining"}
+RAW = {d["name"]: d for d in AM["DATA"]}
+for x in INSTR:
+    d = RAW.get(x["n"], {}); x["field"] = FLD.get(d.get("field") or "", d.get("field") or ""); x["st"] = "p" if d.get("status") == "pending" else "a"; x["kind"] = d.get("kind", "")
+ROLE = {"driver": "Driver: it does the extracting, licensing or deciding", "lobby": "Lobby: it speaks for an industry", "orbit": "In orbit: an institution or think tank the others work through", "court": "Court: it decides the cases"}
+for c in AM["CULPRITS"]:
+    a = PK[ACT[c["n"]]]["atlas"]; a["rev"] = c.get("rev") or 0; a["role"] = ROLE.get(c["role"], c["role"]); a["ties"] = [ACT[t] for t in c.get("ties", []) if t in ACT]
+print("fields", sorted({x["field"] for x in INSTR}), "pending", sum(1 for x in INSTR if x["st"] == "p"), "ties", sum(len(p["atlas"]["ties"]) for p in A.PL if p.get("atlas")))

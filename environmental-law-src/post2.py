@@ -160,3 +160,62 @@ sub("""tip(null); $("#net").classList.remove("open"); if (n.dataset.a)""", """ti
 sub("""Hover to trace a body's ties; click to open it.""", """Hover to trace a body's ties; click to open it on the map beside this panel.""")
 sub("""and the private certifiers that stand in for enforcement, whether or not the story names them.""", """and the ministries and state companies that control the largest oil, gas, forest and mineral estates, whether or not the story names them.""")
 sub("""Click any country on the map to list its laws.</div>'""", """Click any country on the map, then scroll down its box to the section Environmental Law on Record to list and search its laws.</div>'""")
+
+# ================= seventh edition
+sub("""{ i, n: x.n, y: x.y || "", k: x.pro ? 1 : 0 }""", """{ i, n: x.n, y: x.y || "", k: x.pro ? 1 : 0, tier: x.tier, br: x.br, field: x.field || "", st: x.st }""")
+sub("""paint: { "icon-color": instrCol(), "icon-halo-color": P.halo, "icon-halo-width": 1.4 } });""", """paint: { "icon-color": instrCol(), "icon-halo-color": P.halo, "icon-halo-width": 1.4, "icon-opacity": ["case", ["==", ["get", "st"], "p"], 0.5, 1] } });
+  instrFilter();""")
+sub("""Click one for what it says and who stands behind it.</div>';""", """Faded diamonds are proposed or pending, not yet in force. Click one for what it says and who stands behind it.</div>';
+  h += instrFilterHtml();""")
+sub("""  $("#legBody").innerHTML = h; wireCard($("#legBody"));""", """  $("#legBody").innerHTML = h; wireCard($("#legBody"));
+  $$("#legBody [data-if]").forEach((el) => el.addEventListener("change", () => { IF[el.dataset.if] = el.value; if (!S.instr) { S.instr = true; buildLeg(); } instrFilter(); paintOverview(); }));
+  if ($("#lawAll")) $("#lawAll").addEventListener("click", () => openLawSearch());""")
+sub("""'<button type="button" class="btn" data-laws="' + LAWS.glob.id + '\"""", """'<button type="button" class="btn" id="lawAll">Search every law at once</button> <button type="button" class="btn" data-laws="' + LAWS.glob.id + '\"""")
+sub("""'<div class="hp-sub">' + esc([x.y, x.w].filter(Boolean).join(" · ")) + '</div>' +""", """'<div class="hp-sub">' + esc([x.y, x.w].filter(Boolean).join(" · ")) + '</div>' +
+    '<div class="sub">' + esc([x.field && "Field: " + x.field, x.kind && "Kind: " + x.kind, x.st === "p" ? "Status: proposed or pending, not yet in force" : "Status: in force or still controlling"].filter(Boolean).join(" · ")) + '</div>' +""")
+sub("""a.ctl && "Control: " + a.ctl, "Weight: " + a.w + " of 6"]""", """a.ctl && "Control: " + a.ctl, a.role && "Role: " + a.role, a.rev ? "Revenue: about $" + a.rev + " billion a year" : "", "Weight: " + a.w + " of 6"]""")
+sub("""  if (a.laws.length) h += '<div class="hp-h">Legal instruments it stands behind</div>'""", """  if (a.ties && a.ties.length) h += '<div class="hp-h">Tied to these actors</div><div class="chips">' + a.ties.map(plChip).join("") + '</div>';
+  if (a.laws.length) h += '<div class="hp-h">Legal instruments it stands behind</div>'""")
+sub("""  acts.forEach((p) => { const q = pos[p.k], r = 3 + p.atlas.w * 1.7;""", """  acts.forEach((p) => (p.atlas.ties || []).forEach((k) => { if (pos[k]) lines += '<path class="ln" data-a="' + p.k + '" data-t="' + k + '" stroke="#d9d3c8" stroke-dasharray="3 3" d="M' + pos[p.k][0].toFixed(1) + ' ' + pos[p.k][1].toFixed(1) + ' L' + pos[k][0].toFixed(1) + ' ' + pos[k][1].toFixed(1) + '"/>'; }));
+  acts.forEach((p) => { const q = pos[p.k], r = 3 + p.atlas.w * 1.7;""")
+sub("""const a = $('.nd[data-a="' + l.dataset.a + '"]', svg), b = $('.nd[data-i="' + l.dataset.i + '"]', svg); if (a) a.classList.add("on"); if (b) b.classList.add("on"); }); };""", """const a = $('.nd[data-a="' + l.dataset.a + '"]', svg), b = $('.nd[data-i="' + l.dataset.i + '"]', svg), c = l.dataset.t && $('.nd[data-a="' + l.dataset.t + '"]', svg); if (a) a.classList.add("on"); if (b) b.classList.add("on"); if (c) c.classList.add("on"); }); };""")
+sub("""lit(n.dataset.a ? '.ln[data-a="' + n.dataset.a + '"]' :""", """lit(n.dataset.a ? '.ln[data-a="' + n.dataset.a + '"], .ln[data-t="' + n.dataset.a + '"]' :""")
+sub("""Hover to trace a body's ties; click to open it on the map beside this panel.""", """Dashed lines join actors tied to one another. Hover to trace a body's ties; click to open it on the map beside this panel.""")
+sub("""/* ---------- the network view ---------- */""", r"""/* ---------- filters on the instruments, and one search across every law ---------- */
+const IF = { tier: "", br: "", field: "", pro: "", st: "" };
+function instrFilter() {
+  if (!map.getLayer("instr")) return; const f = ["all"];
+  if (IF.tier) f.push(["==", ["get", "tier"], IF.tier]); if (IF.br) f.push(["==", ["get", "br"], IF.br]); if (IF.field) f.push(["==", ["get", "field"], IF.field]);
+  if (IF.pro) f.push(["==", ["get", "k"], IF.pro === "good" ? 1 : 0]); if (IF.st) f.push(["==", ["get", "st"], IF.st]);
+  map.setFilter("instr", f.length > 1 ? f : null);
+}
+function instrFilterHtml() {
+  const uniq = (k) => Array.from(new Set(INSTR.map((x) => x[k]).filter(Boolean))).sort();
+  const sel = (k, all, opts) => '<select data-if="' + k + '" style="margin:2px 0"><option value="">' + all + '</option>' + opts.map((o) => '<option value="' + esc(o[0]) + '"' + (IF[k] === o[0] ? " selected" : "") + '>' + esc(o[1]) + '</option>').join("") + '</select>';
+  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1);
+  return '<div class="desc" style="margin-bottom:2px">Narrow the instruments shown:</div>' + sel("pro", "Every purpose", [["good", "Written to protect"], ["bad", "Licenses, shields or suppresses"]]) + sel("tier", "Every level", uniq("tier").map((v) => [v, cap(v)])) +
+    sel("br", "Every branch of government", uniq("br").map((v) => [v, cap(v)])) + sel("field", "Every field", uniq("field").map((v) => [v, v])) + sel("st", "In force and proposed", [["a", "In force or still controlling"], ["p", "Proposed or pending"]]);
+}
+let LAWALL = null, LAWMAN = null;
+function openLawSearch() {
+  const sel = ["l", "*|Every law"], root = LAWS.base.replace("atlas_data/", "search/");
+  const card = (inner) => show('<div class="hp"><div class="hp-k">The law atlas</div><h3>Search Every Law at Once</h3><div class="hp-sub">All ' + (LAWMAN ? LAWMAN.total.toLocaleString("en") : "213,000+") + ' national, state and international entries in one list. Search by word, or browse by subject.</div>' + inner + '<div class="hp-src">FAOLEX, Food and Agriculture Organization of the United Nations; Climate Change Laws of the World, Grantham Research Institute and Climate Policy Radar (CC BY).</div></div>', sel);
+  const ready = () => {
+    let q = "", sb = "", shown = 200;
+    card('<input class="inp" id="laFind" type="search" placeholder="Type a word and press Enter" style="width:100%" autocomplete="off"><select id="laSubj" style="margin-top:4px"><option value="">Every subject</option>' + LAWMAN.subj.map((s, i) => '<option value="' + i + '">' + esc(s) + '</option>').join("") + '</select><div id="laList"><div class="desc">Type a word, or choose a subject.</div></div>');
+    const run = () => { if (!q && sb === "") { $("#laList").innerHTML = '<div class="desc">Type a word, or choose a subject.</div>'; return; }
+      const m = LAWALL.filter((r) => (sb === "" || r[6] === +sb) && (!q || (r[0] + " " + r[2] + " " + LAWMAN.jur[r[1]]).toLowerCase().includes(q)));
+      $("#laList").innerHTML = '<div class="desc" style="margin-top:4px">' + m.length.toLocaleString("en") + ' entries.</div>' + m.slice(0, shown).map((r) => '<div class="rec"><div class="rh" style="cursor:default"><b><a href="' + esc(LAWMAN.prefixes[r[5]] + r[4]) + '" target="_blank" rel="noopener" style="color:inherit">' + esc(r[0]) + '</a></b><span class="n">' + esc(r[2] || "") + '</span></div><div class="desc" style="margin:0">' + esc([LAWMAN.jur[r[1]], LAWMAN.dom[r[3]], LAWMAN.subj[r[6]]].filter(Boolean).join(" · ")) + '</div></div>').join("") + (m.length > shown ? '<button type="button" class="btn" id="laMore" style="margin-top:8px">Show 200 more</button>' : '');
+      if ($("#laMore")) $("#laMore").addEventListener("click", () => { shown += 200; run(); }); };
+    $("#laFind").addEventListener("keydown", (e) => { if (e.key === "Enter") { q = e.target.value.trim().toLowerCase(); shown = 200; run(); } });
+    $("#laSubj").addEventListener("change", (e) => { sb = e.target.value; shown = 200; run(); });
+  };
+  if (LAWALL) { ready(); return; }
+  card('<div class="desc" id="laLoad">Loading the full list. It is large and takes a moment the first time.</div>');
+  fetch(root + "manifest.json").then((r) => r.json()).then((m) => { LAWMAN = m; return Promise.all(Array.from({ length: m.chunks }, (_, i) => fetch(root + "chunk_" + String(i).padStart(2, "0") + ".json").then((r) => r.json()))); })
+    .then((cs) => { LAWALL = [].concat.apply([], cs); if (S.sel && S.sel[0] === "l" && S.sel[1] === sel[1]) ready(); })
+    .catch(() => { const el = $("#laLoad"); if (el) el.textContent = "The list could not be loaded. It is kept online and needs a connection."; });
+}
+
+/* ---------- the network view ---------- */""")
+sub("""else if (s[0] === "l") { const q = String(s[1]).split("|");""", """else if (s[0] === "l" && String(s[1]).charAt(0) === "*") openLawSearch(); else if (s[0] === "l") { const q = String(s[1]).split("|");""")
