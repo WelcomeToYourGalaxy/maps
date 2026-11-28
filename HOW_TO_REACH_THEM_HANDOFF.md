@@ -216,6 +216,33 @@ no email still moves a column nobody else is filling.
   to 10 s.
 - Marker boxes and hover cards say who holds the office now (`holdBrief`).
 
+### Register round five: Italy, Norway, the Netherlands
+
+| Country | Register | Bodies before → after | Confirmed current |
+| --- | --- | ---: | ---: |
+| Italy (Q38) | IndicePA (indicepa.gov.it), daily | 183 → 425 | 342 |
+| Norway (Q20) | Brønnøysund, sector 6100 state administration (data.brreg.no), live | 279 → 659 | 624 |
+| Netherlands (Q55) | Register van Overheidsorganisaties (organisaties.overheid.nl), daily | 140 → 1,966 | 1,900 |
+
+- Italy: national categories only (ministries, constitutional organs,
+  fiscal agencies, independent authorities, national non-economic public
+  bodies, research bodies, police, autonomous administrations, public
+  social security, extraordinary commissioners). No parent links in the
+  register.
+- Norway: the register's own hierarchy (`overordnetEnhet`); names are in
+  capitals there and are put in sentence case.
+- Netherlands: every national type, local types (Gemeente, Provincie,
+  Waterschap, regional bodies) left to their own levels; parent is the
+  ministry the register links (`relatieMetMinisterie`).
+- For a register not in English, a matched body keeps Wikidata's English
+  label and the register's own name is written as `on`, shown under the
+  label: Wikidata's English label can be years stale (Norway's
+  "Ministry of Local Government and Modernisation" is the
+  Kommunal- og distriktsdepartementet now).
+- That closes the five register rounds. Still without a usable register:
+  Germany (none machine-readable), India (sites unreachable from here),
+  Japan (needs a form token), Ireland (latest open file is 2022).
+
 ## 000. Round twenty-five: who holds each post
 
 The government diagrams and the panel's office cards now name current

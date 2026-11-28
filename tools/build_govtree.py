@@ -442,6 +442,11 @@ def _apply(path, entries, src, country_words, drop_closed=True, lang="en", compl
             # renamed in 2023 still carries its old name on Wikidata)
             if lang == "en" and x["l"] and x["l"] != N[q]["l"]:
                 N[q].setdefault("wd", N[q]["l"]); N[q]["l"] = x["l"]
+            # the register's own name, in its own language, beside an
+            # English label Wikidata may not have kept up to date: a
+            # renamed ministry reads under its current name as well
+            elif lang != "en" and x["l"] and x["l"] != N[q]["l"]:
+                N[q]["on"] = x["l"]
             if not N[q].get("w") and x.get("w"): N[q]["w"] = x["w"]
     tag = re.sub(r"[^a-z]", "", src.split()[0].lower())[:8] or "dir"
     key = lambda x: match.get(x["id"]) or (tag + ":" + str(x["id"]))
@@ -685,6 +690,117 @@ def dir_on():
                     "b": b, "top": "@agencies", "live": True})
     return out
 
+def dir_it():
+    """IndicePA, the official index of Italy's public administrations
+    (AgID, indicepa.gov.it), refreshed daily: the national bodies — the
+    Presidency of the Council and the ministries, the constitutional
+    organs, the fiscal agencies, the independent authorities, national
+    non-economic public bodies, research bodies, police forces,
+    autonomous state administrations, public social-security bodies and
+    the government's extraordinary commissioners. Regions, municipalities,
+    schools, health trusts and the rest are other levels."""
+    import csv, io
+    url = _ckan_latest("https://indicepa.gov.it/ipa-dati", "amministrazioni",
+                       lambda r: (r.get("format") or "").upper() in ("TXT", "CSV"))
+    rows = list(csv.DictReader(io.StringIO(_get_bytes(url).decode("utf-8-sig")), delimiter="\t"))
+    NAT = {"Presidenza del Consiglio dei Ministri, Ministeri e Avvocatura dello Stato": "@min",
+           "Organi Costituzionali e di Rilievo Costituzionale": None,
+           "Agenzie Fiscali": "@agencies", "Autorita' Amministrative Indipendenti": "@agencies",
+           "Enti Pubblici Non Economici": "@agencies", "Enti e Istituzioni di Ricerca Pubblici": "@agencies",
+           "Forze di Polizia ad Ordinamento Civile e Militare per la Tutela dell'Ordine e della Sicurezza Pubblica": "@agencies",
+           "Aziende ed Amministrazioni dello Stato ad Ordinamento Autonomo": "@agencies",
+           "Enti di Previdenza ed Assistenza Sociale in Conto Economico Consolidato pubblici": "@agencies",
+           "Commissari Straordinari Governativi": "@agencies"}
+    out = []
+    for r in rows:
+        cat = (r.get("tipologia_istat") or "").strip()
+        if cat not in NAT: continue
+        nm = (r.get("des_amm") or "").strip()
+        if nm.isupper(): nm = nm[:1] + nm[1:].lower()
+        b = "leg" if re.search(r"(?i)camera dei deputati|senato della repubblica", nm) else \
+            ("jud" if re.search(r"(?i)\bcorte\b|consiglio di stato|consiglio superiore della magistratura|tribunal", nm) else "exe")
+        top = NAT[cat] or (None if b == "leg" else ("@courts" if b == "jud" else "@agencies"))
+        if top == "@min" and not re.search(r"(?i)^ministero|presidenza del consiglio", nm): top = "@agencies"
+        w = (r.get("sito_istituzionale") or "").strip()
+        if w and not w.startswith("http"): w = "https://" + w
+        out.append({"id": r["cod_amm"], "l": nm, "w": w, "parent": None, "b": b, "top": top, "live": True})
+    return out
+
+def dir_no():
+    """The Central Coordinating Register for Legal Entities
+    (Brønnøysundregistrene, data.brreg.no), live: every unit in the
+    sector "state administration" (institusjonell sektor 6100) with the
+    unit above it, so ministries, their directorates and the courts come
+    with their own hierarchy. Units with a deletion date are gone."""
+    E, page = [], 0
+    while True:
+        d = _get_json("https://data.brreg.no/enhetsregisteret/api/enheter?institusjonellSektorkode=6100"
+                      f"&size=500&page={page}")
+        E += (d.get("_embedded") or {}).get("enheter", [])
+        if page + 1 >= d["page"]["totalPages"]: break
+        page += 1
+    ids = {e["organisasjonsnummer"] for e in E}
+    def nice(n):
+        """the register writes every name in capitals; sentence case, with
+        abbreviations — the company form at the end, a bracketed short
+        name — left as they are"""
+        if not n.isupper(): return n
+        w = n.split(" ")
+        out = [x if (x.startswith("(") or (i == len(w) - 1 and len(x) <= 3 and i > 0)) else x.lower()
+               for i, x in enumerate(w)]
+        s2 = " ".join(out)
+        return s2[:1].upper() + s2[1:]
+    out = []
+    for e in E:
+        nm = e["navn"].strip(); form = e["organisasjonsform"]["kode"]
+        is_min = form == "STAT" and re.search(r"(?i)departementet|statsministerens kontor", nm)
+        b = "leg" if re.search(r"(?i)stortinget|sivilombudet|riksrevisjonen", nm) else \
+            ("jud" if re.search(r"(?i)tingrett|lagmannsrett|høyesterett|domstol|jordskifterett|rettsvesen", nm) else "exe")
+        p = e.get("overordnetEnhet")
+        out.append({"id": e["organisasjonsnummer"], "l": nice(nm), "w": (e.get("hjemmeside") or "").strip(),
+                    "parent": p if p in ids and not is_min else None, "b": b,
+                    "top": "@min" if is_min else (None if b == "leg" else ("@courts" if b == "jud" else "@agencies")),
+                    "live": not e.get("slettedato") and not e.get("konkurs")})
+    for x in out:
+        if x["w"] and not x["w"].startswith("http"): x["w"] = "https://" + x["w"]
+    return out
+
+def dir_nl():
+    """The Register van Overheidsorganisaties (organisaties.overheid.nl),
+    the Dutch government's own register, exported daily: every national
+    body — ministries, agencies, inspectorates, independent
+    administrative bodies, advisory boards, High Councils of State, the
+    courts, the police — with the ministry it belongs to. Municipalities,
+    provinces, water boards and regional bodies are other levels; bodies
+    with an end date are gone."""
+    import xml.etree.ElementTree as ET
+    raw = _get_bytes("https://organisaties.overheid.nl/archive/exportOO.xml", timeout=600)
+    root = ET.fromstring(raw)
+    ns = {"p": root.tag.split("}")[0].strip("{")}
+    LOCAL = {"Gemeente", "Provincie", "Waterschap", "Regionaal samenwerkingsorgaan", "Caribisch openbaar lichaam",
+             "Grensoverschrijdend regionaal samenwerkingsorgaan", "Provinciale Rekenkamer", "Brandweer"}
+    orgs = root.find("p:organisaties", ns)
+    sid = lambda o: o.get("{%s}systeemId" % ns["p"])
+    out = []
+    for o in orgs:
+        types = [t.text or "" for t in o.findall("p:types/p:type", ns)]
+        if not types or set(types) <= LOCAL: continue
+        nm = (o.findtext("p:naam", "", ns) or "").strip()
+        rel = o.find("p:relatieMetMinisterie", ns)
+        is_min = "Ministerie" in types
+        if is_min and not nm.lower().startswith("ministerie"): nm = "Ministerie van " + nm
+        b = "leg" if re.search(r"(?i)kamer der staten-generaal|staten-generaal", nm) else \
+            ("jud" if "Rechtspraak" in types or re.search(r"(?i)\b(rechtbank|gerechtshof|hoge raad|raad van state|college van beroep)", nm) else "exe")
+        url = o.findtext("p:contact/p:internetadressen/p:internetadres/p:url", "", ns) or ""
+        out.append({"id": sid(o), "l": nm, "w": url.strip(),
+                    "parent": None if is_min or rel is None else sid(rel), "b": b,
+                    "top": "@min" if is_min else (None if b == "leg" else ("@courts" if b == "jud" else "@agencies")),
+                    "live": o.find("p:eindDatum", ns) is None})
+    have = {x["id"] for x in out}
+    for x in out:
+        if x["parent"] not in have: x["parent"] = None
+    return out
+
 DIRECTORIES = [
     ("Q145", "GOV.UK organisations register", dir_uk, ["united kingdom", "uk "], True, "en"),
     ("Q30", "US Government Manual", dir_us, ["united states", "u.s.", "federal"], False, "en"),
@@ -696,6 +812,12 @@ DIRECTORIES = [
      ["ontario", "government of ontario"], False, "en"),
     ("Q155", "SIORG, the federal organisational register (dados.gov.br)", dir_br,
      ["república federativa do brasil", "brasil", "brazil", "federal"], False, "pt"),
+    ("Q38", "IndicePA, the index of Italian public administrations (indicepa.gov.it)", dir_it,
+     ["repubblica italiana", "italia", "italiano", "italiana", "nazionale"], False, "it"),
+    ("Q20", "Central Coordinating Register for Legal Entities (data.brreg.no)", dir_no,
+     ["norge", "norsk", "norway", "statens"], True, "nb"),
+    ("Q55", "Register van Overheidsorganisaties (organisaties.overheid.nl)", dir_nl,
+     ["nederland", "nederlandse", "rijks", "rijk"], True, "nl"),
 ]
 
 def directories(only=None):

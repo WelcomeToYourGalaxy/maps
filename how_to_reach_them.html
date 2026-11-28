@@ -10480,7 +10480,8 @@ function govFromFile(T, add, link, top, pre, d, lv){
     add(k,{t:'body', br:'exe', l:h.l, sub:h.r, q:h.q, s:99, c:h.c||null}); link(pre+'B:exe',k); alias[h.q]=k; });
   const N=d.n||{};
   Object.keys(N).forEach(q=>{ const e=N[q];
-    add(pre+'N:'+q,{t:'body', br:e.b, l:e.l, q:q, d:e.d||'', w:e.w||'', s:e.s||0, a:e.a||[], u:!!e.u, c:e.c||null, src:e.src||''});
+    add(pre+'N:'+q,{t:'body', br:e.b, l:e.l, q:q, d:e.d||'', w:e.w||'', s:e.s||0, a:e.a||[], u:!!e.u, c:e.c||null, src:e.src||'',
+      sub:e.on||''});
     (e.a||[]).forEach(o=>{ if(!alias[o]) alias[o]=pre+'N:'+q; });
     if(!alias[q]) alias[q]=pre+'N:'+q;
   });
