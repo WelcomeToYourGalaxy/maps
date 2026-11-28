@@ -121,3 +121,27 @@ function drawNet() {
 }
 
 /* ---------- the law atlas: lists fetched when asked for ---------- */""")
+
+# ================= fifth edition
+sub("""{ i, n: x.n, y: x.y || "", k: x.pro ? 2 : x.tier === "international" ? 0 : 1 }""", """{ i, n: x.n, y: x.y || "", k: x.pro ? 1 : 0 }""")
+sub("""const instrCol = () => ["match", ["get", "k"], 0, P.role[0], P.role[1]];""", """const GOODC = "#dfe8d8", BADC = "#7d3f4c";
+const instrCol = () => ["match", ["get", "k"], 1, GOODC, BADC];""")
+sub("""<span class="sw dia" style="background:' + P.role[1] + '"></span>Legal instruments most responsible""", """<span class="sw dia" style="background:' + BADC + '"></span>Keystone legal instruments""")
+a = h.index("""'<div class="desc">The keystone treaties, laws, rulings and contracts"""); b = h.index("""</div>';""", a) + len("""</div>';""")
+h = h[:a] + """'<div class="desc">The treaties, laws, rulings and contracts that set the pattern for the rest, each placed where it was adopted or decided. <span class="sw dia" style="background:' + GOODC + '"></span>written to protect · <span class="sw dia" style="background:' + BADC + '"></span>licenses, shields or suppresses. Click one for what it says and who stands behind it.</div>';""" + h[b:]
+sub("""fill="' + (x.tier === "international" ? "#c9d3cf" : "#7f9488") + '\"""", """fill="' + (x.pro ? GOODC : BADC) + '\"""")
+sub("""diamonds are instruments, pale for international and darker for national.""", """diamonds are instruments, pale where written to protect and dark where they license, shield or suppress.""")
+sub("""The actors of the Environmental Law Atlas, grouped by field""", """The actors behind the keystone legal instruments, grouped by field""")
+sub("""    (s.more ? '<details class="cb-more\"""", """    (s.netbtn ? '<div class="sl-m" style="margin-top:8px"><button type="button" class="btn" id="slNet" style="margin:0 0 5px">Open the network view</button><br>' + esc(s.netbtn) + '</div>' : '') +
+    (s.more ? '<details class="cb-more\"""")
+sub("""  $("#slideX").addEventListener("click", () => {""", """  if ($("#slNet")) $("#slNet").addEventListener("click", () => { pauseTL(); drawNet(); $("#net").classList.add("open"); });
+  $("#slideX").addEventListener("click", () => {""")
+sub("""'<a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(host(p.url)) + '</a>'""", """(p.url ? '<a href="' + esc(p.url) + '" target="_blank" rel="noopener">' + esc(host(p.url)) + '</a>' : '')""")
+sub("""(p.cite ? esc(p.cite) + ' — ' : '')""", """(p.cite && p.url ? esc(p.cite) + ' — ' : '')""")
+for x, y in [("From the Environmental Law Atlas", "Background"), ("Listed in the atlas as: ", "Also listed as: "), ("Weight in the atlas: ", "Weight: "),
+             ("""(x.added ? 'Added by this map to the atlas\\'s compilation. Placed' : 'Compiled in the Environmental Law Atlas. Placed')""", """'Placed'"""),
+             (""" Compiled in the <a href="' + LAWS.full + '" target="_blank" rel="noopener">Environmental Law Atlas</a>.""", ""),
+             ("""'<div class="desc"><a href="' + LAWS.full + '" target="_blank" rel="noopener">Open the full law atlas in its own map</a></div>'""", "''")]:
+    sub(x, y)
+h = re.sub(r'"full":"[^"]*",', "", h, 1)
+assert "Environmental Law Atlas" not in h and "destruction-environment-law-map" not in h, [h[m.start()-80:m.start()+60] for m in re.finditer("Environmental Law Atlas|destruction-environment-law-map", h)][:3]
