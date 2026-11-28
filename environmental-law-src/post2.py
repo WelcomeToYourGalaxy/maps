@@ -145,3 +145,18 @@ for x, y in [("From the Environmental Law Atlas", "Background"), ("Listed in the
     sub(x, y)
 h = re.sub(r'"full":"[^"]*",', "", h, 1)
 assert "Environmental Law Atlas" not in h and "destruction-environment-law-map" not in h, [h[m.start()-80:m.start()+60] for m in re.finditer("Environmental Law Atlas|destruction-environment-law-map", h)][:3]
+
+# ================= sixth edition
+sub("""vis(id, S.players && !INSTEP));""", """vis(id, S.players && !INSTEP && !(STORY.f && TL.phase === "steps" && TL.seg >= 0 && STORY.steps[TL.seg] && (STORY.steps[TL.seg].data || STORY.steps[TL.seg].net))));""", 0)
+sub("""if (s[0] === "f") openFlow(s[1], false, false);""", """if (s[0] === "f") { if (STORY.f && STORY.f.id === s[1]) closeDet(); else openFlow(s[1], false, false); }""")
+sub("""#net{inset:0;z-index:1001;""", """#net{inset:0 0 0 50%;z-index:900;border-left:1px solid var(--line)!important;""")
+sub("""#netBody svg{display:block;width:100%;height:auto;min-width:1100px}""", """#netBody svg{display:block;width:100%;height:auto}
+@media (max-width:820px){#net{inset:0}}""")
+sub("""#netClose{position:fixed;top:12px;right:12px;z-index:1002;""", """#netClose{position:fixed;top:12px;right:12px;z-index:901;""")
+sub("""#netHead{max-width:900px;margin:0 90px 4px 0;""", """#netHead{margin:0 80px 4px 0;""")
+sub("""const W = 1700, H = 1080, cx = W / 2, cy = H / 2,""", """const W = 1000, H = 1560, CEN = { energy: [500, 300], land: [255, 800], mining: [745, 800], ideology: [255, 1290], trade: [745, 1290] },""")
+sub("""c = [cx + Math.cos(ang) * 470, cy + Math.sin(ang) * 300], R =""", """c = CEN[f], R =""")
+sub("""tip(null); $("#net").classList.remove("open"); if (n.dataset.a)""", """tip(null); if (window.innerWidth <= 820) $("#net").classList.remove("open"); if (n.dataset.a)""")
+sub("""Hover to trace a body's ties; click to open it.""", """Hover to trace a body's ties; click to open it on the map beside this panel.""")
+sub("""and the private certifiers that stand in for enforcement, whether or not the story names them.""", """and the ministries and state companies that control the largest oil, gas, forest and mineral estates, whether or not the story names them.""")
+sub("""Click any country on the map to list its laws.</div>'""", """Click any country on the map, then scroll down its box to the section Environmental Law on Record to list and search its laws.</div>'""")
