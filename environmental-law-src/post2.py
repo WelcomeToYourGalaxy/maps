@@ -219,3 +219,14 @@ function openLawSearch() {
 
 /* ---------- the network view ---------- */""")
 sub("""else if (s[0] === "l") { const q = String(s[1]).split("|");""", """else if (s[0] === "l" && String(s[1]).charAt(0) === "*") openLawSearch(); else if (s[0] === "l") { const q = String(s[1]).split("|");""")
+
+# ================= eighth edition
+sub("""#net{inset:0 0 0 50%;z-index:900;border-left:1px solid var(--line)!important;""", """#net{inset:58px 12px 150px 50%;z-index:900;border:1px solid var(--line)!important;border-radius:6px!important;box-shadow:0 10px 30px rgba(0,0,0,.5);""")
+sub("""#netClose{position:fixed;top:12px;right:12px;z-index:901;""", """#netClose{position:fixed;top:68px;right:24px;z-index:901;""")
+sub("""@media (max-width:820px){#net{inset:0}}""", """@media (max-width:820px){#net{inset:0;border-radius:0!important}#netClose{top:12px;right:12px}}""")
+sub("""if (n.dataset.a) openPlayer(n.dataset.a, true); else openInstr(+n.dataset.i, true); });""", """const wide = window.innerWidth > 820, ll = n.dataset.a ? [PBY[n.dataset.a].lng, PBY[n.dataset.a].lat] : INSTR[+n.dataset.i].ll;
+      if (n.dataset.a) openPlayer(n.dataset.a, !wide); else openInstr(+n.dataset.i, !wide);
+      if (wide) map.flyTo({ center: ll, zoom: Math.max(map.getZoom(), 3.5), padding: { left: 20, right: Math.round(window.innerWidth * 0.74), top: 60, bottom: 140 }, duration: 1200 }); });""")
+sub("""id="lawAll">Search every law at once</button>""", """id="lawAll">Search every law at once (downloads about 30 MB first)</button>""")
+sub("""Click any country on the map, then scroll down its box""", """The first button searches all of them together and has to download the whole list, about 30 megabytes, before its first search. To list one country, click it on the map, then scroll down its box""")
+sub("""Loading the full list. It is large and takes a moment the first time.""", """Downloading the full list, about 30 megabytes. This happens once and can take half a minute.""")

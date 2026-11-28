@@ -100,7 +100,7 @@ series["escazu"] = {"label": "Escazú Agreement, the treaty that requires govern
 # Mexico is filed under North America in the region table; add it explicitly
 series["escazu"]["v"][CTYSRC["Mexico"]["iso"]] = [1, 2026]
 
-series["laws"] = LAWSER
+series["laws"] = LAWSER; series["iia"] = IIASER
 def andlist(xs):
     xs = list(xs); return xs[0] if len(xs) == 1 else ", ".join(xs[:-1]) + " and " + xs[-1]
 
