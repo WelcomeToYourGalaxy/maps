@@ -1180,6 +1180,29 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 #govhd button{flex:none;width:24px;height:22px;border-radius:6px;border:1px solid transparent;
   background:none;color:var(--dim);font:inherit;font-size:13px;line-height:1;cursor:pointer;padding:0}
 #govhd button:hover{color:var(--ink);border-color:var(--line);background:rgba(74,124,89,.14)}
+#govq{flex:none;width:96px;height:22px;border-radius:6px;border:1px solid var(--line);background:rgba(255,255,255,.03);
+  color:var(--ink);font:inherit;font-size:11px;padding:0 7px;outline:none}
+#govq:focus{width:150px;border-color:#5f7a66}
+#govls{flex:none;font-size:10.5px;color:var(--dim);white-space:nowrap}
+#govls a{cursor:pointer;padding:0 5px;color:var(--ink)}
+#govcr{flex:none;display:flex;align-items:center;gap:4px;padding:5px 12px;font-size:10.5px;color:var(--faint);
+  white-space:nowrap;overflow-x:auto;scrollbar-width:none;border-bottom:1px solid rgba(154,163,155,.12)}
+#govcr:empty{display:none}
+#govcr a{cursor:pointer;color:var(--dim)}
+#govcr a:hover{color:var(--ink);text-decoration:underline}
+#govcr a.on{color:var(--ink);font-weight:600}
+#govcr i{font-style:normal;opacity:.6}
+#govres{display:none;position:absolute;right:8px;top:36px;z-index:3;width:260px;max-height:260px;overflow:auto;
+  background:#111714;border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.45);padding:4px}
+#govres.on{display:block}
+#govres a{display:block;padding:5px 8px;border-radius:6px;cursor:pointer;font-size:11px;line-height:1.35}
+#govres a:hover{background:rgba(74,124,89,.16)}
+#govres a b{display:block;color:var(--ink);font-weight:500}
+#govres a span{color:var(--faint);font-size:10.5px}
+#govres .none{padding:8px;font-size:11px;color:var(--faint)}
+#govcv .node.found rect,#govcv .node.found path{stroke:#c9d8cd!important;stroke-width:2.4px!important;stroke-dasharray:5 3!important}
+#govcv .cluster rect{rx:10px}
+#govcv .cluster-label .nodeLabel,#govcv .cluster-label span{color:#9aa39b!important;font-size:10.5px}
 #govvp{position:relative;flex:1;min-height:0;overflow:hidden;cursor:grab;touch-action:none;
   background-color:#0e1411;
   background-image:radial-gradient(rgba(154,163,155,.13) 1px, transparent 1.2px);
@@ -1207,6 +1230,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(-
 .gholds span{color:var(--faint)}
 .gholds i,.gcred{color:var(--faint);font-style:italic}
 .gcred{margin-top:4px}
+.mkhold{font-size:11.5px;color:var(--ink);margin:4px 0 2px}
 .holds{margin-top:8px;font-size:12.5px;line-height:1.6;word-break:normal;overflow-wrap:normal}
 .holds.long{max-height:240px;overflow:auto;padding-right:4px}
 .holds .hp{margin-bottom:3px}
@@ -5510,6 +5534,7 @@ function bindTree(){
       showCard('<h5>'+esc(o.label)+'</h5>'+
         (function(){ const sub=mergeSub(o); return sub?'<p class="w">'+esc(sub)+'</p>':''; })()+
         (o.how?'<p>'+esc(o.how)+'</p>':'')+
+        (holdBrief(o.id)?'<p class="w">'+esc(holdBrief(o.id))+'</p>':'')+
         '<p class="loc">'+(PINS[o.id]?'On the map, now in view':'No address recorded for this office')+'</p>');
     });
     el.addEventListener('mousemove',moveCard);
@@ -7779,6 +7804,7 @@ function openMarkerPopup(id, lngLat){
     const sub=mergeSub(o);
     h+='<div class="mknm">'+esc(o.label)+'</div>'+
        (sub?'<div class="mksub">'+glossy(sub)+'</div>':'')+
+       (holdBrief(o.id)?'<div class="mkhold">'+esc(holdBrief(o.id))+'</div>':'')+
        '<div class="mkx">'+entxHtml(o.id)+'</div>'+
        '<button type="button" class="mkgo" onclick="markerGo()">'+
        'Open its page in the panel <span class="mkar">›</span></button>';
@@ -7984,27 +8010,38 @@ async function loadChainPins(){
      level whose offices were already cached or whose chain had been
      superseded, and they depend on nothing but the id. */
   levels.forEach(lv=>{ loadMuni(lv.q).catch(e=>console.warn('register:', e&&e.message)); });
-  for(const lv of levels){
+  /* Every level at once, and each level's two queries at once. They
+     ran one after another — four levels, three queries each, every one
+     a round trip to the query service — and a town took twenty seconds
+     or more to fill. At most four run together, which is what the query
+     service allows one visitor before it starts refusing. */
+  const run=async lv=>{
     if(gen!==CHAIN_GEN) return;              /* the reader searched again */
-    if(CHAIN_DONE[lv.q]) { setPins(); continue; }
+    if(CHAIN_DONE[lv.q]) { setPins(); return; }
     CHAIN_DONE[lv.q]=1;
     let core=[], items=[];
-    try{ core = await sparql(qCore(lv.q), 'core:'+lv.q); }catch(e){}
-    try{ items = await sparql(qJuris(lv.q), 'juris:'+lv.q); }catch(e){}
+    await Promise.all([
+      chainSlot(()=>sparql(qCore(lv.q), 'core:'+lv.q)).then(r=>{ core=r||[]; }).catch(()=>{}),
+      chainSlot(()=>sparql(qJuris(lv.q), 'juris:'+lv.q)).then(r=>{ items=r||[]; }).catch(()=>{}),
+    ]);
+    if(gen!==CHAIN_GEN) return;
     const bk = classifyRows(core, items);
     LEVELALL[lv.q] = bk.all;
+    try{ govSync(); }catch(e){}
     const ids = Object.keys(bk.byId);
-    if(!ids.length) continue;
-    for(let k=0;k<ids.length;k+=180){
-      const batch=ids.slice(k,k+180);
-      try{
-        const rows = await sparql(qCoordsFor(batch), 'oc:'+lv.q+':'+k+':'+batch.length);
+    if(!ids.length) return;
+    const batches=[]; for(let k=0;k<ids.length;k+=180) batches.push([k, ids.slice(k,k+180)]);
+    await Promise.all(batches.map(([k,batch])=>chainSlot(()=>sparql(qCoordsFor(batch), 'oc:'+lv.q+':'+k+':'+batch.length))
+      .then(rows=>{
+        if(gen!==CHAIN_GEN) return;
         rows.forEach(r=>{
           const m=/Point\(([-\d.]+) ([-\d.]+)\)/.exec(r.coord.value); if(!m) return;
           const id=qid(r.item.value);
           const o=bk.byId[id]; if(!o) return;
-          /* a deeper level claims the office: it is the closer one */
-          if(!PINS[id] || !CHAIN_CLAIMED[id]){
+          /* a deeper level claims the office: it is the closer one.
+             The levels now arrive in any order, so the claim is by depth
+             rather than by who came first. */
+          if(!PINS[id] || CHAIN_CLAIMED[id]==null || lv.i>CHAIN_CLAIMED[id]){
             /* `o` is carried on the pin. `BK` holds only the level whose
                panel is open, so without this every marker belonging to
                the county, the region or the country had no record behind
@@ -8012,13 +8049,11 @@ async function loadChainPins(){
                it reached a dead end saying so. */
             PINS[id]={id:id, lng:+m[1], lat:+m[2], label:o.label,
                       lvlQ:lv.q, law:o.law, o:o};
-            CHAIN_CLAIMED[id]=1;
+            CHAIN_CLAIMED[id]=lv.i;
           }
         });
         setPins();
-      }catch(e){}
-    }
-    if(gen!==CHAIN_GEN) return;
+      }).catch(()=>{})));
     /* No camera move per level. It used to frame each level as it
        arrived and hold 1100 ms before the next one widened the view
        again, so opening a place produced four or five jerky zoom-outs
@@ -8027,7 +8062,9 @@ async function loadChainPins(){
        resolve, which is the useful part, and the camera moves twice in
        all: once to the place itself in `enterPlace`, once to the
        offices here when they are all in. */
-  }
+  };
+  await Promise.all(levels.map(run));
+  if(gen!==CHAIN_GEN) return;
   /* The one exception to that, and it is the case above: if the
      opening frame was drawn before any marker existed, the view the
      reader is looking at was built from the place's outline alone.
@@ -8038,6 +8075,14 @@ async function loadChainPins(){
   }
 }
 let CHAIN_DONE={}, CHAIN_CLAIMED={}, CHAIN_GEN=0;
+/* at most four queries to the query service at a time from the chain */
+let CHAIN_RUN=0; const CHAIN_Q=[];
+function chainSlot(fn){
+  return new Promise((res,rej)=>{
+    const go=()=>{ CHAIN_RUN++; Promise.resolve().then(fn).then(res,rej).finally(()=>{ CHAIN_RUN--; const n=CHAIN_Q.shift(); if(n) n(); }); };
+    if(CHAIN_RUN<4) go(); else CHAIN_Q.push(go);
+  });
+}
 /* every office recognised for a level, by the level's id, including the
    ones the map leaves off; read only by the government diagram */
 let LEVELALL={};
@@ -10039,7 +10084,7 @@ function shiftForBox(on){
 const GOVDIR='govtree/';
 const MERMAID_SRC='https://cdn.jsdelivr.net/npm/mermaid@11.17.2/dist/mermaid.min.js';
 const GOV_IDRX=/(?:^|-)(g\d+)(?:-|$)/;
-const GOV_PAGE=1e9;     /* every child shown: nothing is held back behind "more" */
+const GOV_PAGE=60;      /* boxes under the focus before "show more": a ministry with a thousand posts is still a page */
 const GOV_COL=8;
 const GOV_GAP=5;        /* px between the box and the panel */        /* a long list is stacked in columns this tall */
 const GOV_BR={
@@ -10070,12 +10115,12 @@ function govMermaid(){
       try{
         window.mermaid.initialize({startOnLoad:false, securityLevel:'strict', theme:'base',
           maxTextSize:900000, maxEdges:20000,
-          flowchart:{htmlLabels:true, curve:'basis', nodeSpacing:7, rankSpacing:46,
-                     padding:7, useMaxWidth:false, wrappingWidth:240, diagramPadding:14},
+          flowchart:{htmlLabels:true, curve:'basis', nodeSpacing:14, rankSpacing:30,
+                     padding:8, useMaxWidth:false, wrappingWidth:180, diagramPadding:10},
           themeVariables:{fontFamily:"'DM Sans', system-ui, sans-serif", fontSize:'11.5px',
             primaryColor:'#171f1b', primaryTextColor:'#e7e4dc', primaryBorderColor:'#4a524c',
             lineColor:'#5b655e', background:'transparent', mainBkg:'#171f1b',
-            clusterBkg:'transparent', edgeLabelBackground:'transparent'}});
+            clusterBkg:'transparent', edgeLabelBackground:'#0f1412', titleColor:'#9aa39b'}});
         res(window.mermaid);
       }catch(e){ rej(e); }
     };
@@ -10130,6 +10175,7 @@ async function govLoad(){
          if(r.ok) d=await r.json(); }
     catch(e){ console.warn('government diagram: '+q+' did not load', e); }
     GOV.data=d; GOV.dataQ=q; GOV.open=new Set(); GOV.shown={}; GOV.view=null; GOV.litSig=''; GOV.touched=false;
+    GOV.focus=null; GOV.found=null; GOV.sig='';
     return d;
   })();
   GOV.loading={q:q,p:p};
@@ -10158,37 +10204,50 @@ function holdKey(s){
 }
 function holdFnv(s){ let h=0x811c9dc5; for(const b of new TextEncoder().encode(s)){ h=(h^b)>>>0; h=Math.imul(h,0x01000193)>>>0; } return h; }
 async function holdJSON(u){ try{ const r=await fetch(u,{cache:'force-cache'}); return r.ok ? await r.json() : null; }catch(e){ return null; } }
+/* Fetched side by side, each file once, and never in the chart's way:
+   the chart is drawn at once and drawn again when the names arrive.
+   (Waiting for them, one file after another, held the chart back by up
+   to thirteen seconds.) */
+const HOLDP={};
+function holdGet(u){ return HOLDP[u] || (HOLDP[u]=holdJSON(u)); }
 async function holdLoad(){
-  if(!HOLD.ix) HOLD.ix=(await holdJSON(HOLDDIR+'index.json'))||{c:{}};
-  HOLD.lv={}; HOLD.byQ={};
+  const sig=(GOV.dataQ||'')+'|'+STACK.map(s=>s?(s.q||'')+':'+(s.label||''):'').join('|');
+  if(sig===HOLD.sig || sig===HOLD.want) return false;
+  HOLD.want=sig;
+  if(HOLD.sig && HOLD.sig.split('|')[0]!==(GOV.dataQ||'')){ HOLD.lv={}; HOLD.byQ={}; }
+  if(!HOLD.ix) HOLD.ix=(await holdGet(HOLDDIR+'index.json'))||{c:{}};
   const cq=GOV.dataQ, c=cq && HOLD.ix.c && HOLD.ix.c[cq];
-  if(!c) return;
-  if(c.n && !HOLD.nat[cq]) HOLD.nat[cq]=((await holdJSON(HOLDDIR+cq+'.json'))||{}).p||[];
-  HOLD.lv[0]=HOLD.nat[cq]||[];
-  for(let i=1;i<STACK.length;i++){
-    const st=STACK[i]; if(!st || !c.sh) continue;
-    const keys=[]; if(isQ(st.q)) keys.push(st.q);
-    const nk=holdKey(st.label); if(nk) keys.push('n:'+nk);
-    const out=[], seen=new Set();
-    for(const k of keys){
-      const u=HOLDDIR+cq+'/'+(holdFnv(k)%c.sh)+'.json';
-      if(!(u in HOLD.sh)) HOLD.sh[u]=(await holdJSON(u))||{};
-      (HOLD.sh[u][k]||[]).forEach(p=>{
-        /* a post found by name only: a state's or department's posts
-           belong above the town, a town's below the first level, so
-           São Paulo the state and São Paulo the city keep their own */
-        const deepest = i===STACK.length-1;
-        if(k[0]==='n' && p.lv==='s' && deepest) return;
-        if(k[0]==='n' && p.lv==='m' && i<2 && !deepest) return;
-        /* "Lyon, Rhône": the place it sits in must be on the chain too */
-        if(k[0]==='n' && p.in && !STACK.some(s=>s && holdKey(s.label)===p.in)) return;
-        const id=p.l+'|'+(p.q||'')+'|'+p.h.map(x=>x[1]).join(',');
-        if(!seen.has(id)){ seen.add(id); out.push(p); }
-      });
+  const lv={}, jobs=[];
+  if(c){
+    if(c.n) jobs.push(holdGet(HOLDDIR+cq+'.json').then(d=>{ lv[0]=(d&&d.p)||[]; }));
+    for(let i=1;i<STACK.length;i++){
+      const st=STACK[i]; if(!st || !c.sh) continue;
+      const keys=[]; if(isQ(st.q)) keys.push(st.q);
+      const nk=holdKey(st.label); if(nk) keys.push('n:'+nk);
+      const deepest = i===STACK.length-1;
+      jobs.push(Promise.all(keys.map(k=>holdGet(HOLDDIR+cq+'/'+(holdFnv(k)%c.sh)+'.json').then(d=>[k,d||{}])))
+        .then(rs=>{
+          const out=[], seen=new Set();
+          rs.forEach(([k,d])=>(d[k]||[]).forEach(p=>{
+            /* a post found by name only: a state's or department's posts
+               belong above the town, a town's below the first level, so
+               São Paulo the state and São Paulo the city keep their own */
+            if(k[0]==='n' && p.lv==='s' && deepest) return;
+            if(k[0]==='n' && p.lv==='m' && i<2 && !deepest) return;
+            /* "Lyon, Rhône": the place it sits in must be on the chain too */
+            if(k[0]==='n' && p.in && !STACK.some(s=>s && holdKey(s.label)===p.in)) return;
+            const id=p.l+'|'+(p.q||'')+'|'+p.h.map(x=>x[1]||x[0]).join(',');
+            if(!seen.has(id)){ seen.add(id); out.push(p); }
+          }));
+          lv[i]=out;
+        }));
     }
-    HOLD.lv[i]=out;
+    await Promise.all(jobs);
   }
-  Object.values(HOLD.lv).forEach(ps=>ps.forEach(p=>{ if(p.q) (HOLD.byQ[p.q]=HOLD.byQ[p.q]||[]).push(p); }));
+  if(HOLD.want!==sig) return false;      /* the reader has moved on */
+  HOLD.lv=lv; HOLD.sig=sig; HOLD.byQ={};
+  Object.values(lv).forEach(ps=>ps.forEach(p=>{ if(p.q) (HOLD.byQ[p.q]=HOLD.byQ[p.q]||[]).push(p); }));
+  return true;
 }
 function holdWhen(){ const x=HOLD.ix||{}; return String(x.data||x.built||'').slice(0,10); }
 /* A name from OpenSanctions links to its record there; a councillor
@@ -10285,6 +10344,13 @@ function holdHtml(id){
   return '<div class="holds'+(c>8?' long':'')+'">'+ps.map(p=>'<div class="hp"><span class="hpn">'+esc(p.l)+'</span>'+
     p.h.map(x=>holdName(x,'hn')+(x[2]?'<span class="hs">since '+esc(x[2].slice(0,4))+'</span>':'')).join('')+'</div>').join('')+
     '<div class="hcred">'+holdCredit(ps)+'</div></div>';
+}
+/* one line for a marker's box and the hover card: who holds it now */
+function holdBrief(id){
+  let ps=[]; try{ ps=holdPosts(id); }catch(e){}
+  if(!ps.length) return '';
+  const names=[]; ps.forEach(p=>p.h.forEach(x=>names.push(x[0])));
+  return names.length<=3 ? 'Held now by '+names.join(', ') : names.length.toLocaleString()+' current holders named — listed on its page';
 }
 function holdFill(){
   if(typeof SEL==='undefined' || !SEL) return;
@@ -10503,32 +10569,41 @@ function govRoots(T){ const r=['R']; for(let i=1;i<STACK.length;i++) if(T['L:'+i
 function govLead(i){ return (GOV.lead && GOV.lead[i]!=null) ? GOV.lead[i] : i; }
 /* One Mermaid source per level. Ids run on across the charts, so a node
    id is unique on the whole canvas and GOV_IDRX finds it in any of them. */
-function govSources(T){
-  GOV.key2id={}; GOV.id2key={}; GOV_IDSEQ=0;
-  return govRoots(T).map(r=>({root:r, src:govSource(T, r)}));
+/* ---------- the view ----------
+   One box at a time, top to bottom. Every chart of a whole government
+   at once was thousands of boxes: unreadable at any size that fitted,
+   and France took eighteen seconds to lay out, with the page frozen.
+   Now the chart shows the way down from the country to the box in
+   focus — each level of government under the one above it — and
+   everything directly under that box, in rows. Click a box to go
+   into it; click one above to go back up; the search finds any box. */
+function govFocusKey(T){
+  if(GOV.focus && T[GOV.focus]) return GOV.focus;
+  const r=govRoots(T); return r[r.length-1] || 'R';
 }
+function govRootOf(T,k){ const a=govAncestors(T,k); return a.length ? a[a.length-1] : k; }
+/* where the reader has to stand to see a box: its parent, so that it
+   sits among its neighbours, or the box itself when it is a level */
+function govFocusFor(T,k){ const n=T[k]; if(!n) return null;
+  if(n.t==='root' || n.t==='level') return k; return n.par || k; }
+function govCols(){ const vp=document.getElementById('govvp'); const W=vp?vp.clientWidth:400;
+  return Math.max(1, Math.min(5, Math.floor(W/0.82/200))); }
 let GOV_IDSEQ=0;
-function govSource(T, root){
+function govSource(T, f){
+  GOV.key2id={}; GOV.id2key={}; GOV_IDSEQ=0;
   const id=k=>{ if(!GOV.key2id[k]){ const g='g'+(GOV_IDSEQ++); GOV.key2id[k]=g; GOV.id2key[g]=k; } return GOV.key2id[k]; };
-  /* Left to right, each rank of the hierarchy a column: the top of the
-     government at the left, what sits under it to the right. With every
-     box shown, a top-down layout put each body's whole subtree side by
-     side and the United States came out 55,000 pixels wide; this way it
-     is a few columns wide and as tall as the list is long, which the
-     wheel scrolls through. */
-  const lines=['flowchart LR'], edges=[], cls={};
-  const node=k=>{
+  const lines=['flowchart TD'], edges=[], cls={};
+  const node=(k, role)=>{
     const n=T[k], g=id(k);
-    let lab=mmEsc(govCut(n.l, n.t==='root'?60:58));
+    let lab=mmEsc(govCut(n.l, role==='kid'?64:72));
     if(n.t==='root') lab='<b>'+lab+'</b><br/>'+mmEsc(n.sub||'National government');
     else if(n.t==='level') lab='<b>'+lab+'</b><br/>'+mmEsc((n.sub||'Local')+' government');
-    else if(n.t==='branch') lab='<b>'+lab+'</b>'+(n.sub?'<br/>'+mmEsc(n.sub):'');
-    else if(n.t==='group') lab='<b>'+lab+'</b>';
-    else if(n.t==='body' && n.sub) lab=lab+'<br/>'+mmEsc(n.sub);
+    else if(n.t==='branch' || n.t==='group' || role==='focus') lab='<b>'+lab+'</b>'+(n.t==='branch'&&n.sub?'<br/>'+mmEsc(n.sub):'');
+    if(n.t==='body' && n.sub) lab+='<br/>'+mmEsc(govCut(n.sub,60));
     if(n.hold && n.hold.length) lab+='<br/><i>'+mmEsc(govCut(govHoldLine(n),58))+'</i>';
-    if(n.kids.length && !GOV.open.has(k)){
-      const c=govCountUnder(T,k);
-      lab+='<br/>'+mmEsc('▸ '+c.toLocaleString()+' under it');
+    if(role!=='spine' && n.kids.length && k!==f){
+      const all=govCountUnder(T,k), d=n.kids.length;
+      lab+='<br/>'+mmEsc('▾ '+d.toLocaleString()+' below'+(all>d?' · '+(all>9999?'10,000+':all.toLocaleString())+' in all':''));
     }
     let shape;
     if(n.t==='root' || n.t==='level') shape='(["'+lab+'"])';
@@ -10540,24 +10615,51 @@ function govSource(T, root){
           : 'gn'+(n.br||'other');
     if(n.t==='office' && (n.law===false || (n.o && n.o.onmap===false))) c+='x';
     if(n.u) c='gu'+(n.br||'other');
+    if(role==='spine') c='gsp';
     (cls[c]=cls[c]||[]).push(g);
+    if(role==='focus') (cls.gfoc=cls.gfoc||[]).push(g);
   };
-  const walk=k=>{
-    node(k);
-    const {show,more}=govVisibleKids(T,k);
-    const list=show.slice();
-    if(more>0){ const mk='M:'+k; T[mk]={k:mk, t:'more', l:'+ '+more+' more', par:k, kids:[]}; list.push(mk); }
-    list.forEach(c=>{ if(T[c].t==='more'){ const g=id(c); lines.push('  '+g+'["'+mmEsc(T[c].l)+'"]'); (cls.gmore=cls.gmore||[]).push(g); } else walk(c); });
-    /* a short list sits side by side under its parent; a long one is
-       stacked in columns, so twenty ministries do not run three
-       thousand pixels wide */
-    const p=id(k);
-    list.forEach(c=>edges.push('  '+p+' --> '+id(c)));
-  };
-  walk(root);
+  /* the way down: each level of government, then the boxes inside the
+     focus's own level */
+  const roots=govRoots(T), top=govRootOf(T,f), path=[];
+  for(const r of roots){ path.push(r); if(r===top) break; }
+  govAncestors(T,f).reverse().forEach(a=>{ if(a!==top) path.push(a); });
+  if(path[path.length-1]!==f) path.push(f);
+  path.forEach((k,i)=>{
+    node(k, k===f ? 'focus' : 'spine');
+    if(i>0){ const lvl=(T[k].t==='level'); edges.push('  '+id(path[i-1])+(lvl?' -.-> ':' --> ')+id(k)); }
+  });
+  /* everything directly under the focus, in rows */
+  const n=T[f], lim=GOV.shown[f]||GOV_PAGE;
+  const kids=n.kids.slice(0,lim);
+  GOV.lit.forEach(x=>{ if(T[x] && T[x].par===f && kids.indexOf(x)<0) kids.push(x); });
+  if(GOV.found && T[GOV.found] && T[GOV.found].par===f && kids.indexOf(GOV.found)<0) kids.push(GOV.found);
+  const more=n.kids.length-kids.length;
+  if(kids.length){
+    const cols=Math.min(govCols(), kids.length);
+    lines.push('  subgraph gkids["'+mmEsc('Under '+govCut(n.l,48)+' · '+n.kids.length.toLocaleString())+'"]');
+    lines.push('  direction TB');
+    kids.forEach(k=>node(k,'kid'));
+    if(more>0){ const mk='M:'+f; T[mk]={k:mk, t:'more', l:'+ '+more.toLocaleString()+' more — show them', par:f, kids:[]};
+      const g=id(mk); lines.push('  '+g+'["'+mmEsc(T[mk].l)+'"]'); (cls.gmore=cls.gmore||[]).push(g); kids.push(mk); }
+    lines.push('  end');
+    /* rows: the first row hangs from the focus, each box below the one
+       a row up, so the rows line up as columns */
+    kids.forEach((k,i)=>{ edges.push('  '+(i<cols ? id(f)+' --> ' : id(kids[i-cols])+' ~~~ ')+id(k)); });
+    lines.push('  style gkids fill:transparent,stroke:#38413b,stroke-dasharray:3 4,color:#9aa39b');
+  }
+  /* the government below this one, to step down to */
+  if(n.t==='root' || n.t==='level'){
+    const i=roots.indexOf(f), nx=roots[i+1];
+    if(nx){ node(nx,'spine');
+      if(kids.length) edges.push('  '+id(kids[kids.length-1])+' ~~~ '+id(nx));
+      edges.push('  '+id(f)+' -. the government below .-> '+id(nx)); }
+  }
   const C={
     groot:'fill:#1b2620,stroke:#8cbd9a,stroke-width:1.6px,color:#e7e4dc',
     gmore:'fill:transparent,stroke:#4a524c,stroke-dasharray:3 3,color:#9aa39b',
+    gsp:'fill:#121815,stroke:#4f5953,stroke-width:1px,color:#b9b6ae',
+    gfoc:'stroke-width:2.4px',
   };
   Object.keys(GOV_BR).forEach(b=>{ const x=GOV_BR[b];
     C['gb'+b]='fill:'+x.fill+',stroke:'+x.col+',stroke-width:1.5px,color:#e7e4dc';
@@ -10570,17 +10672,19 @@ function govSource(T, root){
   Object.keys(cls).forEach(c=>{ if(C[c]){ lines.push('  classDef '+c+' '+C[c]); lines.push('  class '+cls[c].join(',')+' '+c); } });
   return lines.concat(edges).join('\n');
 }
-
 /* ---------- the box ---------- */
 function govEl(){
   let b=document.getElementById('gov'); if(b) return b;
   b=document.createElement('div'); b.id='gov';
-  b.innerHTML='<div id="govhd"><div id="govtt"></div>'+
+  b.innerHTML='<div id="govhd"><div id="govtt"></div><span id="govls"></span>'+
+    '<input id="govq" type="search" placeholder="Find…" autocomplete="off" spellcheck="false" oninput="govSearch()" '+
+      'onkeydown="if(event.key===\'Escape\'){this.value=\'\';govSearch();}">'+
     '<button type="button" onclick="govZoom(1/1.25)" title="Zoom out">−</button>'+
     '<button type="button" onclick="govZoom(1.25)" title="Zoom in">+</button>'+
-    '<button type="button" onclick="govFit(\'all\')" title="Fit the whole chart">⤢</button>'+
+    '<button type="button" onclick="govFit(\'all\')" title="Fit this view">⤢</button>'+
     '<button type="button" id="govbig" onclick="govBig()" title="Larger">↗</button>'+
     '<button type="button" id="govmin" onclick="govMin()" title="Fold away">–</button></div>'+
+    '<div id="govcr"></div><div id="govres"></div>'+
     '<div id="govvp"><div id="govcv"></div><div id="govmsg"></div></div><div id="govinfo"></div>';
   document.body.appendChild(b);
   govBindViewport();
@@ -10604,7 +10708,7 @@ function govPlace(){
   const room=Math.max(240, Math.round(r.left-GOV_GAP-leftLimit));
   const w=Math.min(GOV.big?Math.max(560, Math.round(r.left*0.62)):400, room);
   const hMax=Math.round(r.height-8);
-  const h=GOV.min?34:Math.min(GOV.big?Math.round(Math.min(innerHeight*0.72, 660)):300, hMax);
+  const h=GOV.min?34:Math.min(GOV.big?Math.round(Math.min(innerHeight*0.8, 760)):400, hMax);
   b.style.width=w+'px'; b.style.height=h+'px';
   b.style.left=Math.round(r.left-w-GOV_GAP)+'px';
   b.style.top=Math.round(r.bottom-h)+'px';
@@ -10644,7 +10748,7 @@ function govInfo(k){
   if(off && off.onmap!==false) bits.push('<a onclick="govOpenOffice(\''+esc(off.id)+'\')">Open in the panel ›</a>');
   else if(off) bits.push('<i>no part in making a law, so not on the map</i>');
   if(n.w) bits.push('<a href="'+esc(n.w)+'" target="_blank" rel="noopener">Official site ↗</a>');
-  if(n.kids && n.kids.length) bits.push(GOV.open.has(k)?'click to fold':'click to open '+govCountUnder(T,k).toLocaleString()+' under it');
+  if(n.kids && n.kids.length && k!==GOV.drawnFocus) bits.push('click to go in: '+n.kids.length.toLocaleString()+' below');
   if(bits.length) h+='<br>'+bits.join(' · ');
   const hh=govHoldHtml(n); h+=hh;
   i.classList.toggle('gh', !!hh);
@@ -10671,55 +10775,28 @@ async function govDraw(){
   try{
     do{
       GOV.again=false;
-      const T=GOV.T; if(!T) return;
-      const charts=govSources(T);
-      const sig=charts.map(c=>c.src).join('\n%%\n');
-      if(sig===GOV.sig) continue;
+      const T=GOV.T; if(!T || !Object.keys(T).length) return;
+      const f=govFocusKey(T);
+      const src=govSource(T, f);
+      if(src===GOV.sig){ govApplyLit(); continue; }
       let mm;
       try{ mm=await govMermaid(); }
       catch(e){ govMsg('The diagram library could not be loaded just now. '+esc(e.message||'')); console.warn(e); return; }
       const cv=document.getElementById('govcv');
-      /* keep whatever the reader was looking at where it was */
-      const anchor=GOV.anchor; let before=null;
-      if(anchor) before=govNodeScreen(anchor);
-      /* only the charts whose source changed are drawn again */
-      GOV.svgs=GOV.svgs||{};
-      const html=[];
-      for(let i=0;i<charts.length;i++){
-        const c=charts[i];
-        let svg=GOV.svgs[c.root] && GOV.svgs[c.root].src===c.src ? GOV.svgs[c.root].svg : null;
-        if(!svg){
-          try{ svg=(await mm.render('govsvg'+(GOV_SEQ++), c.src)).svg; }
-          catch(e){ console.warn('government diagram', e, c.src);
-            svg='<div class="govbad">This level could not be drawn: '+esc((e&&e.message)||'error')+'</div>'; }
-          GOV.svgs[c.root]={src:c.src, svg:svg};
-        }
-        if(i>0){
-          const lv=+c.root.split(':')[1];
-          const nm=(T[c.root] && T[c.root].sub) || '';
-          const upRoot=charts[i-1].root, up=(T[upRoot] && T[upRoot].l) || '';
-          html.push('<div class="govsep"><span>'+esc(nm||'Below')+(up?' \u00b7 within '+esc(up):'')+'</span></div>');
-        }
-        html.push('<div class="govch">'+svg+'</div>');
-      }
-      cv.innerHTML=html.join('');
-      GOV.sig=sig; govMsg('');
-      cv.querySelectorAll('svg').forEach(svg=>{ svg.removeAttribute('style');
-        const vb=(svg.getAttribute('viewBox')||'').split(/\s+/).map(Number);
-        if(vb.length===4){ svg.setAttribute('width',vb[2]); svg.setAttribute('height',vb[3]); } });
+      let svg;
+      try{ svg=(await mm.render('govsvg'+(GOV_SEQ++), src)).svg; }
+      catch(e){ console.warn('government diagram', e, src);
+        svg='<div class="govbad">This part could not be drawn: '+esc((e&&e.message)||'error')+'</div>'; }
+      cv.innerHTML='<div class="govch">'+svg+'</div>';
+      GOV.sig=src; GOV.drawnFocus=f; govMsg('');
+      cv.querySelectorAll('svg').forEach(el=>{ el.removeAttribute('style');
+        const vb=(el.getAttribute('viewBox')||'').split(/\s+/).map(Number);
+        if(vb.length===4){ el.setAttribute('width',vb[2]); el.setAttribute('height',vb[3]); } });
       GOV.size={w:cv.offsetWidth, h:cv.offsetHeight};
       govBindNodes();
       govApplyLit();
-      if(anchor && before){ const after=govNodeLocal(anchor);
-        if(after){ GOV.view.x=before.x-after.x*GOV.view.k; GOV.view.y=before.y-after.y*GOV.view.k; govSetView(false); } }
-      /* until the reader has moved the chart themselves, each redraw
-         is framed afresh: the levels below the country arrive after it */
-      else if(!GOV.view || !GOV.touched){
-        if(GOV.lit.length && govNodeEl(GOV.lit[0])){ if(!GOV.view) GOV.view={x:0,y:0,k:0.85}; govCenterOn(GOV.lit[0], false); }
-        else govFit(false);
-      }
-      else govSetView(false);
-      GOV.anchor=null;
+      govFit(false);
+      govCrumbs();
     }while(GOV.again);
   } finally { GOV.rendering=false; }
 }
@@ -10756,17 +10833,19 @@ function govSetView(glide){
 function govFit(glide){
   const vp=document.getElementById('govvp'); if(!vp) return;
   const W=vp.clientWidth, H=vp.clientHeight, w=GOV.size.w||1, h=GOV.size.h||1;
-  /* The whole chart where it fits at a size that can be read;
-     otherwise the top of it, readable, with the country's own box
-     centred — the reader zooms out or drags for the rest. */
-  let k=Math.min(W/w, H/h, 1.1);
-  if(k>=0.62 || glide==='all'){ GOV.view={k:k, x:(W-w*k)/2, y:Math.max(6,(H-h*k)/2)}; govSetView(!!glide); return; }
-  /* too big to read whole: the country's box at the left edge, halfway
-     down the view, at a readable size */
-  k=0.8; GOV.view={k:k, x:8, y:8};
-  const p=govNodeLocal('R');
-  if(p){ GOV.view.x=Math.max(12, 90-p.x*k); GOV.view.y=H/2-p.y*k; }
-  govSetView(glide);
+  /* the whole view where it fits; otherwise full width at a size that
+     can be read, with the box in focus a little below the top */
+  let k = glide==='all' ? Math.min(W/w, H/h, 1.1) : Math.min((W-10)/w, 1.1);
+  if(glide!=='all') k=Math.max(k, 0.62);
+  GOV.view={k:k, x:Math.max(5,(W-w*k)/2), y:6};
+  GOV.appliedK=1; govSetView(false);
+  if(glide!=='all' && h*k>H){
+    const f=GOV.found && govNodeEl(GOV.found) ? GOV.found : (GOV.lit.find(x=>govNodeEl(x)) || GOV.drawnFocus);
+    const p=f && govNodeLocal(f);
+    if(p) GOV.view.y=Math.min(6, Math.max(H-h*k-6, H*0.3-p.y*k));
+    if(w*k>W && p) GOV.view.x=Math.min(5, Math.max(W-w*k-5, W/2-p.x*k));
+  }
+  govSetView(!!glide);
 }
 function govZoom(f, cx, cy){
   GOV.touched=true;
@@ -10862,19 +10941,53 @@ function govFlyNode(n){
 /* Pointer-up decides a click so that a drag across a box is a drag. */
 function govClick(k){
   const T=GOV.T, n=T&&T[k]; if(!n) return;
+  if(n.t==='more'){ const p=n.par; GOV.shown[p]=(GOV.shown[p]||GOV_PAGE)+GOV_PAGE*2; govDraw(); return; }
   if(n.t==='body' || n.t==='office') govFlyNode(n);
-  if(n.t==='more'){ const p=n.par; GOV.shown[p]=(GOV.shown[p]||GOV_PAGE)+24; GOV.anchor=p; govDraw(); return; }
-  if(n.kids && n.kids.length){
-    if(GOV.open.has(k)){ GOV.open.delete(k); GOV.closedByHand.add(k); }
-    else { GOV.open.add(k); GOV.closedByHand.delete(k); }
-    GOV.anchor=k; govDraw(); govInfo(k); return;
-  }
-  /* a box with nothing under it: its office, where the panel has one */
+  GOV.found=null;
+  /* into a box that has boxes under it; back up to one above */
+  if(k!==GOV.drawnFocus && n.kids && n.kids.length){ GOV.focus=k; govDraw(); govInfo(k); return; }
+  if(k!==GOV.drawnFocus && (n.t==='root' || n.t==='level')){ GOV.focus=k; govDraw(); govInfo(k); return; }
   const off=n.o || govOfficeFor(n);
   if(off){ govOpenOffice(off.id); return; }
   govInfo(k);
 }
-
+/* The trail above the chart: every box from the country down to the
+   one in focus, each a step back up. */
+function govCrumbs(){
+  const el=document.getElementById('govcr'); const T=GOV.T; if(!el||!T) return;
+  const f=GOV.drawnFocus; if(!f||!T[f]){ el.innerHTML=''; return; }
+  const roots=govRoots(T), top=govRootOf(T,f), path=[];
+  for(const r of roots){ path.push(r); if(r===top) break; }
+  govAncestors(T,f).reverse().forEach(a=>{ if(a!==top) path.push(a); });
+  if(path[path.length-1]!==f) path.push(f);
+  el.innerHTML=path.map(k=>'<a onclick="govGo(\''+esc(k).replace(/'/g,"\\'")+'\')"'+(k===f?' class="on"':'')+'>'+esc(govCut(T[k].l,28))+'</a>').join('<i>›</i>');
+  el.scrollLeft=el.scrollWidth;
+}
+function govGo(k){ if(!GOV.T||!GOV.T[k]) return; GOV.focus=k; GOV.found=null; govDraw(); govInfo(k); }
+/* Find any box by its name, or a post by its holder's name. */
+function govSearch(){
+  const q=document.getElementById('govq'), out=document.getElementById('govres'); if(!q||!out) return;
+  const t=q.value.trim().toLowerCase(), T=GOV.T;
+  if(t.length<2 || !T){ out.innerHTML=''; out.classList.remove('on'); return; }
+  const hits=[];
+  for(const k of Object.keys(T)){ const n=T[k]; if(!n || n.t==='more') continue;
+    let why='';
+    if(String(n.l).toLowerCase().indexOf(t)>=0) why='';
+    else if(n.hold && n.hold.some(p=>p.h.some(x=>{ if(String(x[0]).toLowerCase().indexOf(t)>=0){ why=x[0]; return true; } return false; }))) {}
+    else continue;
+    hits.push({k:k, why:why}); if(hits.length>=40) break; }
+  out.innerHTML=hits.length ? hits.map(h=>{ const n=T[h.k], up=n.par&&T[n.par];
+    return '<a onclick="govFind(\''+esc(h.k).replace(/'/g,"\\'")+'\')"><b>'+esc(govCut(h.why||n.l,60))+'</b>'+
+      '<span>'+esc(h.why?govCut(n.l,50):(up?'in '+govCut(up.l,50):''))+'</span></a>'; }).join('')
+    : '<div class="none">Nothing on this chart by that name</div>';
+  out.classList.add('on');
+}
+function govFind(k){
+  const T=GOV.T; if(!T||!T[k]) return;
+  GOV.found=k; GOV.focus=govFocusFor(T,k);
+  const out=document.getElementById('govres'); if(out){ out.classList.remove('on'); }
+  govDraw().then(()=>{ const el=govNodeEl(k); if(el){ el.classList.add('found'); } govInfo(k); });
+}
 /* ---------- following the panel ----------
    What is lit: the office open in the panel, or every office of the
    kind open in it, at the level chosen. A national office lights the
@@ -10910,8 +11023,9 @@ function govTargets(T){
 }
 function govApplyLit(){
   const cv=document.getElementById('govcv'); if(!cv) return;
-  cv.querySelectorAll('g.node.lit').forEach(e=>e.classList.remove('lit','litpulse'));
+  cv.querySelectorAll('g.node.lit,g.node.found').forEach(e=>e.classList.remove('lit','litpulse','found'));
   GOV.lit.forEach(k=>{ const el=govNodeEl(k); if(el) el.classList.add('lit'); });
+  if(GOV.found){ const el=govNodeEl(GOV.found); if(el) el.classList.add('found'); }
 }
 async function govFollow(){
   const T=GOV.T; if(!T) return;
@@ -10919,22 +11033,31 @@ async function govFollow(){
   const sig=lit.join('|');
   const changed = sig!==GOV.litSig;
   GOV.lit=lit; GOV.litSig=sig;
-  /* open the way down to everything lit */
-  GOV.pin=new Set();
-  lit.forEach(k=>{ GOV.pin.add(k); govAncestors(T,k).forEach(a=>{ GOV.open.add(a); GOV.pin.add(a); }); });
+  if(changed){ GOV.litIdx=0; if(lit.length){ GOV.focus=govFocusFor(T,lit[0]); GOV.found=null; } }
+  govLitStep();
   await govDraw();
   govApplyLit();
   if(changed && lit.length) govFocusLit(true);
 }
+/* more than one box lit — Chambers at three levels — is stepped through
+   from the header rather than drawn at once */
+function govLitStep(){
+  const el=document.getElementById('govls'); if(!el) return;
+  const n=GOV.lit.length;
+  el.innerHTML = n>1 ? '<a onclick="govLitGo(-1)">‹</a>'+((GOV.litIdx||0)+1)+' of '+n+' lit<a onclick="govLitGo(1)">›</a>' : '';
+}
+function govLitGo(d){
+  const n=GOV.lit.length; if(!n) return;
+  GOV.litIdx=((GOV.litIdx||0)+d+n)%n; GOV.focus=govFocusFor(GOV.T, GOV.lit[GOV.litIdx]); GOV.found=null;
+  govLitStep(); govDraw().then(()=>govFocusLit(false));
+}
 function govFocusLit(glide){
   if(!GOV.lit.length) return;
-  const k=GOV.lit[0];
-  govCenterOn(k, glide);
+  const k=GOV.lit[GOV.litIdx||0] || GOV.lit[0];
   const el=govNodeEl(k);
   if(el){ el.classList.remove('litpulse'); void el.getBBox(); el.classList.add('litpulse'); }
   govInfo(k);
 }
-
 /* ---------- the one entry point ----------
    Called after anything that can change what the chart shows: a place
    searched, offices arriving, the panel moving to another page. Cheap
@@ -10953,7 +11076,7 @@ async function govSyncNow(){
     await govLoad();
     await govIndex();
     await govRegions();
-    await holdLoad();
+    holdLoad().then(ch=>{ if(ch) govSync(); }).catch(e=>console.warn('officeholders', e));
     if(!GOV.hover) govLegend();
     GOV_OFF={};
     GOV.T=govTree();

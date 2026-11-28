@@ -192,6 +192,30 @@ no email still moves a column nobody else is filling.
 
 ---
 
+## 0000. Round twenty-six: speed, and a chart that can be read
+
+- The chart is drawn one box at a time, top to bottom (`flowchart TD`):
+  the way down from the country to the box in focus — each level of
+  government under the one above, dashed — then everything directly
+  under that box in rows (`govCols()` columns, rows held by invisible
+  links), 60 at a time with "show more". Click a box to go in, a box
+  above to go back up; the trail under the header does the same; the
+  Find box searches every box and every holder's name (`govSearch`).
+  Lit boxes from the panel set the focus to their parent; several lit
+  (a kind at three levels) are stepped through from the header.
+  Every box is still reachable — nothing is dropped — but the whole
+  government is never laid out at once again: France's 3,300 boxes took
+  18 s with the page frozen; a view now takes well under a second.
+- Holders load side by side and never hold the chart back (`holdGet`
+  caches each file's promise; the chart redraws when names land). They
+  were fetched one file after another and held the chart up to 13 s.
+- `loadChainPins` runs every level at once, both queries of a level at
+  once, at most four queries in flight (`chainSlot`). A deeper level's
+  claim on an office now goes by depth (`CHAIN_CLAIMED[id]` holds the
+  level index), since levels arrive in any order. Lyon's offices: 23 s
+  to 10 s.
+- Marker boxes and hover cards say who holds the office now (`holdBrief`).
+
 ## 000. Round twenty-five: who holds each post
 
 The government diagrams and the panel's office cards now name current
