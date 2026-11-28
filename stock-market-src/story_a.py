@@ -6,7 +6,7 @@ MADRID = [-3.694, 40.417]; WELLINGTON = [174.778, -41.286]; SF = [-122.419, 37.7
 
 PARTS = [
  {"t": "The Whole Thing at a Glance", "d": "What a stock market is, how large it is and where it sits, before any of the detail."},
- {"t": "The Parts: Shares, Funds and Bets on Shares", "d": "What a share pays, what sets its price, and the products that are built on top of it."},
+ {"t": "What Is Traded: Shares, Funds and Bets on Shares", "d": "What a share pays, what sets its price, and the products that are built on top of it."},
  {"t": "Getting In: How a Company Reaches the Market", "d": "The first sale of shares, who sets its price, who gains on the first day, and the exchanges that compete to host it."},
  {"t": "One Trade, Start to Finish", "d": "The order book, the firms between a buyer and a seller, and what happens after the click."},
  {"t": "How a Price Is Made, and How It Is Bent", "d": "What a price is meant to say, and the forces inside and outside a company that push on it."},
