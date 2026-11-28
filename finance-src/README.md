@@ -1,8 +1,9 @@
-# finance.html — The Price of Money
+# finance.html — The Fine Print
 
 Source for `finance.html`, built on the shared story-map engine (taken from `religion.html`).
 
-- `story_a.py`, `story_b.py`, `story_c.py` — parts, chapter text and slides (parts 1-2, 3-5, 6-8)
+- `story_d.py` — the current (second) edition: the customer's side of finance. It reshapes and adds to `story_a.py`, `story_b.py`, `story_c.py` (first edition)
+- `data/wd/` and `data/wd_fetch.py` — financial institutions from Wikidata (the dots layer); `data/bis_hh.csv` — BIS household debt
 - `records.py` — documented records and the hover glossary
 - `orgs.py` — organisation directory (includes all 29 banks on the FSB's 2025 list)
 - `pages.py` — title, About and Method text

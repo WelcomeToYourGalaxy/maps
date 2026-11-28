@@ -32,3 +32,12 @@
 - Basel Committee: 45 members (central banks, supervisors) from 28 jurisdictions; created 1974; standards not legally binding; not a supranational authority. https://www.bis.org/bcbs ; https://www.bis.org/bcbs/membership.htm
 - Basel III leverage ratio: Tier 1 capital / total exposure, minimum 3% at all times. https://www.bis.org/publ/bcbs270.htm
 - Fed Reserve Banks: 12; member commercial banks hold (non-tradable, dividend-paying) stock in their Reserve Bank and elect 6 of 9 directors (3 Class A bankers, 3 Class B "public"); Board of Governors appoints 3 Class C; Class A may not take part in choosing presidents or in regulatory decisions (since 2010). https://www.stlouisfed.org/on-the-economy/2022/feb/role-bankers-on-federal-reserves-boards-directors ; https://federalreserve.gov/aboutthefed/directors/about.htm ; GAO-12-18 https://www.gao.gov/assets/gao-12-18.pdf
+
+# second edition
+- Libor: fines >$9bn (US, UK, EU regulators); underpins >$300tn loans; Deutsche, Barclays, UBS, Rabobank, RBS; investigation from 2012. https://www.cfr.org/backgrounder/understanding-libor-scandal
+- FX 20 May 2015: five banks ~$5.7bn; Barclays, JPMorgan, Citicorp, RBS pleaded guilty (FX); UBS pleaded guilty (Libor); chat room "the Cartel". https://m.csmonitor.com/Business/2015/0520/Five-banks-to-pay-almost-6-billion-in-fines-for-rate-rigging
+- FTX: $6bn withdrawn in 72h; bankruptcy 11 Nov 2022; convicted 2 Nov 2023 (7 counts); 25 years 28 Mar 2024; customers ~$8bn, investors $1.7bn, lenders $1.3bn. https://www.cbc.ca/lite/story/1.7158098 ; https://www.axios.com/2024/03/28/sam-bankman-fried-ftx-collapse-timeline
+- China: ICBC $7.646tn end 2025, largest 13+ years; top four state-owned; JPMorgan fifth; 520bn yuan injection into four other state banks 2025; 300bn yuan bonds for ICBC and ABC announced March 2026. https://www.spglobal.com/market-intelligence/en/news-insights/research/2026/04/the-worlds-largest-banks-by-assets-2026 ; https://www.businesstoday.in/latest/world/story/worlds-10-biggest-banks-ranked-china-takes-top-four-spots-us-banks-follow-562610-2026-10-20
+- IMF years under arrangement and IMF Monitor condition counts: from ../loan-conditions-src/data/waves.json
+- BIS household credit % GDP: stats.bis.org API, WS_TC, key Q..H.A.M.770.A, latest observation
+- Points: Wikidata query service, 27 Nov 2026, see data/wd_fetch.py

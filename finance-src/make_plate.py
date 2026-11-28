@@ -22,8 +22,8 @@ f1 = font(19); f2 = font(19); cx = (24 + 198) / 2
 def centred(text, f, y, sp):
     w = sum(d.textlength(c, font=f) for c in text) + sp * (len(text) - 1); x = cx - w / 2
     for c in text: d.text((x, y), c, font=f, fill=ink); x += d.textlength(c, font=f) + sp
-centred('THE PRICE', f1, 1017, 1.5)
+centred('THE FINE', f1, 1017, 1.5)
 d.line([(cx - 52, 1052), (cx + 52, 1052)], fill=ink, width=2)
-centred('OF MONEY', f2, 1062, 1.5)
+centred('PRINT', f2, 1062, 2.5)
 img.save('plate.webp', 'WEBP', quality=90, method=6)
 bg = Image.new('RGBA', img.size, (20, 30, 30, 255)); bg.alpha_composite(img); bg.convert('RGB').crop((0, 960, 260, 1140)).resize((520, 360)).save('/tmp/check_cart.png')

@@ -137,6 +137,31 @@ r("rpw2025", "Sending 200 dollars home costs 6.49 per cent on average", "United 
   "A migrant worker pays more than twice the agreed target to send wages to a family.",
   "World Bank, Remittance Prices Worldwide, issue 53", "https://remittanceprices.worldbank.org/sites/default/files/rpw_main_report_and_annex_q125_1_0.pdf", "worldbank")
 
+r("libor", "Banks were fined more than 9 billion dollars for rigging Libor", "United Kingdom", 51.5136, -0.0890, 2012, "settled",
+  "An international investigation that began in 2012 found that several banks, notably Deutsche Bank, Barclays, UBS, Rabobank and the Royal Bank of Scotland, had manipulated the London Interbank Offered Rate. Regulators in the United States, the United Kingdom and the European Union fined banks more than 9 billion dollars. The rate underpinned more than 300 trillion dollars of loans worldwide.",
+  "The interest rate written into loans around the world was set by figures the lending banks made up.",
+  "Council on Foreign Relations, Understanding the Libor Scandal", "https://www.cfr.org/backgrounder/understanding-libor-scandal", "barclays")
+r("fx2015", "Five banks pleaded guilty over currency and interest rate rigging", "United States", 38.8935, -77.0245, 2015, "settled",
+  "On 20 May 2015 five banks were fined about 5.7 billion dollars. Barclays, JPMorgan Chase, Citicorp and the Royal Bank of Scotland pleaded guilty to United States criminal charges of conspiring to manipulate foreign exchange rates, and UBS pleaded guilty to rigging benchmark interest rates. The Department of Justice said traders had coordinated in a chat room they called the Cartel.",
+  "Traders at rival banks agreed currency prices among themselves, and the banks kept their licences.",
+  "Reuters, in The Christian Science Monitor, 20 May 2015", "https://m.csmonitor.com/Business/2015/0520/Five-banks-to-pay-almost-6-billion-in-fines-for-rate-rigging", "doj")
+r("ftx", "FTX customers lost about 8 billion dollars", "United States", 40.7143, -74.0020, 2024, "ruling",
+  "The cryptocurrency exchange FTX filed for bankruptcy on 11 November 2022 after customers withdrew 6 billion dollars in 72 hours. Its founder, Sam Bankman-Fried, was convicted on seven counts of fraud and conspiracy in November 2023 and sentenced on 28 March 2024 to 25 years in prison. The judge found that customers had lost about 8 billion dollars, investors 1.7 billion and lenders 1.3 billion. Bankman-Fried argued that customers would eventually be repaid in full.",
+  "A company holding the public's money like a bank had none of a bank's protections.",
+  "The Associated Press, via CBC, 28 March 2024", "https://www.cbc.ca/lite/story/1.7158098", "doj")
+r("china_big4", "The four largest banks in the world are Chinese and state-owned", "China", 39.9140, 116.3620, 2026, "study",
+  "S&P Global Market Intelligence's 2026 ranking of the world's 100 largest banks by assets is led by Industrial and Commercial Bank of China, with 7.646 trillion dollars at the end of 2025, followed by Agricultural Bank of China, China Construction Bank and Bank of China. S&P reports a 520 billion yuan capital injection into four other state-owned banks in 2025; in March 2026 the government announced 300 billion yuan of special bonds to recapitalise Industrial and Commercial Bank of China and Agricultural Bank of China.",
+  "The largest banks on earth answer to a government, which also supplies their capital.",
+  "S&P Global Market Intelligence, The world's largest banks by assets, 2026", "https://www.spglobal.com/market-intelligence/en/news-insights/research/2026/04/the-worlds-largest-banks-by-assets-2026", "icbc")
+r("imf_arr", "Seventy-five countries were under an arrangement with the Fund in 1996", "United States", 38.8992, -77.0443, 2026, "official",
+  "The International Monetary Fund publishes the dates of each member's lending arrangements. Counting the years in which an arrangement was in force, leaving out emergency and rapid payments, shows the number of countries under an arrangement peaking at 75 in 1996. Honduras has had an arrangement in force in 54 years; Mali, Pakistan and Sierra Leone in 49 each.",
+  "For many countries a loan from the Fund has been a permanent condition.",
+  "International Monetary Fund, lending arrangements, as compiled for this site's map of loan conditions", "https://www.imf.org/external/np/fin/tad/extarr1.aspx", "imf")
+r("imf_cond", "The Fund wrote 2,983 conditions into its loans in 1996", "United States", 38.8985, -77.0436, 2019, "study",
+  "The IMF Monitor dataset, compiled by Alexander Kentikelenis, Thomas Stubbs and Lawrence King from the Fund's loan documents, counts the conditions attached to each loan from 1980 to 2019. The yearly total peaked at 2,983 in 1996. Pakistan received 1,303 conditions over the period, Romania 1,272 and Ghana 1,245.",
+  "The terms of a rescue run to hundreds of separate instructions.",
+  "IMF Monitor conditionality dataset, Harvard Dataverse", "https://doi.org/10.7910/DVN/DPV99L", "imf")
+
 GLOSS = {
  "IOU": "A written promise to pay. The letters stand for the words I owe you.",
  "central bank reserves": "Balances that commercial banks hold at the central bank and use to pay one another. The public cannot hold them.",
@@ -181,6 +206,9 @@ GLOSS = {
  "gross national income": "Roughly what all the residents of a country earn in a year, including income from abroad.",
  "mortgage": "A loan to buy a home, secured on the home, usually repaid over 25 or 30 years.",
  "mortgages": "Loans to buy homes, secured on the homes, usually repaid over 25 or 30 years.",
+ "Libor": "The London Interbank Offered Rate: a daily average of the interest rates large banks said they paid to borrow from each other, used to set the rate on loans worldwide.",
+ "cryptocurrency": "A digital token whose ownership is recorded on a shared computer ledger and not by a bank.",
+ "collateral": "Something of value that a lender can take if the borrower stops paying.",
  "remittance": "Money sent home by a person working in another country.",
  "remittances": "Money sent home by people working in other countries.",
  "mobile money": "An account run by a phone company that lets people store and send money using a mobile phone.",
