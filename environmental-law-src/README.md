@@ -12,3 +12,5 @@ Source for `environmental_law.html`, built on the engine of `school.html`.
 - `make_plate.py`, `plate.webp` — the atlas plate with this map's cartouche
 
 Law lists are loaded at run time from the `enviro-atlas` repository (FAOLEX; Climate Change Laws of the World, CC BY).
+
+- `pre2.py`, `post2.py` — third edition: the 160 keystone instruments and 91 actors of the Environmental Law Atlas map (enviro-atlas/destruction-environment-law-map.html) joined to this one, and the audited list of bodies most responsible

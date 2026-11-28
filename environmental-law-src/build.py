@@ -58,6 +58,7 @@ def fixurls(o):
     return o
 
 exec(open('/home/claude/work/pre.py', encoding='utf-8').read())
+exec(open('/home/claude/work/pre2.py', encoding='utf-8').read())
 
 def fix(s):
     for a, b in TXT: s = s.replace(a, b)
@@ -73,8 +74,8 @@ players = []
 for p in A.PL:
     city = FIXCITY.get(p["k"], p["city"]); la, ln = A.CITY[city]
     assert p["c"] in CTYSRC, p["c"]
-    players.append({"k": p["k"], "n": p["n"], "t": p["t"], "c": p["c"], "city": city, "lat": la, "lng": ln, "d": fix(p["d"]), "url": p["url"], "own": [],
-                    "y": FIXYEAR.get(p["k"], p["y"]) if p["k"] in FIXYEAR else p["y"], "prec": "city", "sm": p["sm"], "links": p["links"], "flows": [], "r": CTYSRC[p["c"]]["r"], **({"top": 1, "why": p["why"]} if p.get("top") else {})})
+    players.append({"k": p["k"], "n": p["n"], "t": p["t"], "c": p["c"], "city": p.get("cityname", city), "lat": la, "lng": ln, "d": fix(p["d"]), "url": p["url"], "own": [],
+                    "y": FIXYEAR.get(p["k"], p["y"]) if p["k"] in FIXYEAR else p["y"], "prec": "address" if p.get("cityname") else "city", **({"atlas": p["atlas"]} if p.get("atlas") else {}), "sm": p["sm"], "links": p["links"], "flows": [], "r": CTYSRC[p["c"]]["r"], **({"top": 1, "why": p["why"]} if p.get("top") else {})})
 PBY = {p["k"]: p for p in players}
 assert len(PBY) == len(players)
 for p in players:
@@ -137,10 +138,11 @@ for f in B.FL:
             if exi: bits.append("Diamond: where the documented record behind this slide is placed.")
             bits.append("Only places named in this slide or its source are drawn; earlier lines in the chapter stay on, fainter." if not world else "The points and lines were chosen to show one example of each link in the chain; they are not a complete list.")
             m = " ".join(bits)
-            if s.get("top"): m = "Every point is one of the bodies most responsible, in its headquarters city, coloured by kind. All other organisations are hidden while this slide is open. The faint lines are the chain drawn on the first slide of this chapter."
+            if s.get("instr"): m = "Every diamond is one keystone legal instrument from the Environmental Law Atlas, placed where it was adopted or decided. Organisations are hidden while this slide is open."
+            elif s.get("top"): m = "Every point is one of the bodies most responsible, in its headquarters city, coloured by kind. All other organisations are hidden while this slide is open. The faint lines are the chain drawn on the first slide of this chapter."
         st = {"y": s["y"], "p": "" if (world and not isdata) else s["p"], "ll": here, "z": None if (world and not isdata) else s["z"], "cap": fix(s["cap"]), "t": t,
               "w": 0 if isdata else s["w"], "nosrc": False, "reg": s["reg"], "m": m, "plt": None, "add": {} if isdata else s["add"], "arcs": arcs,
-              "an": [[a.replace(" 1972", ""), b.replace(" 1972", "")] for a, b in s["arcs"]], "pins": pins, "pl": s["pl"], "ex": exi, "src": s["src"], "net": None, "data": s["data"], **({"top": True} if s.get("top") else {})}
+              "an": [[a.replace(" 1972", ""), b.replace(" 1972", "")] for a, b in s["arcs"]], "pins": pins, "pl": s["pl"], "ex": exi, "src": s["src"], "net": None, "data": s["data"], **({"top": True} if s.get("top") else {}), **({"instr": True} if s.get("instr") else {})}
         steps.append(st)
         for k in s["pl"]:
             if k not in fpl: fpl.append(k)
@@ -170,7 +172,7 @@ for f in flows:
     for st in f["steps"]:
         if "Ombrina Mare" in st["t"]: st["src"] = "https://rockhopperexploration.co.uk/operations/italy/"
 DATA = {"meta": {"built": "2026-11-27", "title": TITLE}, "types": A.TYPES, "ring": A.RING, "regions": A.REGIONS, "parts": A.PARTS, "flows": flows, "players": players,
-        "ex": ex, "cty": cty, "gloss": C.GLOSS, "giga": None, "cen": school["cen"], "series": series, "laws": LAWS}
+        "ex": ex, "cty": cty, "gloss": C.GLOSS, "giga": None, "cen": school["cen"], "series": series, "laws": LAWS, "instr": INSTR}
 nsl = sum(len(f["steps"]) for f in flows)
 print("chapters", len(flows), "slides", nsl, "orgs", len(players), "records", len(ex), "small", sum(p["sm"] for p in players))
 print("orgs in no chapter:", unused); print("records in no chapter:", orphan)
@@ -219,5 +221,6 @@ h = h[:a] + '<div id="info" class="card scroll">\n' + method.strip() + "\n</div>
 left = [w for w in ["school", "pupil", "curricul", "Giga", "educat", "student", "teacher"] if re.search(w, re.sub(r"window\.PLATE_IMG = \"[^\"]*\"", "", h[:h.index("window.LAW_DATA")] + h[h.index("</script>", h.index("window.LAW_DATA")):]), re.I)]
 print("leftover words in page code/text:", left)
 exec(open('/home/claude/work/post.py', encoding='utf-8').read())
+exec(open('/home/claude/work/post2.py', encoding='utf-8').read())
 open(OUT, "w", encoding="utf-8").write(h)
 print("written", OUT, len(h))
