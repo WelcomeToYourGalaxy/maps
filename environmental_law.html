@@ -438,6 +438,7 @@ label.chk.sub2{font-size:12px;margin-top:4px}
 #netBody svg{display:block;width:100%;height:auto}
 @media (max-width:820px){#net{inset:0;border-radius:0!important}#netClose{top:12px;right:12px}}#netBody text{font-family:'Marcellus',Georgia,serif;fill:#e8e6e1;pointer-events:none}
 #netBody .ln{stroke-width:.8;opacity:.45;fill:none}#netBody .nd{cursor:pointer}#netBody svg.hot .ln{opacity:.04}#netBody svg.hot .nd{opacity:.25}#netBody svg.hot .on{opacity:1!important}#netBody svg.hot .ln.on{stroke-width:1.4}
+body.story-on #rcol:not(:has(#slide.on)) #legBox{display:flex!important}
 </style>
 </head>
 <body>
@@ -512,7 +513,7 @@ label.chk.sub2{font-size:12px;margin-top:4px}
 
 <h3>The Law Atlas</h3>
 
-<p>Click any country and scroll down its box to the section <i>Environmental Law on Record</i> to see how many environmental, natural resource, farming and food laws are on record for it, and to list them all, each linked to its source. States and provinces with their own records are listed beneath. The legend has a button for the international and regional instruments, and a button, <i>Search every law at once</i>, which first downloads the whole list of about 30 megabytes and then searches all of the entries together by word or by subject. Under the keystone instruments switch, five menus narrow the diamonds by purpose, level, branch of government, field and status; faded diamonds are proposed or pending. The lists are loaded when asked for, so they need a connection.</p>
+<p>Click any country and scroll down its box to the section <i>Environmental Law on Record</i> to see how many environmental, natural resource, farming and food laws are on record for it, and to list them all, each linked to its source. States and provinces with their own records are listed beneath. The legend has a button for the international and regional instruments, and a button, <i>Search every law at once</i>, which searches all of the entries together by word or by subject. Under the keystone instruments switch, five menus narrow the diamonds by purpose, level, branch of government, field and status; faded diamonds are proposed or pending. The lists are loaded when asked for, so they need a connection.</p>
 
 <h3>The Index and the Two Chapter Lists</h3>
 
@@ -582,7 +583,7 @@ label.chk.sub2{font-size:12px;margin-top:4px}
 
 <h2>How the Facts Were Checked</h2>
 
-<p>The figures for 2025 and 2026, including the summit lobbyist counts, the defender killings, the United States withdrawals and repeal, the Greenpeace judgment, the Mariana ruling and the European Omnibus, were checked against current sources when the map was built. Older facts were written from the cited sources and a sample was checked again. Every slide and record carries its source so that any one claim can be tested. One point is flagged for the reader: the 2024 dismissal of the second Keystone XL claim is given from the arbitration record without a second source. Links to a few bodies that block automated checking, such as the Inter-American Court, point to the body's own website, and the citation beside the link names the document.</p>
+<p>The figures for 2025 and 2026, including the summit lobbyist counts, the defender killings, the United States withdrawals and repeal, the Greenpeace judgment, the Mariana ruling and the European Omnibus, were checked against current sources when the map was built. Older facts were written from the cited sources and a sample was checked again. Every slide and record carries its source so that any one claim can be tested. The background notes on the actors, and the descriptions of the keystone legal instruments other than the three added in this edition, were compiled earlier and carried over without being checked again line by line. One point is flagged for the reader: the 2024 dismissal of the second Keystone XL claim is given from the arbitration record without a second source. Links to a few bodies that block automated checking, such as the Inter-American Court, point to the body's own website, and the citation beside the link names the document.</p>
 
 <h2>Coverage</h2>
 
@@ -614,10 +615,10 @@ label.chk.sub2{font-size:12px;margin-top:4px}
 
 <p>If a slide, record or organisation description is wrong, it should be corrected. Every slide and organisation card carries its source so that an individual claim can be checked against it.</p>
 
-<p class="mute">Built 26 November 2026.</p>
+<p class="mute">Built 27 November 2026.</p>
 </div>
 <button id="infoClose" class="btn" type="button">Close</button>
-<div id="net" class="card scroll"><div id="netHead"><b>The Network of Actors and Laws</b><span>The actors behind the keystone legal instruments, grouped by field, each tied to the legal instruments it stands behind. Circles are actors and larger ones carry more weight; diamonds are instruments, pale where written to protect and dark where they license, shield or suppress. Dashed lines join actors tied to one another. Hover to trace a body's ties; click to open it on the map beside this panel.</span></div><div id="netBody"></div></div>
+<div id="net" class="card scroll"><div id="netHead"><b>The Network of Actors and Laws</b><span>The actors behind the keystone legal instruments, grouped by field, each tied to the legal instruments it stands behind. Circles are actors and larger ones carry more weight; diamonds are instruments, pale where written to protect and dark where they license, shield or suppress. Dashed lines join actors tied to one another. Hover to trace a body's ties; click to open it on the map beside this panel. Its ties stay lit until you point at another.</span></div><div id="netBody"></div></div>
 <button id="netClose" class="btn" type="button">Close</button>
 <div id="chapBox"></div>
 <div id="ttip"></div>
@@ -1892,8 +1893,8 @@ function buildLeg() {
   h += '<label class="chk"><input type="checkbox" data-lay="instr"' + (S.instr ? " checked" : "") + '><span class="sw dia" style="background:' + BADC + '"></span>Keystone legal instruments <span class="n" style="margin-left:auto">' + INSTR.length + '</span></label>' +
     '<div class="desc">The treaties, laws, rulings and contracts that set the pattern for the rest, each placed where it was adopted or decided. <span class="sw dia" style="background:' + GOODC + '"></span>written to protect · <span class="sw dia" style="background:' + BADC + '"></span>licenses, shields or suppresses. Faded diamonds are proposed or pending, not yet in force. Click one for what it says and who stands behind it.</div>';
   h += instrFilterHtml();
-  if (LAWS) h += '<div class="psec">The law atlas</div><div class="desc" style="margin-top:0">' + LAWS.tot[0].toLocaleString("en") + ' national laws from ' + LAWS.tot[3] + ' countries and territories, ' + LAWS.tot[1].toLocaleString("en") + ' from ' + LAWS.tot[4] + ' states and provinces, and ' + LAWS.tot[2].toLocaleString("en") + ' international and regional instruments, from FAOLEX and Climate Change Laws of the World. The first button searches all of them together and has to download the whole list, about 30 megabytes, before its first search. To list one country, click it on the map, then scroll down its box to the section Environmental Law on Record to list and search its laws.</div>' +
-    '<button type="button" class="btn" id="lawAll">Search every law at once (downloads about 30 MB first)</button> <button type="button" class="btn" data-laws="' + LAWS.glob.id + '" data-lawname="International and regional instruments">List the international instruments</button> ' +
+  if (LAWS) h += '<div class="psec">The law atlas</div><div class="desc" style="margin-top:0">' + LAWS.tot[0].toLocaleString("en") + ' national laws from ' + LAWS.tot[3] + ' countries and territories, ' + LAWS.tot[1].toLocaleString("en") + ' from ' + LAWS.tot[4] + ' states and provinces, and ' + LAWS.tot[2].toLocaleString("en") + ' international and regional instruments, from FAOLEX and Climate Change Laws of the World. The first button searches all of them together; the first search takes about half a minute to get ready. To list one country, click it on the map, then scroll down its box to the section Environmental Law on Record to list and search its laws.</div>' +
+    '<button type="button" class="btn" id="lawAll">Search every law at once</button> <button type="button" class="btn" data-laws="' + LAWS.glob.id + '" data-lawname="International and regional instruments">List the international instruments</button> ' +
     LAWS.other.map((o) => '<button type="button" class="btn" data-laws="' + esc(o[0]) + '" data-lawname="' + esc(o[1]) + '">' + esc(o[1]) + ' · ' + o[2].toLocaleString("en") + '</button>').join(" ") +
     '';
   $("#legBody").innerHTML = h; wireCard($("#legBody"));
@@ -2094,7 +2095,7 @@ function openLawSearch() {
     $("#laSubj").addEventListener("change", (e) => { sb = e.target.value; shown = 200; run(); });
   };
   if (LAWALL) { ready(); return; }
-  card('<div class="desc" id="laLoad">Downloading the full list, about 30 megabytes. This happens once and can take half a minute.</div>');
+  card('<div class="desc" id="laLoad">Getting the full list ready. This happens once and can take half a minute.</div>');
   fetch(root + "manifest.json").then((r) => r.json()).then((m) => { LAWMAN = m; return Promise.all(Array.from({ length: m.chunks }, (_, i) => fetch(root + "chunk_" + String(i).padStart(2, "0") + ".json").then((r) => r.json()))); })
     .then((cs) => { LAWALL = [].concat.apply([], cs); if (S.sel && S.sel[0] === "l" && S.sel[1] === sel[1]) ready(); })
     .catch(() => { const el = $("#laLoad"); if (el) el.textContent = "The list could not be loaded. It is kept online and needs a connection."; });
@@ -2123,12 +2124,13 @@ function drawNet() {
       (p.atlas.w >= 5 ? '<text x="' + q[0].toFixed(1) + '" y="' + (q[1] - r - 4).toFixed(1) + '" text-anchor="middle" font-size="11" style="paint-order:stroke;stroke:#05080a;stroke-width:3px">' + esc(p.n.length > 30 ? p.n.slice(0, 29) + "…" : p.n) + '</text>' : ''); });
   if ((byF.none || []).length) s += '<text x="60" y="' + (H - 66) + '" font-size="11.5" style="fill:#b9c7b4">Instruments with no single named actor</text>';
   $("#netBody").innerHTML = '<svg viewBox="0 -40 ' + W + ' ' + (H + 40) + '">' + lines + s + nodes + '</svg>';
-  const svg = $("#netBody svg");
+  const svg = $("#netBody svg"); let NSEL = null;
+  const relit = () => { svg.classList.remove("hot"); $$(".on", svg).forEach((x) => x.classList.remove("on")); if (NSEL) { NSEL.classList.add("on"); lit(NSEL.dataset.a ? '.ln[data-a="' + NSEL.dataset.a + '"], .ln[data-t="' + NSEL.dataset.a + '"]' : '.ln[data-i="' + NSEL.dataset.i + '"]'); } };
   const lit = (sel) => { svg.classList.add("hot"); $$(sel, svg).forEach((l) => { l.classList.add("on"); const a = $('.nd[data-a="' + l.dataset.a + '"]', svg), b = $('.nd[data-i="' + l.dataset.i + '"]', svg), c = l.dataset.t && $('.nd[data-a="' + l.dataset.t + '"]', svg); if (a) a.classList.add("on"); if (b) b.classList.add("on"); if (c) c.classList.add("on"); }); };
   $$(".nd", svg).forEach((n) => {
-    n.addEventListener("mouseenter", (e) => { n.classList.add("on"); lit(n.dataset.a ? '.ln[data-a="' + n.dataset.a + '"], .ln[data-t="' + n.dataset.a + '"]' : '.ln[data-i="' + n.dataset.i + '"]'); const t = n.dataset.a ? PBY[n.dataset.a].n : INSTR[+n.dataset.i].n; tip('<b>' + esc(t) + '</b><br><span class="mute">' + (n.dataset.a ? 'Weight ' + PBY[n.dataset.a].atlas.w + ' of 6 · ' + PBY[n.dataset.a].atlas.laws.length + ' instruments' : 'Legal instrument · ' + (INSTR[+n.dataset.i].y || "")) + '</span>', e.clientX, e.clientY); });
-    n.addEventListener("mouseleave", () => { svg.classList.remove("hot"); $$(".on", svg).forEach((x) => x.classList.remove("on")); tip(null); });
-    n.addEventListener("click", () => { tip(null); if (window.innerWidth <= 820) $("#net").classList.remove("open"); const wide = window.innerWidth > 820, ll = n.dataset.a ? [PBY[n.dataset.a].lng, PBY[n.dataset.a].lat] : INSTR[+n.dataset.i].ll;
+    n.addEventListener("mouseenter", (e) => { svg.classList.remove("hot"); $$(".on", svg).forEach((x) => x.classList.remove("on")); n.classList.add("on"); lit(n.dataset.a ? '.ln[data-a="' + n.dataset.a + '"], .ln[data-t="' + n.dataset.a + '"]' : '.ln[data-i="' + n.dataset.i + '"]'); const t = n.dataset.a ? PBY[n.dataset.a].n : INSTR[+n.dataset.i].n; tip('<b>' + esc(t) + '</b><br><span class="mute">' + (n.dataset.a ? 'Weight ' + PBY[n.dataset.a].atlas.w + ' of 6 · ' + PBY[n.dataset.a].atlas.laws.length + ' instruments' : 'Legal instrument · ' + (INSTR[+n.dataset.i].y || "")) + '</span>', e.clientX, e.clientY); });
+    n.addEventListener("mouseleave", () => { tip(null); relit(); });
+    n.addEventListener("click", () => { NSEL = n; relit(); tip(null); if (window.innerWidth <= 820) $("#net").classList.remove("open"); const wide = window.innerWidth > 820, ll = n.dataset.a ? [PBY[n.dataset.a].lng, PBY[n.dataset.a].lat] : INSTR[+n.dataset.i].ll;
       if (n.dataset.a) openPlayer(n.dataset.a, !wide); else openInstr(+n.dataset.i, !wide);
       if (wide) map.flyTo({ center: ll, zoom: Math.max(map.getZoom(), 3.5), padding: { left: 20, right: Math.round(window.innerWidth * 0.74), top: 60, bottom: 140 }, duration: 1200 }); });
   });

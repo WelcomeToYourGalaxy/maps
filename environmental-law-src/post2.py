@@ -230,3 +230,16 @@ sub("""if (n.dataset.a) openPlayer(n.dataset.a, true); else openInstr(+n.dataset
 sub("""id="lawAll">Search every law at once</button>""", """id="lawAll">Search every law at once (downloads about 30 MB first)</button>""")
 sub("""Click any country on the map, then scroll down its box""", """The first button searches all of them together and has to download the whole list, about 30 megabytes, before its first search. To list one country, click it on the map, then scroll down its box""")
 sub("""Loading the full list. It is large and takes a moment the first time.""", """Downloading the full list, about 30 megabytes. This happens once and can take half a minute.""")
+
+# ================= ninth edition
+sub("""id="lawAll">Search every law at once (downloads about 30 MB first)</button>""", """id="lawAll">Search every law at once</button>""")
+sub("""The first button searches all of them together and has to download the whole list, about 30 megabytes, before its first search. To list one country,""", """The first button searches all of them together; the first search takes about half a minute to get ready. To list one country,""")
+sub("""Downloading the full list, about 30 megabytes. This happens once and can take half a minute.""", """Getting the full list ready. This happens once and can take half a minute.""")
+sub("""</style>""", """body.story-on #rcol:not(:has(#slide.on)) #legBox{display:flex!important}
+</style>""")
+sub("""  const svg = $("#netBody svg");""", """  const svg = $("#netBody svg"); let NSEL = null;
+  const relit = () => { svg.classList.remove("hot"); $$(".on", svg).forEach((x) => x.classList.remove("on")); if (NSEL) { NSEL.classList.add("on"); lit(NSEL.dataset.a ? '.ln[data-a="' + NSEL.dataset.a + '"], .ln[data-t="' + NSEL.dataset.a + '"]' : '.ln[data-i="' + NSEL.dataset.i + '"]'); } };""")
+sub("""    n.addEventListener("mouseenter", (e) => { n.classList.add("on");""", """    n.addEventListener("mouseenter", (e) => { svg.classList.remove("hot"); $$(".on", svg).forEach((x) => x.classList.remove("on")); n.classList.add("on");""")
+sub("""    n.addEventListener("mouseleave", () => { svg.classList.remove("hot"); $$(".on", svg).forEach((x) => x.classList.remove("on")); tip(null); });""", """    n.addEventListener("mouseleave", () => { tip(null); relit(); });""")
+sub("""    n.addEventListener("click", () => { tip(null); if (window.innerWidth <= 820)""", """    n.addEventListener("click", () => { NSEL = n; relit(); tip(null); if (window.innerWidth <= 820)""")
+sub("""Hover to trace a body's ties; click to open it on the map beside this panel.""", """Hover to trace a body's ties; click to open it on the map beside this panel. Its ties stay lit until you point at another.""")
