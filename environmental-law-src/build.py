@@ -142,7 +142,7 @@ for f in B.FL:
             elif s.get("top"): m = "Every point is one of the bodies most responsible, in its headquarters city, coloured by kind. All other organisations are hidden while this slide is open. The faint lines are the chain drawn on the first slide of this chapter."
         st = {"y": s["y"], "p": "" if (world and not isdata) else s["p"], "ll": here, "z": None if (world and not isdata) else s["z"], "cap": fix(s["cap"]), "t": t,
               "w": 0 if isdata else s["w"], "nosrc": False, "reg": s["reg"], "m": m, "plt": None, "add": {} if isdata else s["add"], "arcs": arcs,
-              "an": [[a.replace(" 1972", ""), b.replace(" 1972", "")] for a, b in s["arcs"]], "pins": pins, "pl": s["pl"], "ex": exi, "src": s["src"], "net": None, "data": s["data"], **({"top": True} if s.get("top") else {}), **({"instr": True} if s.get("instr") else {})}
+              "an": [[a.replace(" 1972", ""), b.replace(" 1972", "")] for a, b in s["arcs"]], "pins": pins, "pl": s["pl"], "ex": exi, "src": s["src"], "net": None, "data": s["data"], **({"top": True} if s.get("top") else {}), **({"instr": True} if s.get("instr") else {}), **({"more": s["more"]} if s.get("more") else {})}
         steps.append(st)
         for k in s["pl"]:
             if k not in fpl: fpl.append(k)

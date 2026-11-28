@@ -60,3 +60,64 @@ function openInstr(i, fly) {
 }
 
 /* ---------- the law atlas: lists fetched when asked for ---------- */""")
+
+# ================= fourth edition
+sub("""["players", "players-fp", "players-lab"].forEach((id) => vis(id, S.players));""", """["players", "players-fp", "players-lab"].forEach((id) => vis(id, S.players && !INSTEP));""", 0)
+sub("""vis("instr", S.instr || INSTEP);""", """vis("instr", S.instr || INSTEP || !!(S.sel && S.sel[0] === "i"));""", 0)
+sub("""  if (fly) { S.instr = true; buildLeg(); paintOverview(); map.flyTo(""", """  if (fly) { map.flyTo(""")
+sub(""" · <span class="sw dia" style="background:' + P.role[2] + '"></span>written to protect. Click one""", """. Click one""")
+sub("""const instrCol = () => ["match", ["get", "k"], 0, P.role[0], 1, P.role[1], P.role[2]];""", """const instrCol = () => ["match", ["get", "k"], 0, P.role[0], P.role[1]];""")
+sub("""'<br><span class="mute">Compiled in the Environmental Law Atlas. Placed""", """'<br><span class="mute">' + (x.added ? 'Added by this map to the atlas\\'s compilation. Placed' : 'Compiled in the Environmental Law Atlas. Placed') + '""")
+sub("""  const a = p.atlas; let h = '<div class="hp-h">From the Environmental Law Atlas</div>""", """  const a = p.atlas; let h = '<div class="hp-h">From the Environmental Law Atlas</div>' + (a.name && a.name !== p.n ? '<div class="sub">Listed in the atlas as: ' + esc(a.name) + '</div>' : '') + '""")
+sub(r"""esc(s.t).replace(/\n\n/g, "<br><br>") + '</div>' +""", r"""esc(s.t).replace(/\n\n/g, "<br><br>") + '</div>' +
+    (s.more ? '<details class="cb-more" style="margin:6px 0"><summary>' + esc(s.more[0]) + '</summary><div class="sl-m" style="max-height:34vh;overflow:auto">' + s.more[1] + '</div></details>' : '') +""")
+sub("""else if (k === "c") openCountry(v, true); else openExample(+v, true);""", """else if (k === "c") openCountry(v, true); else if (k === "i") openInstr(+v, true); else openExample(+v, true);""", 0)
+sub("""if ((p.n + " " + p.city + " " + p.c).toLowerCase().includes(q))""", """if ((p.n + " " + p.city + " " + p.c + " " + (p.atlas ? p.atlas.name : "")).toLowerCase().includes(q))""")
+sub("""  EX.forEach((e) => { if ((e.n + " " + e.c).toLowerCase().includes(q))""", """  INSTR.forEach((x, i) => { if ((x.n + " " + x.w).toLowerCase().includes(q)) out.push(["i", i, x.n, "legal instrument · " + (x.y || "")]); });
+  EX.forEach((e) => { if ((e.n + " " + e.c).toLowerCase().includes(q))""")
+sub("""ixE.map(ixRow).join("") + '</details></details>';""", """ixE.map(ixRow).join("") + '</details><details><summary>Legal Instruments (' + INSTR.length + ')</summary>' + INSTR.map((x, i) => [x.n, "i", i, String(x.y || "")]).sort(az).map(ixRow).join("") + '</details></details>';""")
+# the network view: the atlas's actors grouped by field, tied to the instruments they stand behind
+sub("""<div id="infoBtn" class="card" role="button" tabindex="0">""", """<div id="netBtn" class="card" role="button" tabindex="0">Network</div><div id="infoBtn" class="card" role="button" tabindex="0">""")
+sub("""<div id="chapBox"></div>""", """<div id="net" class="card scroll"><div id="netHead"><b>The Network of Actors and Laws</b><span>The actors of the Environmental Law Atlas, grouped by field, each tied to the legal instruments it stands behind. Circles are actors and larger ones carry more weight; diamonds are instruments, pale for international and darker for national. Hover to trace a body's ties; click to open it.</span></div><div id="netBody"></div></div>
+<button id="netClose" class="btn" type="button">Close</button>
+<div id="chapBox"></div>""")
+sub("""</style>""", """#net{inset:0;z-index:1001;border-radius:0;border:0;display:none;overflow:auto;padding:14px 18px 18px;background:rgba(5,8,10,.975)}
+#net.open{display:block}#netClose{position:fixed;top:12px;right:12px;z-index:1002;display:none}#net.open+#netClose{display:block}
+#netHead{max-width:900px;margin:0 90px 4px 0;font-size:12.5px;color:var(--mute);line-height:1.45}#netHead b{display:block;font:400 19px/1.3 'Marcellus',Georgia,serif;letter-spacing:1.6px;text-transform:uppercase;color:#f0ece4;margin-bottom:2px}
+#netBody svg{display:block;width:100%;height:auto;min-width:1100px}#netBody text{font-family:'Marcellus',Georgia,serif;fill:#e8e6e1;pointer-events:none}
+#netBody .ln{stroke-width:.8;opacity:.45;fill:none}#netBody .nd{cursor:pointer}#netBody svg.hot .ln{opacity:.04}#netBody svg.hot .nd{opacity:.25}#netBody svg.hot .on{opacity:1!important}#netBody svg.hot .ln.on{stroke-width:1.4}
+</style>""")
+sub("""  $("#detX").addEventListener("click", closeDet);""", """  $("#detX").addEventListener("click", closeDet);
+  $("#netBtn").addEventListener("click", () => { drawNet(); $("#net").classList.add("open"); }); $("#netClose").addEventListener("click", () => $("#net").classList.remove("open"));""")
+sub("""/* ---------- the law atlas: lists fetched when asked for ---------- */""", r"""/* ---------- the network view ---------- */
+function drawNet() {
+  const W = 1700, H = 1080, cx = W / 2, cy = H / 2, FN = { energy: "Energy", mining: "Mining", land: "Land, Farming and Forests", trade: "Trade and Investment", ideology: "Courts, Think Tanks and Doctrine" };
+  const order = ["energy", "trade", "mining", "ideology", "land"], acts = PLAY.filter((p) => p.atlas), pos = {}, ipos = {}, cen = {};
+  let s = "", lines = "", nodes = "";
+  order.forEach((f, fi) => {
+    const arr = acts.filter((p) => p.atlas.field === f).sort((a, b) => b.atlas.w - a.atlas.w), ang = (-90 + fi * 72) * Math.PI / 180, c = [cx + Math.cos(ang) * 470, cy + Math.sin(ang) * 300], R = Math.max(60, 4.6 * arr.length + 30);
+    cen[f] = { c, R, ang };
+    arr.forEach((p, i) => { const a = i / arr.length * 2 * Math.PI - Math.PI / 2; pos[p.k] = [c[0] + Math.cos(a) * R * (i % 2 ? 1 : 0.62), c[1] + Math.sin(a) * R * (i % 2 ? 1 : 0.62), f]; });
+    s += '<text x="' + c[0] + '" y="' + (c[1] - R - 54) + '" text-anchor="middle" font-size="15" style="letter-spacing:1.5px;text-transform:uppercase;fill:#b9c7b4">' + esc(FN[f]) + '</text>';
+  });
+  const byF = {}; INSTR.forEach((x, i) => { const cnt = {}; x.act.forEach((k) => { if (pos[k]) cnt[pos[k][2]] = (cnt[pos[k][2]] || 0) + 1; }); const f = Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a])[0] || "none"; (byF[f] = byF[f] || []).push(i); });
+  order.forEach((f) => { const ls = byF[f] || [], g = cen[f]; ls.forEach((i, j) => { const a = j / Math.max(1, ls.length) * 2 * Math.PI + 0.2, rr = g.R + 26 + (j % 3) * 9; ipos[i] = [g.c[0] + Math.cos(a) * rr, g.c[1] + Math.sin(a) * rr]; }); });
+  (byF.none || []).forEach((i, j, arr) => { ipos[i] = [60 + (W - 120) * (j + 0.5) / arr.length, H - 34 - (j % 3) * 11]; });
+  const col = (f) => ({ energy: "#9a8fb8", trade: "#b98a96", mining: "#a9a59a", ideology: "#b0708a", land: "#8fae9a" })[f];
+  INSTR.forEach((x, i) => { x.act.forEach((k) => { if (pos[k]) lines += '<path class="ln" data-a="' + k + '" data-i="' + i + '" stroke="' + col(pos[k][2]) + '" d="M' + pos[k][0].toFixed(1) + ' ' + pos[k][1].toFixed(1) + ' L' + ipos[i][0].toFixed(1) + ' ' + ipos[i][1].toFixed(1) + '"/>'; });
+    nodes += '<rect class="nd" data-i="' + i + '" x="' + (ipos[i][0] - 3.2).toFixed(1) + '" y="' + (ipos[i][1] - 3.2).toFixed(1) + '" width="6.4" height="6.4" transform="rotate(45 ' + ipos[i][0].toFixed(1) + ' ' + ipos[i][1].toFixed(1) + ')" fill="' + (x.tier === "international" ? "#c9d3cf" : "#7f9488") + '" stroke="#05080a" stroke-width=".8"><title>' + esc(x.n) + '</title></rect>'; });
+  acts.forEach((p) => { const q = pos[p.k], r = 3 + p.atlas.w * 1.7;
+    nodes += '<circle class="nd" data-a="' + p.k + '" cx="' + q[0].toFixed(1) + '" cy="' + q[1].toFixed(1) + '" r="' + r + '" fill="' + col(q[2]) + '" stroke="#05080a" stroke-width="1.2"><title>' + esc(p.n) + '</title></circle>' +
+      (p.atlas.w >= 5 ? '<text x="' + q[0].toFixed(1) + '" y="' + (q[1] - r - 4).toFixed(1) + '" text-anchor="middle" font-size="11" style="paint-order:stroke;stroke:#05080a;stroke-width:3px">' + esc(p.n.length > 30 ? p.n.slice(0, 29) + "…" : p.n) + '</text>' : ''); });
+  if ((byF.none || []).length) s += '<text x="60" y="' + (H - 66) + '" font-size="11.5" style="fill:#b9c7b4">Instruments with no single named actor</text>';
+  $("#netBody").innerHTML = '<svg viewBox="0 -40 ' + W + ' ' + (H + 40) + '">' + lines + s + nodes + '</svg>';
+  const svg = $("#netBody svg");
+  const lit = (sel) => { svg.classList.add("hot"); $$(sel, svg).forEach((l) => { l.classList.add("on"); const a = $('.nd[data-a="' + l.dataset.a + '"]', svg), b = $('.nd[data-i="' + l.dataset.i + '"]', svg); if (a) a.classList.add("on"); if (b) b.classList.add("on"); }); };
+  $$(".nd", svg).forEach((n) => {
+    n.addEventListener("mouseenter", (e) => { n.classList.add("on"); lit(n.dataset.a ? '.ln[data-a="' + n.dataset.a + '"]' : '.ln[data-i="' + n.dataset.i + '"]'); const t = n.dataset.a ? PBY[n.dataset.a].n : INSTR[+n.dataset.i].n; tip('<b>' + esc(t) + '</b><br><span class="mute">' + (n.dataset.a ? 'Weight ' + PBY[n.dataset.a].atlas.w + ' of 6 · ' + PBY[n.dataset.a].atlas.laws.length + ' instruments' : 'Legal instrument · ' + (INSTR[+n.dataset.i].y || "")) + '</span>', e.clientX, e.clientY); });
+    n.addEventListener("mouseleave", () => { svg.classList.remove("hot"); $$(".on", svg).forEach((x) => x.classList.remove("on")); tip(null); });
+    n.addEventListener("click", () => { tip(null); $("#net").classList.remove("open"); if (n.dataset.a) openPlayer(n.dataset.a, true); else openInstr(+n.dataset.i, true); });
+  });
+}
+
+/* ---------- the law atlas: lists fetched when asked for ---------- */""")

@@ -64,3 +64,39 @@ A.PARTS[6]["d"] = "The chain from treaty to permit to polluted ground in one vie
 LAWS["globbase"] = "https://raw.githubusercontent.com/WelcomeToYourGalaxy/enviro-atlas/main/atlas_data/"
 print("top", NTOP, "instr", len(INSTR), "players", len(A.PL))
 print("; ".join(x["n"][:38] + ("+" if x["pro"] else "") for x in INSTR))
+
+# ================= fourth edition
+import html as _html
+for p in A.PL:
+    if p.get("atlas"): p["atlas"]["field"] = next((AM["CULFIELD"].get(n, "ideology") for n, k in ACT.items() if k == p["k"]), "ideology"); p["atlas"]["name"] = next(n for n, k in ACT.items() if k == p["k"])
+INSTR[:] = [x for x in INSTR if not x["pro"]]
+def NEWI(n, y, wh, ll_, tier, br, fl_, who, what, read, src, sn, body, act):
+    INSTR.append({"n": n, "y": y, "w": wh, "tier": tier, "br": br, "ll": ll_, "fl": fl_, "who": who, "field": "", "pro": False, "what": what, "read": read, "src": src, "sn": sn, "body": body, "act": act, "added": True})
+NEWI("Kyoto Protocol", 1997, "Kyoto, Japan", [135.7681, 35.0116], "international", "executive", ["foundational"],
+  "Adopted by the parties to the UN climate convention in December 1997; in force from 2005. The United States signed and never ratified. Canada withdrew in 2011.",
+  "The first treaty to give rich countries numbered targets for cutting greenhouse gases. It also created the first international carbon markets, letting a country meet part of its target by buying credits from projects elsewhere.",
+  "Its targets bound a country only for as long as it chose to stay: the largest emitter never joined and Canada left before its result was judged. The trading mechanisms it created became the model for the offset markets that followed.",
+  "https://unfccc.int/kyoto_protocol", "UN Climate Change secretariat", "UN Framework Convention on Climate Change (UNFCCC)", ["eccc"] if "eccc" in PK else [])
+NEWI("NAFTA Chapter 11 (investor-state chapter)", 1994, "Washington, Ottawa and Mexico City; in force 1 January 1994", [-77.0369, 38.9072], "international", "executive", ["suppressive", "invasive"],
+  "Negotiated by the governments of the United States, Canada and Mexico. Replaced in 2020 by the USMCA, which ended investor claims between the United States and Canada after a three-year window for older investments.",
+  "The chapter of the North American Free Trade Agreement that let a company from one member country sue the government of another before private arbitrators. It was the first such chapter between rich countries and became the template for later trade agreements.",
+  "It was used against environmental decisions in all three countries. TransCanada claimed 15 billion dollars from the United States under it after the Keystone XL pipeline was refused a permit.",
+  "https://en.wikipedia.org/wiki/North_American_Free_Trade_Agreement", "North American Free Trade Agreement, Chapter Eleven", "NAFTA parties", ["tc", "icsid"])
+NEWI("Canada — Jobs, Growth and Long-term Prosperity Act (Bill C-38)", 2012, "Parliament of Canada, Ottawa", [-75.6972, 45.4215], "national", "legislative", ["destructive", "suppressive"],
+  "Passed by Canada's Parliament in June 2012 as the budget implementation bill. In December 2011 four oil and gas industry associations had written to ministers naming the environmental laws they wanted changed.",
+  "A budget bill of more than 400 pages that replaced the Canadian Environmental Assessment Act with a narrower law and amended the Fisheries Act, the National Energy Board Act and the Species at Risk Act.",
+  "The laws rewritten were the ones the industry letter had listed. Placing the changes inside a budget bill meant they were passed with little separate debate.",
+  "https://www.cbc.ca/news/politics/energy-industry-letter-suggested-environmental-law-changes-1.1346258", "CBC News on the industry letter; Statutes of Canada 2012, c. 19", "Parliament of Canada", ["capp"])
+names = {x["n"] for x in INSTR}
+for p in A.PL:
+    if p.get("atlas"): p["atlas"]["laws"] = [l for l in p["atlas"]["laws"] if l in names]
+blk = open("/home/claude/work/scope.html", encoding="utf-8").read()
+blk = blk[blk.index("These"):] if "These" in blk else blk
+blk = re.sub(r"</?(div|span|a)\b[^>]*>", " ", blk); blk = re.sub(r"\s+", " ", blk).strip()
+SCOPE = "<i>This is the atlas's own account of its compilation. Its figures describe the atlas as compiled. This map leaves out the atlas's protective instruments and adds three: the Kyoto Protocol, NAFTA Chapter 11 and Canada's Bill C-38.</i><br><br>" + blk
+tn = sum(1 for p in A.PL if p.get("top"))
+s3 = w["steps"][-2]; s4 = w["steps"][-1]
+s3["t"] = s3["t"].replace("The same view can be switched on at any time under On the map.", "The same view can be switched on at any time under On the map, and the Network button at the top of the screen draws these bodies as a web tied to the laws they stand behind.")
+s4["t"] = ("The bodies on the last slide act through particular laws, treaties, court rulings and contracts. This slide shows %d of them: the keystone legal instruments compiled in the Environmental Law Atlas, with three added by this map, each placed where it was adopted or decided. %d are international and %d national. The atlas sorts them by what they do. %d are foundational: they set up the framework the rest is built on, such as the 1972 Stockholm Declaration. %d are marked invasive, because they open land, sea or seabed to extraction. %d are marked destructive, because they license or subsidise the damage. %d are marked suppressive, because they block the people or the courts that would stop it. Many carry more than one mark. Click any diamond for what the instrument says, who stands behind it and a link to its text. The same layer can be switched on at any time under On the map." % (len(INSTR), sum(1 for x in INSTR if x["tier"] == "international"), sum(1 for x in INSTR if x["tier"] != "international"), fl("foundational"), fl("invasive"), fl("destructive"), fl("suppressive")))
+s4["more"] = ["Scope and coverage of the instruments", SCOPE]
+print("instr now", len(INSTR), "scope chars", len(SCOPE))
