@@ -126,3 +126,24 @@ sub("""Bodies that direct a very large membership from one centre, hold a govern
     """Bodies that direct a very large membership from one centre, hold a government\\'s power over a religion, link such bodies across borders, or pay and lobby for their aims, whether or not the story names them.""")
 sub("""  TL.phase = "outro"; TL.playing = false; $("#slide").classList.remove("on"); chapBox("end"); drawTL();
   const n = STORY.steps.length; if (n) paintStory(n - 1, 1); TL.free = false; fitFlow(f);""", """  TL.playing = false; setPlayIcon(); drawTL();""")
+
+# eighth edition
+# the slide text can be brought back: the close button leaves a small tab, and opening a chapter or a slide shows the text again
+sub("""  if (TL.textOff) { el.classList.remove("on"); return; }""", """  if (TL.textOff) { el.innerHTML = '<button type="button" class="btn" id="slideOpen" style="width:100%">Show the slide text</button>'; el.classList.add("on"); el.classList.add("mini");
+    $("#slideOpen").addEventListener("click", () => { TL.textOff = false; const b = $("#tlText"); if (b) b.classList.remove("off"); showSlide(TL.seg); }); return; }
+  el.classList.remove("mini");""")
+sub("""  $("#slideX").addEventListener("click", () => { TL.textOff = true; el.classList.remove("on"); const b = $("#tlText"); if (b) b.classList.add("off"); });""",
+    """  $("#slideX").addEventListener("click", () => { TL.textOff = true; const b = $("#tlText"); if (b) b.classList.add("off"); showSlide(TL.seg); });""")
+sub("""function showIntro() {
+  const f = STORY.f;""", """function showIntro() {
+  TL.textOff = false; { const b0 = $("#tlText"); if (b0) b0.classList.remove("off"); }
+  const f = STORY.f;""")
+sub("""#rcol:has(#slide.on){width:min(594px,calc(100vw - 24px))}""", """#rcol:has(#slide.on){width:min(594px,calc(100vw - 24px))}
+#rcol:has(#slide.mini){width:230px}
+#slide.mini{padding:8px;border-top-width:1px}""")
+# flat map: free panning and zooming past the edges, kept in force after every move and projection change
+sub("""function freeFlat() { try { if (proj === "mercator") map.setTransformConstrain((ll, z) => ({ center: new maplibregl.LngLat(Math.max(-360, Math.min(360, ll.lng)), Math.max(-84, Math.min(84, ll.lat))), zoom: Math.max(0, z) })); else map.setTransformConstrain(null); } catch (e) {} }""",
+    """function freeFlat() { try { if (proj === "mercator") { map.setMinZoom(-1); map.setTransformConstrain((ll, z) => ({ center: new maplibregl.LngLat(Math.max(-540, Math.min(540, ll.lng)), Math.max(-88, Math.min(88, ll.lat))), zoom: Math.max(-1, z) })); } else { map.setTransformConstrain(null); map.setMinZoom(0); } } catch (e) {} }""")
+sub("""proj = b.dataset.proj; map.setProjection({ type: proj }); freeFlat();""", """proj = b.dataset.proj; map.setProjection({ type: proj }); freeFlat(); setTimeout(freeFlat, 60); setTimeout(freeFlat, 600);""")
+sub("""window.schoolMap = { openFlow,""", """map.on("movestart", () => { if (proj === "mercator") freeFlat(); });
+  window.schoolMap = { map, openFlow,""")

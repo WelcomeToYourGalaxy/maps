@@ -302,7 +302,17 @@ o("propublica2","ProPublica, Credibly Accused","watch","United States","New York
 o("floodlit","FLOODLIT","watch","United States","Salt Lake City",40.7608,-111.8910,None,"https://floodlit.org/","FLOODLIT",
   "A volunteer project that documents reports of sexual abuse in the Church of Jesus Christ of Latter-day Saints: 4,388 reports and 153 accused former bishops when read for this map.",sm=1)
 
+# --- eighth edition
+o("wamy","World Assembly of Muslim Youth","intl","Saudi Arabia","Riyadh",24.7136,46.6753,1972,"","Pew Research Center, 15 September 2010",
+  "An organisation founded in Saudi Arabia in 1972. The Pew Research Center describes it and the Muslim World League as part of a worldwide network of largely Saudi-funded groups.")
+o("shasutj","Shas and United Torah Judaism","pol","Israel","Jerusalem",31.7767,35.2052,None,"","The Times of Israel, 24 May 2023",
+  "Israel's two ultra-Orthodox parties. As members of the governing coalition they obtained 3.7 billion shekels for seminary students in the 2023 to 2024 budget.")
+o("iicsa","Independent Inquiry into Child Sexual Abuse","watch","United Kingdom","London",51.5010,-0.1300,2015,"https://www.iicsa.org.uk/","Wikipedia, Independent Inquiry into Child Sexual Abuse",
+  "The public inquiry for England and Wales. Its 2021 report on religious organisations took evidence from 38 groups, including Christian, Orthodox Jewish and Muslim bodies.",sm=1)
+o("jcw","Jewish Community Watch","watch","United States","New York",40.6690,-73.9420,2011,"https://www.jewishcommunitywatch.org/","Wikipedia, Jewish Community Watch",
+  "A group that publishes the names of people accused of child sexual abuse in Jewish communities. Its founder has said it holds a database of 225 suspected offenders.",sm=1)
+
 # the bodies shown on the closing slide and by the "most responsible" switch
-import story8 as _S8
-TOP=set(_S8.TOP)
+import story9 as _S9
+TOP=set(_S9.TOP)
 for _o in O: _o["top"]=1 if _o["k"] in TOP else 0

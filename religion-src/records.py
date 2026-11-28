@@ -250,6 +250,10 @@ r("epf2021","707 million dollars traced to campaigns against abortion and gay ri
   "The European Parliamentary Forum for Sexual and Reproductive Rights reported on 15 June 2021 that 54 organisations had spent 707.2 million dollars in Europe from 2009 to 2018 on what it calls anti-gender campaigns, with yearly spending rising from 22.2 million to 96 million. About 437.7 million came from within Europe, about 180 million from Russia and 81.3 million from the United States.",
   "The money behind religious lobbying is large and mostly hidden.",
   "European Parliamentary Forum, Tip of the Iceberg","https://www.epfweb.org/node/837","epf")
+r("europeabuse2023","Counts of accused clergy and abused children in six European countries","Germany",50.7374,7.0982,2023,"study",
+  "Germany: a study released by the bishops' conference in 2018 found 1,670 church workers accused of abusing 3,677 children between 1946 and 2014. France: the head of the independent commission gave about 3,000 abusers since 1950 as a minimum. Ireland: a list published in 2018 showed more than 1,300 clergy accused and 82 convicted. Italy: the victims' group Rete l'Abuso counted about 300 court cases since 2000. Poland: a victims' group mapped 255 cases in 2018. Portugal: a commission reported in 2023 that at least 4,815 children had been abused since 1950. England and Wales: the public inquiry's 2021 report on religious organisations covered 38 groups.",
+  "Wherever a count has been made, it has run to hundreds or thousands.",
+  "Wikipedia, Catholic Church sexual abuse cases by country, and the reports it cites","https://en.wikipedia.org/wiki/Catholic_Church_sexual_abuse_cases_by_country","")
 for _k in ("bounty2023","csgc2025","pence2024","cara2025","secfine","indulgence1517"): R.pop(_k)
 GLOSS={
  "caste":"One of the hereditary groups, ranked from high to low, into which Hindu society is traditionally divided.",

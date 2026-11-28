@@ -3,7 +3,7 @@
 Run:  python3 build.py   (from this folder; needs ../ref/maps/school.html and its discrimination_data folder)"""
 import json, re, sys, datetime, collections, os
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import story8 as S            # seventh edition
+import story9 as S            # eighth edition
 import orgs as OG, records as RC, pages as PG
 
 REPO = "/home/claude/ref/maps/"
@@ -176,6 +176,12 @@ BA_INTL = [[-70.6693, -33.4489, 122, "Chile (country list)", "122 clergy in Bish
   [-111.8910, 40.7608, 4388, "Church of Jesus Christ of Latter-day Saints", "4,388 reports of sexual abuse or sex crimes documented by the volunteer project FLOODLIT. A report is not a conviction."],
   [-86.7816, 36.1627, 263, "Southern Baptist churches", "263 offenders over 20 years in 30 states, in the Houston Chronicle's Abuse of Faith database."],
   [151.2093, -33.8688, 1880, "Catholic institutions in Australia", "1,880 alleged perpetrators identified in claims to the Royal Commission into Institutional Responses to Child Sexual Abuse."],
+  [7.0982, 50.7374, 1670, "Catholic Church in Germany", "1,670 church workers accused of abusing 3,677 children between 1946 and 2014, in the study released by the German bishops in 2018."],
+  [2.75, 49.15, 3000, "Catholic Church in France", "About 3,000 abusers since 1950, the minimum given by the head of the independent commission."],
+  [-7.2, 53.9, 1300, "Catholic Church in Ireland", "More than 1,300 clergy accused and 82 convicted, in a list published in 2018."],
+  [12.95, 42.25, 300, "Catholic Church in Italy", "About 300 cases handled by the courts since 2000, counted by the victims' group Rete l'Abuso."],
+  [21.41, 52.48, 255, "Catholic Church in Poland", "255 cases mapped by a victims' group in 2018."],
+  [-73.9420, 40.6690, 225, "Jewish Community Watch", "A database of 225 suspected offenders in Jewish communities, according to the group's founder."],
   [151.35, -33.70, 1006, "Jehovah's Witnesses in Australia", "1,006 members recorded in the organisation's own files as alleged perpetrators, according to the royal commission."]]
 BA_BISH = [[v[0] + 0.6, v[1] + 0.4, 1, k, "On BishopAccountability.org's global list of accused bishops, which names 114 bishops accused over children and 54 over adults in 44 countries and territories."] for k, v in {"Argentina": [-58.38, -34.6], "Australia": [149.13, -35.28], "Austria": [16.37, 48.21], "Belgium": [4.35, 50.85], "Bolivia": [-68.15, -16.5], "Brazil": [-47.88, -15.79], "Canada": [-75.7, 45.42], "Chile": [-70.67, -33.45], "Colombia": [-74.07, 4.71], "Dominican Republic": [-69.93, 18.49], "England": [-0.13, 51.51], "France": [2.35, 48.86], "French Guiana": [-52.33, 4.92], "Germany": [13.4, 52.52], "Guam": [144.75, 13.47], "Honduras": [-87.19, 14.07], "Iceland": [-21.94, 64.15], "India": [77.21, 28.61], "Ireland": [-6.26, 53.35], "Italy": [12.5, 41.9], "Jamaica": [-76.79, 18.02], "Kenya": [36.82, -1.29], "Liberia": [-10.8, 6.3], "Mexico": [-99.13, 19.43], "Morocco": [-6.84, 34.02], "Netherlands": [4.9, 52.37], "New Zealand": [174.78, -41.29], "Nigeria": [7.49, 9.06], "Norway": [10.75, 59.91], "Pakistan": [73.05, 33.69], "Paraguay": [-57.58, -25.26], "Peru": [-77.04, -12.05], "Philippines": [120.98, 14.6], "Poland": [21.01, 52.23], "Portugal": [-9.14, 38.72], "Puerto Rico": [-66.11, 18.47], "Scotland": [-3.19, 55.95], "South Africa": [28.19, -25.75], "Spain": [-3.7, 40.42], "Switzerland": [7.45, 46.95], "Timor-Leste": [125.57, -8.56], "United States": [-77.04, 38.91], "Uruguay": [-56.16, -34.9], "Wales": [-3.18, 51.48]}.items()]
 DATA["ba"] = {"total": sum(x["c"] for x in BA), "n": len(BA), "date": "27 November 2026", "pts": [[x["lng"], x["lat"], x["c"], x["n"]] for x in BA] + BA_INTL + BA_BISH}
